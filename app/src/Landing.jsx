@@ -31,38 +31,44 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       name: "Entry / Viral Launch",
       desc: "Perfect for micro-cap meme coins requiring instant viral traction and rapid trading volume acceleration.",
       features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Anti-Sybil Engine Active", "Custom Brand UI/UX Tailoring", "Supports Phantom, Solflare, & Backpack"],
-      price: "$499"
+      price: "$499",
+      demoLink: "https://entry.zoniqfinance.com" // Sub-domain demo paket 1
     },
     {
       name: "Token Velocity (3-in-1)",
       desc: "Our most popular package for active community tokens looking to mitigate heavy market selling pressure.",
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate System", "Custom Brand UI/UX & Live Deployment", "Lifetime Core Updates & Bug Fixes"],
       price: "$1,299",
-      popular: true
+      popular: true,
+      demoLink: "https://velocity.zoniqfinance.com" // Sub-domain demo paket 2
     },
     {
       name: "Whale Retention Suite",
       desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
       features: ["VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
-      price: "$1,199"
+      price: "$1,199",
+      demoLink: "https://whale.zoniqfinance.com" // Sub-domain demo paket 3
     },
     {
       name: "Safe Staking Hub",
       desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
       features: ["Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
-      price: "$1,099"
+      price: "$1,099",
+      demoLink: "https://staking.zoniqfinance.com" // Sub-domain demo paket 4
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
       desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
-      price: "$2,499"
+      price: "$2,499",
+      demoLink: "https://zoniqfinance.com" // Mengarah ke link utama yang memuat versi penuh default
     },
     {
       name: "Ecosystem Hub / Custom Edition",
       desc: "Advanced custom on-chain infrastructure tailored to complex institutional protocol requirements.",
       features: ["Full 4-in-1 Complete Modular Feature Set", "Custom Tokenomics & Fee Allocation Routing", "Multi-Asset Smart Contract Settlement", "Advanced Proprietary Anti-Bot Mechanics", "Private On-Chain Infrastructure Consultation"],
-      price: "Contact Us"
+      price: "Contact Us",
+      demoLink: "https://zoniqfinance.com"
     }
   ];
 
@@ -180,9 +186,23 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         #vzt-landing-page .package-name { font-size: 1.4rem !important; font-weight: 700 !important; color: #fff !important; margin: 0 0 10px 0 !important; }
         #vzt-landing-page .package-desc { font-size: 0.9rem !important; color: #94a3b8 !important; min-height: 45px !important; margin-bottom: 25px !important; }
         #vzt-landing-page .package-price { font-size: 2.2rem !important; font-weight: 800 !important; color: #14b8a6 !important; margin-bottom: 25px !important; }
-        #vzt-landing-page .features-list { list-style: none !important; padding: 0 !important; margin: 0 0 35px 0 !important; }
+        #vzt-landing-page .features-list { list-style: none !important; padding: 0 !important; margin: 0 0 25px 0 !important; }
         #vzt-landing-page .features-list li { font-size: 0.9rem !important; color: #d1d5db !important; margin-bottom: 12px !important; display: flex !important; align-items: center !important; gap: 10px !important; }
         #vzt-landing-page .features-list i { color: #14b8a6 !important; }
+        
+        /* CLASS BARU UNTUK TOMBOL TEST LIVE DEMO MODULAR */
+        #vzt-landing-page .btn-demo-link {
+          background: transparent !important; color: #94a3b8 !important;
+          text-align: center !important; padding: 10px !important;
+          border-radius: 8px !important; font-weight: 600 !important;
+          text-decoration: none !important; border: 1px solid #1f2937 !important;
+          transition: all 0.3s ease !important; display: block !important;
+          margin-bottom: 10px !important; font-size: 0.9rem !important;
+        }
+        #vzt-landing-page .btn-demo-link:hover {
+          border-color: #14b8a6 !important; color: #14b8a6 !important; background: rgba(20, 184, 166, 0.02) !important;
+        }
+
         #vzt-landing-page .btn-order {
           background: #1f2937 !important; color: #fff !important;
           text-align: center !important; padding: 12px !important;
@@ -208,7 +228,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         }
       `}</style>
 
-      {/* NAVBAR HEADER — REBRANDED TO ZONIQFI */}
+      {/* NAVBAR HEADER */}
       <header>
         <div className="logo">ZONIQFI</div>
         <nav>
@@ -246,9 +266,18 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
                   ))}
                 </ul>
               </div>
-              <a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer" className="btn-order">
-                {pkg.price === "Contact Us" ? "Consult with Developers" : "Acquire License"}
-              </a>
+              
+              {/* COMPONENT INTEGRATION: TOMBOL DEMO DISISIPKAN DI SINI */}
+              <div>
+                <a href={pkg.demoLink} target="_blank" rel="noopener noreferrer" className="btn-demo-link">
+                  <i className="fas fa-bolt" style={{ marginRight: '6px' }}></i> Try Live Demo
+                </a>
+                
+                <a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer" className="btn-order">
+                  {pkg.price === "Contact Us" ? "Consult with Developers" : "Acquire License"}
+                </a>
+              </div>
+
             </div>
           ))}
         </div>
