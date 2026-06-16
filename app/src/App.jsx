@@ -235,15 +235,15 @@ function App() {
       setSwapsCount(prev => prev + 1);
 
       setTxLog(
-        `[SWAP SUCCESS] | Program: ${PROGRAM_ID}\n` +
-        `Swapped: ${amount} ${tokenPay} ➜ ${receiveAmount} ${tokenReceive}\n` +
-        `Protocol Fee (0.3%): ${swapFee} ${tokenPay}\n\n` +
-        `[DISTRIBUTION LOG]\n` +
-        `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
-        `• 30% to VZT Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
-        `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
-        `• 15% to Dev & Infrastructure: ${devShare} ${tokenPay}\n`
-      );
+  `[SWAP SUCCESS] | Program: ${PROGRAM_ID}\n` +
+  `Swapped: ${amount} ${tokenPay} ➜ ${receiveAmount} ${tokenReceive}\n` +
+  `Protocol Fee (0.3%): ${swapFee} ${tokenPay}\n\n` +
+  `[DISTRIBUTION LOG]\n` +
+  `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
+  `• 30% to VZT Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
+  `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
+  `• 15% to Project Treasury Operations: ${projectTreasuryShare} ${tokenPay}\n`
+);
 
       if (tokenReceive === 'VZT') {
         setVztBalance(prev => prev + parseFloat(receiveAmount));
