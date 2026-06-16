@@ -241,7 +241,7 @@ function App() {
         `Protocol Fee (0.3%): ${swapFee} ${tokenPay}\n\n` +
         `[DISTRIBUTION LOG]\n` +
         `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
-        `• 30% to VZT Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
+        `• 30% to Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
         `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
         `• 15% to Project Treasury Operations: ${projectTreasuryShare} ${tokenPay}\n`
       );
