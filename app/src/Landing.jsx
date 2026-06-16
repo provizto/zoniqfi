@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
   const [activeFaq, setActiveFaq] = useState(null);
 
-  // Suntik otomatis FontAwesome dan Google Fonts langsung ke DOM Head saat komponen dimuat
+  // Automatically inject FontAwesome and Google Fonts directly into the DOM Head upon component mount
   useEffect(() => {
     const fontLink = document.createElement('link');
     fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap';
@@ -16,7 +16,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
     document.head.appendChild(faLink);
 
     return () => {
-      // Membersihkan DOM Head saat berpindah komponen
+      // Clean up DOM Head when navigating away from this component
       if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
       if (document.head.contains(faLink)) document.head.removeChild(faLink);
     };
@@ -29,49 +29,49 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
   const pricingPackages = [
     {
       name: "Entry / Viral Launch",
-      desc: "Cocok untuk mikro-cap meme coin yang butuh viralitas kilat dan volume instan.",
-      features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Sistem Anti-Sybil Actived", "Custom Brand UI/UX", "Support Phantom/Solflare/Backpack"],
+      desc: "Perfect for micro-cap meme coins requiring instant viral traction and rapid trading volume acceleration.",
+      features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Anti-Sybil Engine Active", "Custom Brand UI/UX Tailoring", "Supports Phantom, Solflare, & Backpack"],
       price: "$499"
     },
     {
       name: "Token Velocity (3-in-1)",
-      desc: "Paket paling populer untuk token komunitas aktif yang ingin menahan tekanan jual.",
-      features: ["AMM DEX Swap (Anti-MEV)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate", "Custom Brand UI/UX & Live Deployment", "Free Updates & Bug Fixes"],
+      desc: "Our most popular package for active community tokens looking to mitigate heavy market selling pressure.",
+      features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate System", "Custom Brand UI/UX & Live Deployment", "Lifetime Core Updates & Bug Fixes"],
       price: "$1,299",
       popular: true
     },
     {
       name: "Whale Retention Suite",
-      desc: "Berfokus mengunci pasokan token beredar dan mengapresiasi loyal holder.",
-      features: ["VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Rewards)", "Secure On-Chain Affiliate", "Emergency Early Unlock (10% Penalty)", "Full Setup & Domain Configuration"],
+      desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
+      features: ["VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
       price: "$1,199"
     },
     {
       name: "Safe Staking Hub",
-      desc: "Platform staking murni untuk proyek utilitas serius tanpa sistem referral.",
-      features: ["Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Rewards)", "Emergency Early Unlock (10% Penalty)", "Custom Smart Contract Parameters"],
+      desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
+      features: ["Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
       price: "$1,099"
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
-      desc: "Ekosistem keuangan terpadu terlengkap untuk mendominasi pasar Solana.",
-      features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Developer Support"],
+      desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
+      features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
       price: "$2,499"
     },
     {
       name: "Ecosystem Hub / Custom Edition",
-      desc: "Kustomisasi arsitektur on-chain tingkat lanjut untuk kebutuhan khusus platform publik.",
-      features: ["Semua Fitur Komplit 4-in-1", "Custom Tokenomics & Fee Routing", "Multi-Asset Smart Contract Settlement", "Advanced Anti-Bot Integration", "Private Infrastructure Consultations"],
-      price: "Hubungi Kami"
+      desc: "Advanced custom on-chain infrastructure tailored to complex institutional protocol requirements.",
+      features: ["Full 4-in-1 Complete Modular Feature Set", "Custom Tokenomics & Fee Allocation Routing", "Multi-Asset Smart Contract Settlement", "Advanced Proprietary Anti-Bot Mechanics", "Private On-Chain Infrastructure Consultation"],
+      price: "Contact Us"
     }
   ];
 
   const faqData = [
-    { q: "Apa itu Zoniq Finance?", a: "Zoniq Finance adalah penyedia infrastruktur Web3 premium yang menjual dApp DeFi modular siap pakai (White-Label) di jaringan Solana. Kami membantu project owner dan developer meluncurkan ekosistem token mereka secara instan tanpa perlu coding dari nol." },
-    { q: "Bagaimana cara kerja sistem lisensi White-Label ini?", a: "Setelah Anda memilih paket, kami akan melakukan kustomisasi visual (logo, nama token, warna brand, alamat smart contract) pada dApp, lalu mendepolynya langsung ke domain milik proyek Anda sendiri." },
-    { q: "Apakah saya harus men-deploy Smart Contract baru yang mahal?", a: "Tidak perlu. Infrastruktur kami dirancang secara Multi-Tenant. Anda bisa langsung menembak ke program on-chain kami yang sudah stabil di Mainnet, menghemat biaya sewa rent-exempt Solana yang mahal, dan proyek Anda bisa langsung siap pakai." },
-    { q: "Apakah infrastruktur ini aman dari serangan bot?", a: "Sangat aman. Modul Swap kami dilengkapi fitur MEV Secure via Jito Engine untuk melindungi retail dari sandwich attacks, sedangkan modul Affiliate kami dilengkapi logika Anti-Sybil untuk mencegah manipulasi multi-wallet." },
-    { q: "Bagaimana jika saya ingin melakukan upgrade fitur di kemudian hari?", a: "Sistem kami berbasis saklar modular (Toggle System). Jika Anda memulai dengan Paket Entry dan ingin menambahkan fitur Lock Token atau Optimizer di masa mendatang, kami tinggal mengaktifkannya via konfigurasi kode tanpa perlu merombak ulang website Anda." }
+    { q: "What is Zoniq Finance?", a: "Zoniq Finance is a premium Web3 infrastructure provider offering turnkey, plug-and-play white-label DeFi dApps on the Solana blockchain. We empower project owners and developers to launch comprehensive utility suites instantly without writing code from scratch." },
+    { q: "How does the White-Label licensing model work?", a: "Once you purchase a package, our team handles all frontend customization (logos, token tickers, brand colors, smart contract links) and deploys the fully functional dApp directly to your project's custom domain or subdomain." },
+    { q: "Do I need to deploy expensive native smart contracts?", a: "Not necessarily. Our infrastructure is designed with a multi-tenant architecture. You can opt to plug directly into our pre-deployed, highly optimized Mainnet programs to bypass costly Solana rent-exempt storage fees while keeping your frontend completely branded." },
+    { q: "Is this infrastructure protected against automated exploits?", a: "Absolutely. The Swap module is equipped with MEV Secure protocols via Jito Engine to shield retail traders from malicious sandwich attacks. Additionally, the Affiliate ledger features strict Anti-Sybil cooldown rules to prevent multi-wallet referral manipulation." },
+    { q: "Can I upgrade my dApp modules in the future?", a: "Yes. Our ecosystem is built entirely on a modular toggle system. If you launch with our Entry Package today and want to unlock the Staking or Yield Optimizer features later, we can activate them via simple environment variables without rebuilding your website." }
   ];
 
   return (
@@ -212,25 +212,25 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       <header>
         <div className="logo">ZONIQ FINANCE</div>
         <nav>
-          <a href="#pricing">Varian Paket</a>
+          <a href="#pricing">Packages</a>
           <a href="#faq">FAQ</a>
-          <a href="https://t.me/usernameTelegramAnda" target="_blank" rel="noopener noreferrer">Hubungi Kami</a>
+          <a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer">Contact</a>
         </nav>
         <button onClick={onLaunchApp} className="btn-launch">
-          Live Demo dApp
+          Live dApp Demo
         </button>
       </header>
 
       {/* HERO SECTION */}
       <section className="hero">
         <h1>Premium Solana White-Label dApp Infrastructure</h1>
-        <p>Bangun ekosistem utilitas token Anda dalam 24 jam. Kami menyediakan infrastruktur DeFi modular siap pakai yang MEV-Secure, Anti-Sybil, dan teroptimasi penuh untuk jaringan Solana.</p>
+        <p>Deploy your token utility ecosystem within 24 hours. We provide complete, plug-and-play DeFi modules designed securely on-chain to maximize liquidity parameters and viral user generation.</p>
       </section>
 
       {/* PRICING PACKAGES SECTION */}
       <section id="pricing" className="pricing-section">
-        <h2 className="section-title">Pilihan Paket DeFi Modular</h2>
-        <p className="section-desc">Pilih kombinasi modul on-chain terbaik yang sesuai dengan anggaran dan tokenomics komunitas Anda.</p>
+        <h2 className="section-title">Modular DeFi Packages</h2>
+        <p className="section-desc">Select the perfect combination of utility features aligned with your project budget and community tokenomics.</p>
 
         <div className="pricing-grid">
           {pricingPackages.map((pkg, idx) => (
@@ -246,8 +246,8 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
                   ))}
                 </ul>
               </div>
-              <a href="https://t.me/usernameTelegramAnda" target="_blank" rel="noopener noreferrer" className="btn-order">
-                {pkg.price === "Hubungi Kami" ? "Konsultasi Sekarang" : "Beli Lisensi Paket"}
+              <a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer" className="btn-order">
+                {pkg.price === "Contact Us" ? "Consult with Developers" : "Acquire License"}
               </a>
             </div>
           ))}
@@ -257,7 +257,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       {/* FAQ SECTION */}
       <section id="faq" className="faq-section">
         <h2 className="section-title">Frequently Asked Questions</h2>
-        <p className="section-desc">Jawaban teknis mengenai sistem deployment dan operasional dApp White-Label Zoniq Finance.</p>
+        <p className="section-desc">Quick technical answers regarding deployment, licensing, and protocol security mechanics.</p>
         
         {faqData.map((faq, index) => (
           <div key={index} className="faq-item">
