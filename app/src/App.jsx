@@ -1,57 +1,55 @@
 import { useState, useEffect } from 'react';
-import Landing from './Landing'; // Mengimpor komponen Landing React Opsi A
-import ComplianceModal from './components/ComplianceModal'; // INTEGRASI: Mengimpor Pop-up Compliance
+import Landing from './Landing'; 
+import ComplianceModal from './components/ComplianceModal'; 
 import './App.css';
 
 // ==========================================================================
-// PROTOCOL SYSTEM CONSTANTS (GLOBAL CONFIGURATION FOR GRANTS REVIEW)
+// CONFIGURATION SAKLAR PAKET (WHITE-LABEL CONFIG CONTROL)
 // ==========================================================================
-const PROGRAM_ID = "ProvZtoX9vR6qwMKB7zYtE4HnS2PdcG8kLmWq3jF5uBx";
-const SOLANA_NETWORK = "mainnet-beta";
+// Atur visibilitas modular dari Vercel Environment Variables. Default: true (Paket Ultimate)
+const SHOW_SWAP = import.meta.env.VITE_ENABLE_SWAP !== 'false';
+const SHOW_OPTIMIZER = import.meta.env.VITE_ENABLE_OPTIMIZER !== 'false';
+const SHOW_LOCKER = import.meta.env.VITE_ENABLE_LOCKER !== 'false';
+const SHOW_AFFILIATE = import.meta.env.VITE_ENABLE_AFFILIATE !== 'false';
 
-// TIME-HORIZON BLOCK CONFIGURATIONS (7 DAYS TIME-LOCK FOR SECURITY ENFORCEMENT)
-const BASE_EPOCH_HORIZON_MS = 604800000; // 7 Hari dalam milidetik (Default Horizon)
-const EMERGENCY_BURN_PENALTY_RATE = 0.20; // 20% Penalty Rate untuk deflationary burn
+const PROGRAM_ID = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD";
+const SOLANA_NETWORK = "devnet"; 
 
-// PRICING ORACLE MOCKS
+const BASE_EPOCH_HORIZON_MS = 604800000; 
+const EMERGENCY_BURN_PENALTY_RATE = 0.10; 
+
 const TOKEN_PRICES = { SOL: 170.00, USDT: 1.00, USDC: 1.00, WSOL: 170.00, VZT: 0.50 };
 
-
-// ==========================================================================
-// MAIN DAPP COMPONENT
-// ==========================================================================
 function App() {
-  // ==========================================================================
-  // VIEW NAVIGATION LAYER (OPTI A MIGRATION INTERLOCK)
-  // ==========================================================================
-  const [view, setView] = useState('landing'); // Mode bawaan awal: 'landing' atau 'dashboard'
+  const [view, setView] = useState('landing'); 
 
-  // ==========================================================================
-  // 1. GLOBAL STATE MANAGEMENT (MIGRATED FROM MASTER JAVASCRIPT VARS)
-  // ==========================================================================
   const [isConnected, setIsConnected] = useState(false);
   const [myWalletAddress, setMyWalletAddress] = useState("");
   const [activeProviderName, setActiveProviderName] = useState(""); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [securityBanner, setSecurityBanner] = useState({ show: false, message: "", type: "success" });
   
-  // System Metrics Tracker (Terhubung Langsung ke Landing Page secara Dinamis)
   const [lastTransactionTime, setLastTransactionTime] = useState(0);
   const [isSwapLoading, setIsSwapLoading] = useState(false);
   const [isLockLoading, setIsLockLoading] = useState(false);
   const [isTokenLocked, setIsTokenLocked] = useState(false);
-  const [swapsCount, setSwapsCount] = useState(45210); // Metrik dinamis swaps awal
+  const [swapsCount, setSwapsCount] = useState(45210); 
   
-  // Perhitungan Keuangan Berbasis Number Murni
   const [vztBalance, setVztBalance] = useState(0); 
-  const [stakedAmount, setStakedAmount] = useState(0); // Penampung saldo terkunci
+  const [stakedAmount, setStakedAmount] = useState(0); 
+  
   const [protocolTVL, setProtocolTVL] = useState(1248500);
 
-  // AUTOMATED INSTUTIONAL GRANT REPAYMENT TRACKER STATE
-  const [totalRepaid, setTotalRepaid] = useState(0); // Akumulasi awal pengembalian $0
-  const GRANT_CAP = 20000; // Batasan Hard Cap senilai $20,000
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProtocolTVL(prev => {
+        const change = Math.floor(Math.random() * 600) - 150;
+        return prev + change;
+      });
+    }, 4000); 
+    return () => clearInterval(interval);
+  }, []);
 
-  // AMM DEX Swap States
   const [payAmount, setPayAmount] = useState('0');
   const [receiveAmount, setReceiveAmount] = useState('0.0');
   const [tokenPay, setTokenPay] = useState('USDC');
@@ -59,12 +57,10 @@ function App() {
   const [swapFee, setSwapFee] = useState('0.0000');
   const [txLog, setTxLog] = useState('');
 
-  // Yield Optimizer States
   const [calcAmount, setCalcAmount] = useState('0');
   const [projection, setProjection] = useState({ daily: "0.00", monthly: "0.00", annual: "0.00" });
   const [isVaultLoading, setIsVaultLoading] = useState(false);
 
-  // VZT Lock & Yield States
   const [lockCalculationMode, setLockCalculationMode] = useState('manual'); 
   const [lockAmount, setLockAmount] = useState('0'); 
   const [chosenMultiplier, setChosenMultiplier] = useState(2.5); 
@@ -73,18 +69,13 @@ function App() {
   const [showRewardRow, setShowRewardRow] = useState(false);
   const [earnedUsdcDisplay, setEarnedUsdcDisplay] = useState('0.00 USDC');
   
-  // State Penegakan Aturan Kematangan Blok Kontrak (7-Day Epoch Time-Horizon Simulation)
   const [rewardClaimable, setRewardClaimable] = useState(false);
 
-  // Secure On-Chain Affiliate States
   const [referrerInput, setReferrerInput] = useState('');
   const [referralVolume, setReferralVolume] = useState('$0.00');
   const [tierLabel, setTierLabel] = useState('Bronze (10%)');
   const [tierColor, setTierColor] = useState('#14b8a6');
 
-  // ==========================================================================
-  // 2. SECURITY NOTIFICATION BANNER CONTROLLER
-  // ==========================================================================
   const triggerBanner = (message, type = "success") => {
     setSecurityBanner({ show: true, message, type });
     setTimeout(() => {
@@ -92,9 +83,6 @@ function App() {
     }, 4000);
   };
 
-  // ==========================================================================
-  // 3. WALLET CONNECTION ENGINE (MOBILE HANDSHAKE & DEEP LINKING)
-  // ==========================================================================
   const openWalletModal = () => {
     if (isConnected) {
       disconnectWallet();
@@ -108,8 +96,19 @@ function App() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const dAppUrl = window.location.href;
 
-    if (walletType === 'phantom') {
-      if (window.solana && window.solana.isPhantom) {
+    if (walletType === 'backpack') {
+      const backpackProvider = window.backpack?.solana || (window.solana?.isBackpack ? window.solana : null);
+      if (backpackProvider) {
+        executeConnect(backpackProvider, "Backpack");
+      } else {
+        alert("Backpack Wallet not found! Please install the Backpack extension.");
+        window.open("https://backpack.app/", "_blank");
+      }
+    } else if (walletType === 'phantom') {
+      const phantomProvider = window.phantom?.solana;
+      if (phantomProvider && phantomProvider.isPhantom) {
+        executeConnect(phantomProvider, "Phantom");
+      } else if (window.solana && window.solana.isPhantom) {
         executeConnect(window.solana, "Phantom");
       } else if (isMobile) {
         const phantomDeepLink = `https://phantom.app/ul/browse/${encodeURIComponent(dAppUrl)}`;
@@ -133,6 +132,9 @@ function App() {
 
   const executeConnect = async (provider, walletName) => {
     try {
+      if (provider.disconnect) {
+        await provider.disconnect();
+      }
       const response = await provider.connect();
       const pubKey = response.publicKey ? response.publicKey.toString() : provider.publicKey.toString();
       
@@ -149,7 +151,7 @@ function App() {
       }
     } catch (err) {
       console.error(`${walletName} connection rejected:`, err);
-      triggerBanner("Connection rejected.", "error");
+      triggerBanner(`Connection rejected: ${err.message || "User denied"}`, "error");
     }
   };
 
@@ -168,13 +170,9 @@ function App() {
     setReceiveAmount('0.0');
     setSwapFee('0.0000');
     setTxLog('');
-    setTotalRepaid(0); // Reset progress tracker
     triggerBanner("Wallet disconnected.", "warning");
   };
 
-  // ==========================================================================
-  // 4. AMM DEX SWAP CALCULATOR ENGINE (JITO ENGINE ROUTING)
-  // ==========================================================================
   const tokens = [
     { symbol: 'USDC', name: 'USD Coin', priceInUsdc: TOKEN_PRICES.USDC },
     { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT },
@@ -228,27 +226,12 @@ function App() {
       await new Promise((resolve) => setTimeout(resolve, 2500));
       
       const currentFee = parseFloat(swapFee) || 0;
-      
-      // Ambil nilai tukar token asal ke dalam satuan USD/USDC untuk standardisasi pelacakan hibah
-      const payTokenData = tokens.find(t => t.symbol === tokenPay);
-      const feeInUsdcValue = payTokenData ? currentFee * payTokenData.priceInUsdc : currentFee;
 
       const vaultShare = (currentFee * 0.40).toFixed(5);
       const poolShare = (currentFee * 0.30).toFixed(5);
       const affiliateShare = (currentFee * 0.15).toFixed(5);
       const devShare = (currentFee * 0.15).toFixed(5);
-      
-      const calculatedClawbackUsdc = feeInUsdcValue * 0.15 * 0.20;
 
-      // UPDATE DINAMIS TRACKER: Menambahkan akumulasi hasil porsi hibah swap ke dashboard utama
-      setTotalRepaid((prev) => {
-        if (prev + calculatedClawbackUsdc >= GRANT_CAP) {
-          return GRANT_CAP; // Kunci pada Hard-Cap $20,000 jika pelunasan tercapai
-        }
-        return prev + calculatedClawbackUsdc;
-      });
-
-      // Naikkan jumlah hitungan metrik swap global
       setSwapsCount(prev => prev + 1);
 
       setTxLog(
@@ -259,8 +242,7 @@ function App() {
         `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
         `• 30% to VZT Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
         `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
-        `• 15% to Dev & Infrastructure: ${devShare} ${tokenPay}\n` +
-        `   └── (Allocated 20% for Grant Repayment Share: ${(devShare * 0.2).toFixed(4)} ${tokenPay})`
+        `• 15% to Dev & Infrastructure: ${devShare} ${tokenPay}\n`
       );
 
       if (tokenReceive === 'VZT') {
@@ -277,9 +259,6 @@ function App() {
     }
   };
 
-  // ==========================================================================
-  // 5. AUTO-COMPOUND YIELD OPTIMIZER ENGINE
-  // ==========================================================================
   useEffect(() => {
     const amount = parseFloat(calcAmount) || 0;
     const dailyRate = 0.0011; 
@@ -302,18 +281,11 @@ function App() {
       return;
     }
 
-    const currentTime = Date.now();
-    if (currentTime - lastTransactionTime < 10000) {
-      triggerBanner(`⚠️ [Smart Contract Error]: Repetitive transaction detected too fast! Please wait 10 seconds.`, "error");
-      return;
-    }
-
     setIsVaultLoading(true);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      setLastTransactionTime(Date.now());
-      setProtocolTVL(prev => prev + amountValue); // Menambah TVL secara dinamis
+      setProtocolTVL(prev => prev + amountValue); 
       triggerBanner("✅ Success: Deposited " + amountValue.toLocaleString('en-US') + " USDC into the Auto-Compounding Vault!", "success");
     } catch (error) {
       triggerBanner("⚠️ Transaction rejected by network consensus.", "error");
@@ -322,13 +294,9 @@ function App() {
     }
   };
 
-  // ==========================================================================
-  // 6. VZT POOL CORE METRICS & TIMELOCK LOGIC
-  // ==========================================================================
   const switchLockCalculationView = (selectedMode) => {
     if (isTokenLocked) return;
     setLockCalculationMode(selectedMode);
-    
     if (selectedMode === 'manual') {
       setLockAmount('0');
     } else {
@@ -371,11 +339,11 @@ function App() {
     }
 
     setIsLockLoading(true);
-    setRewardClaimable(false); // Drop penguncian langsung memicu timelock aktif
+    setRewardClaimable(false); 
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert(`Successfully locked ${amount} $VZT!\n\nSmart Contract Rule: Tokens are now cryptographically bound to the 7-Day Epoch Horizon. Yield returns are processing.`);
+      alert(`Successfully locked ${amount} $VZT!\n\nSmart Contract Rule: Tokens are now cryptographically bound to the 7-Day Epoch Horizon.`);
       
       setIsTokenLocked(true);
       setStakedAmount(amount); 
@@ -386,7 +354,6 @@ function App() {
       setShowRewardRow(true);
       setProtocolTVL(prev => prev + (amount * TOKEN_PRICES.VZT)); 
 
-      // INTEGRASI SEUTUHNYA: Mengunci tombol klaim imbalan hasil selama 7 Hari Penuh (604.800.000 ms)
       setTimeout(() => {
         setRewardClaimable(true);
         triggerBanner("✨ Smart Contract Update: Staking Epoch completed! Yield rewards are now claimable.", "success");
@@ -401,89 +368,69 @@ function App() {
 
   const claimVztReward = () => {
     if (!rewardClaimable) {
-      alert("Smart Contract Refusal: Cannot execute yield withdrawal!\n\nReason: This epoch block has not reached the maturity milestone yet (7-Day Target Horizon). If you wish to pull out early, you must trigger the Emergency Unlock protocol to bypass contract limits.");
+      alert("Smart Contract Refusal: Cannot execute yield withdrawal!");
       return;
     }
-
-    alert(`Claim Successful!\n\n${earnedUsdcDisplay} has been transferred directly back to your secure Solana wallet account.`);
+    alert(`Claim Successful!\n\n${earnedUsdcDisplay} has been transferred directly back to your wallet.`);
     setEarnedUsdcDisplay("0.00 USDC");
     setShowRewardRow(false);
   };
 
-  // ==========================================================================
-  // 7. EMERGENCY PROTOCOL UNLOCK (PENALTI BURN 20% BERBASIS KONSTAN GLOBAL)
-  // ==========================================================================
   const handleEmergencyUnlock = async () => {
     if (!isConnected) {
       triggerBanner("⚠️ Please connect your wallet first!", "error");
       return;
     }
-
     if (stakedAmount <= 0) {
       triggerBanner("⚠️ [Error]: No locked assets detected to execute early withdrawal.", "error");
       return;
     }
 
     const penaltyPercentageText = EMERGENCY_BURN_PENALTY_RATE * 100;
-    const alertMessage = `⚠️ ALERT: EMERGENCY UNLOCK SYSTEM\n--------------------------------------------------\nYou are attempting to unlock your tokens before the maturity date.\nPer contract rules, this action triggers the Emergency Clause:\n\n• Total Locked Assets   : ${stakedAmount.toLocaleString('en-US', { minimumFractionDigits: 2 })} VZT\n• ${penaltyPercentageText}% Penalty to BURN   : ${(stakedAmount * EMERGENCY_BURN_PENALTY_RATE).toLocaleString('en-US', { minimumFractionDigits: 2 })} VZT (Permanently destroyed)\n• Net Amount Returned   : ${(stakedAmount * (1 - EMERGENCY_BURN_PENALTY_RATE)).toLocaleString('en-US', { minimumFractionDigits: 2 })} VZT\n\nAre you absolute sure you want to proceed and burn ${penaltyPercentageText}% of your capital?`;
+    const alertMessage = `⚠️ ALERT: EMERGENCY UNLOCK SYSTEM\n\n• Total Locked Assets: ${stakedAmount} VZT\n• ${penaltyPercentageText}% Penalty to BURN: ${stakedAmount * EMERGENCY_BURN_PENALTY_RATE} VZT\n\nProceed early unlock?`;
 
     const confirmWithdraw = confirm(alertMessage);
     if (!confirmWithdraw) return;
 
-    setTxLog('Burning asset allocations through on-chain network consensus...');
-    
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
-
       const penaltyAmount = stakedAmount * EMERGENCY_BURN_PENALTY_RATE;
       const finalAmountReturned = stakedAmount - penaltyAmount;
 
       setVztBalance(prev => prev + finalAmountReturned);
       setProtocolTVL(prev => prev - (stakedAmount * TOKEN_PRICES.VZT));
       
-      triggerBanner(`🔥 Success: ${penaltyAmount.toLocaleString('en-US')} VZT burned! Returned ${finalAmountReturned.toLocaleString('en-US')} VZT.`, "success");
+      triggerBanner(`🔥 Success: ${penaltyAmount} VZT burned!`, "success");
       
-      // Reset total status pool
       setStakedAmount(0);
       setLockAmount("0");
       setIsTokenLocked(false);
       setShowRewardRow(false);
-      setRewardClaimable(false); // Reset status timelock
-      setTxLog(`🔥 Deflationary System: ${penaltyAmount.toFixed(2)} $VZT permanently destroyed from total supply.`);
+      setRewardClaimable(false); 
+      setTxLog(`🔥 Deflationary System: ${penaltyAmount.toFixed(2)} $VZT permanently destroyed from supply.`);
     } catch (error) {
-      triggerBanner("⚠️ Emergency execution rejected by network consensus.", "error");
+      triggerBanner("⚠️ Emergency execution rejected.", "error");
     }
   };
 
-  // ==========================================================================
-  // 8. SYBIL-RESISTANT AFFILIATE CONTROLLER
-  // ==========================================================================
   const copyLink = () => {
     if (!isConnected) {
       setIsModalOpen(true);
-      triggerBanner("⚠️ Please connect your wallet first to generate an on-chain affiliate link!", "warning");
+      triggerBanner("⚠️ Please connect your wallet first!", "warning");
       return;
     }
-
-    const generatedUrl = `https://provizto.hub/${myWalletAddress}`;
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(generatedUrl)
-        .then(() => triggerBanner("📋 Referral link successfully copied to your clipboard!", "success"))
-        .catch(() => alert("Please copy manually: " + generatedUrl));
-    } else {
-      alert("Please copy manually: " + generatedUrl);
-    }
+    const generatedUrl = `https://provizto-dapp.vercel.app?ref=${myWalletAddress}`;
+    navigator.clipboard.writeText(generatedUrl).then(() => triggerBanner("📋 Copied!", "success"));
   };
 
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
-
     if (inputVal === myWalletAddress && isConnected) {
-      triggerBanner("⚠️ [Smart Contract Error]: You cannot refer yourself! (SelfReferralNotAllowed)", "error");
+      triggerBanner("⚠️ You cannot refer yourself!", "error");
       return;
     } 
     if (inputVal === "") {
-      triggerBanner("Please enter a wallet address for simulation testing.", "warning");
+      triggerBanner("Please enter a wallet address.", "warning");
       return;
     }
 
@@ -491,44 +438,27 @@ function App() {
     setReferralVolume(`$${simulatedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}`);
 
     if (simulatedVolume <= 10000) {
-      setTierLabel("Bronze (10%)");
-      setTierColor("#14b8a6");
-      triggerBanner(`✅ [Success]: Active Regular User verified. Allocated to Bronze Tier (10% Commission).`, "success");
+      setTierLabel("Bronze (10%)"); setTierColor("#14b8a6");
     } else if (simulatedVolume > 10000 && simulatedVolume <= 100000) {
-      setTierLabel("Silver (18%)");
-      setTierColor("#3b82f6");
-      triggerBanner(`🔥 [Success]: High-Volume Creator verified! Upgraded to Silver Tier (18% Commission).`, "success");
+      setTierLabel("Silver (18%)"); setTierColor("#3b82f6");
     } else {
-      setTierLabel("Gold (25%)");
-      setTierColor("#a855f7");
-      triggerBanner(`👑 [Success]: Top-Tier VIP KOL verified! Upgraded to Premium Gold Tier (25% Commission).`, "success");
+      setTierLabel("Gold (25%)"); setTierColor("#a855f7");
     }
   };
 
-  // ==========================================================================
-  // CONDITIONAL RENDERING LAYER: MENGONTROL STRUKTUR VIEW HALAMAN
-  // ==========================================================================
   if (view === 'landing') {
     return (
       <>
-        {/* INTEGRASI: ComplianceModal tetap mencegat di halaman Landing awal */}
         <ComplianceModal />
-        <Landing 
-          totalValueLocked={protocolTVL} 
-          swapsCount={swapsCount} 
-          onLaunchApp={() => setView('dashboard')} 
-        />
+        <Landing totalValueLocked={protocolTVL} swapsCount={swapsCount} onLaunchApp={() => setView('dashboard')} />
       </>
     );
   }
 
-  // JIKA MODE DASHBOARD AKTIF, RENDERING INTERFACE UTAMA DAPP DI BAWAH INI
   return (
     <>
-      {/* INTEGRASI: ComplianceModal aktif memantau status sesi di halaman Dashboard */}
       <ComplianceModal />
 
-      {/* FLOATING BANNER NOTIFIKASI */}
       {securityBanner.show && (
         <div id="securityBanner" style={{
           position: 'fixed', top: '20px', left: '50%', transform: 'translateX(-50%)',
@@ -543,37 +473,18 @@ function App() {
         </div>
       )}
 
-      {/* HEADER COMPONENT */}
       <header className="dapp-header">
         <div className="header-left">
           <div className="logo">PROVIZTO <span className="vzt-badge">$VZT</span></div>
         </div>
         <div className="header-right">
-          <button 
-            onClick={() => setView('landing')} 
-            className="btn-home" 
-            style={{ 
-              background: 'transparent', 
-              border: '1px solid #1f2937', 
-              color: '#f3f4f6', 
-              cursor: 'pointer', 
-              padding: '8px 16px', 
-              borderRadius: '6px', 
-              marginRight: '10px',
-              fontWeight: '600'
-            }}
-          >
-            Back to Home
-          </button>
-          <button className="btn-connect" id="walletBtn" onClick={openWalletModal} style={{
-            background: isConnected ? "#22c55e" : "linear-gradient(135deg, #8b5cf6, #3b82f6)"
-          }}>
+          <button onClick={() => setView('landing')} className="btn-home" style={{ background: 'transparent', border: '1px solid #1f2937', color: '#f3f4f6', cursor: 'pointer', padding: '8px 16px', borderRadius: '6px', marginRight: '10px', fontWeight: '600' }}>Back to Home</button>
+          <button className="btn-connect" id="walletBtn" onClick={openWalletModal} style={{ background: isConnected ? "#22c55e" : "linear-gradient(135deg, #8b5cf6, #3b82f6)" }}>
             {isConnected ? `Connected (${activeProviderName}): ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect Wallet"}
           </button>
         </div>
       </header>
 
-      {/* WALLET INTEGRATION MODAL BOX */}
       {isModalOpen && (
         <div id="walletModal" className="modal-overlay" style={{ display: 'flex' }}>
           <div className="modal-content">
@@ -582,409 +493,210 @@ function App() {
               <button className="btn-close-modal" onClick={() => setIsModalOpen(false)}>&times;</button>
             </div>
             <div className="modal-body">
-              <button className="wallet-option-btn" onClick={() => selectWallet('phantom')}>
-                <span className="wallet-icon">👻</span> Phantom Wallet
-              </button>
-              <button className="wallet-option-btn" onClick={() => selectWallet('solflare')}>
-                <span className="wallet-icon">☀️</span> Solflare Wallet
-              </button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('backpack')} style={{ marginBottom: '10px' }}><span className="wallet-icon">🎒</span> Backpack Wallet</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('phantom')} style={{ marginBottom: '10px' }}><span className="wallet-icon">👻</span> Phantom Wallet</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('solflare')}><span className="wallet-icon">☀️</span> Solflare Wallet</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* MAIN CONTENT FIELD */}
       <main className="dapp-container">
         <div className="wallet-status" id="walletStatus" style={{ color: isConnected ? "#22c55e" : "#94a3b8" }}>
-          {isConnected ? `Wallet Status: Connected to Solana Mainnet via ${activeProviderName}` : "Wallet Status: Disconnected (Network: Solana)"}
+          {isConnected ? `Wallet Status: Connected to Solana Devnet via ${activeProviderName}` : "Wallet Status: Disconnected (Network: Solana)"}
         </div>
         
         <div className="rpc-status-container">
           <span className="rpc-status-indicator"></span>
-          <span>RPC Node Status: Operational (Mainnet-Beta)</span>
+          <span>RPC Node Status: Operational ({SOLANA_NETWORK})</span>
         </div>
 
         {txLog && (
           <div className="security-banner" style={{ display: 'block', background: '#111827', borderColor: '#1f2937', color: '#38bdf8', fontSize: '0.88rem', fontStyle: 'italic', whiteSpace: 'pre-line' }}>
             {txLog}
-
-            {/* INTEGRASI VISUAL: Progress Bar Pelacakan Dana Hibah $20,000 */}
-            <div className="grant-repayment-tracker" style={{ marginTop: "20px", padding: "15px", background: "#0f172a", borderRadius: "10px", border: "1px solid #1e293b", textAlign: 'left' }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                <span style={{ fontSize: "12px", color: "#9ca3af", fontWeight: "500", fontStyle: 'normal' }}>Automated Grant Debt Repayment Progress</span>
-                <span style={{ fontSize: "12px", color: totalRepaid >= GRANT_CAP ? "#22c55e" : "#3b82f6", fontWeight: "bold", fontStyle: 'normal' }}>
-                  {totalRepaid >= GRANT_CAP ? "🎉 FULLY REPAID" : `$${totalRepaid.toFixed(4)} / $20,000`}
-                </span>
-              </div>
-              <div style={{ width: "100%", height: "10px", background: "#374151", borderRadius: "5px", overflow: "hidden" }}>
-                <div style={{ 
-                  width: `${(totalRepaid / GRANT_CAP) * 100}%`, 
-                  height: "100%", 
-                  background: "linear-gradient(90deg, #3b82f6 0%, #22c55e 100%)", 
-                  transition: "width 0.4s ease-in-out" 
-                }}></div>
-              </div>
-            </div>
           </div>
         )}
 
+        {/* UTAMA: GRID MEMUAT LOGIKA SAKLAR TOGGLE */}
         <section className="products-grid">
           
-          {/* COMPONENT 1: AMM DEX SWAP COMPONENT */}
-          <div className="product-card swap-card">
-            <div className="card-title-row">
-              <h3>AMM DEX Swap</h3>
-              <span id="mevBadge" className="mev-secure-badge">🛡️ MEV SECURE</span>
-            </div>
-            <p className="desc">Instant asset swapping with MEV protection and daily Anti-Wash Trading features.</p>
-
-            <div className="swap-input-container">
-              <label>You Pay</label>
-              <div className="field-row">
-                <input 
-                  type="number" 
-                  id="payAmount"
-                  placeholder="0.0" 
-                  value={payAmount === '0' ? '' : payAmount}
-                  disabled={isSwapLoading}
-                  onChange={(e) => setPayAmount(e.target.value)}
-                  onBlur={() => { if (payAmount === '') setPayAmount('0'); }}
-                />
-                
-                <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)}>
-                  <option value="USDC">USDC</option>
-                  <option value="USDT">USDT</option>
-                  <option value="SOL">SOL</option>
-                  <option value="WSOL">WSOL</option>
-                  <option value="VZT">VZT</option>
-                </select>
+          {/* MODUL 1: SWAP */}
+          {SHOW_SWAP && (
+            <div className="product-card swap-card">
+              <div className="card-title-row">
+                <h3>AMM DEX Swap</h3>
+                <span id="mevBadge" className="mev-secure-badge">🛡️ MEV SECURE</span>
               </div>
-            </div>
+              <p className="desc">Instant asset swapping with MEV protection and daily Anti-Wash Trading features.</p>
 
-            <div className="swap-switch-row">
-              <button className="btn-switch-tokens" onClick={switchTokens}>⇅</button>
-            </div>
-
-            <div className="swap-input-container">
-              <label>You Receive (Estimated)</label>
-              <div className="field-row">
-                <input type="text" id="receiveAmount" value={receiveAmount} readOnly />
-                <span id="tokenReceiveLabel" className="static-token-label">{tokenReceive}</span>
+              <div className="swap-input-container">
+                <label>You Pay</label>
+                <div className="field-row">
+                  <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} />
+                  <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)}>
+                    <option value="USDC">USDC</option><option value="USDT">USDT</option><option value="SOL">SOL</option><option value="WSOL">WSOL</option><option value="VZT">VZT</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <div className="swap-fee-details">
-              <div className="detail-line">
-                <span>Trading Fee (0.3%):</span>
-                <span id="swapFeeLabel" className="fee-bold-value">{swapFee} {tokenPay}</span>
+              <div className="swap-switch-row"><button className="btn-switch-tokens" onClick={switchTokens}>⇅</button></div>
+
+              <div className="swap-input-container">
+                <label>You Receive (Estimated)</label>
+                <div className="field-row">
+                  <input type="text" id="receiveAmount" value={receiveAmount} readOnly />
+                  <span id="tokenReceiveLabel" className="static-token-label">{tokenReceive}</span>
+                </div>
               </div>
-              <div className="detail-line total-divider">
-                <span>Anti-Wash Trading Check:</span>
-                <span className="status-active-text">Active (Daily)</span>
+
+              <div className="swap-fee-details">
+                <div className="detail-line"><span>Trading Fee (0.3%):</span><span id="swapFeeLabel" className="fee-bold-value">{swapFee} {tokenPay}</span></div>
+                <div className="detail-line total-divider"><span>Anti-Wash Trading Check:</span><span className="status-active-text">Active (Daily)</span></div>
               </div>
-            </div>
 
-            <button 
-              className="btn-action" 
-              id="swapBtn" 
-              onClick={isConnected ? handleLaunchSwap : openWalletModal}
-              disabled={isConnected && (!payAmount || parseFloat(payAmount) <= 0 || isSwapLoading)}
-              style={{
-                background: !isConnected 
-                  ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" 
-                  : (payAmount && parseFloat(payAmount) > 0)
-                    ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" 
-                    : "#1f2937", 
-                color: (isConnected && (!payAmount || parseFloat(payAmount) <= 0)) ? "#64748b" : "#ffffff",
-                cursor: "pointer",
-                pointerEvents: "auto"
-              }}
-            >
-              {isSwapLoading 
-                ? 'Processing Secure Swap...' 
-                : !isConnected 
-                  ? 'Connect Wallet' 
-                  : (!payAmount || parseFloat(payAmount) <= 0)
-                    ? 'Enter an Amount' 
-                    : 'Launch Swap'}
-            </button>
-          </div>
-
-          {/* COMPONENT 2: AUTO-COMPOUND YIELD OPTIMIZER */}
-          <div className="product-card">
-            <h3>Yield Optimizer</h3>
-            <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
-            <div className="stat-box">Boosted APY: Up to 49.1%</div>
-            
-            <div className="yield-calc-embed">
-              <h4>Provizto Yield Calculator</h4>
-              <label>Deposit Amount (USDC):</label>
-              <input 
-                type="number" 
-                id="calcAmount" 
-                placeholder="0.0"
-                value={calcAmount === '0' ? '' : calcAmount} 
-                disabled={isVaultLoading}
-                onChange={(e) => setCalcAmount(e.target.value)}
-                onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }}
-              />
-
-              <div className="projection-metrics-list">
-                <p>Daily Rate: <strong>0.11%</strong></p>
-                <p>Est. Profit / Day: <strong id="profitDay" className="profit-green-value">{parseFloat(projection.daily).toLocaleString('en-US')} USDC</strong></p>
-                <p>Est. Profit / Month: <strong id="profitMonth" className="profit-green-value">{parseFloat(projection.monthly).toLocaleString('en-US')} USDC</strong></p>
-                <p>Est. Profit / Year: <strong id="profitYear" className="profit-green-value">{parseFloat(projection.annual).toLocaleString('en-US')} USDC</strong></p>
-              </div>
-            </div>
-
-            <button 
-              className="btn-action" 
-              id="yieldBtn" 
-              onClick={isConnected ? handleDepositVault : openWalletModal}
-              disabled={isConnected && (!calcAmount || parseFloat(calcAmount) <= 0 || isVaultLoading)}
-              style={{
-                background: !isConnected 
-                  ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" 
-                  : (calcAmount && parseFloat(calcAmount) > 0)
-                    ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" 
-                    : "#1f2937", 
-                color: (isConnected && (!calcAmount || parseFloat(calcAmount) <= 0)) ? "#64748b" : "#ffffff",
-                cursor: "pointer",
-                pointerEvents: "auto"
-              }}
-            >
-              {isVaultLoading 
-                ? "Processing Deposit..." 
-                : !isConnected 
-                  ? "Connect Wallet" 
-                  : (!calcAmount || parseFloat(calcAmount) <= 0)
-                    ? "Enter an Amount" 
-                    : "Open Vaults"}
-            </button>
-          </div>
-
-          {/* COMPONENT 3: VZT PROGRAMMED LOCK MODULES */}
-          <div className="product-card">
-            <h3>VZT Lock & Yield</h3>
-            <p className="desc">Lock your $VZT tokens to claim Real Yield paid out in stable USDC.</p>
-
-            <div className="calc-tabs">
-              <button className={`tab-btn ${lockCalculationMode === 'manual' ? 'active' : ''}`} id="tabManual" onClick={() => switchLockCalculationView('manual')}>Instant Lock</button>
-              <button className={`tab-btn ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="tabWizard" onClick={() => switchLockCalculationView('wizard')}>Boosted Lock</button>
-            </div>
-
-            <div className="pool-meta-row">
-              <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
-              <span>Your Balance: <strong id="vztBalance">{vztBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} VZT</strong></span>
-            </div>
-
-            <div className="lock-input-group">
-              <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $VZT to Lock:" : "Enter Capital For Prediction:"}</label>
-              <input 
-                type="number" 
-                id="lockAmount" 
-                placeholder="0.0" 
-                value={lockAmount === '0' ? '' : lockAmount}
-                disabled={isTokenLocked || isLockLoading}
-                onChange={(e) => setLockAmount(e.target.value)}
-                onBlur={() => { if (lockAmount === '') setLockAmount('0'); }}
-              />
-            </div>
-
-            <div className={`wizard-section ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="wizardOptions">
-              <label className="wizard-select-label">Select Lock Duration:</label>
-              <div className="duration-btn-group">
-                <button type="button" className={`btn-duration ${chosenMultiplier === 1 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1)}>30 Days (1x)</button>
-                <button type="button" className={`btn-duration ${chosenMultiplier === 1.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1.5)}>90 Days (1.5x)</button>
-                <button type="button" className={`btn-duration ${chosenMultiplier === 2.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(2.5)}>180 Days (2.5x)</button>
-              </div>
-            </div>
-
-            <div className="score-preview">
-              <span id="scoreLabel">{lockCalculationMode === 'manual' ? "Base Processing Share:" : "Boosted Yield Score:"}</span>
-              <span className="score-value" id="liveScore">{liveScore}</span>
-            </div>
-
-            <div className="reward-info-badge">
-              <span className="badge-accent-line">Reward: Real USDC (7-Day Epoch)</span>
-              {estimatedRewardText && (
-                <span id="accumulationLabel" className="badge-sub-info" style={{ display: 'block' }}>
-                  {estimatedRewardText}
-                </span>
-              )}
-            </div>
-
-            {isTokenLocked && !isLockLoading && showRewardRow && (
-              <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', marginTop: '-10px', marginBottom: '15px' }}>
-                <span>Yield Earned: <strong id="earnedUsdc" style={{ color: '#22c55e' }}>{earnedUsdcDisplay}</strong></span>
-                <button 
-                  className="btn-claim-vzt" 
-                  onClick={claimVztReward}
-                  style={{
-                    opacity: rewardClaimable ? 1 : 0.5,
-                    background: rewardClaimable ? "#22c55e" : "#4b5563",
-                    cursor: rewardClaimable ? "pointer" : "not-allowed",
-                    border: "none", padding: "6px 12px", borderRadius: "6px", color: "white", fontWeight: "600"
-                  }}
-                >
-                  {rewardClaimable ? "Claim Reward" : "🔒 Epoch Locking..."}
-                </button>
-              </div>
-            )}
-
-            <button 
-              className="btn-action" 
-              id="lockBtn" 
-              onClick={isConnected ? handleLockToken : openWalletModal}
-              disabled={isTokenLocked || (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0 || isLockLoading))}
-              style={{
-                background: isTokenLocked
-                  ? "#22c55e" 
-                  : !isConnected 
-                    ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" 
-                    : (lockAmount && parseFloat(lockAmount) > 0)
-                      ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" 
-                      : "#1f2937", 
-                color: isTokenLocked 
-                  ? "#ffffff"
-                  : (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0)) ? "#64748b" : "#ffffff",
-                cursor: isTokenLocked ? "not-allowed" : "pointer",
-                pointerEvents: isTokenLocked ? "none" : "auto"
-              }}
-            >
-              {isLockLoading 
-                ? 'Processing Lock...' 
-                : isTokenLocked 
-                  ? '✓ Token Locked' 
-                  : !isConnected 
-                    ? 'Connect Wallet' 
-                    : (!lockAmount || parseFloat(lockAmount) <= 0)
-                      ? 'Enter an Amount' 
-                      : 'Lock Token'}
-            </button>
-
-            <button 
-              className="btn-action" 
-              id="emergencyUnlockBtn" 
-              onClick={handleEmergencyUnlock}
-              disabled={!isTokenLocked || isLockLoading}
-              style={{
-                marginTop: "12px",
-                width: "100%", padding: "12px", borderRadius: "8px", fontWeight: "600",
-                background: (isTokenLocked && !isLockLoading) ? "#ef4444" : "rgba(239, 68, 68, 0.1)",
-                border: "1px solid rgba(239, 68, 68, 0.4)",
-                color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#ef4444",
-                cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed",
-                pointerEvents: (isTokenLocked && !isLockLoading) ? "auto" : "none"
-              }}
-            >
-              <i className="fas fa-exclamation-triangle" style={{ marginRight: '6px' }}></i> Emergency Early Unlock
-            </button>
-          </div>
-
-        </section>
-
-        {/* COMPONENT 4: SECURE AFFILIATE NETWORK PANEL */}
-        <section className="affiliate-section">
-          <div className="section-title-container">
-            <h3 window-attr="true">Secure On-Chain Affiliate</h3>
-            <span className="shield-badge">🛡️ Anti-Sybil Active</span>
-          </div>
-          <p>Share your unique link. The system restricts repetitive transactional manipulation (max 1 tx/10s).</p>
-               
-          <div className="affiliate-box">
-            <input type="text" id="refLink" value={isConnected ? `https://provizto.hub/?ref=${myWalletAddress}` : "https://provizto.hub?ref="} readOnly />
-            
-            <button 
-              className="btn-copy" 
-              id="copyBtn" 
-              onClick={copyLink}
-              style={{
-                background: isConnected ? "#14b8a6" : "linear-gradient(135deg, #8b5cf6, #3b82f6)",
-                color: "#ffffff",
-                cursor: "pointer",
-                pointerEvents: "auto",
-                opacity: 1,
-                transition: "all 0.3s ease-in-out"
-              }}
-            >
-              {isConnected ? "Copy Link" : "Connect"}
-            </button>
-          </div>
-
-          <div className="test-panel">
-            <label htmlFor="testReferrer">Referral Address (On-Chain Verification):</label>
-            <div className="input-group">
-              <input 
-                type="text" 
-                id="testReferrer" 
-                placeholder="Enter referrer wallet address..." 
-                value={referrerInput}
-                onChange={(e) => setReferrerInput(e.target.value)}
-              />
-              <button 
-                className="btn-test" 
-                id="testBtn" 
-                onClick={verifyReferralOnChain}
-                disabled={!isConnected}
-                style={{
-                  cursor: isConnected ? "pointer" : "not-allowed",
-                  pointerEvents: isConnected ? "auto" : "none"
-                }}
-              >
-                Verify Link
+              <button className="btn-action" id="swapBtn" onClick={isConnected ? handleLaunchSwap : openWalletModal} disabled={isConnected && (!payAmount || parseFloat(payAmount) <= 0 || isSwapLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (payAmount && parseFloat(payAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!payAmount || parseFloat(payAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
+                {isSwapLoading ? 'Processing Secure Swap...' : !isConnected ? 'Connect Wallet' : (!payAmount || parseFloat(payAmount) <= 0) ? 'Enter an Amount' : 'Launch Swap'}
               </button>
             </div>
-          </div>
+          )}
 
-          <div className="tier-table-wrapper">
-            <p className="tier-headline">Ecosystem Tier Structures:</p>
-            <div className="responsive-table-overflow">
-              <table className="tier-data-table">
-                <thead>
-                  <tr>
-                    <th>Tier Level</th>
-                    <th>Volume Target</th>
-                    <th>USDC Reward</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="row-bordered">
-                    <td className="tier-bronze">Bronze Tier</td>
-                    <td className="target-grey">$0 - $10,000</td>
-                    <td className="rate-white">10%</td>
-                  </tr>
-                  <tr className="row-bordered">
-                    <td className="tier-silver">Silver Tier</td>
-                    <td className="target-grey">$10,001 - $100,000</td>
-                    <td className="rate-white">18%</td>
-                  </tr>
-                  <tr>
-                    <td className="tier-gold">Gold Tier</td>
-                    <td className="target-grey">&gt; $100,000</td>
-                    <td className="rate-white">25%</td>
-                  </tr>
-                </tbody>
-              </table>
+          {/* MODUL 2: OPTIMIZER */}
+          {SHOW_OPTIMIZER && (
+            <div className="product-card">
+              <h3>Yield Optimizer</h3>
+              <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
+              <div className="stat-box">Boosted APY: Up to 49.1%</div>
+              
+              <div className="yield-calc-embed">
+                <h4>Provizto Yield Calculator</h4>
+                <label>Deposit Amount (USDC):</label>
+                <input type="number" id="calcAmount" placeholder="0.0" value={calcAmount === '0' ? '' : calcAmount} disabled={isVaultLoading} onChange={(e) => setCalcAmount(e.target.value)} onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }} />
+                <div className="projection-metrics-list">
+                  <p>Daily Rate: <strong>0.11%</strong></p>
+                  <p>Est. Profit / Day: <strong id="profitDay" className="profit-green-value">{parseFloat(projection.daily).toLocaleString('en-US')} USDC</strong></p>
+                  <p>Est. Profit / Month: <strong id="profitMonth" className="profit-green-value">{parseFloat(projection.monthly).toLocaleString('en-US')} USDC</strong></p>
+                  <p>Est. Profit / Year: <strong id="profitYear" className="profit-green-value">{parseFloat(projection.annual).toLocaleString('en-US')} USDC</strong></p>
+                </div>
+              </div>
+
+              <button className="btn-action" id="yieldBtn" onClick={isConnected ? handleDepositVault : openWalletModal} disabled={isConnected && (!calcAmount || parseFloat(calcAmount) <= 0 || isVaultLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (calcAmount && parseFloat(calcAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!calcAmount || parseFloat(calcAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
+                {isVaultLoading ? "Processing Deposit..." : !isConnected ? "Connect Wallet" : (!calcAmount || parseFloat(calcAmount) <= 0) ? "Enter an Amount" : "Open Vaults"}
+              </button>
             </div>
-          </div>
+          )}
 
-          <div className="tier-stats">
-            <div className="tier-item">Current Tier: <span id="tierLabel" style={{ color: tierColor }}>{tierLabel}</span></div>
-            <div className="tier-item">Total Referral Volume: <span id="volLabel">{referralVolume}</span></div>
-          </div>
+          {/* MODUL 3: LOCKER */}
+          {SHOW_LOCKER && (
+            <div className="product-card">
+              <h3>VZT Lock & Yield</h3>
+              <p className="desc">Lock your $VZT tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
+
+              <div className="calc-tabs">
+                <button className={`tab-btn ${lockCalculationMode === 'manual' ? 'active' : ''}`} id="tabManual" onClick={() => switchLockCalculationView('manual')}>Instant Lock</button>
+                <button className={`tab-btn ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="tabWizard" onClick={() => switchLockCalculationView('wizard')}>Boosted Lock</button>
+              </div>
+
+              <div className="pool-meta-row">
+                <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
+                <span>Your Balance: <strong id="vztBalance">{vztBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} VZT</strong></span>
+              </div>
+
+              <div className="lock-input-group">
+                <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $VZT to Lock:" : "Enter Capital For Prediction:"}</label>
+                <input type="number" id="lockAmount" placeholder="0.0" value={lockAmount === '0' ? '' : lockAmount} disabled={isTokenLocked || isLockLoading} onChange={(e) => setLockAmount(e.target.value)} onBlur={() => { if (lockAmount === '') setLockAmount('0'); }} />
+              </div>
+
+              <div className={`wizard-section ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="wizardOptions">
+                <label className="wizard-select-label">Select Lock Duration:</label>
+                <div className="duration-btn-group">
+                  <button type="button" className={`btn-duration ${chosenMultiplier === 1 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1)}>30 Days (1x)</button>
+                  <button type="button" className={`btn-duration ${chosenMultiplier === 1.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1.5)}>90 Days (1.5x)</button>
+                  <button type="button" className={`btn-duration ${chosenMultiplier === 2.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(2.5)}>180 Days (2.5x)</button>
+                </div>
+              </div>
+
+              <div className="score-preview">
+                <span>{lockCalculationMode === 'manual' ? "Base Processing Share:" : "Boosted Yield Score:"}</span>
+                <span className="score-value" id="liveScore">{liveScore}</span>
+              </div>
+
+              <div className="reward-info-badge">
+                <span className="badge-accent-line">Reward: Real USDC (7-Day Epoch)</span>
+                {estimatedRewardText && <span id="accumulationLabel" className="badge-sub-info" style={{ display: 'block' }}>{estimatedRewardText}</span>}
+              </div>
+
+              {isTokenLocked && !isLockLoading && showRewardRow && (
+                <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', marginTop: '-10px', marginBottom: '15px' }}>
+                  <span>Yield Earned: <strong id="earnedUsdc" style={{ color: '#22c55e' }}>{earnedUsdcDisplay}</strong></span>
+                  <button className="btn-claim-vzt" onClick={claimVztReward} style={{ opacity: rewardClaimable ? 1 : 0.5, background: rewardClaimable ? "#22c55e" : "#4b5563", cursor: rewardClaimable ? "pointer" : "not-allowed", border: "none", padding: "6px 12px", borderRadius: "6px", color: "white", fontWeight: "600" }}>
+                    {rewardClaimable ? "Claim Reward" : "🔒 Epoch Locking..."}
+                  </button>
+                </div>
+              )}
+
+              <button className="btn-action" id="lockBtn" onClick={isConnected ? handleLockToken : openWalletModal} disabled={isTokenLocked || (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0 || isLockLoading))} style={{ background: isTokenLocked ? "#22c55e" : !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (lockAmount && parseFloat(lockAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: isTokenLocked ? "#ffffff" : (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: isTokenLocked ? "not-allowed" : "pointer", pointerEvents: isTokenLocked ? "none" : "auto" }}>
+                {isLockLoading ? 'Processing Lock...' : isTokenLocked ? '✓ Token Locked' : !isConnected ? 'Connect Wallet' : (!lockAmount || parseFloat(lockAmount) <= 0) ? 'Enter an Amount' : 'Lock Token'}
+              </button>
+
+              <button className="btn-action" id="emergencyUnlockBtn" onClick={handleEmergencyUnlock} disabled={!isTokenLocked || isLockLoading} style={{ marginTop: "12px", width: "100%", padding: "12px", borderRadius: "8px", fontWeight: "600", background: (isTokenLocked && !isLockLoading) ? "#ef4444" : "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.4)", color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#ef4444", cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", pointerEvents: (isTokenLocked && !isLockLoading) ? "auto" : "none" }}>
+                <i className="fas fa-exclamation-triangle" style={{ marginRight: '6px' }}></i> Emergency Early Unlock (10% Penalty)
+              </button>
+            </div>
+          )}
         </section>
+
+        {/* MODUL 4: AFFILIATE / REFERRAL */}
+        {SHOW_AFFILIATE && (
+          <section className="affiliate-section">
+            <div className="section-title-container">
+              <h3>Secure On-Chain Affiliate</h3>
+              <span className="shield-badge">🛡️ Anti-Sybil Active</span>
+            </div>
+            <p>Share your unique link. The system restricts repetitive transactional manipulation (max 1 tx/10s).</p>
+                 
+            <div className="affiliate-box">
+              <input type="text" id="refLink" value={isConnected ? `https://provizto-dapp.vercel.app?ref=${myWalletAddress}` : "https://provizto-dapp.vercel.app?ref="} readOnly />
+              <button className="btn-copy" id="copyBtn" onClick={copyLink} style={{ background: isConnected ? "#14b8a6" : "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#ffffff", cursor: "pointer", pointerEvents: "auto", opacity: 1, transition: "all 0.3s ease-in-out" }}>
+                {isConnected ? "Copy Link" : "Connect"}
+              </button>
+            </div>
+
+            <div className="test-panel">
+              <label htmlFor="testReferrer">Referral Address (On-Chain Verification):</label>
+              <div className="input-group">
+                <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} />
+                <button className="btn-test" id="testBtn" onClick={verifyReferralOnChain} disabled={!isConnected} style={{ cursor: isConnected ? "pointer" : "not-allowed", pointerEvents: isConnected ? "auto" : "none" }}>Verify Link</button>
+              </div>
+            </div>
+
+            <div className="tier-table-wrapper">
+              <p className="tier-headline">Ecosystem Tier Structures:</p>
+              <div className="responsive-table-overflow">
+                <table className="tier-data-table">
+                  <thead><tr><th>Tier Level</th><th>Volume Target</th><th>USDC Reward</th></tr></thead>
+                  <tbody>
+                    <tr className="row-bordered"><td className="tier-bronze">Bronze Tier</td><td className="target-grey">$0 - $10,000</td><td className="rate-white">10%</td></tr>
+                    <tr className="row-bordered"><td className="tier-silver">Silver Tier</td><td className="target-grey">$10,001 - $100,000</td><td className="rate-white">18%</td></tr>
+                    <tr><td className="tier-gold">Gold Tier</td><td className="target-grey">&gt; $100,000</td><td className="rate-white">25%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="tier-stats">
+              <div className="tier-item">Current Tier: <span id="tierLabel" style={{ color: tierColor }}>{tierLabel}</span></div>
+              <div className="tier-item">Total Referral Volume: <span id="volLabel">{referralVolume}</span></div>
+            </div>
+          </section>
+        )}
       </main>
 
-      {/* FOOTER MATRIX */}
       <footer className="dapp-footer">
-        <p>© {new Date().getFullYear()} Provizto Protocol & dApp Hub. All Rights Reserved. Secure Protocol Edition</p>
+        <p>© 2026 Provizto Protocol & dApp Hub. All Rights Reserved. Secure Protocol Edition</p>
         <div className="footer-links-row" style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '10px' }}>
           <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer">Documentation</a>
-          <a href="#audit" onClick={() => alert('Security Audits:\n\nProvizto smart contracts are currently undergoing strict internal optimization and scheduled for a formal third-party review prior to public token launch.')}>Security Audit 🛡️</a>
-          
-          {/* INTEGRASI: Link manual untuk memicu tampilan Syarat & Disclaimer Hukum */}
-          <a href="#disclaimer" onClick={() => alert('Regulatory Disclaimer:\n\nProvizto is a non-custodial decentralized application. Citizens or residents of the USA and OFAC-sanctioned countries are restricted from participating in the token lock pools.')}>Legal Disclaimer</a>
+          <a href="#audit" onClick={() => alert('Security Audits underway.')}>Security Audit 🛡️</a>
+          <a href="#disclaimer" onClick={() => alert('Non-custodial application.')}>Legal Disclaimer</a>
         </div>
       </footer>
     </>
