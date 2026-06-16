@@ -67,7 +67,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
   ];
 
   const faqData = [
-    { q: "What is Zoniq Finance?", a: "Zoniq Finance is a premium Web3 infrastructure provider offering turnkey, plug-and-play white-label DeFi dApps on the Solana blockchain. We empower project owners and developers to launch comprehensive utility suites instantly without writing code from scratch." },
+    { q: "What is ZoniqFi?", a: "ZoniqFi is a premium Web3 infrastructure provider offering turnkey, plug-and-play white-label DeFi dApps on the Solana blockchain. We empower project owners and developers to launch comprehensive utility suites instantly without writing code from scratch." },
     { q: "How does the White-Label licensing model work?", a: "Once you purchase a package, our team handles all frontend customization (logos, token tickers, brand colors, smart contract links) and deploys the fully functional dApp directly to your project's custom domain or subdomain." },
     { q: "Do I need to deploy expensive native smart contracts?", a: "Not necessarily. Our infrastructure is designed with a multi-tenant architecture. You can opt to plug directly into our pre-deployed, highly optimized Mainnet programs to bypass costly Solana rent-exempt storage fees while keeping your frontend completely branded." },
     { q: "Is this infrastructure protected against automated exploits?", a: "Absolutely. The Swap module is equipped with MEV Secure protocols via Jito Engine to shield retail traders from malicious sandwich attacks. Additionally, the Affiliate ledger features strict Anti-Sybil cooldown rules to prevent multi-wallet referral manipulation." },
@@ -208,9 +208,9 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         }
       `}</style>
 
-      {/* NAVBAR HEADER */}
+      {/* NAVBAR HEADER — REBRANDED TO ZONIQFI */}
       <header>
-        <div className="logo">ZONIQ FINANCE</div>
+        <div className="logo">ZONIQFI</div>
         <nav>
           <a href="#pricing">Packages</a>
           <a href="#faq">FAQ</a>
@@ -277,7 +277,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
 
       {/* FOOTER */}
       <footer>
-        <p>© 2026 Zoniq Finance. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.</p>
+        <p>© 2026 ZoniqFi. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.</p>
       </footer>
     </div>
   );

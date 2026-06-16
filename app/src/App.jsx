@@ -230,19 +230,20 @@ function App() {
       const vaultShare = (currentFee * 0.40).toFixed(5);
       const poolShare = (currentFee * 0.30).toFixed(5);
       const affiliateShare = (currentFee * 0.15).toFixed(5);
-      const devShare = (currentFee * 0.15).toFixed(5);
+      const projectTreasuryShare = (currentFee * 0.15).toFixed(5);
 
       setSwapsCount(prev => prev + 1);
 
+      // KODE DIOPTIMALKAN UNTUK KUALITAS DEMO B2B SESUAI IMAGE_F86AEE.PNG
       setTxLog(
         `[SWAP SUCCESS] | Program: ${PROGRAM_ID}\n` +
         `Swapped: ${amount} ${tokenPay} ➜ ${receiveAmount} ${tokenReceive}\n` +
         `Protocol Fee (0.3%): ${swapFee} ${tokenPay}\n\n` +
         `[DISTRIBUTION LOG]\n` +
         `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
-        `• 30% to Liquidity Provision Pool: ${poolShare} ${tokenPay}\n` +
+        `• 30% to VZT Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
         `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
-        `• 15% to Dev & Infrastructure Operations: ${devShare} ${tokenPay}\n`
+        `• 15% to Project Treasury Operations: ${projectTreasuryShare} ${tokenPay}\n`
       );
 
       if (tokenReceive === 'VZT') {
@@ -419,7 +420,7 @@ function App() {
       triggerBanner("⚠️ Please connect your wallet first!", "warning");
       return;
     }
-    const generatedUrl = `https://provizto-dapp.vercel.app?ref=${myWalletAddress}`;
+    const generatedUrl = `https://zoniqfinance.com?ref=${myWalletAddress}`;
     navigator.clipboard.writeText(generatedUrl).then(() => triggerBanner("📋 Copied!", "success"));
   };
 
@@ -473,9 +474,10 @@ function App() {
         </div>
       )}
 
+      {/* HEADER UTAMA: BRAND SUDAH BERGANTI JADI ZONIQFI */}
       <header className="dapp-header">
         <div className="header-left">
-          <div className="logo">PROVIZTO <span className="vzt-badge">$VZT</span></div>
+          <div className="logo">ZONIQFI <span className="vzt-badge">$VZT</span></div>
         </div>
         <div className="header-right">
           <button onClick={() => setView('landing')} className="btn-home" style={{ background: 'transparent', border: '1px solid #1f2937', color: '#f3f4f6', cursor: 'pointer', padding: '8px 16px', borderRadius: '6px', marginRight: '10px', fontWeight: '600' }}>Back to Home</button>
@@ -517,7 +519,7 @@ function App() {
           </div>
         )}
 
-        {/* UTAMA: GRID MEMUAT LOGIKA SAKLAR TOGGLE */}
+        {/* GRID UTAMA PENYARING SAKLAR */}
         <section className="products-grid">
           
           {/* MODUL 1: SWAP */}
@@ -568,7 +570,7 @@ function App() {
               <div className="stat-box">Boosted APY: Up to 49.1%</div>
               
               <div className="yield-calc-embed">
-                <h4>Provizto Yield Calculator</h4>
+                <h4>ZoniqFi Yield Calculator</h4>
                 <label>Deposit Amount (USDC):</label>
                 <input type="number" id="calcAmount" placeholder="0.0" value={calcAmount === '0' ? '' : calcAmount} disabled={isVaultLoading} onChange={(e) => setCalcAmount(e.target.value)} onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }} />
                 <div className="projection-metrics-list">
@@ -655,7 +657,7 @@ function App() {
             <p>Share your unique link. The system restricts repetitive transactional manipulation (max 1 tx/10s).</p>
                  
             <div className="affiliate-box">
-              <input type="text" id="refLink" value={isConnected ? `https://provizto-dapp.vercel.app?ref=${myWalletAddress}` : "https://provizto-dapp.vercel.app?ref="} readOnly />
+              <input type="text" id="refLink" value={isConnected ? `https://zoniqfinance.com?ref=${myWalletAddress}` : "https://zoniqfinance.com?ref="} readOnly />
               <button className="btn-copy" id="copyBtn" onClick={copyLink} style={{ background: isConnected ? "#14b8a6" : "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#ffffff", cursor: "pointer", pointerEvents: "auto", opacity: 1, transition: "all 0.3s ease-in-out" }}>
                 {isConnected ? "Copy Link" : "Connect"}
               </button>
@@ -692,7 +694,7 @@ function App() {
       </main>
 
       <footer className="dapp-footer">
-        <p>© 2026 Provizto Protocol & dApp Hub. All Rights Reserved. Secure Protocol Edition</p>
+        <p>© 2026 ZoniqFi Hub. All Rights Reserved. Secure White-Label Protocol Template</p>
         <div className="footer-links-row" style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '10px' }}>
           <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer">Documentation</a>
           <a href="#audit" onClick={() => alert('Security Audits underway.')}>Security Audit 🛡️</a>
