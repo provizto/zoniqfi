@@ -32,7 +32,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       desc: "Perfect for micro-cap meme coins requiring instant viral traction and rapid trading volume acceleration.",
       features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Anti-Sybil Engine Active", "Custom Brand UI/UX Tailoring", "Supports Phantom, Solflare, & Backpack"],
       price: "$499",
-      demoLink: "https://entry.zoniqfinance.com/dashboard?pkg=entry" // Tembak langsung sub-domain + parameter entry
+      demoLink: "https://entry.zoniqfinance.com/?pkg=entry" // HAPUS /dashboard, GANTI JADI /?pkg=entry
     },
     {
       name: "Token Velocity (3-in-1)",
@@ -40,35 +40,35 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate System", "Custom Brand UI/UX & Live Deployment", "Lifetime Core Updates & Bug Fixes"],
       price: "$1,299",
       popular: true,
-      demoLink: "https://velocity.zoniqfinance.com/dashboard?pkg=velocity" // Tembak langsung sub-domain + parameter velocity
+      demoLink: "https://velocity.zoniqfinance.com/?pkg=velocity" // GANTI JADI /?pkg=velocity
     },
     {
       name: "Whale Retention Suite",
       desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
       features: ["VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
       price: "$1,199",
-      demoLink: "https://whale.zoniqfinance.com/dashboard?pkg=whale" // Tembak langsung sub-domain + parameter whale
+      demoLink: "https://whale.zoniqfinance.com/?pkg=whale" // GANTI JADI /?pkg=whale
     },
     {
       name: "Safe Staking Hub",
       desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
       features: ["Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
       price: "$1,099",
-      demoLink: "https://staking.zoniqfinance.com/dashboard?pkg=staking" // Tembak langsung sub-domain + parameter staking
+      demoLink: "https://staking.zoniqfinance.com/?pkg=staking" // GANTI JADI /?pkg=staking
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
       desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
       price: "$2,499",
-      demoLink: "https://zoniqfinance.com/dashboard" // Mengarah ke versi penuh default tanpa memotong fitur
+      demoLink: "https://zoniqfinance.com" // Kembalikan ke link utama langsung tanpa /dashboard
     },
     {
       name: "Ecosystem Hub / Custom Edition",
       desc: "Advanced custom on-chain infrastructure tailored to complex institutional protocol requirements.",
       features: ["Full 4-in-1 Complete Modular Feature Set", "Custom Tokenomics & Fee Allocation Routing", "Multi-Asset Smart Contract Settlement", "Advanced Proprietary Anti-Bot Mechanics", "Private On-Chain Infrastructure Consultation"],
       price: "Contact Us",
-      demoLink: "https://zoniqfinance.com/dashboard"
+      demoLink: "https://zoniqfinance.com"
     }
   ];
 
