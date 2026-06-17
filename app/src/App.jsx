@@ -4,21 +4,13 @@ import ComplianceModal from './components/ComplianceModal';
 import './App.css';
 
 // ==========================================================================
-// INTEGRASI KECERDASAN DETEKSI SUBDOMAIN (AUTOMATIC MULTI-PACKAGE LAYOUT)
+// CONFIGURATION SAKLAR PAKET (WHITE-LABEL CONFIG CONTROL)
 // ==========================================================================
-// Mengambil data URL yang sedang diakses pengguna saat ini secara real-time
-const currentHostname = typeof window !== 'undefined' ? window.location.hostname : '';
-
-const isEntry = currentHostname.includes('entry');
-const isVelocity = currentHostname.includes('velocity');
-const isWhale = currentHostname.includes('whale');
-const isStaking = currentHostname.includes('staking');
-
-// SAKLAR OTOMATIS: Memotong visibilitas modul dApp berdasarkan teks subdomain aktif
-const SHOW_SWAP = !isWhale && !isStaking && import.meta.env.VITE_ENABLE_SWAP !== 'false';
-const SHOW_OPTIMIZER = (isVelocity || isStaking || (!isEntry && !isWhale)) && import.meta.env.VITE_ENABLE_OPTIMIZER !== 'false';
-const SHOW_LOCKER = (isWhale || isStaking || (!isEntry && !isVelocity)) && import.meta.env.VITE_ENABLE_LOCKER !== 'false';
-const SHOW_AFFILIATE = !isStaking && import.meta.env.VITE_ENABLE_AFFILIATE !== 'false';
+// Atur visibilitas modular dari Vercel Environment Variables. Default: true (Paket Ultimate)
+const SHOW_SWAP = import.meta.env.VITE_ENABLE_SWAP !== 'false';
+const SHOW_OPTIMIZER = import.meta.env.VITE_ENABLE_OPTIMIZER !== 'false';
+const SHOW_LOCKER = import.meta.env.VITE_ENABLE_LOCKER !== 'false';
+const SHOW_AFFILIATE = import.meta.env.VITE_ENABLE_AFFILIATE !== 'false';
 
 const PROGRAM_ID = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD";
 const SOLANA_NETWORK = "devnet"; 
@@ -242,13 +234,14 @@ function App() {
 
       setSwapsCount(prev => prev + 1);
 
+      // KODE DIOPTIMALKAN UNTUK KUALITAS DEMO B2B SESUAI IMAGE_F86AEE.PNG
       setTxLog(
         `[SWAP SUCCESS] | Program: ${PROGRAM_ID}\n` +
         `Swapped: ${amount} ${tokenPay} ➜ ${receiveAmount} ${tokenReceive}\n` +
         `Protocol Fee (0.3%): ${swapFee} ${tokenPay}\n\n` +
         `[DISTRIBUTION LOG]\n` +
         `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
-        `• 30% to Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
+        `• 30% to VZT Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
         `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
         `• 15% to Project Treasury Operations: ${projectTreasuryShare} ${tokenPay}\n`
       );
@@ -481,6 +474,7 @@ function App() {
         </div>
       )}
 
+      {/* HEADER UTAMA: BRAND SUDAH BERGANTI JADI ZONIQFI */}
       <header className="dapp-header">
         <div className="header-left">
           <div className="logo">ZONIQFI <span className="vzt-badge">$VZT</span></div>
@@ -525,6 +519,7 @@ function App() {
           </div>
         )}
 
+        {/* GRID UTAMA PENYARING SAKLAR */}
         <section className="products-grid">
           
           {/* MODUL 1: SWAP */}
