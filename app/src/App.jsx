@@ -6,7 +6,7 @@ import './App.css';
 // ==========================================================================
 // INTEGRASI KECERDASAN DETEKSI SUBDOMAIN (AUTOMATIC MULTI-PACKAGE LAYOUT)
 // ==========================================================================
-// Sistem secara otomatis mendeteksi URL subdomain aktif untuk menyaring modul dApp
+// Mengambil data URL yang sedang diakses pengguna saat ini secara real-time
 const currentHostname = typeof window !== 'undefined' ? window.location.hostname : '';
 
 const isEntry = currentHostname.includes('entry');
@@ -14,7 +14,7 @@ const isVelocity = currentHostname.includes('velocity');
 const isWhale = currentHostname.includes('whale');
 const isStaking = currentHostname.includes('staking');
 
-// Logika pemotongan modul otomatis sesuai paket lisensi tanpa merusak default Ultimate 4-in-1
+// SAKLAR OTOMATIS: Memotong visibilitas modul dApp berdasarkan teks subdomain aktif
 const SHOW_SWAP = !isWhale && !isStaking && import.meta.env.VITE_ENABLE_SWAP !== 'false';
 const SHOW_OPTIMIZER = (isVelocity || isStaking || (!isEntry && !isWhale)) && import.meta.env.VITE_ENABLE_OPTIMIZER !== 'false';
 const SHOW_LOCKER = (isWhale || isStaking || (!isEntry && !isVelocity)) && import.meta.env.VITE_ENABLE_LOCKER !== 'false';
