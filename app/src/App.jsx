@@ -4,13 +4,17 @@ import ComplianceModal from './components/ComplianceModal';
 import './App.css';
 
 // ==========================================================================
-// CONFIGURATION SAKLAR PAKET (WHITE-LABEL CONFIG CONTROL)
+// KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
 // ==========================================================================
-// Atur visibilitas modular dari Vercel Environment Variables. Default: true (Paket Ultimate)
-const SHOW_SWAP = import.meta.env.VITE_ENABLE_SWAP !== 'false';
-const SHOW_OPTIMIZER = import.meta.env.VITE_ENABLE_OPTIMIZER !== 'false';
-const SHOW_LOCKER = import.meta.env.VITE_ENABLE_LOCKER !== 'false';
-const SHOW_AFFILIATE = import.meta.env.VITE_ENABLE_AFFILIATE !== 'false';
+// Membaca kode ?pkg= dari link yang diklik pembeli di Landing Page
+const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+const activePackage = urlParams ? urlParams.get('pkg') : null;
+
+// Mengatur otomatis fitur paket yang hidup/mati berdasarkan nama paket di link
+const SHOW_SWAP = activePackage !== 'whale' && activePackage !== 'staking';
+const SHOW_OPTIMIZER = activePackage === 'velocity' || activePackage === 'staking' || !activePackage;
+const SHOW_LOCKER = activePackage === 'whale' || activePackage === 'staking' || !activePackage;
+const SHOW_AFFILIATE = activePackage !== 'staking';
 
 const PROGRAM_ID = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD";
 const SOLANA_NETWORK = "devnet"; 
