@@ -40,7 +40,7 @@ const ComplianceModal = () => {
           letterSpacing: '0.05em', borderBottom: '1px solid #27272a',
           paddingBottom: '12px', margin: '0 0 16px 0'
         }}>
-          PROVIZTO | TERMS & REGULATORY COMPLIANCE
+          ZONIQFI | TERMS & REGULATORY COMPLIANCE
         </h2>
         
         {/* Konten Hukum */}
