@@ -26,6 +26,15 @@ const TOKEN_PRICES = { SOL: 170.00, USDT: 1.00, USDC: 1.00, WSOL: 170.00, VZT: 0
 
 function App() {
   const [view, setView] = useState('landing'); 
+  // LOGIKA AUTO-BYPASS: Jika ada parameter paket (?pkg=), otomatis langsung tampilkan dashboard dApp
+  useEffect(() => {
+    const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const activePackage = urlParams ? urlParams.get('pkg') : null;
+    
+    if (activePackage) {
+      setView('dashboard'); // Otomatis lompat masuk ke dashboard tanpa lewat tombol landing!
+    }
+  }, []);
 
   const [isConnected, setIsConnected] = useState(false);
   const [myWalletAddress, setMyWalletAddress] = useState("");
