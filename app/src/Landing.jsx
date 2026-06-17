@@ -6,7 +6,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
   // Automatically inject FontAwesome and Google Fonts directly into the DOM Head upon component mount
   useEffect(() => {
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
 
@@ -32,7 +32,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       desc: "Perfect for micro-cap meme coins requiring instant viral traction and rapid trading volume acceleration.",
       features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Anti-Sybil Engine Active", "Custom Brand UI/UX Tailoring", "Supports Phantom, Solflare, & Backpack"],
       price: "$499",
-      demoLink: "https://entry.zoniqfinance.com" // Sub-domain demo paket 1
+      demoLink: "https://entry.zoniqfinance.com/dashboard?pkg=entry" // Tembak langsung sub-domain + parameter entry
     },
     {
       name: "Token Velocity (3-in-1)",
@@ -40,35 +40,35 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate System", "Custom Brand UI/UX & Live Deployment", "Lifetime Core Updates & Bug Fixes"],
       price: "$1,299",
       popular: true,
-      demoLink: "https://velocity.zoniqfinance.com" // Sub-domain demo paket 2
+      demoLink: "https://velocity.zoniqfinance.com/dashboard?pkg=velocity" // Tembak langsung sub-domain + parameter velocity
     },
     {
       name: "Whale Retention Suite",
       desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
       features: ["VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
       price: "$1,199",
-      demoLink: "https://whale.zoniqfinance.com" // Sub-domain demo paket 3
+      demoLink: "https://whale.zoniqfinance.com/dashboard?pkg=whale" // Tembak langsung sub-domain + parameter whale
     },
     {
       name: "Safe Staking Hub",
       desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
       features: ["Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
       price: "$1,099",
-      demoLink: "https://staking.zoniqfinance.com" // Sub-domain demo paket 4
+      demoLink: "https://staking.zoniqfinance.com/dashboard?pkg=staking" // Tembak langsung sub-domain + parameter staking
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
       desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
       price: "$2,499",
-      demoLink: "https://zoniqfinance.com" // Mengarah ke link utama yang memuat versi penuh default
+      demoLink: "https://zoniqfinance.com/dashboard" // Mengarah ke versi penuh default tanpa memotong fitur
     },
     {
       name: "Ecosystem Hub / Custom Edition",
       desc: "Advanced custom on-chain infrastructure tailored to complex institutional protocol requirements.",
       features: ["Full 4-in-1 Complete Modular Feature Set", "Custom Tokenomics & Fee Allocation Routing", "Multi-Asset Smart Contract Settlement", "Advanced Proprietary Anti-Bot Mechanics", "Private On-Chain Infrastructure Consultation"],
       price: "Contact Us",
-      demoLink: "https://zoniqfinance.com"
+      demoLink: "https://zoniqfinance.com/dashboard"
     }
   ];
 
@@ -142,11 +142,12 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           text-align: center !important;
           background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%) !important;
         }
+        /* PERBAIKAN CRISP LINE-HEIGHT SUPAYA TIDAK TABRAKAN SEPERTI DI IMAGE_536FCD.PNG */
         #vzt-landing-page .hero h1 {
           font-size: 3.2rem !important;
           font-weight: 800 !important;
-          line-height: 1.2 !important;
-          margin-bottom: 20px !important;
+          line-height: 1.3 !important;
+          margin-bottom: 24px !important;
           background: linear-gradient(90deg, #fff 40%, #14b8a6) !important;
           -webkit-background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
@@ -156,6 +157,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           color: #94a3b8 !important;
           max-width: 800px !important;
           margin: 0 auto !important;
+          line-height: 1.6 !important;
         }
         #vzt-landing-page .pricing-section { padding: 80px 8% !important; }
         #vzt-landing-page .pricing-grid {
@@ -184,13 +186,12 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           padding: 4px 12px !important; border-radius: 20px !important;
         }
         #vzt-landing-page .package-name { font-size: 1.4rem !important; font-weight: 700 !important; color: #fff !important; margin: 0 0 10px 0 !important; }
-        #vzt-landing-page .package-desc { font-size: 0.9rem !important; color: #94a3b8 !important; min-height: 45px !important; margin-bottom: 25px !important; }
+        #vzt-landing-page .package-desc { font-size: 0.9rem !important; color: #94a3b8 !important; min-height: 45px !important; margin-bottom: 25px !important; line-height: 1.5 !important; }
         #vzt-landing-page .package-price { font-size: 2.2rem !important; font-weight: 800 !important; color: #14b8a6 !important; margin-bottom: 25px !important; }
         #vzt-landing-page .features-list { list-style: none !important; padding: 0 !important; margin: 0 0 25px 0 !important; }
-        #vzt-landing-page .features-list li { font-size: 0.9rem !important; color: #d1d5db !important; margin-bottom: 12px !important; display: flex !important; align-items: center !important; gap: 10px !important; }
+        #vzt-landing-page .features-list li { font-size: 0.9rem !important; color: #d1d5db !important; margin-bottom: 12px !important; display: flex !important; align-items: center !important; gap: 10px !important; text-align: left !important; }
         #vzt-landing-page .features-list i { color: #14b8a6 !important; }
         
-        /* CLASS BARU UNTUK TOMBOL TEST LIVE DEMO MODULAR */
         #vzt-landing-page .btn-demo-link {
           background: transparent !important; color: #94a3b8 !important;
           text-align: center !important; padding: 10px !important;
@@ -214,15 +215,22 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         #vzt-landing-page .btn-order:hover { background: #374151 !important; }
         #vzt-landing-page .pricing-card.popular-card .btn-order:hover { opacity: 0.9 !important; }
         #vzt-landing-page .faq-section { padding: 60px 8% 80px 8% !important; max-width: 900px !important; margin: 0 auto !important; }
+        #vzt-landing-page .faq-section .section-title { text-align: center !important; }
+        #vzt-landing-page .faq-section .section-desc { text-align: center !important; margin-bottom: 30px !important; }
         #vzt-landing-page .faq-item { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 8px !important; margin-bottom: 15px !important; overflow: hidden !important; }
         #vzt-landing-page .faq-question { padding: 20px !important; font-weight: 600 !important; cursor: pointer !important; display: flex !important; justify-content: space-between !important; align-items: center; color: #fff !important; }
-        #vzt-landing-page .faq-answer { padding: 0 20px !important; max-height: 0px; overflow: hidden !important; transition: max-height 0.3s ease, padding 0.3s ease !important; color: #94a3b8 !important; line-height: 1.6 !important; font-size: 0.95rem !important; }
+        #vzt-landing-page .faq-answer { padding: 0 20px !important; max-height: 0px; overflow: hidden !important; transition: max-height 0.3s ease, padding 0.3s ease !important; color: #94a3b8 !important; line-height: 1.6 !important; font-size: 0.95rem !important; text-align: left !important; }
         #vzt-landing-page footer { border-top: 1px solid #1f2937 !important; padding: 40px 8% !important; display: flex !important; justify-content: space-between !important; align-items: center !important; background: #060911 !important; }
+        
+        .section-title { font-size: 2rem !important; font-weight: 800 !important; color: #ffffff !important; margin-bottom: 10px !important; text-align: center !important; }
+        .section-desc { font-size: 1rem !important; color: #94a3b8 !important; max-width: 600px !important; margin: 0 auto 40px auto !important; text-align: center !important; }
+
         @media (max-width: 1024px) { #vzt-landing-page .pricing-grid { grid-template-columns: repeat(2, 1fr) !important; } }
         @media (max-width: 768px) {
           #vzt-landing-page header { padding: 15px 5% !important; }
           #vzt-landing-page nav { display: none !important; }
-          #vzt-landing-page .hero h1 { font-size: 2.2rem !important; }
+          #vzt-landing-page .hero { padding-top: 140px !important; }
+          #vzt-landing-page .hero h1 { font-size: 2.2rem !important; line-height: 1.3 !important; }
           #vzt-landing-page .pricing-grid { grid-template-columns: 1fr !important; }
           #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; }
         }
@@ -267,7 +275,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
                 </ul>
               </div>
               
-              {/* COMPONENT INTEGRATION: TOMBOL DEMO DISISIPKAN DI SINI */}
+              {/* COMPONENT INTEGRATION: MASING-MASING TOMBOL MEMEGANG LINK SUB-DOMAINNYA SENDIRI */}
               <div>
                 <a href={pkg.demoLink} target="_blank" rel="noopener noreferrer" className="btn-demo-link">
                   <i className="fas fa-bolt" style={{ marginRight: '6px' }}></i> Try Live Demo
