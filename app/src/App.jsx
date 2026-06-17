@@ -4,13 +4,21 @@ import ComplianceModal from './components/ComplianceModal';
 import './App.css';
 
 // ==========================================================================
-// CONFIGURATION SAKLAR PAKET (WHITE-LABEL CONFIG CONTROL)
+// INTEGRASI KECERDASAN DETEKSI SUBDOMAIN (AUTOMATIC MULTI-PACKAGE LAYOUT)
 // ==========================================================================
-// Atur visibilitas modular dari Vercel Environment Variables. Default: true (Paket Ultimate)
-const SHOW_SWAP = import.meta.env.VITE_ENABLE_SWAP !== 'false';
-const SHOW_OPTIMIZER = import.meta.env.VITE_ENABLE_OPTIMIZER !== 'false';
-const SHOW_LOCKER = import.meta.env.VITE_ENABLE_LOCKER !== 'false';
-const SHOW_AFFILIATE = import.meta.env.VITE_ENABLE_AFFILIATE !== 'false';
+// Sistem secara otomatis mendeteksi URL subdomain aktif untuk menyaring modul dApp
+const currentHostname = typeof window !== 'undefined' ? window.location.hostname : '';
+
+const isEntry = currentHostname.includes('entry');
+const isVelocity = currentHostname.includes('velocity');
+const isWhale = currentHostname.includes('whale');
+const isStaking = currentHostname.includes('staking');
+
+// Logika pemotongan modul otomatis sesuai paket lisensi tanpa merusak default Ultimate 4-in-1
+const SHOW_SWAP = !isWhale && !isStaking && import.meta.env.VITE_ENABLE_SWAP !== 'false';
+const SHOW_OPTIMIZER = (isVelocity || isStaking || (!isEntry && !isWhale)) && import.meta.env.VITE_ENABLE_OPTIMIZER !== 'false';
+const SHOW_LOCKER = (isWhale || isStaking || (!isEntry && !isVelocity)) && import.meta.env.VITE_ENABLE_LOCKER !== 'false';
+const SHOW_AFFILIATE = !isStaking && import.meta.env.VITE_ENABLE_AFFILIATE !== 'false';
 
 const PROGRAM_ID = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD";
 const SOLANA_NETWORK = "devnet"; 
@@ -234,7 +242,6 @@ function App() {
 
       setSwapsCount(prev => prev + 1);
 
-      // KODE DIOPTIMALKAN UNTUK KUALITAS DEMO B2B SESUAI IMAGE_F86AEE.PNG
       setTxLog(
         `[SWAP SUCCESS] | Program: ${PROGRAM_ID}\n` +
         `Swapped: ${amount} ${tokenPay} ➜ ${receiveAmount} ${tokenReceive}\n` +
@@ -474,7 +481,6 @@ function App() {
         </div>
       )}
 
-      {/* HEADER UTAMA: BRAND SUDAH BERGANTI JADI ZONIQFI */}
       <header className="dapp-header">
         <div className="header-left">
           <div className="logo">ZONIQFI <span className="vzt-badge">$VZT</span></div>
@@ -519,7 +525,6 @@ function App() {
           </div>
         )}
 
-        {/* GRID UTAMA PENYARING SAKLAR */}
         <section className="products-grid">
           
           {/* MODUL 1: SWAP */}
