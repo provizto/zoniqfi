@@ -685,10 +685,15 @@ function App() {
       Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>) to protect on-chain data validation.
     </p>
          
-    {/* Kolom Link Referral Utama */}
+    {/* Kolom Link Referral Utama (PRESISI MOBILE SESUAI IMAGE_521B0B.JPG) */}
     <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
       <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
-      <div className="affiliate-box" style={{ display: 'flex', gap: '10px' }}>
+      <div className="affiliate-box" style={{ 
+        display: 'flex', 
+        alignItems: 'center',
+        gap: '10px',
+        width: '100%'
+      }}>
         <input 
           type="text" 
           id="refLink" 
@@ -696,13 +701,17 @@ function App() {
           readOnly 
           style={{
             flex: 1,
+            minWidth: '0', /* Mencegah input melar keluar layar HP */
             background: '#070a13',
             border: '1px solid #1e293b',
             borderRadius: '8px',
             padding: '12px 16px',
             color: isConnected ? '#ffffff' : '#64748b',
-            fontSize: '0.95rem',
-            outline: 'none'
+            fontSize: '0.9rem',
+            outline: 'none',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
           }}
         />
         <button 
@@ -713,12 +722,15 @@ function App() {
             background: '#1e293b', 
             color: isConnected ? '#ffffff' : '#475569', 
             cursor: isConnected ? 'pointer' : 'not-allowed', 
-            padding: '0 24px', 
+            height: '45px', /* Menjaga tinggi seragam dengan input */
+            padding: '0 16px', 
             borderRadius: '8px', 
             fontWeight: '600', 
             border: '1px solid #334155',
-            fontSize: '0.9rem',
-            transition: 'all 0.2s'
+            fontSize: '0.85rem',
+            whiteSpace: 'nowrap',
+            flexShrink: 0, /* Melarang tombol mengecil atau gepeng di HP */
+            minWidth: '85px' /* Lebar pas untuk teks 'Connect' atau 'Copy Link' */
           }}
         >
           {isConnected ? "Copy Link" : "Connect"}
@@ -726,7 +738,7 @@ function App() {
       </div>
     </div>
 
-    {/* Kotak Input Verifikasi On-Chain (Gaya Tertanam Semu) */}
+    {/* Kotak Input Verifikasi On-Chain (PRESISI MOBILE SESUAI IMAGE_521B0B.JPG) */}
     <div className="test-panel" style={{
       background: 'rgba(30, 41, 59, 0.3)',
       border: '1px solid #1e293b',
@@ -737,7 +749,12 @@ function App() {
       <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '12px' }}>
         • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
       </label>
-      <div className="input-group" style={{ display: 'flex', gap: '10px' }}>
+      <div className="input-group" style={{ 
+        display: 'flex', 
+        alignItems: 'center',
+        gap: '10px',
+        width: '100%'
+      }}>
         <input 
           type="text" 
           id="testReferrer" 
@@ -746,6 +763,7 @@ function App() {
           onChange={(e) => setReferrerInput(e.target.value)} 
           style={{
             flex: 1,
+            minWidth: '0', /* Mengunci input agar fleksibel mengikuti sisa space HP */
             background: '#070a13',
             border: '1px solid #1e293b',
             borderRadius: '6px',
@@ -764,14 +782,19 @@ function App() {
             background: '#1e293b', 
             color: isConnected ? '#ffffff' : '#475569',
             border: '1px solid #334155',
-            padding: '0 20px',
+            height: '45px',
+            padding: '0 12px',
             borderRadius: '6px',
             fontWeight: '600',
             cursor: isConnected ? 'pointer' : 'not-allowed',
-            fontSize: '0.9rem',
+            fontSize: '0.8rem',
             lineHeight: '1.2',
             textAlign: 'center',
-            minWidth: '80px'
+            flexShrink: 0, /* Tombol dikunci agar tidak gepeng di layar sempit */
+            minWidth: '85px', /* Presisi agar teks breakline 'Verify Link' muat sempurna */
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
           Verify<br/>Link
