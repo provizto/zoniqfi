@@ -647,50 +647,191 @@ function App() {
           )}
         </section>
 
-        {/* MODUL 4: AFFILIATE / REFERRAL */}
-        {SHOW_AFFILIATE && (
-          <section className="affiliate-section">
-            <div className="section-title-container">
-              <h3>Secure On-Chain Affiliate</h3>
-              <span className="shield-badge">🛡️ Anti-Sybil Active</span>
-            </div>
-            <p>Share your unique link. The system restricts repetitive transactional manipulation (max 1 tx/10s).</p>
-                 
-            <div className="affiliate-box">
-              <input type="text" id="refLink" value={isConnected ? `https://zoniqfinance.com?ref=${myWalletAddress}` : "https://zoniqfinance.com?ref="} readOnly />
-              <button className="btn-copy" id="copyBtn" onClick={copyLink} style={{ background: isConnected ? "#14b8a6" : "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#ffffff", cursor: "pointer", pointerEvents: "auto", opacity: 1, transition: "all 0.3s ease-in-out" }}>
-                {isConnected ? "Copy Link" : "Connect"}
-              </button>
-            </div>
+        {/* MODUL 4: AFFILIATE / REFERRAL (DESAIN BARU SESUAI IMAGE_52F3E9.PNG) */}
+{SHOW_AFFILIATE && (
+  <section className="affiliate-section" style={{
+    background: '#0b121f',
+    border: '1px solid #1e293b',
+    borderRadius: '12px',
+    padding: '30px',
+    marginTop: '30px',
+    color: '#94a3b8'
+  }}>
+    {/* Baris Judul & Badge */}
+    <div className="section-title-container" style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '16px'
+    }}>
+      <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
+      </h3>
+      <span className="shield-badge" style={{
+        background: 'rgba(16, 185, 129, 0.1)',
+        color: '#10b981',
+        border: '1px solid rgba(16, 185, 129, 0.3)',
+        padding: '4px 12px',
+        borderRadius: '20px',
+        fontSize: '0.8rem',
+        fontWeight: '600'
+      }}>
+        Anti-Sybil Active
+      </span>
+    </div>
 
-            <div className="test-panel">
-              <label htmlFor="testReferrer">Referral Address (On-Chain Verification):</label>
-              <div className="input-group">
-                <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} />
-                <button className="btn-test" id="testBtn" onClick={verifyReferralOnChain} disabled={!isConnected} style={{ cursor: isConnected ? "pointer" : "not-allowed", pointerEvents: isConnected ? "auto" : "none" }}>Verify Link</button>
-              </div>
-            </div>
+    {/* Deskripsi Atas */}
+    <p style={{ fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '24px', color: '#94a3b8' }}>
+      Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>) to protect on-chain data validation.
+    </p>
+         
+    {/* Kolom Link Referral Utama */}
+    <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
+      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
+      <div className="affiliate-box" style={{ display: 'flex', gap: '10px' }}>
+        <input 
+          type="text" 
+          id="refLink" 
+          value={isConnected ? `https://zoniqfinance.com?ref=${myWalletAddress}` : "Please connect your wallet..."} 
+          readOnly 
+          style={{
+            flex: 1,
+            background: '#070a13',
+            border: '1px solid #1e293b',
+            borderRadius: '8px',
+            padding: '12px 16px',
+            color: isConnected ? '#ffffff' : '#64748b',
+            fontSize: '0.95rem',
+            outline: 'none'
+          }}
+        />
+        <button 
+          className="btn-copy" 
+          id="copyBtn" 
+          onClick={copyLink} 
+          style={{ 
+            background: '#1e293b', 
+            color: isConnected ? '#ffffff' : '#475569', 
+            cursor: isConnected ? 'pointer' : 'not-allowed', 
+            padding: '0 24px', 
+            borderRadius: '8px', 
+            fontWeight: '600', 
+            border: '1px solid #334155',
+            fontSize: '0.9rem',
+            transition: 'all 0.2s'
+          }}
+        >
+          {isConnected ? "Copy Link" : "Connect"}
+        </button>
+      </div>
+    </div>
 
-            <div className="tier-table-wrapper">
-              <p className="tier-headline">Ecosystem Tier Structures:</p>
-              <div className="responsive-table-overflow">
-                <table className="tier-data-table">
-                  <thead><tr><th>Tier Level</th><th>Volume Target</th><th>USDC Reward</th></tr></thead>
-                  <tbody>
-                    <tr className="row-bordered"><td className="tier-bronze">Bronze Tier</td><td className="target-grey">$0 - $10,000</td><td className="rate-white">10%</td></tr>
-                    <tr className="row-bordered"><td className="tier-silver">Silver Tier</td><td className="target-grey">$10,001 - $100,000</td><td className="rate-white">18%</td></tr>
-                    <tr><td className="tier-gold">Gold Tier</td><td className="target-grey">&gt; $100,000</td><td className="rate-white">25%</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+    {/* Kotak Input Verifikasi On-Chain (Gaya Tertanam Semu) */}
+    <div className="test-panel" style={{
+      background: 'rgba(30, 41, 59, 0.3)',
+      border: '1px solid #1e293b',
+      borderRadius: '8px',
+      padding: '20px',
+      marginBottom: '30px'
+    }}>
+      <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '12px' }}>
+        • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
+      </label>
+      <div className="input-group" style={{ display: 'flex', gap: '10px' }}>
+        <input 
+          type="text" 
+          id="testReferrer" 
+          placeholder="Enter referrer wallet address..." 
+          value={referrerInput} 
+          onChange={(e) => setReferrerInput(e.target.value)} 
+          style={{
+            flex: 1,
+            background: '#070a13',
+            border: '1px solid #1e293b',
+            borderRadius: '6px',
+            padding: '12px 16px',
+            color: '#ffffff',
+            fontSize: '0.9rem',
+            outline: 'none'
+          }}
+        />
+        <button 
+          className="btn-test" 
+          id="testBtn" 
+          onClick={verifyReferralOnChain} 
+          disabled={!isConnected} 
+          style={{ 
+            background: '#1e293b', 
+            color: isConnected ? '#ffffff' : '#475569',
+            border: '1px solid #334155',
+            padding: '0 20px',
+            borderRadius: '6px',
+            fontWeight: '600',
+            cursor: isConnected ? 'pointer' : 'not-allowed',
+            fontSize: '0.9rem',
+            lineHeight: '1.2',
+            textAlign: 'center',
+            minWidth: '80px'
+          }}
+        >
+          Verify<br/>Link
+        </button>
+      </div>
+    </div>
 
-            <div className="tier-stats">
-              <div className="tier-item">Current Tier: <span id="tierLabel" style={{ color: tierColor }}>{tierLabel}</span></div>
-              <div className="tier-item">Total Referral Volume: <span id="volLabel">{referralVolume}</span></div>
-            </div>
-          </section>
-        )}
+    {/* Struktur Tabel Tier */}
+    <div className="tier-table-wrapper" style={{ marginBottom: '24px' }}>
+      <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', marginBottom: '16px' }}>Ecosystem Tier Structures:</p>
+      <div className="responsive-table-overflow">
+        <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+          <thead>
+            <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>
+              <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
+              <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
+              <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style={{ borderBottom: '1px solid #1e293b' }}>
+              <td className="tier-bronze" style={{ padding: '14px 16px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
+              <td style={{ padding: '14px 16px', color: '#64748b' }}>$0 - $10,000</td>
+              <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>10%</td>
+            </tr>
+            <tr style={{ borderBottom: '1px solid #1e293b' }}>
+              <td className="tier-silver" style={{ padding: '14px 16px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
+              <td style={{ padding: '14px 16px', color: '#64748b' }}>$10,001 - $100,000</td>
+              <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>18%</td>
+            </tr>
+            <tr>
+              <td className="tier-gold" style={{ padding: '14px 16px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
+              <td style={{ padding: '14px 16px', color: '#64748b' }}>&gt; $100,000</td>
+              <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>25%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {/* Kotak Status Statistik Bawah (Gaya Panel Horizontal Gelap) */}
+    <div className="tier-stats" style={{ 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'center',
+      background: '#070a13',
+      border: '1px solid #1e293b',
+      padding: '16px 20px',
+      borderRadius: '8px',
+      fontSize: '0.9rem'
+    }}>
+      <div className="tier-item" style={{ color: '#94a3b8' }}>
+        Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
+      </div>
+      <div className="tier-item" style={{ color: '#94a3b8' }}>
+        Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
+      </div>
+    </div>
+  </section>
+)}
       </main>
 
       <footer className="dapp-footer">
