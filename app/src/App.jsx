@@ -20,7 +20,7 @@ const SOLANA_NETWORK = "devnet";
 const BASE_EPOCH_HORIZON_MS = 604800000; 
 const EMERGENCY_BURN_PENALTY_RATE = 0.10; 
 
-// CONFIG: TOKEN MARKET RATES
+// CONFIG: TOKEN MARKET RATES (INTEGRATED COMPREHENSIVE SET)
 const TOKEN_PRICES = { 
   SOL: 170.00, 
   USDT: 1.00, 
@@ -30,7 +30,10 @@ const TOKEN_PRICES = {
   WIF: 2.50,     
   BONK: 0.00002, 
   POPCAT: 1.10,  
-  RENDER: 7.80   
+  RENDER: 7.80,
+  JitoSOL: 185.00,
+  JUP: 0.90,
+  PYTH: 0.45
 };
 
 function App() {
@@ -208,61 +211,79 @@ function App() {
     triggerBanner("Wallet disconnected.", "warning");
   };
 
-  // VERSI LIVE JUPITER CDN ASSETS (DIJAMIN 100% MUNCUL ASLI & SERAGAM)
+  // ECOSYSTEM TOKEN LIST (API JUPITER CACHE DIRECT ROUTING)
   const tokens = [
     { 
       symbol: 'USDC', 
       name: 'USD Coin', 
       priceInUsdc: TOKEN_PRICES.USDC, 
-      logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png' 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png' 
     },
     { 
       symbol: 'USDT', 
       name: 'Tether', 
       priceInUsdc: TOKEN_PRICES.USDT, 
-      logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYObw7XeWJcC8bEvT2XN93i/logo.png' 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB.png' 
     },
     { 
       symbol: 'SOL', 
       name: 'Solana', 
       priceInUsdc: TOKEN_PRICES.SOL, 
-      logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/So11111111111111111111111111111111111111112.png' 
     },
     { 
       symbol: 'WSOL', 
       name: 'Wrapped Solana', 
       priceInUsdc: TOKEN_PRICES.WSOL, 
-      logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/So11111111111111111111111111111111111111112.png' 
     },
     { 
       symbol: 'ZQI', 
       name: 'ZoniqFi Token', 
       priceInUsdc: TOKEN_PRICES.ZQI, 
-      logo: 'https://img.raydium.io/icon/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R.png' // Ikon mahkota/premium khas token utama
+      logo: 'https://token-list.solana.external-api.jup.ag/images/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R.png' 
     },
     { 
       symbol: 'WIF', 
       name: 'dogwifhat', 
       priceInUsdc: TOKEN_PRICES.WIF, 
-      logo: 'https://dd.dexscreener.com/ds-data/tokens/solana/EKpQGSJtjMFqKZ9KQGWjzCx4WnvZymCfLXaZNepvCSnM.png' 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/EKpQGSJtjMFqKZ9KQGWjzCx4WnvZymCfLXaZNepvCSnM.png' 
     },
     { 
       symbol: 'BONK', 
       name: 'Bonk Coin', 
       priceInUsdc: TOKEN_PRICES.BONK, 
-      logo: 'https://assets.coingecko.com/coins/images/28600/large/bonk.png?1696527587' // URL bypass token spesifik
+      logo: 'https://token-list.solana.external-api.jup.ag/images/DezXAZ8z7PnrnRJjz3wXqhAzBSrgJDuEUKvJaJZ5c9bA.png' 
     },
     { 
       symbol: 'POPCAT', 
       name: 'Popcat', 
       priceInUsdc: TOKEN_PRICES.POPCAT, 
-      logo: 'https://dd.dexscreener.com/ds-data/tokens/solana/7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr.png' 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr.png' 
     },
     { 
       symbol: 'RENDER', 
       name: 'Render Token', 
       priceInUsdc: TOKEN_PRICES.RENDER, 
-      logo: 'https://dd.dexscreener.com/ds-data/tokens/solana/rndr4vtjaoz4aswbyf9rrpuf26rbyusa3ni1ttrbb2g.png' 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/rndr4vtjaoz4aswbyf9rrpuf26rbyusa3ni1ttrbb2g.png' 
+    },
+    { 
+      symbol: 'JitoSOL', 
+      name: 'Jito Staked SOL', 
+      priceInUsdc: TOKEN_PRICES.JitoSOL, 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/J1toso1uCk3RLmjorhTthVwY9vGf4wQrHz1w1idAQMJ.png' 
+    },
+    { 
+      symbol: 'JUP', 
+      name: 'Jupiter', 
+      priceInUsdc: TOKEN_PRICES.JUP, 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/JUPyiwrYJGwHM4ZzN8TA73uYzY76mU8DLYA9bAqiJrxo.png' 
+    },
+    { 
+      symbol: 'PYTH', 
+      name: 'Pyth Network', 
+      priceInUsdc: TOKEN_PRICES.PYTH, 
+      logo: 'https://token-list.solana.external-api.jup.ag/images/HZ12NQC9u1Ub9RE691bnh361fZbWq89fGs3Co393HX2g.png' 
     }
   ];
 
@@ -848,14 +869,14 @@ function App() {
         )}
       </main>
 
-      <footer className="dapp-footer">
+      <header className="dapp-footer" style={{ borderTop: '1px solid #1f2937', padding: '20px 8%', background: '#060911', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
         <p>© 2026 ZoniqFi Hub. All Rights Reserved. Secure White-Label Protocol Template</p>
-        <div className="footer-links-row" style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '10px' }}>
-          <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer">Documentation</a>
-          <a href="#audit" onClick={() => alert('Security Audits underway.')}>Security Audit 🛡️</a>
-          <a href="#disclaimer" onClick={() => alert('Non-custodial application.')}>Legal Disclaimer</a>
+        <div className="footer-links-row" style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+          <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none' }}>Documentation</a>
+          <a href="#audit" onClick={() => alert('Security Audits underway.')} style={{ color: '#94a3b8', textDecoration: 'none' }}>Security Audit 🛡️</a>
+          <a href="#disclaimer" onClick={() => alert('Non-custodial application.')} style={{ color: '#94a3b8', textDecoration: 'none' }}>Legal Disclaimer</a>
         </div>
-      </footer>
+      </header>
     </>
   );
 }
