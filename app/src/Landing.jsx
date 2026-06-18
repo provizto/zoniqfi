@@ -75,7 +75,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
   const faqData = [
     { q: "What is ZoniqFi?", a: "ZoniqFi is a premium Web3 infrastructure provider offering turnkey, plug-and-play white-label DeFi dApps on the Solana blockchain. We empower project owners and developers to launch comprehensive utility suites instantly without writing code from scratch." },
     { q: "How does the White-Label licensing model work?", a: "Once you purchase a package, our team handles all frontend customization (logos, token tickers, brand colors, smart contract links) and deploys the fully functional dApp directly to your project's custom domain or subdomain." },
-    { q: "Do I need to deploy expensive native smart contracts?", a: "Not necessarily. Our infrastructure is designed with a multi-tenant architecture. You can opt to plug directly into our pre-deployed, highly optimized Mainnet programs to bypass costly Solana rent-exempt storage fees while keeping your frontend completely branded." },
+    { q: "Do I need to deploy expensive native smart contracts?", a: "Not necessarily. Our infrastructure is designed with a multi-tenant architecture. You can opt to plug directly into our pre-deployed, highly optimized Devnet programs to bypass costly Solana rent-exempt storage fees while keeping your frontend completely branded." },
     { q: "Is this infrastructure protected against automated exploits?", a: "Absolutely. The Swap module is equipped with MEV Secure protocols via Jito Engine to shield retail traders from malicious sandwich attacks. Additionally, the Affiliate ledger features strict Anti-Sybil cooldown rules to prevent multi-wallet referral manipulation." },
     { q: "Can I upgrade my dApp modules in the future?", a: "Yes. Our ecosystem is built entirely on a modular toggle system. If you launch with our Entry Package today and want to unlock the Staking or Yield Optimizer features later, we can activate them via simple environment variables without rebuilding your website." }
   ];
@@ -142,7 +142,6 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           text-align: center !important;
           background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%) !important;
         }
-        /* PERBAIKAN CRISP LINE-HEIGHT SUPAYA TIDAK TABRAKAN SEPERTI DI IMAGE_536FCD.PNG */
         #vzt-landing-page .hero h1 {
           font-size: 3.2rem !important;
           font-weight: 800 !important;
@@ -275,7 +274,6 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
                 </ul>
               </div>
               
-              {/* COMPONENT INTEGRATION: MASING-MASING TOMBOL MEMEGANG LINK SUB-DOMAINNYA SENDIRI */}
               <div>
                 <a href={pkg.demoLink} target="_blank" rel="noopener noreferrer" className="btn-demo-link">
                   <i className="fas fa-bolt" style={{ marginRight: '6px' }}></i> Try Live Demo
