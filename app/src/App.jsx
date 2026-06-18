@@ -6,11 +6,9 @@ import './App.css';
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
 // ==========================================================================
-// Membaca kode ?pkg= dari link yang diklik pembeli di Landing Page
 const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
 const activePackage = urlParams ? urlParams.get('pkg') : null;
 
-// Mengatur otomatis fitur paket yang hidup/mati berdasarkan nama paket di link
 const SHOW_SWAP = activePackage !== 'whale' && activePackage !== 'staking';
 const SHOW_OPTIMIZER = activePackage === 'velocity' || activePackage === 'staking' || !activePackage;
 const SHOW_LOCKER = activePackage === 'whale' || activePackage === 'staking' || !activePackage;
@@ -22,17 +20,18 @@ const SOLANA_NETWORK = "devnet";
 const BASE_EPOCH_HORIZON_MS = 604800000; 
 const EMERGENCY_BURN_PENALTY_RATE = 0.10; 
 
-const TOKEN_PRICES = { SOL: 170.00, USDT: 1.00, USDC: 1.00, WSOL: 170.00, VZT: 0.50 };
+// BRAND UPDATED: VZT TO ZQI PROPERTY CONVERSION
+const TOKEN_PRICES = { SOL: 170.00, USDT: 1.00, USDC: 1.00, WSOL: 170.00, ZQI: 0.50 };
 
 function App() {
   const [view, setView] = useState('landing'); 
-  // LOGIKA AUTO-BYPASS: Jika ada parameter paket (?pkg=), otomatis langsung tampilkan dashboard dApp
+  
   useEffect(() => {
     const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const activePackage = urlParams ? urlParams.get('pkg') : null;
     
     if (activePackage) {
-      setView('dashboard'); // Otomatis lompat masuk ke dashboard tanpa lewat tombol landing!
+      setView('dashboard'); 
     }
   }, []);
 
@@ -48,7 +47,8 @@ function App() {
   const [isTokenLocked, setIsTokenLocked] = useState(false);
   const [swapsCount, setSwapsCount] = useState(45210); 
   
-  const [vztBalance, setVztBalance] = useState(0); 
+  // STATE UPDATED TO ZQI
+  const [zqiBalance, setZqiBalance] = useState(0); 
   const [stakedAmount, setStakedAmount] = useState(0); 
   
   const [protocolTVL, setProtocolTVL] = useState(1248500);
@@ -66,7 +66,7 @@ function App() {
   const [payAmount, setPayAmount] = useState('0');
   const [receiveAmount, setReceiveAmount] = useState('0.0');
   const [tokenPay, setTokenPay] = useState('USDC');
-  const [tokenReceive, setTokenReceive] = useState('VZT');
+  const [tokenReceive, setTokenReceive] = useState('ZQI'); // Default changed to ZQI
   const [swapFee, setSwapFee] = useState('0.0000');
   const [txLog, setTxLog] = useState('');
 
@@ -77,7 +77,7 @@ function App() {
   const [lockCalculationMode, setLockCalculationMode] = useState('manual'); 
   const [lockAmount, setLockAmount] = useState('0'); 
   const [chosenMultiplier, setChosenMultiplier] = useState(2.5); 
-  const [liveScore, setLiveScore] = useState('0 VZT Share');
+  const [liveScore, setLiveScore] = useState('0 ZQI Share'); // Updated to ZQI
   const [estimatedRewardText, setEstimatedRewardText] = useState('');
   const [showRewardRow, setShowRewardRow] = useState(false);
   const [earnedUsdcDisplay, setEarnedUsdcDisplay] = useState('0.00 USDC');
@@ -104,6 +104,9 @@ function App() {
     }
   };
 
+  // ==========================================================================
+  // HARDENED ANTI-CRASH WALLET HANDSHAKE ENGINE (PHANTOM BUG RESOLVED)
+  // ==========================================================================
   const selectWallet = async (walletType) => {
     setIsModalOpen(false);
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -118,11 +121,13 @@ function App() {
         window.open("https://backpack.app/", "_blank");
       }
     } else if (walletType === 'phantom') {
-      const phantomProvider = window.phantom?.solana;
-      if (phantomProvider && phantomProvider.isPhantom) {
+      let phantomProvider = window.phantom?.solana;
+      if (!phantomProvider && window.solana?.isPhantom) {
+        phantomProvider = window.solana;
+      }
+
+      if (phantomProvider) {
         executeConnect(phantomProvider, "Phantom");
-      } else if (window.solana && window.solana.isPhantom) {
-        executeConnect(window.solana, "Phantom");
       } else if (isMobile) {
         const phantomDeepLink = `https://phantom.app/ul/browse/${encodeURIComponent(dAppUrl)}`;
         window.open(phantomDeepLink, '_blank');
@@ -131,8 +136,9 @@ function App() {
         window.open("https://phantom.app/", "_blank");
       }
     } else if (walletType === 'solflare') {
-      if (window.solflare && window.solflare.isSolflare) {
-        executeConnect(window.solflare, "Solflare");
+      const solflareProvider = window.solflare?.solana || window.solflare;
+      if (solflareProvider && (solflareProvider.isSolflare || window.solflare?.isSolflare)) {
+        executeConnect(solflareProvider, "Solflare");
       } else if (isMobile) {
         const solflareDeepLink = `https://solflare.com/ul/v1/browse?url=${encodeURIComponent(dAppUrl)}`;
         window.open(solflareDeepLink, '_blank');
@@ -145,9 +151,12 @@ function App() {
 
   const executeConnect = async (provider, walletName) => {
     try {
-      if (provider.disconnect) {
-        await provider.disconnect();
+      if (!provider) throw new Error("Provider structure is missing.");
+      
+      if (typeof provider.disconnect === 'function') {
+        try { await provider.disconnect(); } catch (e) { console.warn("Session cleared safely:", e); }
       }
+
       const response = await provider.connect();
       const pubKey = response.publicKey ? response.publicKey.toString() : provider.publicKey.toString();
       
@@ -156,22 +165,26 @@ function App() {
       setIsConnected(true);
 
       if (pubKey.startsWith("GNT") || pubKey.length > 30) {
-        setVztBalance(1000000.00); 
+        setZqiBalance(1000000.00); 
         triggerBanner(`👑 VIP Grantor Wallet Detected! Core Revenue-Share Active.`, "success");
       } else {
-        setVztBalance(5000.00); 
+        setZqiBalance(5000.00); 
         triggerBanner(`Wallet successfully linked via ${walletName}!`, "success");
       }
     } catch (err) {
-      console.error(`${walletName} connection rejected:`, err);
-      triggerBanner(`Connection rejected: ${err.message || "User denied"}`, "error");
+      console.error(`${walletName} payload configuration error:`, err);
+      if (err.code === 4001) {
+        triggerBanner("Connection rejected: Request denied by user.", "warning");
+      } else {
+        triggerBanner(`Extension State Conflict Resolved: Please re-open your ${walletName} window.`, "error");
+      }
     }
   };
 
   const disconnectWallet = () => {
     setMyWalletAddress("");
     setActiveProviderName("");
-    setVztBalance(0);
+    setZqiBalance(0);
     setStakedAmount(0);
     setIsConnected(false);
     setIsTokenLocked(false);
@@ -191,7 +204,7 @@ function App() {
     { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT },
     { symbol: 'SOL', name: 'Solana', priceInUsdc: TOKEN_PRICES.SOL },
     { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: TOKEN_PRICES.WSOL },
-    { symbol: 'VZT', name: 'Provizto Token', priceInUsdc: TOKEN_PRICES.VZT }
+    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: TOKEN_PRICES.ZQI } // Updated to ZQI
   ];
 
   useEffect(() => {
@@ -213,7 +226,7 @@ function App() {
 
   const handleTokenChange = (val) => {
     setTokenPay(val);
-    setTokenReceive(val === 'VZT' ? 'USDC' : 'VZT');
+    setTokenReceive(val === 'ZQI' ? 'USDC' : 'ZQI'); // Updated to ZQI
   };
 
   const switchTokens = () => {
@@ -247,20 +260,19 @@ function App() {
 
       setSwapsCount(prev => prev + 1);
 
-      // KODE DIOPTIMALKAN UNTUK KUALITAS DEMO B2B SESUAI IMAGE_F86AEE.PNG
       setTxLog(
         `[SWAP SUCCESS] | Program: ${PROGRAM_ID}\n` +
         `Swapped: ${amount} ${tokenPay} ➜ ${receiveAmount} ${tokenReceive}\n` +
         `Protocol Fee (0.3%): ${swapFee} ${tokenPay}\n\n` +
         `[DISTRIBUTION LOG]\n` +
         `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
-        `• 30% to VZT Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
+        `• 30% to ZQI Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
         `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
         `• 15% to Project Treasury Operations: ${projectTreasuryShare} ${tokenPay}\n`
       );
 
-      if (tokenReceive === 'VZT') {
-        setVztBalance(prev => prev + parseFloat(receiveAmount));
+      if (tokenReceive === 'ZQI') {
+        setZqiBalance(prev => prev + parseFloat(receiveAmount));
       }
 
       alert(`Swap Successful!\n\nYou exchanged ${amount} ${tokenPay} into ${receiveAmount} ${tokenReceive}.\nProtocol Fee deducted: ${swapFee} ${tokenPay}`);
@@ -324,7 +336,7 @@ function App() {
     const amount = parseFloat(lockAmount) || 0;
 
     if (lockCalculationMode === 'manual') {
-      setLiveScore(`${amount.toLocaleString('en-US')} VZT Share`);
+      setLiveScore(`${amount.toLocaleString('en-US')} ZQI Share`);
       if (amount > 0) {
         setEstimatedRewardText(`Estimated Accumulation: +${(amount * 0.05).toFixed(2)} USDC`);
       } else {
@@ -332,7 +344,7 @@ function App() {
       }
     } else {
       const totalWeightedScoreSum = amount * chosenMultiplier;
-      setLiveScore(`${totalWeightedScoreSum.toLocaleString('en-US')} VZT Share`);
+      setLiveScore(`${totalWeightedScoreSum.toLocaleString('en-US')} ZQI Share`);
       if (amount > 0) {
         setEstimatedRewardText(`Estimated Accumulation (Incentivized): +${((amount * 0.05) * chosenMultiplier).toFixed(2)} USDC`);
       } else {
@@ -344,11 +356,11 @@ function App() {
   const handleLockToken = async () => {
     const amount = parseFloat(lockAmount) || 0;
     if (amount <= 0) {
-      alert('Please enter a valid amount of $VZT tokens to lock.');
+      alert('Please enter a valid amount of $ZQI tokens to lock.');
       return;
     }
-    if (amount > vztBalance) {
-      alert('Insufficient $VZT balance inside your secure wallet!');
+    if (amount > zqiBalance) {
+      alert('Insufficient $ZQI balance inside your secure wallet!');
       return;
     }
 
@@ -357,16 +369,16 @@ function App() {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert(`Successfully locked ${amount} $VZT!\n\nSmart Contract Rule: Tokens are now cryptographically bound to the 7-Day Epoch Horizon.`);
+      alert(`Successfully locked ${amount} $ZQI!\n\nSmart Contract Rule: Tokens are now cryptographically bound to the 7-Day Epoch Horizon.`);
       
       setIsTokenLocked(true);
       setStakedAmount(amount); 
-      setVztBalance(prev => prev - amount); 
+      setZqiBalance(prev => prev - amount); 
       
       const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
       setEarnedUsdcDisplay(((amount * 0.05) * finalMultiplier).toFixed(2) + " USDC");
       setShowRewardRow(true);
-      setProtocolTVL(prev => prev + (amount * TOKEN_PRICES.VZT)); 
+      setProtocolTVL(prev => prev + (amount * TOKEN_PRICES.ZQI)); 
 
       setTimeout(() => {
         setRewardClaimable(true);
@@ -401,7 +413,7 @@ function App() {
     }
 
     const penaltyPercentageText = EMERGENCY_BURN_PENALTY_RATE * 100;
-    const alertMessage = `⚠️ ALERT: EMERGENCY UNLOCK SYSTEM\n\n• Total Locked Assets: ${stakedAmount} VZT\n• ${penaltyPercentageText}% Penalty to BURN: ${stakedAmount * EMERGENCY_BURN_PENALTY_RATE} VZT\n\nProceed early unlock?`;
+    const alertMessage = `⚠️ ALERT: EMERGENCY UNLOCK SYSTEM\n\n• Total Locked Assets: ${stakedAmount} ZQI\n• ${penaltyPercentageText}% Penalty to BURN: ${stakedAmount * EMERGENCY_BURN_PENALTY_RATE} ZQI\n\nProceed early unlock?`;
 
     const confirmWithdraw = confirm(alertMessage);
     if (!confirmWithdraw) return;
@@ -411,17 +423,17 @@ function App() {
       const penaltyAmount = stakedAmount * EMERGENCY_BURN_PENALTY_RATE;
       const finalAmountReturned = stakedAmount - penaltyAmount;
 
-      setVztBalance(prev => prev + finalAmountReturned);
-      setProtocolTVL(prev => prev - (stakedAmount * TOKEN_PRICES.VZT));
+      setZqiBalance(prev => prev + finalAmountReturned);
+      setProtocolTVL(prev => prev - (stakedAmount * TOKEN_PRICES.ZQI));
       
-      triggerBanner(`🔥 Success: ${penaltyAmount} VZT burned!`, "success");
+      triggerBanner(`🔥 Success: ${penaltyAmount} ZQI burned!`, "success");
       
       setStakedAmount(0);
       setLockAmount("0");
       setIsTokenLocked(false);
       setShowRewardRow(false);
       setRewardClaimable(false); 
-      setTxLog(`🔥 Deflationary System: ${penaltyAmount.toFixed(2)} $VZT permanently destroyed from supply.`);
+      setTxLog(`🔥 Deflationary System: ${penaltyAmount.toFixed(2)} $ZQI permanently destroyed from supply.`);
     } catch (error) {
       triggerBanner("⚠️ Emergency execution rejected.", "error");
     }
@@ -487,10 +499,10 @@ function App() {
         </div>
       )}
 
-      {/* HEADER UTAMA: BRAND SUDAH BERGANTI JADI ZONIQFI */}
+      {/* HEADER UTAMA */}
       <header className="dapp-header">
         <div className="header-left">
-          <div className="logo">ZONIQFI <span className="vzt-badge">$VZT</span></div>
+          <div className="logo">ZONIQFI <span className="vzt-badge">$ZQI</span></div>
         </div>
         <div className="header-right">
           <button onClick={() => setView('landing')} className="btn-home" style={{ background: 'transparent', border: '1px solid #1f2937', color: '#f3f4f6', cursor: 'pointer', padding: '8px 16px', borderRadius: '6px', marginRight: '10px', fontWeight: '600' }}>Back to Home</button>
@@ -549,7 +561,7 @@ function App() {
                 <div className="field-row">
                   <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} />
                   <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)}>
-                    <option value="USDC">USDC</option><option value="USDT">USDT</option><option value="SOL">SOL</option><option value="WSOL">WSOL</option><option value="VZT">VZT</option>
+                    <option value="USDC">USDC</option><option value="USDT">USDT</option><option value="SOL">SOL</option><option value="WSOL">WSOL</option><option value="ZQI">ZQI</option>
                   </select>
                 </div>
               </div>
@@ -603,8 +615,8 @@ function App() {
           {/* MODUL 3: LOCKER */}
           {SHOW_LOCKER && (
             <div className="product-card">
-              <h3>VZT Lock & Yield</h3>
-              <p className="desc">Lock your $VZT tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
+              <h3>ZQI Lock & Yield</h3>
+              <p className="desc">Lock your $ZQI tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
 
               <div className="calc-tabs">
                 <button className={`tab-btn ${lockCalculationMode === 'manual' ? 'active' : ''}`} id="tabManual" onClick={() => switchLockCalculationView('manual')}>Instant Lock</button>
@@ -613,11 +625,11 @@ function App() {
 
               <div className="pool-meta-row">
                 <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
-                <span>Your Balance: <strong id="vztBalance">{vztBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} VZT</strong></span>
+                <span>Your Balance: <strong id="vztBalance">{zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} ZQI</strong></span>
               </div>
 
               <div className="lock-input-group">
-                <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $VZT to Lock:" : "Enter Capital For Prediction:"}</label>
+                <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $ZQI to Lock:" : "Enter Capital For Prediction:"}</label>
                 <input type="number" id="lockAmount" placeholder="0.0" value={lockAmount === '0' ? '' : lockAmount} disabled={isTokenLocked || isLockLoading} onChange={(e) => setLockAmount(e.target.value)} onBlur={() => { if (lockAmount === '') setLockAmount('0'); }} />
               </div>
 
@@ -660,224 +672,108 @@ function App() {
           )}
         </section>
 
-        {/* MODUL 4: AFFILIATE / REFERRAL (DESAIN BARU SESUAI IMAGE_52F3E9.PNG) */}
-{SHOW_AFFILIATE && (
-  <section className="affiliate-section" style={{
-    background: '#0b121f',
-    border: '1px solid #1e293b',
-    borderRadius: '12px',
-    padding: '30px',
-    marginTop: '30px',
-    color: '#94a3b8'
-  }}>
-    {/* Baris Judul & Badge */}
-    <div className="section-title-container" style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '16px'
-    }}>
-      <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
-      </h3>
-      <span className="shield-badge" style={{
-        background: 'rgba(16, 185, 129, 0.1)',
-        color: '#10b981',
-        border: '1px solid rgba(16, 185, 129, 0.3)',
-        padding: '4px 12px',
-        borderRadius: '20px',
-        fontSize: '0.8rem',
-        fontWeight: '600'
-      }}>
-        Anti-Sybil Active
-      </span>
-    </div>
+        {/* MODUL 4: AFFILIATE / REFERRAL */}
+        {SHOW_AFFILIATE && (
+          <section className="affiliate-section" style={{ background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '30px', marginTop: '30px', color: '#94a3b8' }}>
+            <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
+              </h3>
+              <span className="shield-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
+                Anti-Sybil Active
+              </span>
+            </div>
 
-    {/* Deskripsi Atas */}
-    <p style={{ fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '24px', color: '#94a3b8' }}>
-      Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>) to protect on-chain data validation.
-    </p>
-         
-    {/* Kolom Link Referral Utama (TOMBOL MENYALA PAS CONNECT WALLET) */}
-    <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
-      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
-      <div className="affiliate-box" style={{ 
-        display: 'flex', 
-        alignItems: 'center',
-        gap: '10px',
-        width: '100%'
-      }}>
-        <input 
-          type="text" 
-          id="refLink" 
-          value={isConnected ? `https://zoniqfinance.com?ref=${myWalletAddress}` : "Please connect your wallet..."} 
-          readOnly 
-          style={{
-            flex: 1,
-            minWidth: '0',
-            background: '#070a13',
-            border: '1px solid #1e293b',
-            borderRadius: '8px',
-            padding: '12px 16px',
-            color: isConnected ? '#ffffff' : '#64748b',
-            fontSize: '0.9rem',
-            outline: 'none',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}
-        />
-        <button 
-          className="btn-copy" 
-          id="copyBtn" 
-          onClick={copyLink} 
-          style={{ 
-            /* JIKA CONNECT: Menyala Gradien Ungu-Biru | JIKA PUTUS: Abu-abu Gelap */
-            background: isConnected 
-              ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' 
-              : '#1e293b', 
-            color: '#ffffff', 
-            cursor: 'pointer', /* Tetap pointer untuk memicu modal connect wallet jika diklik */
-            height: '45px',
-            padding: '0 16px', 
-            borderRadius: '8px', 
-            fontWeight: '700', 
-            border: isConnected ? 'none' : '1px solid #334155',
-            fontSize: '0.85rem',
-            whiteSpace: 'nowrap',
-            flexShrink: 0,
-            minWidth: '85px',
-            boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', /* Efek glow menyala */
-            transition: 'all 0.3s ease'
-          }}
-        >
-          {isConnected ? "Copy Link" : "Connect"}
-        </button>
-      </div>
-    </div>
+            <p style={{ fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '24px', color: '#94a3b8' }}>
+              Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>) to protect on-chain data validation.
+            </p>
+                 
+            <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
+              <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                <input 
+                  type="text" 
+                  id="refLink" 
+                  value={isConnected ? `https://zoniqfinance.com?ref=${myWalletAddress}` : "Please connect your wallet..."} 
+                  readOnly 
+                  style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                />
+                <button 
+                  className="btn-copy" 
+                  id="copyBtn" 
+                  onClick={copyLink} 
+                  style={{ 
+                    background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#1e293b', 
+                    color: '#ffffff', cursor: 'pointer', height: '45px', padding: '0 16px', borderRadius: '8px', fontWeight: '700', border: isConnected ? 'none' : '1px solid #334155', fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '85px', boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', transition: 'all 0.3s ease'
+                  }}
+                >
+                  {isConnected ? "Copy Link" : "Connect"}
+                </button>
+              </div>
+            </div>
 
-    {/* Kotak Input Verifikasi On-Chain (TOMBOL MENYALA PAS CONNECT WALLET) */}
-    <div className="test-panel" style={{
-      background: 'rgba(30, 41, 59, 0.3)',
-      border: '1px solid #1e293b',
-      borderRadius: '8px',
-      padding: '20px',
-      marginBottom: '30px'
-    }}>
-      <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '12px' }}>
-        • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
-      </label>
-      <div className="input-group" style={{ 
-        display: 'flex', 
-        alignItems: 'center',
-        gap: '10px',
-        width: '100%'
-      }}>
-        <input 
-          type="text" 
-          id="testReferrer" 
-          placeholder="Enter referrer wallet address..." 
-          value={referrerInput} 
-          onChange={(e) => setReferrerInput(e.target.value)} 
-          style={{
-            flex: 1,
-            minWidth: '0',
-            background: '#070a13',
-            border: '1px solid #1e293b',
-            borderRadius: '6px',
-            padding: '12px 16px',
-            color: '#ffffff',
-            fontSize: '0.9rem',
-            outline: 'none'
-          }}
-        />
-        <button 
-          className="btn-test" 
-          id="testBtn" 
-          onClick={verifyReferralOnChain} 
-          disabled={!isConnected} 
-          style={{ 
-            /* JIKA CONNECT: Menyala Gradien Ungu-Biru | JIKA PUTUS: Meredup */
-            background: isConnected 
-              ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' 
-              : '#111827', 
-            color: isConnected ? '#ffffff' : '#475569',
-            border: isConnected ? 'none' : '1px solid #1e293b',
-            height: '45px',
-            padding: '0 12px',
-            borderRadius: '6px',
-            fontWeight: '700',
-            cursor: isConnected ? 'pointer' : 'not-allowed',
-            fontSize: '0.8rem',
-            lineHeight: '1.2',
-            textAlign: 'center',
-            flexShrink: 0,
-            minWidth: '85px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', /* Efek glow menyala */
-            transition: 'all 0.3s ease'
-          }}
-        >
-          Verify<br/>Link
-        </button>
-      </div>
-    </div>
+            <div className="test-panel" style={{ background: 'rgba(30, 41, 59, 0.3)', border: '1px solid #1e293b', borderRadius: '8px', padding: '20px', marginBottom: '30px' }}>
+              <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '12px' }}>
+                • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
+              </label>
+              <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', padding: '12px 16px', color: '#ffffff', fontSize: '0.9rem', outline: 'none' }} />
+                <button 
+                  className="btn-test" 
+                  id="testBtn" 
+                  onClick={verifyReferralOnChain} 
+                  disabled={!isConnected} 
+                  style={{ 
+                    background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#111827', color: isConnected ? '#ffffff' : '#475569', border: isConnected ? 'none' : '1px solid #1e293b', height: '45px', padding: '0 12px', borderRadius: '6px', fontWeight: '700', cursor: isConnected ? 'pointer' : 'not-allowed', fontSize: '0.8rem', lineHeight: '1.2', textAlign: 'center', flexShrink: 0, minWidth: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', transition: 'all 0.3s ease'
+                  }}
+                >
+                  Verify<br/>Link
+                </button>
+              </div>
+            </div>
 
-    {/* Struktur Tabel Tier */}
-    <div className="tier-table-wrapper" style={{ marginBottom: '24px' }}>
-      <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', marginBottom: '16px' }}>Ecosystem Tier Structures:</p>
-      <div className="responsive-table-overflow">
-        <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
-          <thead>
-            <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>
-              <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
-              <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
-              <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style={{ borderBottom: '1px solid #1e293b' }}>
-              <td className="tier-bronze" style={{ padding: '14px 16px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
-              <td style={{ padding: '14px 16px', color: '#64748b' }}>$0 - $10,000</td>
-              <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>10%</td>
-            </tr>
-            <tr style={{ borderBottom: '1px solid #1e293b' }}>
-              <td className="tier-silver" style={{ padding: '14px 16px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
-              <td style={{ padding: '14px 16px', color: '#64748b' }}>$10,001 - $100,000</td>
-              <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>18%</td>
-            </tr>
-            <tr>
-              <td className="tier-gold" style={{ padding: '14px 16px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
-              <td style={{ padding: '14px 16px', color: '#64748b' }}>&gt; $100,000</td>
-              <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>25%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+            <div className="tier-table-wrapper" style={{ marginBottom: '24px' }}>
+              <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', marginBottom: '16px' }}>Ecosystem Tier Structures:</p>
+              <div className="responsive-table-overflow">
+                <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+                  <thead>
+                    <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>
+                      <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
+                      <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
+                      <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{ borderBottom: '1px solid #1e293b' }}>
+                      <td className="tier-bronze" style={{ padding: '14px 16px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
+                      <td style={{ padding: '14px 16px', color: '#64748b' }}>$0 - $10,000</td>
+                      <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>10%</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid #1e293b' }}>
+                      <td className="tier-silver" style={{ padding: '14px 16px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
+                      <td style={{ padding: '14px 16px', color: '#64748b' }}>$10,001 - $100,000</td>
+                      <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>18%</td>
+                    </tr>
+                    <tr>
+                      <td className="tier-gold" style={{ padding: '14px 16px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
+                      <td style={{ padding: '14px 16px', color: '#64748b' }}>&gt; $100,000</td>
+                      <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>25%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-    {/* Kotak Status Statistik Bawah (Gaya Panel Horizontal Gelap) */}
-    <div className="tier-stats" style={{ 
-      display: 'flex', 
-      justifyContent: 'space-between', 
-      alignItems: 'center',
-      background: '#070a13',
-      border: '1px solid #1e293b',
-      padding: '16px 20px',
-      borderRadius: '8px',
-      fontSize: '0.9rem'
-    }}>
-      <div className="tier-item" style={{ color: '#94a3b8' }}>
-        Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
-      </div>
-      <div className="tier-item" style={{ color: '#94a3b8' }}>
-        Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
-      </div>
-    </div>
-  </section>
-)}
+            <div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem' }}>
+              <div className="tier-item" style={{ color: '#94a3b8' }}>
+                Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
+              </div>
+              <div className="tier-item" style={{ color: '#94a3b8' }}>
+                Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
 
       <footer className="dapp-footer">
