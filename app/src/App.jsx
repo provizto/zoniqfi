@@ -109,7 +109,6 @@ function App() {
   useEffect(() => {
     const fetchLivePrices = async () => {
       try {
-        // Jupiter Price API v2 menggunakan Mint Addresses dari token Solana utama
         const mints = [
           'So11111111111111111111111111111111111111112', // SOL & WSOL
           'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', // USDT
@@ -293,7 +292,7 @@ function App() {
     } else {
       setReceiveAmount('0.0');
     }
-  }, [payAmount, tokenPay, tokenReceive, tokenPrices]); // Added tokenPrices dependency for live mathematical reload
+  }, [payAmount, tokenPay, tokenReceive, tokenPrices]);
 
   const handleTokenChange = (val) => {
     setTokenPay(val);
@@ -351,7 +350,7 @@ function App() {
       setReceiveAmount('0.0');
     } catch (error) {
       setTxLog('Transaction failed.');
-    } finally {
+    } fill {
       setIsSwapLoading(false);
     }
   };
@@ -851,12 +850,35 @@ function App() {
         )}
       </main>
 
-      <footer className="dapp-footer" style={{ borderTop: '1px solid #1f2937', padding: '20px 8%', background: '#060911', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
-        <p>© 2026 ZoniqFi Hub. All Rights Reserved. Secure White-Label Protocol Template</p>
-        <div className="footer-links-row" style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
-          <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none' }}>Documentation</a>
-          <a href="#audit" onClick={() => alert('Security Audits underway.')} style={{ color: '#94a3b8', textDecoration: 'none' }}>Security Audit 🛡️</a>
-          <a href="#disclaimer" onClick={() => alert('Non-custodial application.')} style={{ color: '#94a3b8', textDecoration: 'none' }}>Legal Disclaimer</a>
+      {/* ==========================================================================
+          PERBAIKAN RESPONSIVITAS FOOTER (HP BUG RESOLVED - REF: image_d2cf46.jpg)
+          ========================================================================== */}
+      <footer className="dapp-footer" style={{ 
+        borderTop: '1px solid #1f2937', 
+        padding: '24px 5%', 
+        background: '#060911', 
+        display: 'flex', 
+        flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        color: '#94a3b8', 
+        fontSize: '0.88rem',
+        gap: '16px',
+        textAlign: 'center'
+      }}>
+        <p style={{ margin: 0, lineHeight: '1.5', maxWidth: window.innerWidth <= 768 ? '100%' : '60%' }}>
+          © 2026 ZoniqFi Hub. All Rights Reserved. Secure White-Label Protocol Template
+        </p>
+        <div className="footer-links-row" style={{ 
+          display: 'flex', 
+          gap: '20px', 
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'wrap'
+        }}>
+          <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Documentation</a>
+          <a href="#audit" onClick={() => alert('Security Audits underway.')} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Security Audit 🛡️</a>
+          <a href="#disclaimer" onClick={() => alert('Non-custodial application.')} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Legal Disclaimer</a>
         </div>
       </footer>
     </>
