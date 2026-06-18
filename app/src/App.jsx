@@ -350,7 +350,7 @@ function App() {
       setReceiveAmount('0.0');
     } catch (error) {
       setTxLog('Transaction failed.');
-    } fill {
+    } finally {
       setIsSwapLoading(false);
     }
   };
