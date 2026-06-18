@@ -20,7 +20,7 @@ const SOLANA_NETWORK = "devnet";
 const BASE_EPOCH_HORIZON_MS = 604800000; 
 const EMERGENCY_BURN_PENALTY_RATE = 0.10; 
 
-// CONFIG: TOKEN MARKET RATES (INTEGRATED COMPREHENSIVE SET)
+// CONFIG: TOKEN MARKET RATES
 const TOKEN_PRICES = { 
   SOL: 170.00, 
   USDT: 1.00, 
@@ -211,80 +211,20 @@ function App() {
     triggerBanner("Wallet disconnected.", "warning");
   };
 
-  // ECOSYSTEM TOKEN LIST (API JUPITER CACHE DIRECT ROUTING)
+  // CLEAN TOKENS LIST
   const tokens = [
-    { 
-      symbol: 'USDC', 
-      name: 'USD Coin', 
-      priceInUsdc: TOKEN_PRICES.USDC, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png' 
-    },
-    { 
-      symbol: 'USDT', 
-      name: 'Tether', 
-      priceInUsdc: TOKEN_PRICES.USDT, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB.png' 
-    },
-    { 
-      symbol: 'SOL', 
-      name: 'Solana', 
-      priceInUsdc: TOKEN_PRICES.SOL, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/So11111111111111111111111111111111111111112.png' 
-    },
-    { 
-      symbol: 'WSOL', 
-      name: 'Wrapped Solana', 
-      priceInUsdc: TOKEN_PRICES.WSOL, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/So11111111111111111111111111111111111111112.png' 
-    },
-    { 
-      symbol: 'ZQI', 
-      name: 'ZoniqFi Token', 
-      priceInUsdc: TOKEN_PRICES.ZQI, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R.png' 
-    },
-    { 
-      symbol: 'WIF', 
-      name: 'dogwifhat', 
-      priceInUsdc: TOKEN_PRICES.WIF, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/EKpQGSJtjMFqKZ9KQGWjzCx4WnvZymCfLXaZNepvCSnM.png' 
-    },
-    { 
-      symbol: 'BONK', 
-      name: 'Bonk Coin', 
-      priceInUsdc: TOKEN_PRICES.BONK, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/DezXAZ8z7PnrnRJjz3wXqhAzBSrgJDuEUKvJaJZ5c9bA.png' 
-    },
-    { 
-      symbol: 'POPCAT', 
-      name: 'Popcat', 
-      priceInUsdc: TOKEN_PRICES.POPCAT, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr.png' 
-    },
-    { 
-      symbol: 'RENDER', 
-      name: 'Render Token', 
-      priceInUsdc: TOKEN_PRICES.RENDER, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/rndr4vtjaoz4aswbyf9rrpuf26rbyusa3ni1ttrbb2g.png' 
-    },
-    { 
-      symbol: 'JitoSOL', 
-      name: 'Jito Staked SOL', 
-      priceInUsdc: TOKEN_PRICES.JitoSOL, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/J1toso1uCk3RLmjorhTthVwY9vGf4wQrHz1w1idAQMJ.png' 
-    },
-    { 
-      symbol: 'JUP', 
-      name: 'Jupiter', 
-      priceInUsdc: TOKEN_PRICES.JUP, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/JUPyiwrYJGwHM4ZzN8TA73uYzY76mU8DLYA9bAqiJrxo.png' 
-    },
-    { 
-      symbol: 'PYTH', 
-      name: 'Pyth Network', 
-      priceInUsdc: TOKEN_PRICES.PYTH, 
-      logo: 'https://token-list.solana.external-api.jup.ag/images/HZ12NQC9u1Ub9RE691bnh361fZbWq89fGs3Co393HX2g.png' 
-    }
+    { symbol: 'USDC', name: 'USD Coin', priceInUsdc: TOKEN_PRICES.USDC },
+    { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT },
+    { symbol: 'SOL', name: 'Solana', priceInUsdc: TOKEN_PRICES.SOL },
+    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: TOKEN_PRICES.WSOL },
+    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: TOKEN_PRICES.ZQI },
+    { symbol: 'WIF', name: 'dogwifhat', priceInUsdc: TOKEN_PRICES.WIF },
+    { symbol: 'BONK', name: 'Bonk Coin', priceInUsdc: TOKEN_PRICES.BONK },
+    { symbol: 'POPCAT', name: 'Popcat', priceInUsdc: TOKEN_PRICES.POPCAT },
+    { symbol: 'RENDER', name: 'Render Token', priceInUsdc: TOKEN_PRICES.RENDER },
+    { symbol: 'JitoSOL', name: 'Jito Staked SOL', priceInUsdc: TOKEN_PRICES.JitoSOL },
+    { symbol: 'JUP', name: 'Jupiter', priceInUsdc: TOKEN_PRICES.JUP },
+    { symbol: 'PYTH', name: 'Pyth Network', priceInUsdc: TOKEN_PRICES.PYTH }
   ];
 
   useEffect(() => {
@@ -561,9 +501,6 @@ function App() {
     );
   }
 
-  const activePayToken = tokens.find(t => t.symbol === tokenPay);
-  const activeReceiveToken = tokens.find(t => t.symbol === tokenReceive);
-
   return (
     <>
       <ComplianceModal />
@@ -643,9 +580,6 @@ function App() {
               <div className="swap-input-container">
                 <label>You Pay</label>
                 <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                  {activePayToken?.logo && (
-                    <img src={activePayToken.logo} alt={tokenPay} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'contain', flexShrink: 0 }} />
-                  )}
                   <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
                   <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0b0f19', color: '#fff', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', outline: 'none', cursor: 'pointer' }}>
                     {tokens.map(t => (
@@ -661,9 +595,6 @@ function App() {
               <div className="swap-input-container">
                 <label>You Receive (Estimated)</label>
                 <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                  {activeReceiveToken?.logo && (
-                    <img src={activeReceiveToken.logo} alt={tokenReceive} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'contain', flexShrink: 0 }} />
-                  )}
                   <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
                   <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '800', color: '#38bdf8', paddingRight: '6px', fontSize: '1rem' }}>{tokenReceive}</span>
                 </div>
@@ -869,14 +800,14 @@ function App() {
         )}
       </main>
 
-      <header className="dapp-footer" style={{ borderTop: '1px solid #1f2937', padding: '20px 8%', background: '#060911', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
+      <footer className="dapp-footer" style={{ borderTop: '1px solid #1f2937', padding: '20px 8%', background: '#060911', display: 'flex', justifycontent: 'space-between', alignItems: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
         <p>© 2026 ZoniqFi Hub. All Rights Reserved. Secure White-Label Protocol Template</p>
         <div className="footer-links-row" style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
           <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none' }}>Documentation</a>
           <a href="#audit" onClick={() => alert('Security Audits underway.')} style={{ color: '#94a3b8', textDecoration: 'none' }}>Security Audit 🛡️</a>
           <a href="#disclaimer" onClick={() => alert('Non-custodial application.')} style={{ color: '#94a3b8', textDecoration: 'none' }}>Legal Disclaimer</a>
         </div>
-      </header>
+      </footer>
     </>
   );
 }
