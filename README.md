@@ -1,86 +1,86 @@
 # ⚡ ZoniqFi Hub — Premium Solana White-Label dApp Infrastructure
 
-ZoniqFi Hub adalah infrastruktur DeFi *turnkey ready-to-deploy* premium yang dirancang khusus untuk jaringan Solana. Dikembangkan menggunakan React, Vite, dan terintegrasi penuh dengan **Jupiter Price API v2** serta **Jito MEV-Protection Engine**, repositori ini menyediakan modul utilitas instan bagi proyek koin atau token komunitas guna meningkatkan retensi holder, mempercepat volume transaksi, dan membangun ekosistem riil dalam 24 jam.
+ZoniqFi Hub is a premium, turnkey, ready-to-deploy DeFi dApp infrastructure engineered specifically for the Solana blockchain. Built using React, Vite, and fully integrated with the **Jupiter Price API v2** and **Jito MEV-Protection Engine**, this repository delivers instant utility modules for project owners and community tokens to skyrocket holder retention, accelerate trading volume, and establish a real ecosystem within 24 hours.
 
 ---
 
-## 🚀 Fitur Utama & Arsitektur Modular (Devnet Verified)
+## 🚀 Key Features & Modular Architecture (Devnet Verified)
 
-Aplikasi ini menggunakan sistem **Kecerdasan Deteksi Paket** otomatis berbasis parameter URL (`?pkg=...`). Anda dapat menjual produk ini secara terpisah atau beralih ke paket komersial penuh (*Ultimate Suite*) hanya melalui konfigurasi *environment variables*.
+The application utilizes an intelligent, built-in **Package Detection Engine** driven by URL parameters (`?pkg=...`). This allows you to sell features individually or offer the comprehensive full suite (*Ultimate DeFi Suite*) seamlessly via environment variables.
 
 ### 1. AMM DEX Swap (Anti-MEV Secure)
-* **Live Price Feeds:** Sinkronisasi harga pasar riil secara otomatis setiap 30 detik memanfaatkan agregator likuiditas nomor satu di Solana (Jupiter API v2).
-* **Jito MEV Shield:** Melindungi transaksi pengguna dari taktik pembajakan bot (*sandwich attacks*) menggunakan simulasi bundel transaksi privat Jito.
-* **Anti-Wash Trading:** Algoritma internal untuk memantau siklus transaksi harian guna menjaga keaslian pergerakan grafik pasar.
+* **Live Price Feeds:** Automatically syncs real-time market rates every 30 seconds by leveraging Solana's premier liquidity aggregator (Jupiter API v2).
+* **Jito MEV Shield:** Shields retail traders from malicious front-running and sandwich bots using simulated Jito private transaction bundles.
+* **Anti-Wash Trading:** Embedded internal algorithms to track daily transaction cycles, protecting your charts from artificial volume manipulation.
 
 ### 2. Yield Optimizer Vaults
-* **Auto-Compounding Logic:** Protokol pengelolaan aset otomatis yang menawarkan simulasi keuntungan harian optimal (hingga 0.11% per hari / 49.1% APY).
-* **Interactive Forecast Calculator:** Panel kalkulator proyeksi pendapatan tersemat (Harian, Bulanan, Tahunan) untuk memikat interaksi psikologis pengguna dalam menyimpan aset.
+* **Auto-Compounding Logic:** Automated asset management protocol offering optimized daily yield simulations (up to 0.11% daily / 49.1% APY).
+* **Interactive Forecast Calculator:** An embedded projection panel (Daily, Monthly, Annual metrics) designed to gamify user interaction and incentivize long-term asset locking.
 
 ### 3. ZQI Lock & Yield Hub
-* **Cryptographic Staking Epoch:** Mekanisme penguncian token utilitas kustom **$ZQI** dalam Horizon Waktu 7-Hari yang aman secara on-chain.
-* **Real Yield Distribution:** Hadiah staking didistribusikan menggunakan mata uang stabil (USDC), memitigasi tekanan jual pada token utama proyek.
-* **Emergency Early Unlock System:** Aturan tegas dApp di mana pembukaan kunci prematur dikenakan penalti pemusnahan aset sebesar 10% (*Deflationary Burn Penalty*).
+* **Cryptographic Staking Epoch:** A secure on-chain locking mechanism for the custom native utility token **$ZQI** bound to a 7-day epoch horizon.
+* **Real Yield Distribution:** Staking rewards are accrued and paid out in stablecoins (USDC), mitigating selling pressure on the project's primary token.
+* **Deflationary Burn Penalty:** Strict protocol enforcement where premature vault unlocks incur a mandatory 10% deflationary supply burn penalty.
 
 ### 4. Tiered On-Chain Affiliate (Referral System)
-* **Sybil Attack Prevention:** Pembatasan ketat laju eksekusi tautan (maksimal 1 transaksi per 10 detik) untuk memblokir eksploitasi multi-wallet palsu.
-* **Dynamic Tiering Matrix:** Sistem kalkulasi level volume otomatis berdasarkan rujukan pengguna:
-    * **Bronze Tier:** Volume $0 - $10,000 ➜ Komisi 10%
-    * **Silver Tier:** Volume $10,001 - $100,000 ➜ Komisi 18%
-    * **Gold Tier:** Volume > $100,000 ➜ Komisi 25%
+* **Sybil Attack Prevention:** Imposes a strict cooldown rate-limit (maximum 1 transaction per 10 seconds) to completely block multi-wallet bot manipulation.
+* **Dynamic Tiering Matrix:** Automated commission tier calculation based on user referral trading volume:
+    * **Bronze Tier:** Volume $0 - $10,000 ➜ 10% Commission
+    * **Silver Tier:** Volume $10,001 - $100,000 ➜ 18% Commission
+    * **Gold Tier:** Volume > $100,000 ➜ 25% Commission
 
 ---
 
-## 📊 Matriks Integrasi Data Pasar Riil (Jupiter Price API)
+## 📊 Live Market Data Integration Matrix (Jupiter Price API)
 
-Aplikasi ini secara bawaan melacak token utama Solana berikut di latar belakang menggunakan alamat mint resmi mereka:
+The dApp actively tracks top-tier Solana ecosystem assets in the background using their official on-chain mint addresses:
 
-| Token Asset | Deskripsi | Status Data |
+| Token Asset | Description | Feed Status |
 | :--- | :--- | :--- |
-| **SOL / WSOL** | Solana Native & Wrapped | Live Market Feed |
-| **USDC / USDT** | Fiat Stablecoins | Live Market Feed |
-| **ZQI** | ZoniqFi Utility Token ($0.50 Base) | Locked/Statis (Dapat dikustomisasi) |
-| **WIF / BONK / POPCAT** | Blue-chip Solana Meme Coins | Live Market Feed |
+| **SOL / WSOL** | Native Solana & Wrapped SOL | Live Market Feed |
+| **USDC / USDT** | Major US Dollar Stablecoins | Live Market Feed |
+| **ZQI** | ZoniqFi Utility Token ($0.50 Base) | Locked/Static (Fully Customizable) |
+| **WIF / BONK / POPCAT** | Solana Blue-chip Meme Assets | Live Market Feed |
 | **RENDER** | AI DePIN Network Token | Live Market Feed |
-| **JitoSOL / JUP / PYTH** | DeFi Infrastructure Assets | Live Market Feed |
+| **JitoSOL / JUP / PYTH** | Core DeFi & Oracle Infrastructure | Live Market Feed |
 
 ---
 
-## 💼 Skema Komersialisasi & Struktur Paket Lisensi
+## 💼 White-Label Monetization & Licensing Structures
 
-Template dApp ini dikemas untuk mendukung 5 model monetisasi lisensi *software*:
+This dApp architecture is pre-configured to support 5 commercial software tiers:
 
-1.  **Entry / Viral Launch ($499):** Swap Modul + Sistem Afiliasi (Optimal untuk koin meme mikro-kapitalisasi).
-2.  **Token Velocity ($1,299):** Paket Swap + Yield Optimizer + Afiliasi (Mengurangi tekanan jual pasar).
-3.  **Whale Retention Suite ($1,199):** Token Locker Hub + Real Yield USDC Pool + Afiliasi (Mengunci suplai beredar).
-4.  **Safe Staking Hub ($1,099):** Yield Optimizer + Token Locker Hub (Murni DeFi manajemen aset).
-5.  **Ultimate DeFi Suite ($2,499):** Akses penuh seluruh modul 4-in-1 secara komprehensif.
+1.  **Entry / Viral Launch ($499):** AMM Swap + Affiliate System (Perfect for micro-cap meme coins needing rapid volume acceleration).
+2.  **Token Velocity ($1,299):** AMM Swap + Yield Optimizer + Affiliate (Our most popular package to mitigate heavy market sell-offs).
+3.  **Whale Retention Suite ($1,199):** Token Locker Hub + Real Yield USDC Pool + Affiliate (Engineered to lock up circulating supply).
+4.  **Safe Staking Hub ($1,099):** Yield Optimizer + Token Locker Hub (A pure DeFi asset management platform).
+5.  **Ultimate DeFi Suite ($2,499):** Complete unhindered access to all 4-in-1 core modular feature sets.
 
 ---
 
-## 🛠️ Panduan Instalasi Lokal (Development)
+## 🛠️ Local Installation & Development
 
-Pastikan Anda telah menginstal [Node.js](https://nodejs.org/) di perangkat Anda sebelum memulai proses instalasi.
+Ensure you have [Node.js](https://nodejs.org/) installed on your machine before running the setup commands.
 
-1.  **Kloning Repositori:**
-    ```bash
+1.  **Clone the Repository:**
+```bash
     git clone [https://github.com/username/zoniqfi-hub.git](https://github.com/username/zoniqfi-hub.git)
     cd zoniqfi-hub
     ```
 
-2.  **Instalasi Dependensi:**
-    ```bash
+2.  **Install Dependencies:**
+```bash
     npm install
     ```
 
-3.  **Jalankan Server Lokal:**
-    ```bash
+3.  **Launch the Local Development Server:**
+```bash
     npm run dev
     ```
-    Aplikasi akan berjalan di alamat `http://localhost:5173`.
+    The application will now be live at `http://localhost:5173`.
 
-4.  **Uji Coba Tampilan Paket:**
-    Tambahkan query string di ujung URL lokal untuk menguji fungsionalitas visual masing-masing lisensi paket:
+4.  **Testing Modular Package Queries:**
+    Append the query strings to your local URL to test the responsive visual parameters for each package tier:
     * `http://localhost:5173/?pkg=entry`
     * `http://localhost:5173/?pkg=velocity`
     * `http://localhost:5173/?pkg=whale`
@@ -88,12 +88,12 @@ Pastikan Anda telah menginstal [Node.js](https://nodejs.org/) di perangkat Anda 
 
 ---
 
-## 🌐 Produksi & Deployment (Vercel Ready)
+## 🌐 Production & Vercel Deployment Ready
 
-Script dApp ini telah dioptimalisasi secara penuh agar **100% Lolos Uji Build Sukses** di platform Vercel atau Netlify. Seluruh aset gambar broken link telah dibersihkan demi menjaga estetika visual UI/UX minimalis yang modern.
+This dApp frontend code is fully optimized to ensure a **100% Successful Build Pass** on platforms like Vercel or Netlify. All broken external image references have been thoroughly sanitized to preserve a clean, modern, high-end Web3 UI/UX aesthetic.
 
-* **Cluster Network Default:** `Solana Devnet` (Menghindari pemborosan gas fee SOL asli selama masa demo penjualan ke klien).
-* **Migrasi ke Mainnet:** Cukup ubah parameter variabel string `SOLANA_NETWORK` dari `"devnet"` ke `"mainnet-beta"` saat produk siap diluncurkan secara komersial oleh pembeli lisensi Anda.
+* **Default Network Cluster:** `Solana Devnet` (Prevents real SOL gas-fee burn during the client sales pitch and demo phase).
+* **Mainnet Migration:** Simply switch the string variable parameter `SOLANA_NETWORK` from `"devnet"` to `"mainnet-beta"` in the root config file once your client is ready to launch their token ecosystem live.
 
 ---
 
