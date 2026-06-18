@@ -20,8 +20,8 @@ const SOLANA_NETWORK = "devnet";
 const BASE_EPOCH_HORIZON_MS = 604800000; 
 const EMERGENCY_BURN_PENALTY_RATE = 0.10; 
 
-// CONFIG: TOKEN MARKET RATES
-const TOKEN_PRICES = { 
+// INITIAL STATIC FALLBACK PRICES
+const INITIAL_PRICES = { 
   SOL: 170.00, 
   USDT: 1.00, 
   USDC: 1.00, 
@@ -100,6 +100,57 @@ function App() {
   const [referralVolume, setReferralVolume] = useState('$0.00');
   const [tierLabel, setTierLabel] = useState('Bronze (10%)');
   const [tierColor, setTierColor] = useState('#14b8a6');
+
+  // ==========================================================================
+  // LIVE PRICE HANDLER (JUPITER API INTEGRATION)
+  // ==========================================================================
+  const [tokenPrices, setTokenPrices] = useState(INITIAL_PRICES);
+
+  useEffect(() => {
+    const fetchLivePrices = async () => {
+      try {
+        // Jupiter Price API v2 menggunakan Mint Addresses dari token Solana utama
+        const mints = [
+          'So11111111111111111111111111111111111111112', // SOL & WSOL
+          'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', // USDT
+          'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', // USDC
+          'EKpQGSJtjMFqKZ9KQGWjzCx4WnvZymCfLXaZNepvCSnM', // WIF
+          'DezXAZ8z7PnrnRJjz3wXqhAzBSrgJDuEUKvJaJZ5c9bA', // BONK
+          '7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr', // POPCAT
+          'rndr4vtjaoz4aswbyf9rrpuf26rbyusa3ni1ttrbb2g', // RENDER
+          'J1toso1uCk3RLmjorhTthVwY9vGf4wQrHz1w1idAQMJ', // JitoSOL
+          'JUPyiwrYJGwHM4ZzN8TA73uYzY76mU8DLYA9bAqiJrxo', // JUP
+          'HZ12NQC9u1Ub9RE691bnh361fZbWq89fGs3Co393HX2g'  // PYTH
+        ];
+        
+        const response = await fetch(`https://api.jup.ag/price/v2?ids=${mints.join(',')}`);
+        const json = await response.json();
+        
+        if (json && json.data) {
+          setTokenPrices(prev => ({
+            ...prev,
+            SOL: parseFloat(json.data['So11111111111111111111111111111111111111112']?.price) || prev.SOL,
+            WSOL: parseFloat(json.data['So11111111111111111111111111111111111111112']?.price) || prev.WSOL,
+            USDT: parseFloat(json.data['Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB']?.price) || prev.USDT,
+            USDC: parseFloat(json.data['EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v']?.price) || prev.USDC,
+            WIF: parseFloat(json.data['EKpQGSJtjMFqKZ9KQGWjzCx4WnvZymCfLXaZNepvCSnM']?.price) || prev.WIF,
+            BONK: parseFloat(json.data['DezXAZ8z7PnrnRJjz3wXqhAzBSrgJDuEUKvJaJZ5c9bA']?.price) || prev.BONK,
+            POPCAT: parseFloat(json.data['7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr']?.price) || prev.POPCAT,
+            RENDER: parseFloat(json.data['rndr4vtjaoz4aswbyf9rrpuf26rbyusa3ni1ttrbb2g']?.price) || prev.RENDER,
+            JitoSOL: parseFloat(json.data['J1toso1uCk3RLmjorhTthVwY9vGf4wQrHz1w1idAQMJ']?.price) || prev.JitoSOL,
+            JUP: parseFloat(json.data['JUPyiwrYJGwHM4ZzN8TA73uYzY76mU8DLYA9bAqiJrxo']?.price) || prev.JUP,
+            PYTH: parseFloat(json.data['HZ12NQC9u1Ub9RE691bnh361fZbWq89fGs3Co393HX2g']?.price) || prev.PYTH
+          }));
+        }
+      } catch (error) {
+        console.warn("Gagal sinkronisasi Jupiter Live Price Engine:", error);
+      }
+    };
+
+    fetchLivePrices();
+    const priceInterval = setInterval(fetchLivePrices, 30000);
+    return () => clearInterval(priceInterval);
+  }, []);
 
   const triggerBanner = (message, type = "success") => {
     setSecurityBanner({ show: true, message, type });
@@ -211,20 +262,20 @@ function App() {
     triggerBanner("Wallet disconnected.", "warning");
   };
 
-  // CLEAN TOKENS LIST
+  // DYNAMIC TOKENS LIST REFERENCING REAL-TIME LIVE STATE PRICE
   const tokens = [
-    { symbol: 'USDC', name: 'USD Coin', priceInUsdc: TOKEN_PRICES.USDC },
-    { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT },
-    { symbol: 'SOL', name: 'Solana', priceInUsdc: TOKEN_PRICES.SOL },
-    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: TOKEN_PRICES.WSOL },
-    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: TOKEN_PRICES.ZQI },
-    { symbol: 'WIF', name: 'dogwifhat', priceInUsdc: TOKEN_PRICES.WIF },
-    { symbol: 'BONK', name: 'Bonk Coin', priceInUsdc: TOKEN_PRICES.BONK },
-    { symbol: 'POPCAT', name: 'Popcat', priceInUsdc: TOKEN_PRICES.POPCAT },
-    { symbol: 'RENDER', name: 'Render Token', priceInUsdc: TOKEN_PRICES.RENDER },
-    { symbol: 'JitoSOL', name: 'Jito Staked SOL', priceInUsdc: TOKEN_PRICES.JitoSOL },
-    { symbol: 'JUP', name: 'Jupiter', priceInUsdc: TOKEN_PRICES.JUP },
-    { symbol: 'PYTH', name: 'Pyth Network', priceInUsdc: TOKEN_PRICES.PYTH }
+    { symbol: 'USDC', name: 'USD Coin', priceInUsdc: tokenPrices.USDC },
+    { symbol: 'USDT', name: 'Tether', priceInUsdc: tokenPrices.USDT },
+    { symbol: 'SOL', name: 'Solana', priceInUsdc: tokenPrices.SOL },
+    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: tokenPrices.WSOL },
+    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: tokenPrices.ZQI },
+    { symbol: 'WIF', name: 'dogwifhat', priceInUsdc: tokenPrices.WIF },
+    { symbol: 'BONK', name: 'Bonk Coin', priceInUsdc: tokenPrices.BONK },
+    { symbol: 'POPCAT', name: 'Popcat', priceInUsdc: tokenPrices.POPCAT },
+    { symbol: 'RENDER', name: 'Render Token', priceInUsdc: tokenPrices.RENDER },
+    { symbol: 'JitoSOL', name: 'Jito Staked SOL', priceInUsdc: tokenPrices.JitoSOL },
+    { symbol: 'JUP', name: 'Jupiter', priceInUsdc: tokenPrices.JUP },
+    { symbol: 'PYTH', name: 'Pyth Network', priceInUsdc: tokenPrices.PYTH }
   ];
 
   useEffect(() => {
@@ -242,7 +293,7 @@ function App() {
     } else {
       setReceiveAmount('0.0');
     }
-  }, [payAmount, tokenPay, tokenReceive]);
+  }, [payAmount, tokenPay, tokenReceive, tokenPrices]); // Added tokenPrices dependency for live mathematical reload
 
   const handleTokenChange = (val) => {
     setTokenPay(val);
@@ -398,7 +449,7 @@ function App() {
       const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
       setEarnedUsdcDisplay(((amount * 0.05) * finalMultiplier).toFixed(2) + " USDC");
       setShowRewardRow(true);
-      setProtocolTVL(prev => prev + (amount * TOKEN_PRICES.ZQI)); 
+      setProtocolTVL(prev => prev + (amount * tokenPrices.ZQI)); 
 
       setTimeout(() => {
         setRewardClaimable(true);
@@ -444,7 +495,7 @@ function App() {
       const finalAmountReturned = stakedAmount - penaltyAmount;
 
       setZqiBalance(prev => prev + finalAmountReturned);
-      setProtocolTVL(prev => prev - (stakedAmount * TOKEN_PRICES.ZQI));
+      setProtocolTVL(prev => prev - (stakedAmount * tokenPrices.ZQI));
       
       triggerBanner(`🔥 Success: ${penaltyAmount} ZQI burned!`, "success");
       
@@ -800,7 +851,7 @@ function App() {
         )}
       </main>
 
-      <footer className="dapp-footer" style={{ borderTop: '1px solid #1f2937', padding: '20px 8%', background: '#060911', display: 'flex', justifycontent: 'space-between', alignItems: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
+      <footer className="dapp-footer" style={{ borderTop: '1px solid #1f2937', padding: '20px 8%', background: '#060911', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>
         <p>© 2026 ZoniqFi Hub. All Rights Reserved. Secure White-Label Protocol Template</p>
         <div className="footer-links-row" style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
           <a href="https://provizto.github.io/vzt-docs/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none' }}>Documentation</a>
