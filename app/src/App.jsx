@@ -20,8 +20,18 @@ const SOLANA_NETWORK = "devnet";
 const BASE_EPOCH_HORIZON_MS = 604800000; 
 const EMERGENCY_BURN_PENALTY_RATE = 0.10; 
 
-// BRAND UPDATED: VZT TO ZQI PROPERTY CONVERSION
-const TOKEN_PRICES = { SOL: 170.00, USDT: 1.00, USDC: 1.00, WSOL: 170.00, ZQI: 0.50 };
+// INTEGRASI: DAFTAR HARGA TOKENS TERMASUK MEME & AI POPULER DI SOLANA
+const TOKEN_PRICES = { 
+  SOL: 170.00, 
+  USDT: 1.00, 
+  USDC: 1.00, 
+  WSOL: 170.00, 
+  ZQI: 0.50,
+  WIF: 2.50,     
+  BONK: 0.00002, 
+  POPCAT: 1.10,  
+  RENDER: 7.80   
+};
 
 function App() {
   const [view, setView] = useState('landing'); 
@@ -47,7 +57,6 @@ function App() {
   const [isTokenLocked, setIsTokenLocked] = useState(false);
   const [swapsCount, setSwapsCount] = useState(45210); 
   
-  // STATE UPDATED TO ZQI
   const [zqiBalance, setZqiBalance] = useState(0); 
   const [stakedAmount, setStakedAmount] = useState(0); 
   
@@ -66,7 +75,7 @@ function App() {
   const [payAmount, setPayAmount] = useState('0');
   const [receiveAmount, setReceiveAmount] = useState('0.0');
   const [tokenPay, setTokenPay] = useState('USDC');
-  const [tokenReceive, setTokenReceive] = useState('ZQI'); // Default changed to ZQI
+  const [tokenReceive, setTokenReceive] = useState('ZQI'); 
   const [swapFee, setSwapFee] = useState('0.0000');
   const [txLog, setTxLog] = useState('');
 
@@ -77,7 +86,7 @@ function App() {
   const [lockCalculationMode, setLockCalculationMode] = useState('manual'); 
   const [lockAmount, setLockAmount] = useState('0'); 
   const [chosenMultiplier, setChosenMultiplier] = useState(2.5); 
-  const [liveScore, setLiveScore] = useState('0 ZQI Share'); // Updated to ZQI
+  const [liveScore, setLiveScore] = useState('0 ZQI Share'); 
   const [estimatedRewardText, setEstimatedRewardText] = useState('');
   const [showRewardRow, setShowRewardRow] = useState(false);
   const [earnedUsdcDisplay, setEarnedUsdcDisplay] = useState('0.00 USDC');
@@ -199,12 +208,17 @@ function App() {
     triggerBanner("Wallet disconnected.", "warning");
   };
 
+  // INTEGRASI DATA ICON ASLI KHUSUS JARiNGAN SOLANA
   const tokens = [
-    { symbol: 'USDC', name: 'USD Coin', priceInUsdc: TOKEN_PRICES.USDC },
-    { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT },
-    { symbol: 'SOL', name: 'Solana', priceInUsdc: TOKEN_PRICES.SOL },
-    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: TOKEN_PRICES.WSOL },
-    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: TOKEN_PRICES.ZQI } // Updated to ZQI
+    { symbol: 'USDC', name: 'USD Coin', priceInUsdc: TOKEN_PRICES.USDC, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png' },
+    { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png' },
+    { symbol: 'SOL', name: 'Solana', priceInUsdc: TOKEN_PRICES.SOL, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' },
+    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: TOKEN_PRICES.WSOL, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' },
+    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: TOKEN_PRICES.ZQI, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/9v836AEE6AEE38F8EE2386/logo.png' }, // Simulated custom token native icon asset
+    { symbol: 'WIF', name: 'dogwifhat', priceInUsdc: TOKEN_PRICES.WIF, logo: 'https://bafkreidv7un67gkd7wfebe364b6wdsf2wbvffjauun25v266fub2yyrbqq.ipfs.nftstorage.link' },
+    { symbol: 'BONK', name: 'Bonk Coin', priceInUsdc: TOKEN_PRICES.BONK, logo: 'https://h6z7v7wdrwck7g5g2v6f2u6f2u6f2u6f2u6f2u6f2u.ipfs.nftstorage.link' },
+    { symbol: 'POPCAT', name: 'Popcat', priceInUsdc: TOKEN_PRICES.POPCAT, logo: 'https://bafkreihqivpbyaywpxi7snfof43fev7w6p23g6ujpx5wexmco3gfyq3wre.ipfs.nftstorage.link' },
+    { symbol: 'RENDER', name: 'Render Token', priceInUsdc: TOKEN_PRICES.RENDER, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/rndr19837aef83bcfead8e38fecbaad8e38fecbaad/logo.png' }
   ];
 
   useEffect(() => {
@@ -226,7 +240,7 @@ function App() {
 
   const handleTokenChange = (val) => {
     setTokenPay(val);
-    setTokenReceive(val === 'ZQI' ? 'USDC' : 'ZQI'); // Updated to ZQI
+    setTokenReceive(val === 'ZQI' ? 'USDC' : 'ZQI'); 
   };
 
   const switchTokens = () => {
@@ -280,7 +294,7 @@ function App() {
       setReceiveAmount('0.0');
     } catch (error) {
       setTxLog('Transaction failed.');
-    } finally {
+    } Platform; finally {
       setIsSwapLoading(false);
     }
   };
@@ -481,6 +495,10 @@ function App() {
     );
   }
 
+  // MENGAMBIL DATA LOGO DARI TOKEN YANG SEDANG AKTIF TERPILIH DI STATE
+  const activePayToken = tokens.find(t => t.symbol === tokenPay);
+  const activeReceiveToken = tokens.find(t => t.symbol === tokenReceive);
+
   return (
     <>
       <ComplianceModal />
@@ -556,23 +574,33 @@ function App() {
               </div>
               <p className="desc">Instant asset swapping with MEV protection and daily Anti-Wash Trading features.</p>
 
+              {/* FIELD INPUT: YOU PAY */}
               <div className="swap-input-container">
                 <label>You Pay</label>
-                <div className="field-row">
-                  <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} />
-                  <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)}>
-                    <option value="USDC">USDC</option><option value="USDT">USDT</option><option value="SOL">SOL</option><option value="WSOL">WSOL</option><option value="ZQI">ZQI</option>
+                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {activePayToken?.logo && (
+                    <img src={activePayToken.logo} alt={tokenPay} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                  )}
+                  <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1 }} />
+                  <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0f172a', color: '#fff', border: '1px solid #1e293b', padding: '8px', borderRadius: '6px', fontWeight: '600' }}>
+                    {tokens.map(t => (
+                      <option key={t.symbol} value={t.symbol}>{t.symbol}</option>
+                    ))}
                   </select>
                 </div>
               </div>
 
               <div className="swap-switch-row"><button className="btn-switch-tokens" onClick={switchTokens}>⇅</button></div>
 
+              {/* FIELD INPUT: YOU RECEIVE */}
               <div className="swap-input-container">
                 <label>You Receive (Estimated)</label>
-                <div className="field-row">
-                  <input type="text" id="receiveAmount" value={receiveAmount} readOnly />
-                  <span id="tokenReceiveLabel" className="static-token-label">{tokenReceive}</span>
+                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {activeReceiveToken?.logo && (
+                    <img src={activeReceiveToken.logo} alt={tokenReceive} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                  )}
+                  <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1 }} />
+                  <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '700', paddingRight: '8px', color: '#fff' }}>{tokenReceive}</span>
                 </div>
               </div>
 
