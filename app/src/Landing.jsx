@@ -45,21 +45,21 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
     {
       name: "Whale Retention Suite",
       desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
-      features: ["VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
+      features: ["ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
       price: "$1,199",
       demoLink: "https://whale.zoniqfinance.com/?pkg=whale" // GANTI JADI /?pkg=whale
     },
     {
       name: "Safe Staking Hub",
       desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
-      features: ["Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
+      features: ["Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
       price: "$1,099",
       demoLink: "https://staking.zoniqfinance.com/?pkg=staking" // GANTI JADI /?pkg=staking
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
       desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
-      features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "VZT Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
+      features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
       price: "$2,499",
       demoLink: "https://zoniqfinance.com" // Kembalikan ke link utama langsung tanpa /dashboard
     },
@@ -242,7 +242,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         <nav>
           <a href="#pricing">Packages</a>
           <a href="#faq">FAQ</a>
-          <a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer">Contact</a>
+          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer">Contact</a>
         </nav>
         <button onClick={onLaunchApp} className="btn-launch">
           Live dApp Demo
@@ -281,7 +281,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
                   <i className="fas fa-bolt" style={{ marginRight: '6px' }}></i> Try Live Demo
                 </a>
                 
-                <a href="https://t.me/yourTelegramUsername" target="_blank" rel="noopener noreferrer" className="btn-order">
+                <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="btn-order">
                   {pkg.price === "Contact Us" ? "Consult with Developers" : "Acquire License"}
                 </a>
               </div>
