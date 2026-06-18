@@ -20,7 +20,7 @@ const SOLANA_NETWORK = "devnet";
 const BASE_EPOCH_HORIZON_MS = 604800000; 
 const EMERGENCY_BURN_PENALTY_RATE = 0.10; 
 
-// INTEGRASI: DAFTAR HARGA TOKENS TERMASUK MEME & AI POPULER DI SOLANA
+// CONFIG: TOKEN MARKET RATES
 const TOKEN_PRICES = { 
   SOL: 170.00, 
   USDT: 1.00, 
@@ -208,17 +208,17 @@ function App() {
     triggerBanner("Wallet disconnected.", "warning");
   };
 
-  // INTEGRASI DATA ICON ASLI KHUSUS JARiNGAN SOLANA
+  // VERSI LIVE CDN ASSETS (AKTIF & ANTI-BROKEN)
   const tokens = [
-    { symbol: 'USDC', name: 'USD Coin', priceInUsdc: TOKEN_PRICES.USDC, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png' },
-    { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png' },
-    { symbol: 'SOL', name: 'Solana', priceInUsdc: TOKEN_PRICES.SOL, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' },
-    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: TOKEN_PRICES.WSOL, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png' },
-    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: TOKEN_PRICES.ZQI, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/9v836AEE6AEE38F8EE2386/logo.png' }, // Simulated custom token native icon asset
-    { symbol: 'WIF', name: 'dogwifhat', priceInUsdc: TOKEN_PRICES.WIF, logo: 'https://bafkreidv7un67gkd7wfebe364b6wdsf2wbvffjauun25v266fub2yyrbqq.ipfs.nftstorage.link' },
-    { symbol: 'BONK', name: 'Bonk Coin', priceInUsdc: TOKEN_PRICES.BONK, logo: 'https://h6z7v7wdrwck7g5g2v6f2u6f2u6f2u6f2u6f2u6f2u.ipfs.nftstorage.link' },
-    { symbol: 'POPCAT', name: 'Popcat', priceInUsdc: TOKEN_PRICES.POPCAT, logo: 'https://bafkreihqivpbyaywpxi7snfof43fev7w6p23g6ujpx5wexmco3gfyq3wre.ipfs.nftstorage.link' },
-    { symbol: 'RENDER', name: 'Render Token', priceInUsdc: TOKEN_PRICES.RENDER, logo: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/rndr19837aef83bcfead8e38fecbaad8e38fecbaad/logo.png' }
+    { symbol: 'USDC', name: 'USD Coin', priceInUsdc: TOKEN_PRICES.USDC, logo: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png' },
+    { symbol: 'USDT', name: 'Tether', priceInUsdc: TOKEN_PRICES.USDT, logo: 'https://assets.coingecko.com/coins/images/325/large/Tether.png' },
+    { symbol: 'SOL', name: 'Solana', priceInUsdc: TOKEN_PRICES.SOL, logo: 'https://assets.coingecko.com/coins/images/4128/large/solana.png' },
+    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: TOKEN_PRICES.WSOL, logo: 'https://assets.coingecko.com/coins/images/21629/large/wrapped-solana.png' },
+    { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: TOKEN_PRICES.ZQI, logo: 'https://assets.coingecko.com/coins/images/27901/large/logo_orange_borders.png' }, // Premium unique proxy logo placeholder
+    { symbol: 'WIF', name: 'dogwifhat', priceInUsdc: TOKEN_PRICES.WIF, logo: 'https://assets.coingecko.com/coins/images/33566/large/dogwifhat.png' },
+    { symbol: 'BONK', name: 'Bonk Coin', priceInUsdc: TOKEN_PRICES.BONK, logo: 'https://assets.coingecko.com/coins/images/28600/large/bonk.png' },
+    { symbol: 'POPCAT', name: 'Popcat', priceInUsdc: TOKEN_PRICES.POPCAT, logo: 'https://assets.coingecko.com/coins/images/34680/large/popcat.png' },
+    { symbol: 'RENDER', name: 'Render Token', priceInUsdc: TOKEN_PRICES.RENDER, logo: 'https://assets.coingecko.com/coins/images/31158/large/Render_Network_Logo.png' }
   ];
 
   useEffect(() => {
@@ -495,7 +495,6 @@ function App() {
     );
   }
 
-  // MENGAMBIL DATA LOGO DARI TOKEN YANG SEDANG AKTIF TERPILIH DI STATE
   const activePayToken = tokens.find(t => t.symbol === tokenPay);
   const activeReceiveToken = tokens.find(t => t.symbol === tokenReceive);
 
@@ -562,7 +561,7 @@ function App() {
           </div>
         )}
 
-        {/* GRID UTAMA PENYARING SAKLAR */}
+        {/* GRID UTAMA */}
         <section className="products-grid">
           
           {/* MODUL 1: SWAP */}
@@ -577,12 +576,12 @@ function App() {
               {/* FIELD INPUT: YOU PAY */}
               <div className="swap-input-container">
                 <label>You Pay</label>
-                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
                   {activePayToken?.logo && (
-                    <img src={activePayToken.logo} alt={tokenPay} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                    <img src={activePayToken.logo} alt={tokenPay} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'contain', flexShrink: 0 }} />
                   )}
-                  <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1 }} />
-                  <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0f172a', color: '#fff', border: '1px solid #1e293b', padding: '8px', borderRadius: '6px', fontWeight: '600' }}>
+                  <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
+                  <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0b0f19', color: '#fff', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', outline: 'none', cursor: 'pointer' }}>
                     {tokens.map(t => (
                       <option key={t.symbol} value={t.symbol}>{t.symbol}</option>
                     ))}
@@ -595,12 +594,12 @@ function App() {
               {/* FIELD INPUT: YOU RECEIVE */}
               <div className="swap-input-container">
                 <label>You Receive (Estimated)</label>
-                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
                   {activeReceiveToken?.logo && (
-                    <img src={activeReceiveToken.logo} alt={tokenReceive} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }} />
+                    <img src={activeReceiveToken.logo} alt={tokenReceive} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'contain', flexShrink: 0 }} />
                   )}
-                  <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1 }} />
-                  <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '700', paddingRight: '8px', color: '#fff' }}>{tokenReceive}</span>
+                  <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
+                  <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '800', color: '#38bdf8', paddingRight: '6px', fontSize: '1rem' }}>{tokenReceive}</span>
                 </div>
               </div>
 
