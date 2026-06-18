@@ -876,7 +876,7 @@ function App() {
           alignItems: 'center',
           flexWrap: 'wrap'
         }}>
-          <a href="https://github.com/provizto/vzt#read" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Documentation</a>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Documentation</a>
           <a href="#audit" onClick={() => alert('Security Audits underway.')} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Security Audit 🛡️</a>
           <a href="#disclaimer" onClick={() => alert('Non-custodial application.')} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Legal Disclaimer</a>
         </div>
