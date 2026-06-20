@@ -18,7 +18,6 @@ const ComplianceModal = () => {
   if (!isOpen) return null;
 
   return (
-    // Backdrop Hitam Transparan Terapung Penuh Layar
     <div style={{
       position: 'fixed', inset: 0, zIndex: 99999,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -26,7 +25,6 @@ const ComplianceModal = () => {
       padding: '20px'
     }}>
       
-      {/* Kotak Utama Pop-up Modals */}
       <div style={{
         backgroundColor: '#111111', border: '1px solid #27272a',
         maxWidth: '500px', width: '100%', borderRadius: '12px',
@@ -35,7 +33,13 @@ const ComplianceModal = () => {
         display: 'flex', flexDirection: 'column'
       }}>
         
-        {/* Header Pop-up */}
+        {/* PERBAIKAN SINTAKS: Inject stylesheet kustom untuk scrollbar agar lolos validasi compiler */}
+        <style dangerouslySetInnerHTML={{__html: `
+          .vzt-scroll-area::-webkit-scrollbar { width: 4px; }
+          .vzt-scroll-area::-webkit-scrollbar-track { background: #111; }
+          .vzt-scroll-area::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        `}} />
+
         <h2 style={{
           fontSize: '1.15rem', fontWeight: 'bold', color: '#14F195',
           letterSpacing: '0.05em', borderBottom: '1px solid #27272a',
@@ -44,19 +48,12 @@ const ComplianceModal = () => {
           ZONIQFI | TERMS & DEMO COMPLIANCE
         </h2>
         
-        {/* AREA KONTEN HUKUM DENGAN FITUR SCROLL OTOMATIS (HP BUG RESOLVED) */}
-        <div style={{
+        {/* AREA SCROLL DENGAN CLASS KHUSUS */}
+        <div className="vzt-scroll-area" style={{
           fontSize: '0.85rem', color: '#a1a1aa', lineHeight: '1.6', 
           display: 'flex', flexDirection: 'column', gap: '12px',
           maxHeight: '260px', overflowY: 'auto', paddingRight: '6px'
         }}>
-          {/* Custom CSS Scrollbar tipis internal */}
-          <style>{`
-            div::-webkit-scrollbar { width: 4px; }
-            div::-webkit-scrollbar-track { background: #111; }
-            div::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-          `}</style>
-
           <p style={{ margin: 0 }}>
             By clicking <strong>"I Agree & Enter App"</strong>, you explicitly acknowledge that you are entering the official white-label sandbox preview for the <strong>ZoniqFi Infrastructure Protocol</strong>.
           </p>
@@ -84,7 +81,6 @@ const ComplianceModal = () => {
           </p>
         </div>
 
-        {/* Tombol Aksi */}
         <div style={{
           marginTop: '24px', display: 'flex', gap: '12px', width: '100%', flexShrink: 0
         }}>
