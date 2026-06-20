@@ -4,14 +4,14 @@ const ComplianceModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const hasAccepted = localStorage.getItem('provizto_disclaimer_accepted');
+    const hasAccepted = localStorage.getItem('zoniqfi_demo_disclaimer_accepted');
     if (!hasAccepted) {
       setIsOpen(true);
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem('provizto_disclaimer_accepted', 'true');
+    localStorage.setItem('zoniqfi_demo_disclaimer_accepted', 'true');
     setIsOpen(false);
   };
 
@@ -31,48 +31,62 @@ const ComplianceModal = () => {
         backgroundColor: '#111111', border: '1px solid #27272a',
         maxWidth: '500px', width: '100%', borderRadius: '12px',
         padding: '24px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
-        color: '#ffffff', fontFamily: 'sans-serif', boxSizing: 'border-box'
+        color: '#ffffff', fontFamily: 'sans-serif', boxSizing: 'border-box',
+        display: 'flex', flexDirection: 'column'
       }}>
         
         {/* Header Pop-up */}
         <h2 style={{
-          fontSize: '1.25rem', fontWeight: 'bold', color: '#14F195',
+          fontSize: '1.15rem', fontWeight: 'bold', color: '#14F195',
           letterSpacing: '0.05em', borderBottom: '1px solid #27272a',
-          paddingBottom: '12px', margin: '0 0 16px 0'
+          paddingBottom: '12px', margin: '0 0 16px 0', flexShrink: 0
         }}>
-          ZONIQFI | TERMS & REGULATORY COMPLIANCE
+          ZONIQFI | TERMS & DEMO COMPLIANCE
         </h2>
         
-        {/* Konten Hukum */}
+        {/* AREA KONTEN HUKUM DENGAN FITUR SCROLL OTOMATIS (HP BUG RESOLVED) */}
         <div style={{
-          fontSize: '0.875rem', color: '#a1a1aa',
-          lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '12px'
+          fontSize: '0.85rem', color: '#a1a1aa', lineHeight: '1.6', 
+          display: 'flex', flexDirection: 'column', gap: '12px',
+          maxHeight: '260px', overflowY: 'auto', paddingRight: '6px'
         }}>
+          {/* Custom CSS Scrollbar tipis internal */}
+          <style>{`
+            div::-webkit-scrollbar { width: 4px; }
+            div::-webkit-scrollbar-track { background: #111; }
+            div::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+          `}</style>
+
           <p style={{ margin: 0 }}>
-            By clicking <strong>"I Agree & Enter App"</strong>, you explicitly acknowledge and confirm that you meet all regulatory and jurisdictional eligibility criteria to interact with the Provizto decentralized software protocol.
+            By clicking <strong>"I Agree & Enter App"</strong>, you explicitly acknowledge that you are entering the official white-label sandbox preview for the <strong>ZoniqFi Infrastructure Protocol</strong>.
           </p>
           
           <div style={{
             backgroundColor: 'rgba(39, 39, 42, 0.4)', border: '1px solid #27272a',
             borderRadius: '8px', padding: '12px', fontSize: '0.75rem'
           }}>
-            <p style={{ color: '#fbbf24', fontWeight: 'bold', margin: '0 0 4px 0' }}>⚠️ RESTRICTED JURISDICTIONS:</p>
+            <p style={{ color: '#fbbf24', fontWeight: 'bold', margin: '0 0 4px 0' }}>⚠️ LIVE ENVIRONMENT SIMULATION:</p>
             <p style={{ margin: 0, color: '#e4e4e7' }}>
-              Users who are citizens, residents, or green-card holders of the <strong>United States of America</strong>, or any OFAC-sanctioned nations, are strictly prohibited from accessing this DApp interface.
+              This interface serves as a secure multi-tenant staging architecture. All cryptographic interactions are isolated to the Solana Devnet cluster to guarantee risk-free parameters.
             </p>
           </div>
 
           <p style={{ fontSize: '0.75rem', margin: 0 }}>
-            1. <strong>Non-Custodial:</strong> Provizto is a self-custody software layer. You maintain absolute control over your digital assets and private keys at all times.
+            1. <strong>White-Label Customization:</strong> All features shown, including the token swap and real-yield pool allocations, can be customized completely with your tokenomics architecture within 24 hours.
           </p>
+          
           <p style={{ fontSize: '0.75rem', margin: 0 }}>
-            2. <strong>Algorithmic Risks:</strong> All automated yields, including the 49.1% APY auto-compounding reserves, are driven entirely by smart contract logic and market performance. No guarantees are made.
+            2. <strong>Non-Custodial Logic:</strong> ZoniqFi software infrastructure layers never store or manage user private keys. Every network handshake is signed directly by the user's secure browser wallet extension.
+          </p>
+
+          <p style={{ fontSize: '0.75rem', margin: 0 }}>
+            3. <strong>Anti-Exploit Mitigations:</strong> Production licenses feature deep Jito Engine bundles to mitigate heavy front-running risks and include tiered referral structures equipped with malicious multi-wallet prevention.
           </p>
         </div>
 
         {/* Tombol Aksi */}
         <div style={{
-          marginTop: '24px', display: 'flex', gap: '12px', width: '100%'
+          marginTop: '24px', display: 'flex', gap: '12px', width: '100%', flexShrink: 0
         }}>
           <a 
             href="https://google.com" 
