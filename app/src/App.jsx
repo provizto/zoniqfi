@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Landing from './Landing'; 
 import ComplianceModal from './components/ComplianceModal'; 
+import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRASI COMPONENT FORM
 import './App.css';
 
 // ==========================================================================
@@ -8,6 +9,7 @@ import './App.css';
 // ==========================================================================
 const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
 const activePackage = urlParams ? urlParams.get('pkg') : null;
+const currentViewParam = urlParams ? urlParams.get('view') : null; // DETEKSI PARAMETER VIEW FORM RAHASIA
 
 const SHOW_SWAP = activePackage !== 'whale' && activePackage !== 'staking';
 const SHOW_OPTIMIZER = activePackage === 'velocity' || activePackage === 'staking' || !activePackage;
@@ -42,8 +44,12 @@ function App() {
   useEffect(() => {
     const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const activePackage = urlParams ? urlParams.get('pkg') : null;
+    const currentViewParam = urlParams ? urlParams.get('view') : null;
     
-    if (activePackage) {
+    // LOGIKA PERALIHAN ROUTING PARAMETER RAHASIA VERCEL
+    if (currentViewParam === 'onboarding') {
+      setView('onboarding-rahasia');
+    } else if (activePackage) {
       setView('dashboard'); 
     }
   }, []);
@@ -542,6 +548,11 @@ function App() {
     }
   };
 
+  // CONDITIONAL RENDERING HALAMAN FORM ONBOARDING RAHASIA VIA URL
+  if (view === 'onboarding-rahasia') {
+    return <ClientOnboardingForm />;
+  }
+
   if (view === 'landing') {
     return (
       <>
@@ -850,9 +861,7 @@ function App() {
         )}
       </main>
 
-      {/* ==========================================================================
-          PERBAIKAN RESPONSIVITAS FOOTER (HP BUG RESOLVED - REF: image_d2cf46.jpg)
-          ========================================================================== */}
+      {/* FOOTER DENGAN INTEGRATION PERBAIKAN RESPONSIVITAS HP */}
       <footer className="dapp-footer" style={{ 
         borderTop: '1px solid #1f2937', 
         padding: '24px 5%', 
