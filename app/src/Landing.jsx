@@ -32,7 +32,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       desc: "Perfect for micro-cap meme coins requiring instant viral traction and rapid trading volume acceleration.",
       features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Anti-Sybil Engine Active", "Custom Brand UI/UX Tailoring", "Supports Phantom, Solflare, & Backpack"],
       price: "$499",
-      demoLink: "https://entry.zoniqfinance.com/?pkg=entry" // HAPUS /dashboard, GANTI JADI /?pkg=entry
+      demoLink: "https://entry.zoniqfinance.com/?pkg=entry" 
     },
     {
       name: "Token Velocity (3-in-1)",
@@ -40,28 +40,28 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate System", "Custom Brand UI/UX & Live Deployment", "Lifetime Core Updates & Bug Fixes"],
       price: "$1,299",
       popular: true,
-      demoLink: "https://velocity.zoniqfinance.com/?pkg=velocity" // GANTI JADI /?pkg=velocity
+      demoLink: "https://velocity.zoniqfinance.com/?pkg=velocity" 
     },
     {
       name: "Whale Retention Suite",
       desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
       features: ["ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
       price: "$1,199",
-      demoLink: "https://whale.zoniqfinance.com/?pkg=whale" // GANTI JADI /?pkg=whale
+      demoLink: "https://whale.zoniqfinance.com/?pkg=whale" 
     },
     {
       name: "Safe Staking Hub",
       desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
       features: ["Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
       price: "$1,099",
-      demoLink: "https://staking.zoniqfinance.com/?pkg=staking" // GANTI JADI /?pkg=staking
+      demoLink: "https://staking.zoniqfinance.com/?pkg=staking" 
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
       desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
       price: "$2,499",
-      demoLink: "https://zoniqfinance.com" // Kembalikan ke link utama langsung tanpa /dashboard
+      demoLink: "https://zoniqfinance.com" 
     },
     {
       name: "Ecosystem Hub / Custom Edition",
@@ -219,7 +219,12 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         #vzt-landing-page .faq-item { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 8px !important; margin-bottom: 15px !important; overflow: hidden !important; }
         #vzt-landing-page .faq-question { padding: 20px !important; font-weight: 600 !important; cursor: pointer !important; display: flex !important; justify-content: space-between !important; align-items: center; color: #fff !important; }
         #vzt-landing-page .faq-answer { padding: 0 20px !important; max-height: 0px; overflow: hidden !important; transition: max-height 0.3s ease, padding 0.3s ease !important; color: #94a3b8 !important; line-height: 1.6 !important; font-size: 0.95rem !important; text-align: left !important; }
+        
+        /* FOOTER BRANDING RE-LAYOUT */
         #vzt-landing-page footer { border-top: 1px solid #1f2937 !important; padding: 40px 8% !important; display: flex !important; justify-content: space-between !important; align-items: center !important; background: #060911 !important; }
+        #vzt-landing-page .footer-social-row { display: flex !important; gap: 16px !important; align-items: center !important; }
+        #vzt-landing-page .social-icon-btn { color: #64748b !important; font-size: 1.3rem !important; text-decoration: none !important; transition: color 0.2s ease, transform 0.2s ease !important; }
+        #vzt-landing-page .social-icon-btn:hover { color: #38bdf8 !important; transform: scale(1.1) !important; }
         
         .section-title { font-size: 2rem !important; font-weight: 800 !important; color: #ffffff !important; margin-bottom: 10px !important; text-align: center !important; }
         .section-desc { font-size: 1rem !important; color: #94a3b8 !important; max-width: 600px !important; margin: 0 auto 40px auto !important; text-align: center !important; }
@@ -310,9 +315,20 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         ))}
       </section>
 
-      {/* FOOTER */}
+      {/* FOOTER WITH INTEGRATED WEB3 SOCIAL LINKS */}
       <footer>
         <p>© 2026 ZoniqFi. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.</p>
+        <div className="footer-social-row">
+          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Telegram">
+            <i className="fab fa-telegram"></i>
+          </a>
+          <a href="https://x.com/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="X (Twitter)">
+            <i className="fab fa-x-twitter"></i>
+          </a>
+          <a href="https://discord.gg/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Discord">
+            <i className="fab fa-discord"></i>
+          </a>
+        </div>
       </footer>
     </div>
   );
