@@ -7,57 +7,47 @@ const ClientOnboardingForm = () => {
     brandColors: '',
     mintAddress: '',
     telegramLink: '',
-    twitterLink: '', // Dipertahankan untuk integrasi telegram
+    twitterLink: '', 
     customDomain: '',
     hostingPreference: 'cloudflare',
-    clientSignature: '' // Dipertahankan untuk verifikasi handle/wallet
+    clientSignature: '' 
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // ==========================================================================
-    // KREDENSIAL TELEGRAM BOT (Ganti dengan Token & Chat ID Anda)
+    // TARGET TRANSMISI DATA (FormSubmit Bypass CORS Engine)
     // ==========================================================================
-    const TELEGRAM_TOKEN = "8719708902:AAGRsfqqfrPlWi2KbifPiZRIH30bSD5yhL8";
-    const CHAT_ID = "8559621472";
+    const EMAIL_TUJUAN = "zoniqfi@gmail.com"; 
 
-    // Menyusun teks notifikasi terstruktur dengan format Markdown
-    const telegramMessage = `
-🚨 *NEW WHITE-LABEL ORDER RECEIVED* 🚨
-======================================
-• *Project Name:* ${formData.projectName}
-• *Token Ticker:* ${formData.tokenTicker}
-• *Mint Address:* \`${formData.mintAddress}\`
-• *Target Domain:* ${formData.customDomain}
-• *Hosting Pref:* ${formData.hostingPreference === 'cloudflare' ? 'Cloudflare DNS Access' : 'Isolated Hosting Request'}
-
-🌐 *Media Links:*
-• Telegram: ${formData.telegramLink}
-• Twitter/X: ${formData.twitterLink || 'Not Provided'}
-
-🎨 *Branding Hex / Codes:*
-${formData.brandColors}
-======================================
-👉 *Verified Handle/Wallet:* \`${formData.clientSignature || 'Manual Chat Check'}\`
-    `;
+    // Merakit payload data terstruktur untuk dikirimkan ke kotak masuk email Anda
+    const payload = {
+      "Project Name": formData.projectName,
+      "Token Ticker": formData.tokenTicker,
+      "Branding Colors / Hex": formData.brandColors,
+      "Solana Mint Address": formData.mintAddress,
+      "Official Telegram Link": formData.telegramLink,
+      "Official X (Twitter) Link": formData.twitterLink || "Not Provided",
+      "Target Custom Domain": formData.customDomain,
+      "Hosting Preference": formData.hostingPreference === 'cloudflare' ? 'Cloudflare DNS Access' : 'Isolated Hosting Request',
+      "Client Signature / Handle": formData.clientSignature
+    };
 
     try {
-      const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await fetch(`https://formsubmit.co/ajax/${EMAIL_TUJUAN}`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: telegramMessage,
-          parse_mode: 'Markdown'
-        })
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
-        alert("🎉 Onboarding data successfully submitted! Our team will review your parameters and ping you shortly.");
-        // Reset form setelah pengiriman berhasil
+        alert("🎉 Onboarding data successfully submitted! Our team will review your parameters and contact you shortly.");
+        
+        // Reset form state setelah transmisi sukses
         setFormData({
           projectName: '',
           tokenTicker: '',
@@ -71,11 +61,11 @@ ${formData.brandColors}
         });
         e.target.reset();
       } else {
-        throw new Error("Telegram API rejected the broadcast payload.");
+        throw new Error("Formsubmit routing validation rejected.");
       }
     } catch (error) {
-      console.error("Telegram Transmission Error:", error);
-      alert("⚠️ Network synchronization failed. Please reach out directly to @zoniqfi on Telegram.");
+      console.error("Submission Error Details:", error);
+      alert("⚠️ Connection sync failed. Please reach out directly to @zoniqfi on Telegram.");
     }
   };
 
