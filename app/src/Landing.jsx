@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import logoZoniqLarge from './assets/image_436281.png';
 
+// Mendeteksi domain dasar secara dinamis di level browser (menghapus format 'www.')
+const currentDomain = typeof window !== 'undefined' ? window.location.hostname.replace('www.', '') : 'zoniqfi.com';
+const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://zoniqfi.com';
+
 const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
   const [activeFaq, setActiveFaq] = useState(null);
 
@@ -33,7 +37,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       desc: "Perfect for micro-cap meme coins requiring instant viral traction and rapid trading volume acceleration.",
       features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Anti-Sybil Engine Active", "Custom Brand UI/UX Tailoring", "Supports Phantom, Solflare, & Backpack"],
       price: "$499",
-      demoLink: "https://entry.zoniqfinance.com/?pkg=entry" 
+      demoLink: `https://entry.${currentDomain}/?pkg=entry` 
     },
     {
       name: "Token Velocity (3-in-1)",
@@ -41,35 +45,35 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate System", "Custom Brand UI/UX & Live Deployment", "Lifetime Core Updates & Bug Fixes"],
       price: "$1,299",
       popular: true,
-      demoLink: "https://velocity.zoniqfinance.com/?pkg=velocity" 
+      demoLink: `https://velocity.${currentDomain}/?pkg=velocity` 
     },
     {
       name: "Whale Retention Suite",
       desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
       features: ["ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
       price: "$1,199",
-      demoLink: "https://whale.zoniqfinance.com/?pkg=whale" 
+      demoLink: `https://whale.${currentDomain}/?pkg=whale` 
     },
     {
       name: "Safe Staking Hub",
       desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
       features: ["Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
       price: "$1,099",
-      demoLink: "https://staking.zoniqfinance.com/?pkg=staking" 
+      demoLink: `https://staking.${currentDomain}/?pkg=staking` 
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
       desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
       price: "$2,499",
-      demoLink: "https://zoniqfinance.com" 
+      demoLink: currentOrigin
     },
     {
       name: "Ecosystem Hub / Custom Edition",
       desc: "Advanced custom on-chain infrastructure tailored to complex institutional protocol requirements.",
       features: ["Full 4-in-1 Complete Modular Feature Set", "Custom Tokenomics & Fee Allocation Routing", "Multi-Asset Smart Contract Settlement", "Advanced Proprietary Anti-Bot Mechanics", "Private On-Chain Infrastructure Consultation"],
       price: "Contact Us",
-      demoLink: "https://zoniqfinance.com"
+      demoLink: currentOrigin
     }
   ];
 
