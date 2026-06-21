@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import Landing from './Landing'; 
+import Landing from './Landing';
+import logoZoniq from './assets/image_436281.png'; 
 import ComplianceModal from './components/ComplianceModal'; 
 import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRASI COMPONENT FORM
 import './App.css';
@@ -601,17 +602,44 @@ function App() {
       )}
 
       {/* HEADER UTAMA */}
-      <header className="dapp-header">
-        <div className="header-left">
-          <div className="logo">ZONIQFI <span className="vzt-badge">$ZQI</span></div>
-        </div>
-        <div className="header-right">
-          <button onClick={() => setView('landing')} className="btn-home" style={{ background: 'transparent', border: '1px solid #1f2937', color: '#f3f4f6', cursor: 'pointer', padding: '8px 16px', borderRadius: '6px', marginRight: '10px', fontWeight: '600' }}>Back to Home</button>
-          <button className="btn-connect" id="walletBtn" onClick={openWalletModal} style={{ background: isConnected ? "#22c55e" : "linear-gradient(135deg, #8b5cf6, #3b82f6)" }}>
-            {isConnected ? `Connected (${activeProviderName}): ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect Wallet"}
-          </button>
-        </div>
-      </header>
+<header className="dapp-header" style={{
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '16px 5%',
+  background: '#060911',
+  borderBottom: '1px solid #1f2937'
+}}>
+  <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+    {/* LOGO DIINPUT DENGAN UKURAN PRESISI KECIL UNTUK NAVBAR */}
+    <img 
+      src={logoZoniq} 
+      alt="ZoniqFi Logo" 
+      style={{ 
+        width: '32px', 
+        height: '32px', 
+        objectFit: 'contain' 
+      }} 
+    />
+    <div className="logo" style={{ 
+      fontSize: '1.35rem', 
+      fontWeight: 'bold', 
+      color: '#ffffff', 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: '8px',
+      fontFamily: 'sans-serif'
+    }}>
+      ZONIQFI <span className="vzt-badge" style={{ fontSize: '0.75rem', padding: '2px 6px', backgroundColor: '#1e293b', borderRadius: '4px', color: '#14F195' }}>$ZQI</span>
+    </div>
+  </div>
+  <div className="header-right">
+    <button onClick={() => setView('landing')} className="btn-home" style={{ background: 'transparent', border: '1px solid #1f2937', color: '#f3f4f6', cursor: 'pointer', padding: '8px 16px', borderRadius: '6px', marginRight: '10px', fontWeight: '600' }}>Back to Home</button>
+    <button className="btn-connect" id="walletBtn" onClick={openWalletModal} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 'bold', border: 'none', color: '#fff', cursor: 'pointer', background: isConnected ? "#22c55e" : "linear-gradient(135deg, #8b5cf6, #3b82f6)" }}>
+      {isConnected ? `Connected (${activeProviderName}): ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect Wallet"}
+    </button>
+  </div>
+</header>
 
       {isModalOpen && (
         <div id="walletModal" className="modal-overlay" style={{ display: 'flex' }}>

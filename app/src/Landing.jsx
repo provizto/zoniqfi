@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logoZoniqLarge from './assets/image_436281.png';
 
 const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
   const [activeFaq, setActiveFaq] = useState(null);
@@ -100,7 +101,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           display: flex !important;
           justify-content: space-between !important;
           align-items: center !important;
-          padding: 20px 8% !important;
+          padding: 15px 8% !important;
           border-bottom: 1px solid #1f2937 !important;
           background: rgba(11, 15, 25, 0.8) !important;
           backdrop-filter: blur(12px) !important;
@@ -110,6 +111,11 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           left: 0 !important;
           z-index: 99999 !important;
         }
+        #vzt-landing-page .brand-wrapper {
+          display: flex !important;
+          align-items: center !important;
+          gap: 10px !important;
+        }
         #vzt-landing-page .logo {
           font-size: 1.4rem !important;
           font-weight: 700 !important;
@@ -117,6 +123,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           background: linear-gradient(45deg, #fff, #3b82f6) !important;
           -webkit-background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
+          margin: 0 !important;
         }
         #vzt-landing-page nav a {
           color: #f3f4f6 !important;
@@ -138,9 +145,15 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           cursor: pointer !important;
         }
         #vzt-landing-page .hero {
-          padding: 180px 8% 60px 8% !important;
+          padding: 160px 8% 60px 8% !important;
           text-align: center !important;
           background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%) !important;
+        }
+        #vzt-landing-page .hero-logo-container {
+          margin-bottom: 20px !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
         }
         #vzt-landing-page .hero h1 {
           font-size: 3.2rem !important;
@@ -220,7 +233,6 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         #vzt-landing-page .faq-question { padding: 20px !important; font-weight: 600 !important; cursor: pointer !important; display: flex !important; justify-content: space-between !important; align-items: center; color: #fff !important; }
         #vzt-landing-page .faq-answer { padding: 0 20px !important; max-height: 0px; overflow: hidden !important; transition: max-height 0.3s ease, padding 0.3s ease !important; color: #94a3b8 !important; line-height: 1.6 !important; font-size: 0.95rem !important; text-align: left !important; }
         
-        /* FOOTER BRANDING RE-LAYOUT */
         #vzt-landing-page footer { border-top: 1px solid #1f2937 !important; padding: 40px 8% !important; display: flex !important; justify-content: space-between !important; align-items: center !important; background: #060911 !important; }
         #vzt-landing-page .footer-social-row { display: flex !important; gap: 16px !important; align-items: center !important; }
         #vzt-landing-page .social-icon-btn { color: #64748b !important; font-size: 1.3rem !important; text-decoration: none !important; transition: color 0.2s ease, transform 0.2s ease !important; }
@@ -240,9 +252,16 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         }
       `}</style>
 
-      {/* NAVBAR HEADER */}
+      {/* NAVBAR HEADER WITH INTEGRATED LOGO */}
       <header>
-        <div className="logo">ZONIQFI</div>
+        <div className="brand-wrapper">
+          <img 
+            src={logoZoniqLarge} 
+            alt="ZoniqFi Nav Logo" 
+            style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
+          />
+          <div className="logo">ZONIQFI</div>
+        </div>
         <nav>
           <a href="#pricing">Packages</a>
           <a href="#faq">FAQ</a>
@@ -253,8 +272,20 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         </button>
       </header>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION WITH HERO LOGO */}
       <section className="hero">
+        <div className="hero-logo-container">
+          <img 
+            src={logoZoniqLarge} 
+            alt="ZoniqFi Hero Logo" 
+            style={{ 
+              width: '110px', 
+              height: '110px', 
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.35))'
+            }} 
+          />
+        </div>
         <h1>Premium Solana White-Label dApp Infrastructure</h1>
         <p>Deploy your token utility ecosystem within 24 hours. We provide complete, plug-and-play DeFi modules designed securely on-chain to maximize liquidity parameters and viral user generation.</p>
       </section>
