@@ -269,7 +269,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         <nav>
           <a href="#pricing">Packages</a>
           <a href="#faq">FAQ</a>
-          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer">Contact</a>
+          <a href="https://t.me/zoniqfihub" target="_blank" rel="noopener noreferrer">Contact</a>
         </nav>
         <button onClick={onLaunchApp} className="btn-launch">
           Live dApp Demo
@@ -319,7 +319,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
                   <i className="fas fa-bolt" style={{ marginRight: '6px' }}></i> Try Live Demo
                 </a>
                 
-                <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="btn-order">
+                <a href="https://t.me/zoniqfihub" target="_blank" rel="noopener noreferrer" className="btn-order">
                   {pkg.price === "Contact Us" ? "Consult with Developers" : "Acquire License"}
                 </a>
               </div>
@@ -354,7 +354,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
       <footer>
         <p>© 2026 ZoniqFi. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.</p>
         <div className="footer-social-row">
-          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Telegram">
+          <a href="https://t.me/zoniqfihub" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Telegram">
             <i className="fab fa-telegram"></i>
           </a>
           <a href="https://x.com/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="X (Twitter)">
