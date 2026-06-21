@@ -173,7 +173,7 @@ function App() {
     setTimeout(() => {
       setSecurityBanner(prev => ({ ...prev, show: false }));
     }, 4000);
-  },
+  };
 
   const openWalletModal = () => {
     if (isConnected) {
