@@ -3,8 +3,18 @@ name: Provizto Smart Contract Cloud Build
 on:
   push:
     branches: [ main, master ]
+    # 🔥 PENCEGAHAN EROR: Skrip Rust HANYA jalan jika folder program atau config Anchor berubah.
+    # Jika Anda ubah Landing.jsx, workflow ini otomatis di-skip (tidak akan memicu tanda silang merah).
+    paths:
+      - 'programs/**'
+      - 'Anchor.toml'
+      - 'Cargo.toml'
   pull_request:
     branches: [ main, master ]
+    paths:
+      - 'programs/**'
+      - 'Anchor.toml'
+      - 'Cargo.toml'
 
 jobs:
   solana-anchor-build:
@@ -16,30 +26,39 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      # 2. Memasang biner Solana & Anchor secara manual
-      - name: Install Solana, Rust, and Anchor
+      # 2. Pasang Rust Menggunakan Action Resmi (Lebih Cepat & Aman)
+      - name: Set up Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      # 3. Memasang dependensi Linux & Biner Solana/Anchor secara instan
+      - name: Install Solana and Anchor Binaries
         run: |
           sudo apt-get update
           sudo apt-get install -y pkg-config libudev-dev libssl-dev zlib1g-dev llvm clang make
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          source $HOME/.cargo/env
-          rustup default stable
-          cargo install --locked anchor-cli --version 0.30.0
+          
+          # Pasang Solana CLI
           curl -sSfL https://release.solana.com/v1.18.17/install | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
           echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+          
+          # 🔥 SOLUSI UTAMA: Mengunduh biner Anchor yang sudah jadi (Pre-built), bukan compile dari nol!
+          # Ini memangkas waktu instalasi dari 15 menit menjadi 5 detik.
+          npm install -g @coral-xyz/anchor-cli@0.30.0
 
-      # 3. Menghasilkan Keypair Otoritas dummy
+      # 4. Menghasilkan Keypair Otoritas dummy
       - name: Generate Dummy Solana Wallet Keypair
         run: |
+          # Eksekusi langsung ke path active release yang sudah terpasang
+          export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
           mkdir -p ~/.config/solana
           solana-keygen new --no-bip39-passphrase --outfile ~/.config/solana/id.json
 
-      # 4. Kompilasi Utama Program Rust
+      # 5. Kompilasi Utama Program Rust
       - name: Execute Anchor Build
-        run: anchor build --skip-lint
+        run: |
+          export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+          anchor build --skip-lint
 
-      # 5. Mengunggah Hasil Kompilasi (.so dan JSON IDL)
+      # 6. Mengunggah Hasil Kompilasi (.so dan JSON IDL)
       - name: Upload Compiled Build Artifacts
         uses: actions/upload-artifact@v4
         with:
