@@ -6,28 +6,31 @@ export default defineConfig({
   plugins: [
     react(),
     nodePolyfills({
+      // Mengaktifkan seluruh polyfill global esensial untuk ekosistem Web3
+      include: ['buffer', 'crypto', 'stream', 'util', 'process'],
       globals: {
         Buffer: true,
         process: true,
+        global: true,
       },
     }),
-    // Menyusupkan inisialisasi global ke HTML secara aman tanpa merusak build
-    {
-      name: 'solana-production-fix',
-      transformIndexHtml(html) {
-        return html.replace(
-          '<head>',
-          `<head>
-          <script>
-            window.global = window;
-            window.process = { env: {} };
-          </script>`
-        );
-      },
-    },
   ],
+  resolve: {
+    alias: {
+      // Mengunci pemetaan modul ke versi browser-safe secara mutlak
+      buffer: 'vite-plugin-node-polyfills/shims/buffer',
+      crypto: 'vite-plugin-node-polyfills/shims/crypto',
+      process: 'vite-plugin-node-polyfills/shims/process',
+    },
+  },
   define: {
-    // Memberikan proteksi cadangan di level compiler global
+    // Menyediakan fallback objek global tingkat runtime
     'global': 'globalThis',
-  }
+  },
+  build: {
+    // Mencegah Vite membuang fungsi polyfill saat optimasi produksi (tree-shaking)
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
 })
