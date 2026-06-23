@@ -6,20 +6,11 @@ export default defineConfig({
   plugins: [
     react(),
     nodePolyfills({
-      include: ['buffer', 'crypto', 'stream', 'util', 'process'],
       globals: {
         Buffer: true,
-        process: true,
         global: true,
+        process: true,
       },
     }),
   ],
-  define: {
-    'global': 'globalThis',
-  },
-  build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
-  },
 })
