@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build --emptyOutDir || echo 'Mereset build directory' && vite build"
   },
   "dependencies": {
     "react": "^19.2.6",
