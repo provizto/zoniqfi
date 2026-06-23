@@ -5,6 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
+    <script>
+  if (typeof window !== 'undefined') {
+    window.global = window;
+    // Definisikan Buffer secara manual jika belum ada
+    if (window.Buffer === undefined) {
+      import('vite-plugin-node-polyfills/shims/buffer').then((m) => {
+        window.Buffer = m.default || m;
+      });
+    }
+  }
+</script>
   </head>
   <body>
     <div id="root"></div>
