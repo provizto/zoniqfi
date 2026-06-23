@@ -1,34 +1,25 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    nodePolyfills({
+      include: ['buffer', 'crypto', 'stream', 'util', 'process'],
+      globals: {
+        Buffer: true,
+        process: true,
+        global: true,
+      },
+    }),
+  ],
   define: {
     'global': 'globalThis',
-    'process.env': {}
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          process: true,
-          buffer: true
-        })
-      ]
-    }
   },
   build: {
-    rollupOptions: {
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          process: true,
-          buffer: true
-        })
-      ]
-    },
     commonjsOptions: {
-      transformMixedEsModules: true
-    }
-  }
+      transformMixedEsModules: true,
+    },
+  },
 })
