@@ -4,15 +4,12 @@ import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfil
 
 export default defineConfig({
   plugins: [react()],
-  envPrefix: 'VITE_',
   define: {
-    // Menyediakan fallback global instan di browser produksi Vercel
     'global': 'globalThis',
     'process.env': {}
   },
   optimizeDeps: {
     esbuildOptions: {
-      // Mengaktifkan polyfill Node.js pada fase pengembangan awal
       plugins: [
         NodeGlobalsPolyfillPlugin({
           process: true,
@@ -22,7 +19,6 @@ export default defineConfig({
     }
   },
   build: {
-    // Memaksa esbuild menyuntikkan Buffer secara absolut ke dalam file akhir (dist)
     rollupOptions: {
       plugins: [
         NodeGlobalsPolyfillPlugin({
