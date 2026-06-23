@@ -11,21 +11,23 @@ export default defineConfig({
         process: true,
       },
     }),
+    // Menyusupkan inisialisasi global ke HTML secara aman tanpa merusak build
+    {
+      name: 'solana-production-fix',
+      transformIndexHtml(html) {
+        return html.replace(
+          '<head>',
+          `<head>
+          <script>
+            window.global = window;
+            window.process = { env: {} };
+          </script>`
+        );
+      },
+    },
   ],
-  resolve: {
-    alias: {
-      // Mengarahkan langsung ke distribusi internal paket buffer yang stabil
-      buffer: 'buffer',
-    },
-  },
   define: {
-    // Solana Web3.js membutuhkan penegasan objek global di level browser produksi
+    // Memberikan proteksi cadangan di level compiler global
     'global': 'globalThis',
-  },
-  build: {
-    // Memaksa sistem untuk tidak membuang modul polyfill saat optimasi produksi
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
-  },
+  }
 })

@@ -1,17 +1,10 @@
-import { Buffer } from 'buffer';
-
-// Mengunci objek Buffer ke level global runtime browser
-window.global = window;
-window.Buffer = Buffer;
-window.process = { env: {} };
-
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import './index.css' // jika ada
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
     <App />
-  </StrictMode>,
+  </React.StrictMode>,
 )
