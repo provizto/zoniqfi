@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -15,12 +14,18 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      // Memaksa sistem alias membaca modul buffer eksternal dengan aman saat produksi
-      buffer: 'buffer/',
+      // Mengarahkan langsung ke distribusi internal paket buffer yang stabil
+      buffer: 'buffer',
     },
   },
   define: {
-    // Menyediakan cadangan variabel global jika struktur Solana Web3 membutuhkannya secara mendadak
+    // Solana Web3.js membutuhkan penegasan objek global di level browser produksi
     'global': 'globalThis',
+  },
+  build: {
+    // Memaksa sistem untuk tidak membuang modul polyfill saat optimasi produksi
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
   },
 })
