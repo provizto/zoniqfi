@@ -5,17 +5,19 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
+    
+    <!-- 1. Suntikan Library Buffer Global via CDN Terpercaya -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/buffer/6.0.3/buffer.min.js" integrity="sha512-4xXf6Z9BwEIsmoxOWctG8MbhB6S1UAsXhNoit60IAnT7CAs3U69R9Vp7fX8K68GvRdBv3j6vSshqY8o7vI+vzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- 2. Penguncian Objek Runtime Browser untuk SDK Solana -->
     <script>
-  if (typeof window !== 'undefined') {
-    window.global = window;
-    // Definisikan Buffer secara manual jika belum ada
-    if (window.Buffer === undefined) {
-      import('vite-plugin-node-polyfills/shims/buffer').then((m) => {
-        window.Buffer = m.default || m;
-      });
-    }
-  }
-</script>
+      if (typeof window !== 'undefined') {
+        window.global = window;
+        // Mengunci objek Buffer dari CDN ke window global browser
+        window.Buffer = window.Buffer || (typeof buffer !== 'undefined' ? buffer.Buffer : undefined);
+        window.process = { env: {} };
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
