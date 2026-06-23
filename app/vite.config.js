@@ -7,11 +7,20 @@ export default defineConfig({
   plugins: [
     react(),
     nodePolyfills({
-      // Mengaktifkan polyfills untuk modul spesifik yang dibutuhkan Solana Web3 SDK
       globals: {
-        Buffer: true, // Sangat krusial untuk transaksi dan keypair Solana
+        Buffer: true,
         process: true,
       },
     }),
   ],
+  resolve: {
+    alias: {
+      // Memaksa sistem alias membaca modul buffer eksternal dengan aman saat produksi
+      buffer: 'buffer/',
+    },
+  },
+  define: {
+    // Menyediakan cadangan variabel global jika struktur Solana Web3 membutuhkannya secara mendadak
+    'global': 'globalThis',
+  },
 })
