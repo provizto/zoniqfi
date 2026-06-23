@@ -1,15 +1,5 @@
 {
-  "builds": [
-    {
-      "src": "app/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "app/$1"
-    }
-  ]
+  "framework": "vite",
+  "buildCommand": "cd app && npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "app/dist"
 }
