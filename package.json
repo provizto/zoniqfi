@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --emptyOutDir || echo 'Abaikan Error Linting' && vite build"
+    "build": "vite build"
   },
   "dependencies": {
     "react": "^19.2.6",
@@ -18,7 +18,8 @@
     "vite-plugin-node-polyfills": "^0.23.0"
   },
   "overrides": {
-    "elliptic": "^6.6.1",
-    "uuid": "^11.1.1"
+    "vite-plugin-node-polyfills": {
+      "vite": "^8.0.12"
+    }
   }
 }
