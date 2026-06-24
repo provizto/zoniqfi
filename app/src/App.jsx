@@ -4,8 +4,6 @@ import logoZoniq from './assets/image_436281.png';
 import ComplianceModal from './components/ComplianceModal'; 
 import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRASI COMPONENT FORM
 import './App.css';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import '@solana/wallet-adapter-react-ui/styles.css';
 
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
