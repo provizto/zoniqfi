@@ -11,6 +11,7 @@ import './App.css';
 const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
 const activePackage = urlParams ? urlParams.get('pkg') : null;
 const currentViewParam = urlParams ? urlParams.get('view') : null; // DETEKSI PARAMETER VIEW FORM RAHASIA
+const currentDomain = typeof window !== 'undefined' ? window.location.hostname.replace('www.', '') : 'zoniqfi.com';
 
 const SHOW_SWAP = activePackage !== 'whale' && activePackage !== 'staking';
 const SHOW_OPTIMIZER = activePackage === 'velocity' || activePackage === 'staking' || !activePackage;
@@ -675,10 +676,9 @@ function App() {
         </div>
         <div className="header-right">
           <button onClick={() => setView('landing')} className="btn-home" style={{ background: 'transparent', border: '1px solid #1f2937', color: '#f3f4f6', cursor: 'pointer', padding: '8px 16px', borderRadius: '6px', marginRight: '10px', fontWeight: '600' }}>Back to Home</button>
-          {/* HAPUS ATAU GANTI BARIS INI */}
-<button className="btn-connect" id="walletBtn" onClick={openWalletModal} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 'bold', border: 'none', color: '#fff', cursor: 'pointer', background: isConnected ? "#22c55e" : "linear-gradient(135deg, #8b5cf6, #3b82f6)" }}>
-  {isConnected ? `Connected (${activeProviderName}): ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect Wallet"}
-</button> 
+          <button className="btn-connect" id="walletBtn" onClick={openWalletModal} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 'bold', border: 'none', color: '#fff', cursor: 'pointer', background: isConnected ? "#22c55e" : "linear-gradient(135deg, #8b5cf6, #3b82f6)" }}>
+            {isConnected ? `Connected (${activeProviderName}): ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect Wallet"}
+          </button>
         </div>
       </header>
 
