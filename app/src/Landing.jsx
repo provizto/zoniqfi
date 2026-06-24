@@ -149,7 +149,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           cursor: pointer !important;
         }
         #vzt-landing-page .hero {
-          padding: 160px 8% 60px 8% !important;
+          padding: 160px 8% 40px 8% !important;
           text-align: center !important;
           background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%) !important;
         }
@@ -175,7 +175,81 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           margin: 0 auto !important;
           line-height: 1.6 !important;
         }
-        #vzt-landing-page .pricing-section { padding: 80px 8% !important; }
+
+        /* INTEGRATED COPYWRITING BLOCK STYLES */
+        .vzt-promo-subbar {
+          display: flex;
+          justify-content: center;
+          gap: 24px;
+          font-size: 0.9rem;
+          color: #d1d5db;
+          background: #111827;
+          border: 1px solid #1f2937;
+          padding: 12px 24px;
+          border-radius: 12px;
+          max-width: 650px;
+          margin: 30px auto 0 auto;
+        }
+        .vzt-promo-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(59, 130, 246, 0.1);
+          border: 1px solid rgba(59, 130, 246, 0.3);
+          color: #60a5fa;
+          padding: 6px 16px;
+          border-radius: 9999px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          margin-bottom: 20px;
+        }
+        .vzt-promo-pulse {
+          height: 8px;
+          width: 8px;
+          border-radius: 50%;
+          background-color: #60a5fa;
+          animation: vztPulse 2s infinite;
+        }
+        @keyframes vztPulse {
+          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(96, 165, 251, 0.7); }
+          70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(96, 165, 251, 0); }
+          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(96, 165, 251, 0); }
+        }
+        .vzt-cta-wrapper {
+          max-width: 850px;
+          margin: 50px auto 20px auto;
+          text-align: center;
+        }
+        .vzt-cta-card {
+          background: linear-gradient(180deg, #111827 0%, #060911 100%);
+          border: 1px solid #1f2937;
+          border-radius: 24px;
+          padding: 40px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .vzt-cta-title { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
+        .vzt-cta-desc { font-size: 0.95rem; color: #94a3b8; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6; }
+        .vzt-tg-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          background: linear-gradient(90deg, #7c3aed 0%, #2563eb 100%);
+          color: #fff !important;
+          font-weight: 700;
+          font-size: 1.1rem;
+          padding: 16px 36px;
+          border-radius: 14px;
+          text-decoration: none !important;
+          box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+          transition: all 0.3s ease;
+        }
+        .vzt-tg-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 24px rgba(124, 58, 237, 0.4);
+          opacity: 0.95;
+        }
+
+        #vzt-landing-page .pricing-section { padding: 40px 8% 60px 8% !important; }
         #vzt-landing-page .pricing-grid {
           display: grid !important;
           grid-template-columns: repeat(3, 1fr) !important;
@@ -253,6 +327,9 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
           #vzt-landing-page .hero h1 { font-size: 2.2rem !important; line-height: 1.3 !important; }
           #vzt-landing-page .pricing-grid { grid-template-columns: 1fr !important; }
           #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; }
+          .vzt-promo-subbar { flex-direction: column; gap: 10px; padding: 16px; }
+          .vzt-tg-btn { width: 100%; justify-content: center; font-size: 1rem; padding: 14px 24px; }
+          .vzt-cta-card { padding: 24px; }
         }
       `}</style>
 
@@ -290,8 +367,21 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
             }} 
           />
         </div>
-        <h1>Premium Solana White-Label dApp Infrastructure</h1>
-        <p>Deploy your token utility ecosystem within 24 hours. We provide complete, plug-and-play DeFi modules designed securely on-chain to maximize liquidity parameters and viral user generation.</p>
+        
+        {/* PREMIUM COPYWRITING ADVERTISING BLOCK INSIDE HERO */}
+        <div className="vzt-promo-badge">
+          <span className="vzt-promo-pulse"></span>
+          Solana B2B Infrastructure Engine v2.0
+        </div>
+        
+        <h1>PREMIUM SOLANA dAPP INFRASTRUCTURE FOR YOUR TOKEN</h1>
+        <p>Stop wasting months coding from scratch. Deploy plug-and-play, high-converting Solana dApp Ecosystems tailored specifically to accelerate your token's trading volume, secure long-term liquidity, and protect your chart from malicious bots.</p>
+
+        <div className="vzt-promo-subbar">
+          <div>💡 <strong>SaaS Model:</strong> One-time licensing</div>
+          <div>🎨 <strong>White-Label:</strong> Fully branded</div>
+          <div>❌ <strong>No Token Required:</strong> Pure cashflow</div>
+        </div>
       </section>
 
       {/* PRICING PACKAGES SECTION */}
@@ -326,6 +416,28 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
 
             </div>
           ))}
+        </div>
+
+        {/* CLOSING / TELEGRAM CONVERSION ROUTING BLOCK */}
+        <div className="vzt-cta-wrapper">
+          <div className="vzt-cta-card">
+            <h2 className="vzt-cta-title">📥 READY TO LAUNCH YOUR dAPP IN LESS THAN 48 HOURS?</h2>
+            <p className="vzt-cta-desc">Our deployment pipeline is fully optimized. Get your utility system live under your own domain and customized branding without technical friction.</p>
+            
+            <a 
+              href="https://t.me/zoniqfi" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="vzt-tg-btn"
+            >
+              <i className="fab fa-telegram-plane" style={{ fontSize: '1.3rem' }}></i>
+              Contact Core Developer on Telegram
+            </a>
+            
+            <p style={{ fontSize: '0.75rem', color: '#4b5563', marginTop: '16px', fontStyle: 'italic', margin: '16px 0 0 0' }}>
+              *Please specify your preferred package name (Entry, Velocity, Whale, etc.) when reaching out for priority onboarding.
+            </p>
+          </div>
         </div>
       </section>
 
