@@ -85,7 +85,7 @@ const ComplianceModal = () => {
           marginTop: '24px', display: 'flex', gap: '12px', width: '100%', flexShrink: 0
         }}>
           <a 
-            href="https://google.com" 
+            href="https://zoniqfi.com" 
             style={{
               flex: 1, textDecoration: 'none', textAlign: 'center', padding: '10px 0',
               borderRadius: '8px', fontSize: '0.875rem', backgroundColor: '#18181b',
