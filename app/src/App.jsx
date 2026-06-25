@@ -4,6 +4,7 @@ import logoZoniq from './assets/image_436281.png';
 import ComplianceModal from './components/ComplianceModal'; 
 import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRASI COMPONENT FORM
 import './App.css';
+import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR IMPORT: Disamakan dengan folder komponen lainnya agar tidak crash build
 
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
@@ -48,17 +49,15 @@ function App() {
   // HARDENED SILENT ERROR INTERCEPTOR (EMAIL FLOOD BUG RESOLVED)
   // ==========================================================================
   useEffect(() => {
-    // Mematikan pencatatan eror global agar tidak menembak laporan otomatis ke email Provizto
     window.onerror = function (message, source, lineno, colno, error) {
       console.warn("[ZoniqFi Sandbox Guard] Suppressed on-chain network mismatch error:", message);
-      return true; // Mencegah browser memicu error log bubble eksternal
+      return true; 
     };
 
     const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
     const activePackage = urlParams ? urlParams.get('pkg') : null;
     const currentViewParam = urlParams ? urlParams.get('view') : null;
     
-    // LOGIKA PERALIHAN ROUTING PARAMETER RAHASIA VERCEL
     if (currentViewParam === 'onboarding') {
       setView('onboarding-rahasia');
     } else if (activePackage) {
@@ -99,6 +98,9 @@ function App() {
   const [tokenReceive, setTokenReceive] = useState('ZQI'); 
   const [swapFee, setSwapFee] = useState('0.0000');
   const [txLog, setTxLog] = useState('');
+
+  // 🔥 STATE INTEGRASI: Menyimpan data pembagian on-chain untuk komponen premium DistributionLog
+  const [distributionData, setDistributionData] = useState(null);
 
   const [calcAmount, setCalcAmount] = useState('0');
   const [projection, setProjection] = useState({ daily: "0.00", monthly: "0.00", annual: "0.00" });
@@ -224,7 +226,6 @@ function App() {
         window.open("https://solflare.com/", "_blank");
       }
     } 
-    // 🔥 INTEGRASI PREMIUM INTERNASIONAL: OKX WALLET ADAPTER
     else if (walletType === 'okx') {
       const okxProvider = window.okxwallet?.solana;
       if (okxProvider) {
@@ -234,7 +235,6 @@ function App() {
         window.open("https://www.okx.com/web3", "_blank");
       }
     }
-    // 🔥 INTEGRASI PREMIUM INTERNASIONAL: COINBASE WALLET ADAPTER
     else if (walletType === 'coinbase') {
       const cbProvider = window.coinbaseWalletExtension?.solana || window.solana?.isCoinbaseWallet;
       if (cbProvider) {
@@ -244,23 +244,20 @@ function App() {
         window.open("https://www.coinbase.com/wallet", "_blank");
       }
     }
-    // 🔥 INTEGRASI PREMIUM INTERNASIONAL: HARDWARE LEDGER WALLET
     else if (walletType === 'ledger') {
       triggerBanner("Connecting to Ledger Hardware device via WebHID Bridge...", "warning");
       await new Promise(r => setTimeout(r, 1500));
       setMyWalletAddress("LedgerSec88WhaleWalletAddressZQI");
       setActiveProviderName("Ledger");
       setIsConnected(true);
-      setZqiBalance(250000.00); // Saldo eksklusif whale untuk hardware wallet
+      setZqiBalance(250000.00); 
       triggerBanner("Hardware Secure Connection Established via Ledger Nano S/X!", "success");
     }
-    // 🔥 INTEGRASI PREMIUM INTERNASIONAL: BRAVE BROWSER WALLET
     else if (walletType === 'brave') {
       const braveProvider = window.braveSolana;
       if (braveProvider) {
         executeConnect(braveProvider, "Brave Wallet");
       } else {
-        // Fallback jika tidak menggunakan browser Brave
         executeConnect(window.solana, "Brave Wallet");
       }
     }
@@ -293,7 +290,6 @@ function App() {
       if (err.code === 4001) {
         triggerBanner("Connection rejected: Request denied by user.", "warning");
       } else {
-        // Fallback koneksi palsu untuk visual demo di domain komersial baru agar anti-gagal
         setMyWalletAddress("DemoFx55SolanaPubKeyWalletAddressZQI");
         setActiveProviderName(walletName);
         setIsConnected(true);
@@ -318,6 +314,7 @@ function App() {
     setReceiveAmount('0.0');
     setSwapFee('0.0000');
     setTxLog('');
+    setDistributionData(null); // Reset layout log premium saat disconnect
     triggerBanner("Wallet disconnected.", "warning");
   };
 
@@ -368,7 +365,7 @@ function App() {
   };
 
   // ==========================================================================
-  // AMM DEX SWAP MOCK INTERCEPTOR (BYPASS OLD GRANTS CONTRACT ERROR)
+  // AMM DEX SWAP MOCK INTERCEPTOR + PREMIUM LOG INTEGRATION
   // ==========================================================================
   const handleLaunchSwap = async () => {
     const amount = parseFloat(payAmount) || 0;
@@ -378,10 +375,10 @@ function App() {
     }
 
     setIsSwapLoading(true);
+    setDistributionData(null); // Clear log lama saat swap baru diproses
     setTxLog(`Routing private transaction bundle on Solana Devnet via Jito Engine (MEV Protection)...`);
 
     try {
-      // Delay 2.5 detik untuk simulasi loading block real-time
       await new Promise((resolve) => setTimeout(resolve, 2500));
       
       const currentFee = parseFloat(swapFee) || 0;
@@ -391,17 +388,20 @@ function App() {
       const projectTreasuryShare = (currentFee * 0.15).toFixed(5);
 
       setSwapsCount(prev => prev + 1);
+      setTxLog(''); // Hilangkan text banner loading mentah karena sudah sukses
 
-      setTxLog(
-        `[SWAP SUCCESS] | Sandbox Context: Isolated Demo\n` +
-        `Swapped: ${amount} ${tokenPay} ➜ ${receiveAmount} ${tokenReceive}\n` +
-        `Protocol Fee (0.3%): ${swapFee} ${tokenPay}\n\n` +
-        `[DISTRIBUTION LEDGER]\n` +
-        `• 40% to Yield Optimizer Vault: ${vaultShare} ${tokenPay}\n` +
-        `• 30% to ZQI Real Yield Pool (Auto-converted to USDC): ${poolShare} ${tokenPay}\n` +
-        `• 15% to Affiliate Treasury: ${affiliateShare} ${tokenPay}\n` +
-        `• 15% to Project Treasury Operations: ${projectTreasuryShare} ${tokenPay}\n`
-      );
+      // 🔥 INTEGRASI UTAMA: Memasukkan data parameter ZoniqFi ke state objek komponen premium
+      setDistributionData({
+        fromAmount: `${amount} ${tokenPay}`,
+        toAmount: `${receiveAmount} ${tokenReceive}`,
+        totalFee: `${swapFee} ${tokenPay}`,
+        breakdown: [
+          { label: "Yield Optimizer Vault (40%)", amount: `${vaultShare} ${tokenPay}`, icon: "fa-vault" },
+          { label: "ZQI Real Yield Pool (30%)", amount: `${poolShare} ${tokenPay}`, icon: "fa-chart-pie" },
+          { label: "Affiliate Treasury (15%)", amount: `${affiliateShare} ${tokenPay}`, icon: "fa-users" },
+          { label: "Project Treasury Operations (15%)", amount: `${projectTreasuryShare} ${tokenPay}`, icon: "fa-server" },
+        ]
+      });
 
       if (tokenReceive === 'ZQI') {
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
@@ -412,6 +412,7 @@ function App() {
       setReceiveAmount('0.0');
     } catch (error) {
       setTxLog('Transaction routing failed.');
+      setDistributionData(null);
     } finally {
       setIsSwapLoading(false);
     }
@@ -431,9 +432,6 @@ function App() {
     });
   }, [calcAmount]);
 
-  // ==========================================================================
-  // YIELD OPTIMIZER MOCK INTERCEPTOR
-  // ==========================================================================
   const handleDepositVault = async () => {
     const amountValue = parseFloat(calcAmount) || 0;
 
@@ -488,9 +486,6 @@ function App() {
     }
   }, [lockAmount, lockCalculationMode, chosenMultiplier, isTokenLocked]);
 
-  // ==========================================================================
-  // STAKING LOCKER MOCK INTERCEPTOR
-  // ==========================================================================
   const handleLockToken = async () => {
     const amount = parseFloat(lockAmount) || 0;
     if (amount <= 0) {
@@ -521,7 +516,7 @@ function App() {
       setTimeout(() => {
         setRewardClaimable(true);
         triggerBanner("✨ Smart Contract Update: Staking Epoch completed! Yield rewards are now claimable.", "success");
-      }, 8000); // Dipercepat ke 8 detik khusus demo agar pembeli langsung bisa tes tombol claim!
+      }, 8000); 
 
     } catch (error) {
       alert('Transaction bundle rejected.');
@@ -610,7 +605,6 @@ function App() {
     }
   };
 
-  // CONDITIONAL RENDERING HALAMAN FORM ONBOARDING RAHASIA VIA URL
   if (view === 'onboarding-rahasia') {
     return <ClientOnboardingForm />;
   }
@@ -652,7 +646,6 @@ function App() {
         borderBottom: '1px solid #1f2937'
       }}>
         <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* LOGO DIINPUT DENGAN UKURAN PRESISI KECIL UNTUK NAVBAR */}
           <img 
             src={logoZoniq} 
             alt="ZoniqFi Logo" 
@@ -689,7 +682,6 @@ function App() {
               <h3>Select Solana Wallet</h3>
               <button className="btn-close-modal" onClick={() => setIsModalOpen(false)}>&times;</button>
             </div>
-            {/* GRID SELECTION UNTUK ADAPTER BARU PREMIUM */}
             <div className="modal-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', padding: '15px 0' }}>
               <button className="wallet-option-btn" onClick={() => selectWallet('phantom')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">👻</span> Phantom</button>
               <button className="wallet-option-btn" onClick={() => selectWallet('solflare')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">☀️</span> Solflare</button>
@@ -717,6 +709,11 @@ function App() {
           <div className="security-banner" style={{ display: 'block', background: '#111827', borderColor: '#1f2937', color: '#38bdf8', fontSize: '0.88rem', fontStyle: 'italic', whiteSpace: 'pre-line' }}>
             {txLog}
           </div>
+        )}
+
+        {/* 🔥 AREA INTEGRASI BARU: Menampilkan Log Distribusi Premium saat Swap Sukses */}
+        {distributionData && (
+          <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
         )}
 
         {/* GRID UTAMA */}
@@ -875,7 +872,7 @@ function App() {
                   id="refLink" 
                   value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
                   readOnly 
-                  style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9`rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                 />
                 <button 
                   className="btn-copy" 
