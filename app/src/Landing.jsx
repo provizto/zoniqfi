@@ -5,7 +5,6 @@ import logoZoniqLarge from './assets/image_436281.png';
 const currentDomain = typeof window !== 'undefined' ? window.location.hostname.replace('www.', '') : 'zoniqfi.com';
 const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://zoniqfi.com';
 
-// 🔥 INTEGRASI PROPS: Menambahkan parameter metrik bisnis dengan fallback angka default pintar
 const Landing = ({ 
   totalValueLocked, 
   swapsCount, 
@@ -184,7 +183,6 @@ const Landing = ({
           line-height: 1.6 !important;
         }
 
-        /* 🔥 INTEGRASI CSS BARU: Mengatur layout barisan 5 metrik komersial agar presisi */
         #vzt-landing-page .metrics-banner {
           display: flex !important;
           justify-content: center !important;
@@ -214,7 +212,6 @@ const Landing = ({
           margin-top: 6px !important;
         }
 
-        /* INTEGRATED COPYWRITING BLOCK STYLES */
         .vzt-promo-subbar {
           display: flex;
           justify-content: center;
@@ -363,10 +360,7 @@ const Landing = ({
           #vzt-landing-page nav { display: none !important; }
           #vzt-landing-page .hero { padding-top: 140px !important; }
           #vzt-landing-page .hero h1 { font-size: 2.2rem !important; line-height: 1.3 !important; }
-          
-          /* 🔥 RESPONSIVE MOBILE FIX: Menumpuk barisan metrik secara vertikal di layar HP */
           #vzt-landing-page .metrics-banner { flex-direction: column !important; gap: 25px !important; text-align: center !important; }
-          
           #vzt-landing-page .pricing-grid { grid-template-columns: 1fr !important; }
           #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; }
           .vzt-promo-subbar { flex-direction: column; gap: 10px; padding: 16px; }
@@ -410,7 +404,6 @@ const Landing = ({
           />
         </div>
         
-        {/* PREMIUM COPYWRITING ADVERTISING BLOCK INSIDE HERO */}
         <div className="vzt-promo-badge">
           <span className="vzt-promo-pulse"></span>
           Solana B2B Infrastructure Engine v3.0
@@ -426,7 +419,7 @@ const Landing = ({
         </div>
       </section>
 
-      {/* 🔥 INTEGRASI UTAMA: Wadah Visual 5 Metrik Premium Terpasang Sempurna */}
+      {/* METRICS BANNER */}
       <div className="metrics-banner">
         <div className="metric-item">
           <div className="metric-value">${totalValueLocked ? totalValueLocked.toLocaleString('en-US') : '1,248,500'}+</div>
@@ -484,7 +477,6 @@ const Landing = ({
           ))}
         </div>
 
-        {/* CLOSING / TELEGRAM CONVERSION ROUTING BLOCK */}
         <div className="vzt-cta-wrapper">
           <div className="vzt-cta-card">
             <h2 className="vzt-cta-title">📥 READY TO LAUNCH YOUR dAPP IN LESS THAN 48 HOURS?</h2>
@@ -500,7 +492,7 @@ const Landing = ({
               Contact Core Developer on Telegram
             </a>
             
-            <p style={{ fontSize: '0.75rem', color: '#4b5563', marginTop: '16px', fontStyle: 'italic', margin: '16px 0 0 0' }}>
+            <p style={{ fontSize: '0.75rem', color: '#4b5563', marginTop: '16px', fontStyle: 'italic' }}>
               *Please specify your preferred package name (Entry, Velocity, Whale, etc.) when reaching out for priority onboarding.
             </p>
           </div>
@@ -528,7 +520,7 @@ const Landing = ({
         ))}
       </section>
 
-      {/* FOOTER WITH INTEGRATED WEB3 SOCIAL LINKS */}
+      {/* FOOTER */}
       <footer>
         <p>© 2026 ZoniqFi. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.</p>
         <div className="footer-social-row">
