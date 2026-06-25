@@ -5,9 +5,8 @@ import logoZoniqLarge from './assets/image_436281.png';
 const currentDomain = typeof window !== 'undefined' ? window.location.hostname.replace('www.', '') : 'zoniqfi.com';
 const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://zoniqfi.com';
 
+// 🔥 PERBAIKAN PROPS: Hanya menerima data traksi penjualan lisensi B2B SaaS
 const Landing = ({ 
-  totalValueLocked, 
-  swapsCount, 
   activeClients = 48, 
   whiteLabelsLive = 19, 
   oneOffBuyers = 320, 
@@ -419,27 +418,27 @@ const Landing = ({
         </div>
       </section>
 
-      {/* METRICS BANNER */}
+      {/* 🔥 REVISI BANNER METRIK: 100% Berorientasi pada Penjualan Paket & Traksi SaaS */}
       <div className="metrics-banner">
         <div className="metric-item">
-          <div className="metric-value">${totalValueLocked ? totalValueLocked.toLocaleString('en-US') : '1,248,500'}+</div>
-          <div className="metric-label">Secured TVL Sandbox</div>
-        </div>
-        <div className="metric-item">
-          <div className="metric-value">{swapsCount ? swapsCount.toLocaleString('en-US') : '45,210'}+</div>
-          <div className="metric-label">Total Volume Swaps</div>
+          <div className="metric-value">{oneOffBuyers + activeClients + whiteLabelsLive}+</div>
+          <div className="metric-label">Total Licenses Issued</div>
         </div>
         <div className="metric-item">
           <div className="metric-value">{activeClients}+</div>
-          <div className="metric-label">Active Clients</div>
+          <div className="metric-label">Active Enterprise Clients</div>
         </div>
         <div className="metric-item">
           <div className="metric-value">{whiteLabelsLive}</div>
-          <div className="metric-label">Deployed White-Labels</div>
+          <div className="metric-label">Live Deployed White-Labels</div>
         </div>
         <div className="metric-item">
           <div className="metric-value">{oneOffBuyers}+</div>
           <div className="metric-label">One-Off License Buyers</div>
+        </div>
+        <div className="metric-item">
+          <div className="metric-value">&lt; 48 Hours</div>
+          <div className="metric-label">Avg. Integration Speed</div>
         </div>
       </div>
 
