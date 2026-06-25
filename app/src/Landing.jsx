@@ -405,7 +405,7 @@ const Landing = ({
         
         <div className="vzt-promo-badge">
           <span className="vzt-promo-pulse"></span>
-          Solana B2B Infrastructure Engine v3.0
+          Solana B2B Infrastructure Engine v5.0
         </div>
         
         <h1>PREMIUM SOLANA dAPP INFRASTRUCTURE FOR YOUR TOKEN</h1>
