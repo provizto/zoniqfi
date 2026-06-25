@@ -371,7 +371,7 @@ const Landing = ({ totalValueLocked, swapsCount, onLaunchApp }) => {
         {/* PREMIUM COPYWRITING ADVERTISING BLOCK INSIDE HERO */}
         <div className="vzt-promo-badge">
           <span className="vzt-promo-pulse"></span>
-          Solana B2B Infrastructure Engine v2.0
+          Solana B2B Infrastructure Engine v3.0
         </div>
         
         <h1>PREMIUM SOLANA dAPP INFRASTRUCTURE FOR YOUR TOKEN</h1>
