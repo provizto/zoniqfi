@@ -15,6 +15,7 @@ The application utilizes an intelligent, built-in **Package Detection Engine** d
 
 ### 2. Yield Optimizer Vaults
 * **Auto-Compounding Logic:** Automated asset management protocol offering optimized daily yield simulations (up to 0.11% daily / 49.1% APY).
+* **Global Trust & Social Proof:** Integrated real-time tracking of Global Vault TVL and Active Depositors counters to foster instant credibility.
 * **Interactive Forecast Calculator:** An embedded projection panel (Daily, Monthly, Annual metrics) designed to gamify user interaction and incentivize long-term asset locking.
 
 ### 3. ZQI Lock & Yield Hub
@@ -24,6 +25,7 @@ The application utilizes an intelligent, built-in **Package Detection Engine** d
 
 ### 4. Tiered On-Chain Affiliate (Referral System)
 * **Sybil Attack Prevention:** Imposes a strict cooldown rate-limit (maximum 1 transaction per 10 seconds) to completely block multi-wallet bot manipulation.
+* **Transparent Commissions Display:** Real-time calculation showing exact claimable USDC commission earnings alongside network volume.
 * **Dynamic Tiering Matrix:** Automated commission tier calculation based on user referral trading volume:
     * **Bronze Tier:** Volume $0 - $10,000 ➜ 10% Commission
     * **Silver Tier:** Volume $10,001 - $100,000 ➜ 18% Commission
