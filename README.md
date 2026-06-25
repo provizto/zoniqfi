@@ -129,7 +129,7 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your machine before 
 
 1.  **Clone the Repository:**
 ```bash
-    git clone [https://github.com/username/zoniqfi-hub.git](https://github.com/username/zoniqfi-hub.git)
+    git clone [https://github.com/provizto/zoniqfi.git](https://github.com/provizto/zoniqfi.git)
     cd zoniqfi-hub
     ```
 
@@ -142,14 +142,14 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your machine before 
 ```bash
     npm run dev
     ```
-    The application will now be live at `http://localhost:5173`.
+    The application will now be live at `https://zoniqfi.com`.
 
 4.  **Testing Modular Package Queries:**
     Append the query strings to your local URL to test the responsive visual parameters for each package tier:
-    * `http://localhost:5173/?pkg=entry`
-    * `http://localhost:5173/?pkg=velocity`
-    * `http://localhost:5173/?pkg=whale`
-    * `http://localhost:5173/?pkg=staking`
+    * `https://entry.zoniqfi.com/?pkg=entry`
+    * `https://velocity.zoniqfi.com/?pkg=velocity`
+    * `https://whale.zoniqfi.com/?pkg=whale`
+    * `https://staking.zoniqfi.com/?pkg=staking`
 
 ---
 
