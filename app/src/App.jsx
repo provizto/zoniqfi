@@ -123,7 +123,7 @@ function App() {
 
   const [referrerInput, setReferrerInput] = useState('');
   const [referralVolume, setReferralVolume] = useState('$0.00');
-  const [referralEarned, setReferralEarned] = useState('$0.00'); // 🔥 STATE BARU: Keuntungan komisi user
+  const [referralEarned, setReferralEarned] = useState('$0.00'); // 🔥 HANYA MENAMBAHKAN INI: Menyimpan hasil komisi dollar affiliate
   const [tierLabel, setTierLabel] = useState('Bronze (10%)');
   const [tierColor, setTierColor] = useState('#14b8a6');
 
@@ -156,7 +156,7 @@ function App() {
             ...prev,
             SOL: parseFloat(json.data['So11111111111111111111111111111111111111112']?.price) || prev.SOL,
             WSOL: parseFloat(json.data['So11111111111111111111111111111111111111112']?.price) || prev.WSOL,
-            USDT: parseFloat(json.data['Es9vMFrzaCERmJfrF4H2FYD4HCoNkY11McCe8BenwNYB']?.price) || prev.USDT,
+            USDT: parseFloat(json.data['Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB']?.price) || prev.USDT,
             USDC: parseFloat(json.data['EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v']?.price) || prev.USDC,
             WIF: parseFloat(json.data['EKpQGSJtjMFqKZ9KQGWjzCx4WnvZymCfLXaZNepvCSnM']?.price) || prev.WIF,
             BONK: parseFloat(json.data['DezXAZ8z7PnrnRJjz3wXqhAzBSrgJDuEUKvJaJZ5c9bA']?.price) || prev.BONK,
@@ -322,7 +322,7 @@ function App() {
     setTxLog('');
     setReferrerInput('');
     setReferralVolume('$0.00');
-    setReferralEarned('$0.00'); // Reset komisi afiliasi
+    setReferralEarned('$0.00'); // Reset keuntungan affiliate
     setDistributionData(null); // Reset layout log premium saat disconnect
     triggerBanner("Wallet disconnected.", "warning");
   };
@@ -591,7 +591,7 @@ function App() {
     navigator.clipboard.writeText(generatedUrl).then(() => triggerBanner("📋 Copied Link to Clipboard!", "success"));
   };
 
-  // 🔥 UPDATE LOGIKA: Sekarang menghitung hasil nominal komisi USDC berdasarkan perolehan tier omzet referral
+  // 🔥 UPDATE LOGIKA: Menghitung pembagian hasil bersih persentase komisi secara dinamis
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
     if (inputVal === myWalletAddress && isConnected) {
@@ -618,7 +618,6 @@ function App() {
       rate = 0.25;
     }
 
-    // Kalkulasi komisi bersih nyata
     const totalEarnedUsdc = simulatedVolume * rate;
     setReferralEarned(`$${totalEarnedUsdc.toLocaleString('en-US', { minimumFractionDigits: 2 })} USDC`);
   };
@@ -793,22 +792,10 @@ function App() {
               <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
               <div className="stat-box">Boosted APY: Up to 49.1%</div>
               
-              <div className="pool-meta-row" style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                background: '#070a13', 
-                border: '1px solid #1e293b', 
-                padding: '12px 14px', 
-                borderRadius: '8px', 
-                marginBottom: '16px', 
-                fontSize: '0.85rem' 
-              }}>
-                <span style={{ color: '#94a3b8' }}>
-                  Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong>
-                </span>
-                <span style={{ color: '#94a3b8' }}>
-                  Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong>
-                </span>
+              {/* 🔥 BARUSAN DITAMBAHKAN: Baris penanda Social Proof kumulatif Global Assets */}
+              <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', background: '#070a13', border: '1px solid #1e293b', padding: '12px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
+                <span style={{ color: '#94a3b8' }}>Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong></span>
+                <span style={{ color: '#94a3b8' }}>Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong></span>
               </div>
               
               <div className="yield-calc-embed">
@@ -908,6 +895,7 @@ function App() {
             <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
               <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                {/* 🛠️ SANITIZED TYPO: Menghilangkan tanda backtick terselip di string fontSize agar build tidak rusak */}
                 <input 
                   type="text" 
                   id="refLink" 
@@ -981,7 +969,7 @@ function App() {
               </div>
             </div>
 
-            {/* 🔥 REVISI 3 KOLOM: Menampilkan data Tier, Volume, dan Hasil Bersih Komisi yang didapatkan user */}
+            {/* 🔥 REVISI 3 KOLOM: Menyisipkan kolom Your Earned Commissions di samping kanan secara simetris */}
             <div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
               <div className="tier-item" style={{ color: '#94a3b8' }}>
                 Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
