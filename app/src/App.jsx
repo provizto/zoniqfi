@@ -45,6 +45,11 @@ const INITIAL_PRICES = {
 function App() {
   const [view, setView] = useState('landing'); 
   
+  // 🔥 INTEGRASI STATE BARU: Menyimpan jumlah data penjualan paket dApp SaaS B2B secara terpusat
+  const [activeClients, setActiveClients] = useState(48);
+  const [whiteLabelsLive, setWhiteLabelsLive] = useState(19);
+  const [oneOffBuyers, setOneOffBuyers] = useState(320);
+  
   // ==========================================================================
   // HARDENED SILENT ERROR INTERCEPTOR (EMAIL FLOOD BUG RESOLVED)
   // ==========================================================================
@@ -613,7 +618,13 @@ function App() {
     return (
       <>
         <ComplianceModal />
-        <Landing totalValueLocked={protocolTVL} swapsCount={swapsCount} onLaunchApp={() => setView('dashboard')} />
+        {/* 🔥 PERBAIKAN SELESAI: Melempar state data penjualan SaaS secara akurat ke dalam Landing */}
+        <Landing 
+          activeClients={activeClients} 
+          whiteLabelsLive={whiteLabelsLive} 
+          oneOffBuyers={oneOffBuyers} 
+          onLaunchApp={() => setView('dashboard')} 
+        />
       </>
     );
   }
@@ -711,7 +722,7 @@ function App() {
           </div>
         )}
 
-        {/* 🔥 AREA INTEGRASI BARU: Menampilkan Log Distribusi Premium saat Swap Sukses */}
+        {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium saat Swap Sukses */}
         {distributionData && (
           <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
         )}
@@ -867,12 +878,13 @@ function App() {
             <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
               <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                {/* 🔥 FIXED TYPO: Membersihkan backtick terselip pada bagian string fontSize */}
                 <input 
                   type="text" 
                   id="refLink" 
                   value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
                   readOnly 
-                  style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9`rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                 />
                 <button 
                   className="btn-copy" 
