@@ -970,17 +970,32 @@ function App() {
             </div>
 
             {/* 🔥 REVISI 3 KOLOM: Menyisipkan kolom Your Earned Commissions di samping kanan secara simetris */}
-            <div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
-              <div className="tier-item" style={{ color: '#94a3b8' }}>
-                Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
-              </div>
-              <div className="tier-item" style={{ color: '#94a3b8' }}>
-                Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
-              </div>
-              <div className="tier-item" style={{ color: '#94a3b8' }}>
-                Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>{referralEarned === '$0.00' && !isConnected ? '$0.00 USDC' : referralEarned}</span>
-              </div>
-            </div>
+            <style>{`
+  @media (max-width: 768px) {
+    .tier-stats {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+      padding: 16px !important;
+    }
+    .tier-item {
+      width: 100% !important;
+      text-align: left !important;
+    }
+  }
+`}</style>
+
+<div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
+  <div className="tier-item" style={{ color: '#94a3b8' }}>
+    Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
+  </div>
+  <div className="tier-item" style={{ color: '#94a3b8' }}>
+    Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
+  </div>
+  <div className="tier-item" style={{ color: '#94a3b8' }}>
+    Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>{referralEarned === '$0.00' && !isConnected ? '$0.00 USDC' : referralEarned}</span>
+  </div>
+</div>
           </section>
         )}
       </main>
