@@ -129,7 +129,7 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your machine before 
 
 1.  **Clone the Repository:**
 ```bash
-    git clone [https://github.com/provizto/zoniqfi.git](https://github.com/provizto/zoniqfi.git)
+    git clone [https://github.com/username/zoniqfi-hub.git](https://github.com/username/zoniqfi-hub.git)
     cd zoniqfi-hub
     ```
 
@@ -142,14 +142,14 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your machine before 
 ```bash
     npm run dev
     ```
-    The application will now be live at `https://zoniqfi.com`.
+    The application will now be live at `http://localhost:5173`.
 
 4.  **Testing Modular Package Queries:**
     Append the query strings to your local URL to test the responsive visual parameters for each package tier:
-    * `https://entry.zoniqfi.com/?pkg=entry`
-    * `https://velocity.zoniqfi.com/?pkg=velocity`
-    * `https://whale.zoniqfi.com/?pkg=whale`
-    * `https://staking.zoniqfi.com/?pkg=staking`
+    * `http://localhost:5173/?pkg=entry`
+    * `http://localhost:5173/?pkg=velocity`
+    * `http://localhost:5173/?pkg=whale`
+    * `http://localhost:5173/?pkg=staking`
 
 ---
 
@@ -159,6 +159,13 @@ This dApp frontend code is fully optimized to ensure a **100% Successful Build P
 
 * **Default Network Cluster:** `Solana Devnet` (Prevents real SOL gas-fee burn during the client sales pitch and demo phase).
 * **Mainnet Migration:** Simply switch the string variable parameter `SOLANA_NETWORK` from `"devnet"` to `"mainnet-beta"` in the root config file once your client is ready to launch their token ecosystem live.
+
+### 🔗 Live Production Testing Links
+* **Entry Package:** `https://staking.zoniqfi.com/?pkg=entry`
+* **Velocity Package:** `https://staking.zoniqfi.com/?pkg=velocity`
+* **Whale Package:** `https://staking.zoniqfi.com/?pkg=whale`
+* **Staking Package:** `https://staking.zoniqfi.com/?pkg=staking`
+* **Onboarding Form:** `https://staking.zoniqfi.com/?view=onboarding`
 
 ---
 
