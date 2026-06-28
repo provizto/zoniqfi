@@ -3,8 +3,9 @@ import logoZoniqLarge from './assets/image_436281.png';
 
 // Mendeteksi domain dasar secara dinamis di level browser (menghapus format 'www.')
 const currentDomain = typeof window !== 'undefined' ? window.location.hostname.replace('www.', '') : 'zoniqfi.com';
+const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://zoniqfi.com';
 
-// 🔥 PERBAIKAN PROPS: Hanya menerima data traksi penjualan lisensi B2B SaaS
+// 🔥 PROPS ASLI KEMBALI UTUH: Menerima data traksi penjualan lisensi B2B SaaS
 const Landing = ({ 
   activeClients = 48, 
   whiteLabelsLive = 19, 
@@ -36,13 +37,14 @@ const Landing = ({
     setActiveFaq(activeFaq === index ? null : index);
   };
 
+  // 🔥 PAKET HARGA & LINK DEMO DIKEMBALIKAN KE ASLINYA (MENGGUNAKAN SUBDOMAIN INTERNAL ZONIQFI)
   const pricingPackages = [
     {
       name: "Entry / Viral Launch",
       desc: "Perfect for micro-cap meme coins requiring instant viral traction and rapid trading volume acceleration.",
       features: ["AMM DEX Swap (Anti-MEV)", "Secure On-Chain Affiliate", "Anti-Sybil Engine Active", "Custom Brand UI/UX Tailoring", "Supports Phantom, Solflare, & Backpack"],
       price: "$499",
-      demoLink: `https://provizto.com` /* 🔥 INTERKONEKSI: Diarahkan ke live showcase */
+      demoLink: `https://entry.${currentDomain}/?pkg=entry` 
     },
     {
       name: "Token Velocity (3-in-1)",
@@ -50,35 +52,35 @@ const Landing = ({
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (0.11% Daily)", "Secure On-Chain Affiliate System", "Custom Brand UI/UX & Live Deployment", "Lifetime Core Updates & Bug Fixes"],
       price: "$1,299",
       popular: true,
-      demoLink: `https://provizto.com` /* 🔥 INTERKONEKSI: Diarahkan ke live showcase */
+      demoLink: `https://velocity.${currentDomain}/?pkg=velocity` 
     },
     {
       name: "Whale Retention Suite",
       desc: "Engineered specifically to lock circulating supply and reward loyal long-term holders with stable yields.",
       features: ["ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Secure On-Chain Affiliate System", "Emergency Early Unlock (10% Burn Penalty)", "Full Deployment & Domain Routing Setup"],
       price: "$1,199",
-      demoLink: `https://provizto.com`
+      demoLink: `https://whale.${currentDomain}/?pkg=whale` 
     },
     {
       name: "Safe Staking Hub",
       desc: "A pure DeFi staking and asset management platform designed for serious utility projects without referral mechanisms.",
       features: ["Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock & Vesting Hub", "Real Yield Pool (USDC Distribution)", "Emergency Early Unlock (10% Burn Penalty)", "Custom Smart Contract Parameter Adjustments"],
       price: "$1,099",
-      demoLink: `https://provizto.com`
+      demoLink: `https://staking.${currentDomain}/?pkg=staking` 
     },
     {
       name: "Ultimate DeFi Suite (4-in-1)",
       desc: "The complete financial ecosystem package designed for ultimate market dominance on the Solana network.",
       features: ["AMM DEX Swap (Anti-MEV Protection)", "Yield Optimizer Vaults (Auto-Compound)", "ZQI Token Lock Hub (Vesting System)", "Secure On-Chain Affiliate (Tiered Volume)", "Priority 24/7 Core Developer Support"],
       price: "$2,499",
-      demoLink: `https://provizto.com` /* 🔥 SINKRONISASI: Menampilkan contoh dApp 4-in-1 yang valid */
+      demoLink: currentOrigin
     },
     {
       name: "Ecosystem Hub / Custom Edition",
       desc: "Advanced custom on-chain infrastructure tailored to complex institutional protocol requirements.",
       features: ["Full 4-in-1 Complete Modular Feature Set", "Custom Tokenomics & Fee Allocation Routing", "Multi-Asset Smart Contract Settlement", "Advanced Proprietary Anti-Bot Mechanics", "Private On-Chain Infrastructure Consultation"],
       price: "Contact Us",
-      demoLink: `https://provizto.com`
+      demoLink: currentOrigin
     }
   ];
 
@@ -122,6 +124,10 @@ const Landing = ({
         .vzt-cta-desc { font-size: 0.95rem; color: #94a3b8; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6; }
         .vzt-tg-btn { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(90deg, #7c3aed 0%, #2563eb 100%); color: #fff !important; font-weight: 700; font-size: 1.1rem; padding: 16px 36px; border-radius: 14px; text-decoration: none !important; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3); transition: all 0.3s ease; }
         .vzt-tg-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(124, 58, 237, 0.4); opacity: 0.95; }
+
+        /* 🔥 STYLE BARU UNTUK TOMBOL PROVIZTO DEMO DI HERO */
+        .vzt-showcase-btn { display: inline-block !important; color: #10b981 !important; text-decoration: none !important; font-size: 0.85rem !important; font-weight: 700 !important; border: 1px solid rgba(16, 185, 129, 0.3) !important; padding: 8px 20px !important; border-radius: 20px !important; background: rgba(16, 185, 129, 0.03) !important; margin-top: 25px !important; transition: all 0.3s ease !important; }
+        .vzt-showcase-btn:hover { background: rgba(16, 185, 129, 0.1) !important; border-color: #10b981 !important; transform: translateY(-1px) !important; }
 
         #vzt-landing-page .pricing-section { padding: 40px 8% 60px 8% !important; }
         #vzt-landing-page .pricing-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 30px !important; margin-top: 40px !important; }
@@ -186,13 +192,11 @@ const Landing = ({
         <nav>
           <a href="#pricing">Packages</a>
           <a href="#faq">FAQ</a>
-          {/* 🔥 SINKRONISASI TELEGRAM UTAMA */}
-          <a href="https://t.me/proviztoecosystem" target="_blank" rel="noopener noreferrer">Contact Hub</a>
+          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer">Contact</a>
         </nav>
-        {/* 🔥 INTERKONEKSI HEADER ACTION: Dialihkan ke Live Demo di Provizto.com */}
-        <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="btn-launch">
-          Live dApp Demo 🌐
-        </a>
+        <button onClick={onLaunchApp} className="btn-launch">
+          Live dApp Demo
+        </button>
       </header>
 
       {/* HERO SECTION WITH HERO LOGO */}
@@ -223,9 +227,17 @@ const Landing = ({
           <div>🎨 <strong>White-Label:</strong> Fully branded</div>
           <div>❌ <strong>No Token Required:</strong> Pure cashflow</div>
         </div>
+
+        {/* 🔥 PENAMBAHAN TOMBOL BARU: Mengaitkan ZoniqFi langsung ke showcase Provizto tanpa merusak link paket */}
+        <div>
+          <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="vzt-showcase-btn">
+            <i className="fas fa-external-link-alt" style={{ marginRight: '6px' }}></i>
+            See an Live 4-in-1 Production Example (Provizto.com) →
+          </a>
+        </div>
       </section>
 
-      {/* BANNER METRIK INTERNET SAAS */}
+      {/* BANNER METRIK */}
       <div className="metrics-banner">
         <div className="metric-item">
           <div className="metric-value">{oneOffBuyers + activeClients + whiteLabelsLive}+</div>
@@ -274,8 +286,7 @@ const Landing = ({
                   <i className="fas fa-bolt" style={{ marginRight: '6px' }}></i> Try Live Demo
                 </a>
                 
-                {/* 🔥 SINKRONISASI LINK PEMBELIAN TELEGRAM */}
-                <a href="https://t.me/proviztoecosystem" target="_blank" rel="noopener noreferrer" className="btn-order">
+                <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="btn-order">
                   {pkg.price === "Contact Us" ? "Consult with Developers" : "Acquire License"}
                 </a>
               </div>
@@ -289,9 +300,8 @@ const Landing = ({
             <h2 className="vzt-cta-title">📥 READY TO LAUNCH YOUR dAPP IN LESS THAN 48 HOURS?</h2>
             <p className="vzt-cta-desc">Our deployment pipeline is fully optimized. Get your utility system live under your own domain and customized branding without technical friction.</p>
             
-            {/* 🔥 SINKRONISASI DARI ZONIQFI KE HUB UTAMA TELEGRAM */}
             <a 
-              href="https://t.me/proviztoecosystem" 
+              href="https://t.me/zoniqfi" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="vzt-tg-btn"
@@ -332,14 +342,13 @@ const Landing = ({
       <footer>
         <p>© 2026 ZoniqFi. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.</p>
         <div className="footer-social-row">
-          {/* 🔥 SINKRONISASI SOSIAL MEDIA UTAMA */}
           <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Telegram">
             <i className="fab fa-telegram"></i>
           </a>
-          <a href="https://x.com/provizto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="X (Twitter)">
+          <a href="https://x.com/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="X (Twitter)">
             <i className="fab fa-x-twitter"></i>
           </a>
-          <a href="https://discord.gg/provizto" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Discord">
+          <a href="https://discord.gg/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Discord">
             <i className="fab fa-discord"></i>
           </a>
         </div>
