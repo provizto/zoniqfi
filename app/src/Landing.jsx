@@ -265,9 +265,9 @@ const Landing = ({
               <h3 className="portfolio-title">ZoniqFi Asset Issuance & Whitelabel Platform</h3>
               <p className="portfolio-desc">Turnkey end-to-end infrastructure engineered for the seamless tokenization, generation, and lifecycle compliance management of Real-World Assets (RWA) under your custom brand entity.</p>
               <ul className="portfolio-list">
-                <li><i className="fas fa-circle-check"></i> Dynamic Interoperable Compliance Tokenization Framework (DyCIST)</li>
-                <li><i className="fas fa-circle-check"></i> Powered natively by the $VIZTO ecosystem utility mechanism</li>
-                <li><i className="fas fa-circle-check"></i> Automated cross-chain settlement allocation networks</li>
+                <li><i className="fas fa-circle-check"></i> Integrated Suite: AMM DEX Swap & Yield Optimizer Vault</li>
+                <li><i className="fas fa-circle-check"></i> Complete Mechanics: VIZTO Lock & Yield Engine</li>
+                <li><i className="fas fa-circle-check"></i> Scalable Growth: Secure On-Chain Affiliate Architecture</li>
               </ul>
             </div>
             <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-cyan-fill">
