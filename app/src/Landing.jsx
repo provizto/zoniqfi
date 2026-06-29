@@ -285,9 +285,9 @@ const Landing = ({
               <h3 className="portfolio-title">Web3 Digital Core Enterprise Hybrid B2B Gateway</h3>
               <p className="portfolio-desc">A premium infrastructure gateway bridging localized legacy Web2 traditional core-banking settlement flows directly into global non-custodial decentralized ledger ecosystems.</p>
               <ul className="portfolio-list">
-                <li><i className="fas fa-circle-check blue-check"></i> Hybrid B2B Settlement Pipelines (Global Stripe / Local QRIS Relays)</li>
-                <li><i className="fas fa-circle-check blue-check"></i> Modular enterprise API endpoints & whitelabel React toolkit modules</li>
-                <li><i className="fas fa-circle-check blue-check"></i> Complete cross-chain non-custodial atomic execution ledgers</li>
+                  <li><i className="fas fa-circle-check blue-check"></i> Enterprise SaaS License Management</li>
+                  <li><i className="fas fa-circle-check blue-check"></i> Developer API Access Token Gateways</li>
+                  <li><i className="fas fa-circle-check blue-check"></i> Premium Web3 UI Toolkit & React Modules</li>
               </ul>
             </div>
             <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-blue-grad">
