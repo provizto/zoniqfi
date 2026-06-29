@@ -9,7 +9,7 @@ const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '
 const Landing = ({ 
   activeClients = 48, 
   whiteLabelsLive = 19, 
-  oneOffBuyers = 320, 
+  oneOffBoxes = 320, 
   onLaunchApp 
 }) => {
   const [activeFaq, setActiveFaq] = useState(null);
@@ -107,7 +107,7 @@ const Landing = ({
         #vzt-landing-page .hero h1 { font-size: 3.2rem !important; font-weight: 800 !important; line-height: 1.3 !important; margin-bottom: 24px !important; background: linear-gradient(90deg, #fff 40%, #14b8a6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
         #vzt-landing-page .hero p { font-size: 1.2rem !important; color: #94a3b8 !important; max-width: 800px !important; margin: 0 auto !important; line-height: 1.6 !important; }
 
-        /* 🔥 PREMIUM SUITE PORTFOLIO SECTION CSS (NO UI MOCKUPS) */
+        /* 🔥 PREMIUM PORTFOLIO HUB MODULE */
         #vzt-landing-page .portfolio-section { padding: 60px 8% !important; border-top: 1px solid #1f2937 !important; background: #090d16 !important; }
         #vzt-landing-page .portfolio-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 35px !important; margin-top: 40px !important; }
         #vzt-landing-page .portfolio-card { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 20px !important; padding: 40px 30px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; transition: all 0.3s ease !important; }
@@ -144,9 +144,6 @@ const Landing = ({
         .vzt-cta-desc { font-size: 0.95rem; color: #94a3b8; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6; }
         .vzt-tg-btn { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(90deg, #7c3aed 0%, #2563eb 100%); color: #fff !important; font-weight: 700; font-size: 1.1rem; padding: 16px 36px; border-radius: 14px; text-decoration: none !important; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3); transition: all 0.3s ease; }
         .vzt-tg-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(124, 58, 237, 0.4); opacity: 0.95; }
-
-        .vzt-showcase-btn { display: inline-block !important; color: #10b981 !important; text-decoration: none !important; font-size: 0.85rem !important; font-weight: 700 !important; border: 1px solid rgba(16, 185, 129, 0.3) !important; padding: 8px 20px !important; border-radius: 20px !important; background: rgba(16, 185, 129, 0.03) !important; margin-top: 25px !important; transition: all 0.3s ease !important; }
-        .vzt-showcase-btn:hover { background: rgba(16, 185, 129, 0.1) !important; border-color: #10b981 !important; transform: translateY(-1px) !important; }
 
         #vzt-landing-page .pricing-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 30px !important; margin-top: 40px !important; }
         #vzt-landing-page .pricing-card { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 16px !important; padding: 35px 25px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; position: relative !important; transition: border-color 0.3s, transform 0.3s !important; }
@@ -257,11 +254,11 @@ const Landing = ({
       </section>
 
       {/* ===================================================================== */}
-      {/* 🔥 PREMIUM PORTFOLIO SUITE MODEL AWAL (LEAD GENERATION READY) 🔥 */}
+      {/* 🔥 EXCLUSIVE PORTFOLIO SUITE MODULE (CLEAN LEAD-GEN MODEL) 🔥 */}
       {/* ===================================================================== */}
       <section id="products" className="portfolio-section">
         <h2 className="section-title">Institutional Web3 Suite Portfolio</h2>
-        <p className="section-desc">Pilih atau kombinasikan solusi teknologi terpadu kami untuk mempercepat volume perdagangan dan mengamankan kedaulatan likuiditas enterprise Anda.</p>
+        <p className="section-desc">Select or combine our complete architectural stacks to maximize trading transaction velocities and protect institutional asset pools.</p>
         
         <div className="portfolio-grid">
           
@@ -273,11 +270,11 @@ const Landing = ({
                 <span className="portfolio-icon">💎</span>
               </div>
               <h3 className="portfolio-title">ZoniqFi Asset Issuance & Whitelabel Platform</h3>
-              <p className="portfolio-desc">Solusi *turnkey* end-to-end untuk tokenisasi, penerbitan, dan tata kelola siklus hidup Real-World Assets (RWA) secara patuh hukum di bawah identitas brand Anda sendiri.</p>
+              <p className="portfolio-desc">Turnkey end-to-end infrastructure engineered for the seamless tokenization, generation, and lifecycle compliance management of Real-World Assets (RWA) under your custom brand entity.</p>
               <ul className="portfolio-list">
-                <li><i className="fas fa-circle-check"></i> Standardisasi Token Interoperabel (DyCIST)</li>
-                <li><i className="fas fa-circle-check"></i> Didukung Likuiditas Finansial Komunitas $VIZTO</li>
-                <li><i className="fas fa-circle-check"></i> Sistem Pembagian Hasil Otomatis Lintas Rantai</li>
+                <li><i className="fas fa-circle-check"></i> Dynamic Interoperable Compliance Tokenization Framework (DyCIST)</li>
+                <li><i className="fas fa-circle-check"></i> Powered natively by the $VIZTO ecosystem utility mechanism</li>
+                <li><i className="fas fa-circle-check"></i> Automated cross-chain settlement allocation networks</li>
               </ul>
             </div>
             <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-cyan-fill">
@@ -285,7 +282,7 @@ const Landing = ({
             </a>
           </div>
 
-          {/* PRODUCT 2: New Release Enterprise Gateway -> Pure Request Model */}
+          {/* PRODUCT 2: Gateway Release -> Secure B2B Request Model */}
           <div className="portfolio-card new-release-card">
             <div>
               <div className="portfolio-meta">
@@ -293,11 +290,11 @@ const Landing = ({
                 <span className="portfolio-icon">🏪</span>
               </div>
               <h3 className="portfolio-title">Web3 Digital Core Enterprise Hybrid B2B Gateway</h3>
-              <p className="portfolio-desc">Lapisan infrastruktur gerbang hibrida yang dirancang khusus untuk menghubungkan arsitektur core banking/enterprise (Web2) Anda dengan jaringan on-chain global.</p>
+              <p className="portfolio-desc">A premium infrastructure gateway bridging localized legacy Web2 traditional core-banking settlement flows directly into global non-custodial decentralized ledger ecosystems.</p>
               <ul className="portfolio-list">
-                <li><i className="fas fa-circle-check blue-check"></i> Hybrid B2B Settlement Engine (Off-to-On-Chain)</li>
-                <li><i className="fas fa-circle-check blue-check"></i> Integrasi API & SDK Whitelabel Fleksibel Sistem Internal</li>
-                <li><i className="fas fa-circle-check blue-check"></i> Lintas Rantai Atomik (*Atomic Settlements*) Non-Custodial</li>
+                <li><i className="fas fa-circle-check blue-check"></i> Hybrid B2B Settlement Pipelines (Global Stripe / Local QRIS Relays)</li>
+                <li><i className="fas fa-circle-check blue-check"></i> Modular enterprise API endpoints & whitelabel React toolkit modules</li>
+                <li><i className="fas fa-circle-check blue-check"></i> Complete cross-chain non-custodial atomic execution ledgers</li>
               </ul>
             </div>
             <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-blue-grad">
@@ -308,10 +305,10 @@ const Landing = ({
         </div>
       </section>
 
-      {/* BANNER METRIK */}
+      {/* METRICS BANNER */}
       <div className="metrics-banner">
         <div className="metric-item">
-          <div className="metric-value">{oneOffBuyers + activeClients + whiteLabelsLive}+</div>
+          <div className="metric-value">{oneOffBoxes + activeClients + whiteLabelsLive}+</div>
           <div className="metric-label">Total Licenses Issued</div>
         </div>
         <div className="metric-item">
@@ -323,7 +320,7 @@ const Landing = ({
           <div className="metric-label">Live Deployed White-Labels</div>
         </div>
         <div className="metric-item">
-          <div className="metric-value">{oneOffBuyers}+</div>
+          <div className="metric-value">{oneOffBoxes}+</div>
           <div className="metric-label">One-Off License Buyers</div>
         </div>
         <div className="metric-item">
