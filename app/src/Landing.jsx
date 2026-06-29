@@ -244,13 +244,6 @@ const Landing = ({
           <div>🎨 <strong>White-Label:</strong> Fully branded</div>
           <div>❌ <strong>No Token Required:</strong> Pure cashflow</div>
         </div>
-
-        <div>
-          <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="vzt-showcase-btn">
-            <i className="fas fa-external-link-alt" style={{ marginRight: '6px' }}></i>
-            See an Live 4-in-1 Production Example (Provizto.com) →
-          </a>
-        </div>
       </section>
 
       {/* ===================================================================== */}
