@@ -17,7 +17,7 @@ const Landing = ({
   // Automatically inject FontAwesome and Google Fonts directly into the DOM Head upon component mount
   useEffect(() => {
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700;800&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
 
@@ -109,7 +109,7 @@ const Landing = ({
         #vzt-landing-page .hero h1 { font-size: 3.2rem !important; font-weight: 800 !important; line-height: 1.3 !important; margin-bottom: 24px !important; background: linear-gradient(90deg, #fff 40%, #14b8a6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
         #vzt-landing-page .hero p { font-size: 1.2rem !important; color: #94a3b8 !important; max-width: 800px !important; margin: 0 auto !important; line-height: 1.6 !important; }
 
-        #vzt-landing-page .metrics-banner { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 30px !important; padding: 30px 8% !important; background: #111827 !important; margin: 40px 0 0 0 !important; border-top: 1px solid #1f2937 !important; border-bottom: 1px solid #1f2937 !important; }
+        #vzt-landing-page .metrics-banner { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 30px !important; padding: 30px 8% !important; background: #111827 !important; margin: 0px 0 0 0 !important; border-top: 1px solid #1f2937 !important; border-bottom: 1px solid #1f2937 !important; }
         #vzt-landing-page .metric-item { text-align: center !important; min-width: 150px !important; flex: 1 !important; }
         #vzt-landing-page .metric-value { font-size: 1.8rem !important; font-weight: 800 !important; color: #14b8a6 !important; }
         #vzt-landing-page .metric-label { font-size: 0.8rem !important; color: #94a3b8 !important; text-transform: uppercase !important; letter-spacing: 1px !important; margin-top: 6px !important; }
@@ -125,11 +125,32 @@ const Landing = ({
         .vzt-tg-btn { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(90deg, #7c3aed 0%, #2563eb 100%); color: #fff !important; font-weight: 700; font-size: 1.1rem; padding: 16px 36px; border-radius: 14px; text-decoration: none !important; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3); transition: all 0.3s ease; }
         .vzt-tg-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(124, 58, 237, 0.4); opacity: 0.95; }
 
-        /* 🔥 STYLE BARU UNTUK TOMBOL PROVIZTO DEMO DI HERO */
         .vzt-showcase-btn { display: inline-block !important; color: #10b981 !important; text-decoration: none !important; font-size: 0.85rem !important; font-weight: 700 !important; border: 1px solid rgba(16, 185, 129, 0.3) !important; padding: 8px 20px !important; border-radius: 20px !important; background: rgba(16, 185, 129, 0.03) !important; margin-top: 25px !important; transition: all 0.3s ease !important; }
         .vzt-showcase-btn:hover { background: rgba(16, 185, 129, 0.1) !important; border-color: #10b981 !important; transform: translateY(-1px) !important; }
 
-        #vzt-landing-page .pricing-section { padding: 40px 8% 60px 8% !important; }
+        /* 🔥 SCISSOR CSS: LAYOUT GRID PORTFOLIO MULTI-PRODUCT BARU */
+        #vzt-landing-page .portfolio-section { padding: 60px 8% !important; border-top: 1px solid #1f2937 !important; background: #090d16 !important; }
+        #vzt-landing-page .portfolio-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 35px !important; margin-top: 40px !important; }
+        #vzt-landing-page .portfolio-card { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 20px !important; padding: 40px 30px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; transition: all 0.3s ease !important; }
+        #vzt-landing-page .portfolio-card:hover { border-color: #14b8a6 !important; transform: translateY(-2px) !important; box-shadow: 0 10px 30px rgba(20, 184, 166, 0.05) !important; }
+        #vzt-landing-page .portfolio-card.new-release-card:hover { border-color: #3b82f6 !important; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.05) !important; }
+        #vzt-landing-page .portfolio-meta { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 20px !important; }
+        #vzt-landing-page .portfolio-badge { font-size: 0.75rem !important; font-weight: 600 !important; padding: 4px 10px !important; border-radius: 6px !important; background: #1f2937 !important; border: 1px solid #374151 !important; color: #94a3b8 !important; }
+        #vzt-landing-page .portfolio-badge.badge-new { background: rgba(59, 130, 246, 0.1) !important; border-color: rgba(59, 130, 246, 0.3) !important; color: #60a5fa !important; font-weight: 700 !important; }
+        #vzt-landing-page .portfolio-icon { font-size: 1.5rem !important; }
+        #vzt-landing-page .portfolio-title { font-size: 1.5rem !important; font-weight: 700 !important; color: #fff !important; margin: 0 0 12px 0 !important; }
+        #vzt-landing-page .portfolio-desc { font-size: 0.95rem !important; color: #94a3b8 !important; line-height: 1.6 !important; margin-bottom: 25px !important; min-height: 70px !important; }
+        #vzt-landing-page .portfolio-list { list-style: none !important; padding: 0 !important; margin: 0 0 35px 0 !important; }
+        #vzt-landing-page .portfolio-list li { font-size: 0.9rem !important; color: #e5e7eb !important; margin-bottom: 12px !important; display: flex !important; align-items: center !important; gap: 10px !important; }
+        #vzt-landing-page .portfolio-list i { color: #14b8a6 !important; font-size: 0.85rem !important; }
+        #vzt-landing-page .portfolio-list .blue-check { color: #3b82f6 !important; }
+        #vzt-landing-page .btn-portfolio-action { display: block !important; width: 100% !important; padding: 14px !important; text-align: center !important; font-weight: 700 !important; text-decoration: none !important; border-radius: 10px !important; transition: all 0.2s ease !important; cursor: pointer !important; font-size: 0.95rem !important; border: none !important; }
+        #vzt-landing-page .btn-cyan-fill { background: #14b8a6 !important; color: #fff !important; }
+        #vzt-landing-page .btn-cyan-fill:hover { background: #0d9488 !important; }
+        #vzt-landing-page .btn-blue-grad { background: linear-gradient(90deg, #2563eb 0%, #06b6d4 100%) !important; color: #fff !important; }
+        #vzt-landing-page .btn-blue-grad:hover { opacity: 0.95 !important; transform: translateY(-0.5px) !important; }
+
+        #vzt-landing-page .pricing-section { padding: 60px 8% 60px 8% !important; }
         #vzt-landing-page .pricing-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 30px !important; margin-top: 40px !important; }
         #vzt-landing-page .pricing-card { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 16px !important; padding: 35px 25px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; position: relative !important; transition: border-color 0.3s, transform 0.3s !important; }
         #vzt-landing-page .pricing-card:hover { border-color: #3b82f6 !important; transform: translateY(-4px) !important; }
@@ -170,6 +191,7 @@ const Landing = ({
           #vzt-landing-page nav { display: none !important; }
           #vzt-landing-page .hero { padding-top: 140px !important; }
           #vzt-landing-page .hero h1 { font-size: 2.2rem !important; line-height: 1.3 !important; }
+          #vzt-landing-page .portfolio-grid { grid-template-columns: 1fr !important; gap: 25px !important; }
           #vzt-landing-page .metrics-banner { flex-direction: column !important; gap: 25px !important; text-align: center !important; }
           #vzt-landing-page .pricing-grid { grid-template-columns: 1fr !important; }
           #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; }
@@ -190,6 +212,7 @@ const Landing = ({
           <div className="logo">ZONIQFI</div>
         </div>
         <nav>
+          <a href="#products">Products</a>
           <a href="#pricing">Packages</a>
           <a href="#faq">FAQ</a>
           <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer">Contact</a>
@@ -234,6 +257,58 @@ const Landing = ({
             <i className="fas fa-external-link-alt" style={{ marginRight: '6px' }}></i>
             See an Live 4-in-1 Production Example (Provizto.com) →
           </a>
+        </div>
+      </section>
+
+      {/* ===================================================================== */}
+      {/* 🔥 TEMPAT SHOWCASE PORTFOLIO MULTI-PRODUCT BARU DI ATAS METRICS 🔥 */}
+      {/* ===================================================================== */}
+      <section id="products" className="portfolio-section">
+        <h2 className="section-title">Institutional Web3 Suite Portfolio</h2>
+        <p className="section-desc">Pilih atau kombinasikan solusi teknologi terpadu kami untuk mempercepat volume perdagangan dan mengamankan kedaulatan likuiditas enterprise Anda.</p>
+        
+        <div className="portfolio-grid">
+          
+          {/* PRODUK 1: ZoniqFi Whitelabel Platform -> Tembak langsung ke provizto.com */}
+          <div className="portfolio-card">
+            <div>
+              <div className="portfolio-meta">
+                <span className="portfolio-badge">Asset Engine</span>
+                <span className="portfolio-icon">💎</span>
+              </div>
+              <h3 className="portfolio-title">ZoniqFi Asset Issuance & Whitelabel Platform</h3>
+              <p className="portfolio-desc">Solusi *turnkey* end-to-end untuk tokenisasi, penerbitan, dan tata kelola siklus hidup Real-World Assets (RWA) secara patuh hukum di bawah identitas brand Anda sendiri.</p>
+              <ul className="portfolio-list">
+                <li><i className="fas fa-circle-check"></i> Standardisasi Token Interoperabel (DyCIST)</li>
+                <li><i className="fas fa-circle-check"></i> Didukung Likuiditas Finansial Komunitas $VIZTO</li>
+                <li><i className="fas fa-circle-check"></i> Sistem Pembagian Hasil Otomatis Lintas Rantai</li>
+              </ul>
+            </div>
+            <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-cyan-fill">
+              Buy $VIZTO & Launch Asset Engine <i className="fas fa-arrow-right" style={{ marginLeft: '6px' }}></i>
+            </a>
+          </div>
+
+          {/* PRODUK 2: Web3 Digital Core Enterprise Gateway -> Produk Baru */}
+          <div className="portfolio-card new-release-card">
+            <div>
+              <div className="portfolio-meta">
+                <span className="portfolio-badge badge-new">✨ NEW B2B RELEASE</span>
+                <span className="portfolio-icon">🏪</span>
+              </div>
+              <h3 className="portfolio-title">Web3 Digital Core Enterprise Hybrid B2B Gateway</h3>
+              <p className="portfolio-desc">Lapisan infrastruktur gerbang hibrida yang dirancang khusus untuk menghubungkan arsitektur core banking/enterprise (Web2) Anda dengan jaringan on-chain global.</p>
+              <ul className="portfolio-list">
+                <li><i className="fas fa-circle-check blue-check"></i> Hybrid B2B Settlement Engine (Off-to-On-Chain)</li>
+                <li><i className="fas fa-circle-check blue-check"></i> Integrasi API & SDK Whitelabel Fleksibel Sistem Internal</li>
+                <li><i className="fas fa-circle-check blue-check"></i> Lintas Rantai Atomik (*Atomic Settlements*) Non-Custodial</li>
+              </ul>
+            </div>
+            <button onClick={() => alert('Form Request Demo Enterprise sedang disiapkan oleh tim solutions architect!')} className="btn-portfolio-action btn-blue-grad">
+              Request Enterprise Demo
+            </button>
+          </div>
+
         </div>
       </section>
 
