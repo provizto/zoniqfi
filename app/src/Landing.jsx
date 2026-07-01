@@ -271,7 +271,7 @@ const Landing = ({
               </ul>
             </div>
             <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-cyan-fill">
-              Buy $VIZTO & Launch Asset Engine <i className="fas fa-arrow-right" style={{ marginLeft: '6px' }}></i>
+              Buy $VIZTO & Launch App Template <i className="fas fa-arrow-right" style={{ marginLeft: '6px' }}></i>
             </a>
           </div>
 
