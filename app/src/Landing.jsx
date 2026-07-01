@@ -259,11 +259,11 @@ const Landing = ({
           <div className="portfolio-card">
             <div>
               <div className="portfolio-meta">
-                <span className="portfolio-badge">Asset Engine</span>
+                <span className="portfolio-badge">Token Utility</span>
                 <span className="portfolio-icon">💎</span>
               </div>
-              <h3 className="portfolio-title">ZoniqFi Asset Issuance & Whitelabel Platform</h3>
-              <p className="portfolio-desc">Turnkey end-to-end infrastructure engineered for the seamless tokenization, generation, and lifecycle compliance management of Real-World Assets (RWA) under your custom brand entity.</p>
+              <h3 className="portfolio-title">Provizto ($VIZTO) Utility Ecosystem</h3>
+              <p className="portfolio-desc">The official entry point to unlock high-yield automated DeFi mechanics on Solana. Accumulating $VIZTO grants you direct access to MEV-shielded asset routing, premium USDC yield compounding, and decentralized affiliate incentives.</p>
               <ul className="portfolio-list">
                 <li><i className="fas fa-circle-check"></i> Integrated Suite: AMM DEX Swap & Yield Optimizer Vault</li>
                 <li><i className="fas fa-circle-check"></i> Complete Mechanics: VIZTO Lock & Yield Engine</li>
