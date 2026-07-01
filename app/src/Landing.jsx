@@ -289,8 +289,8 @@ const Landing = ({
                   <li><i className="fas fa-circle-check blue-check"></i> Developer API Access Token Gateways</li>
                   <li><i className="fas fa-circle-check blue-check"></i> Premium Web3 UI Toolkit & React Modules</li>
               </ul>
+              💳 Credit Card | 📱 QRIS | 🪙 Ethereum (ETH)
             </div>
-            💳 Credit Card | 📱 QRIS | 🪙 Ethereum (ETH)
             <a href="https://gateway.zoniqfi.com/" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-blue-grad">
               Launch Gateway Portal <i className="fas fa-external-link-alt" style={{ marginLeft: '6px' }}></i>
             </a>
