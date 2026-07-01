@@ -283,15 +283,16 @@ const Landing = ({
                 <span className="portfolio-icon">🏪</span>
               </div>
               <h3 className="portfolio-title">Web3 Digital Core Enterprise Hybrid B2B Gateway</h3>
-              <p className="portfolio-desc">A premium infrastructure gateway bridging localized legacy Web2 traditional core-banking settlement flows directly into global non-custodial decentralized ledger ecosystems.</p>
+              <p className="portfolio-desc">A premium infrastructure gateway bridging localized legacy Web2 traditional core-banking settlement flows directly into global non-custodial decentralized ledger ecosystems. Now fully integrated with global & local payment processors.</p>
               <ul className="portfolio-list">
                   <li><i className="fas fa-circle-check blue-check"></i> Enterprise SaaS License Management</li>
                   <li><i className="fas fa-circle-check blue-check"></i> Developer API Access Token Gateways</li>
                   <li><i className="fas fa-circle-check blue-check"></i> Premium Web3 UI Toolkit & React Modules</li>
               </ul>
             </div>
-            <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-blue-grad">
-              Request Private Enterprise Demo <i className="fab fa-telegram-plane" style={{ marginLeft: '6px' }}></i>
+            💳 Credit Card | 📱 QRIS | 🪙 Ethereum (ETH)
+            <a href="https://gateway.zoniqfi.com/" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-blue-grad">
+              Launch Gateway Portal <i className="fas fa-external-link-alt" style={{ marginLeft: '6px' }}></i>
             </a>
           </div>
 
