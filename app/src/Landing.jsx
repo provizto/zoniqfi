@@ -291,7 +291,7 @@ const Landing = ({
                   <li><i className="fas fa-circle-check blue-check"></i> 💳 Credit Card | 📱 QRIS | 🪙 Ethereum (ETH)</li>
               </ul>
             </div>
-            <a href="https://gateway.zoniqfi.com/" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-blue-grad">
+            <a href="https://gateway.zoniqfi.com/landing.html" target="_blank" rel="noopener noreferrer" className="btn-portfolio-action btn-blue-grad">
               Launch Gateway Portal <i className="fas fa-external-link-alt" style={{ marginLeft: '6px' }}></i>
             </a>
           </div>
