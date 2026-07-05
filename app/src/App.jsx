@@ -630,11 +630,7 @@ function App() {
   return (
     <>
       <ComplianceModal />
-      <DefiLanding 
-        activeClients={activeClients} 
-        whiteLabelsLive={whiteLabelsLive} 
-        oneOffBoxes={oneOffBuyers} 
-      />
+      <DefiLanding activeClients={activeClients} whiteLabelsLive={whiteLabelsLive} oneOffBoxes={oneOffBuyers} />
     </>
   );
 }
