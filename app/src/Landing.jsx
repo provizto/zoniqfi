@@ -12,9 +12,10 @@ const Landing = ({
   oneOffBoxes = 320, 
   onLaunchApp 
 }) => {
-  // 🔥 STATE MANAJEMEN MENU & DRAWER SIDEBAR MOBILE
-  const [activeTab, setActiveTab] = useState('defi'); // Pilihan: 'defi', 'provizto', 'gateway'
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  // STATE INTERFACES NAVIGATION, MOBILE DRAWER, & DESKTOP COLLAPSE/GESER
+  const [activeTab, setActiveTab] = useState('defi'); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Untuk Mobile
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // Untuk Geser Web Desktop
   const [activeFaq, setActiveFaq] = useState(null);
 
   // Automatically inject FontAwesome and Google Fonts directly into the DOM Head
@@ -97,11 +98,11 @@ const Landing = ({
   return (
     <div id="vzt-landing-page">
       <style>{`
-        #vzt-landing-page { background-color: #0b0f19 !important; color: #f3f4f6 !important; min-height: 100vh !important; font-family: 'Inter', sans-serif !important; margin: 0 !important; padding: 0 !important; display: flex !important; }
+        #vzt-landing-page { background-color: #0b0f19 !important; color: #f3f4f6 !important; min-height: 100vh !important; font-family: 'Inter', sans-serif !important; margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; text-align: left !important; display: flex !important; }
         #vzt-landing-page * { box-sizing: border-box !important; }
         
-        /* 🧭 CORE LAYOUT ENHANCEMENT: SIDEBAR INTEGRATION */
-        .vzt-sidebar-frame { width: 285px !important; background: #0f172a !important; border-right: 1px solid #1e2937 !important; display: flex !important; flex-direction: column !important; padding: 26px !important; position: fixed !important; height: 100vh !important; z-index: 99999 !important; transition: transform 0.3s ease !important; }
+        /* 🧭 MASTER DRAWER SIDEBAR */
+        .vzt-sidebar-frame { width: 285px !important; background: #0f172a !important; border-right: 1px solid #1e2937 !important; display: flex !important; flex-direction: column !important; padding: 26px !important; position: fixed !important; height: 100vh !important; z-index: 99999 !important; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; top: 0 !important; left: 0 !important; }
         .vzt-sidebar-brand { display: flex !important; align-items: center !important; gap: 12px !important; margin-bottom: 40px !important; }
         .vzt-sidebar-brand h2 { font-size: 1.25rem !important; font-weight: 800 !important; letter-spacing: 1px !important; color: #fff !important; margin: 0 !important; }
         
@@ -110,14 +111,22 @@ const Landing = ({
         .vzt-side-menu-item:hover { background: rgba(255,255,255,0.03) !important; color: #fff !important; }
         .vzt-side-menu-item.active { background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important; color: #fff !important; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25) !important; }
         
-        /* 💻 MAIN WORKSPACE CONTAINER PANEL */
-        .vzt-main-panel { flex: 1 !important; margin-left: 285px !important; min-width: 0 !important; display: flex !important; flex-direction: column !important; position: relative !important; }
+        /* DESKTOP SLIDE ANIMATION MATRIX */
+        .vzt-sidebar-frame.desktop-collapsed { transform: translateX(-285px) !important; }
+        
+        /* 💻 MAIN WORKSPACE PANEL CONTROL */
+        .vzt-main-panel { flex: 1 !important; margin-left: 285px !important; min-width: 0 !important; width: calc(100% - 285px) !important; display: flex !important; flex-direction: column !important; position: relative !important; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+        .vzt-main-panel.desktop-full { margin-left: 0 !important; width: 100% !important; }
         
         /* 📱 RESPONSIVE HAMBURGER TRIGGERS */
         .vzt-hamburger-trigger { display: none !important; position: fixed !important; top: 16px !important; left: 16px !important; background: #1e2937 !important; border: 1px solid #374151 !important; color: #fff !important; padding: 10px 14px !important; border-radius: 8px !important; cursor: pointer !important; z-index: 100000 !important; font-size: 1.2rem !important; }
         
-        /* INSTITUTIONAL SCREEN SHOWCASE REDIRECT SPLASH */
-        .vzt-showcase-hero { background: radial-gradient(circle at center, #111827 0%, #060911 100%) !important; padding: 80px 40px !important; border-radius: 20px !important; border: 1px solid #1f2937 !important; text-align: center !important; margin: 120px 8% 40px 8% !important; box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important; }
+        /* WEB DESKTOP SLIDE TOGGLE BUTTON (TITIK TIGA / BAR CONSOLE) */
+        .vzt-desktop-toggle-btn { background: #1e2937 !important; border: 1px solid #374151 !important; color: #94a3b8 !important; width: 34px !important; height: 34px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 8px !important; cursor: pointer !important; transition: all 0.2s ease !important; margin-right: 15px !important; }
+        .vzt-desktop-toggle-btn:hover { color: #fff !important; border-color: #3b82f6 !important; background: #2563eb !important; }
+
+        /* 🔥 FIXXED & OPTIMIZED: PORTAL SCREEN SHOWCASE REDIRECT SPLASH */
+        .vzt-showcase-hero { background: radial-gradient(circle at center, #111827 0%, #060911 100%) !important; padding: 80px 40px !important; border-radius: 20px !important; border: 1px solid #1f2937 !important; text-align: center; margin: 140px 8% 40px 8% !important; box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important; transition: all 0.3s ease !important; }
         .vzt-showcase-title { font-size: 2.2rem !important; font-weight: 800 !important; color: #fff !important; margin: 0 0 16px 0 !important; background: linear-gradient(90deg, #fff 50%, #14b8a6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
         .vzt-showcase-desc { color: #94a3b8 !important; font-size: 1.05rem !important; line-height: 1.6 !important; max-width: 680px !important; margin: 0 auto 30px auto !important; }
         .vzt-showcase-launch-btn { display: inline-flex !important; align-items: center !important; gap: 10px !important; padding: 14px 32px !important; font-weight: 700 !important; border-radius: 10px !important; text-decoration: none !important; font-size: 1rem !important; transition: all 0.2s !important; border: none !important; cursor: pointer !important; }
@@ -126,8 +135,10 @@ const Landing = ({
         .vzt-btn-blue { background: linear-gradient(90deg, #2563eb 0%, #06b6d4 100%) !important; color: #fff !important; }
         .vzt-btn-blue:hover { opacity: 0.95 !important; }
 
-        /* HEADER & HERO ADJUSTMENTS FOR TAB INTEGRATION */
-        #vzt-landing-page header { display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 15px 8% !important; border-bottom: 1px solid #1f2937 !important; background: rgba(11, 15, 25, 0.8) !important; backdrop-filter: blur(12px) !important; position: absolute !important; width: 100% !important; top: 0 !important; left: 0 !important; z-index: 9998 !important; }
+        /* TOP HEADER NAVBAR SYNC LOGIC */
+        #vzt-landing-page header { display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 15px 8% !important; border-bottom: 1px solid #1f2937 !important; background: rgba(11, 15, 25, 0.85) !important; backdrop-filter: blur(12px) !important; position: fixed !important; width: calc(100% - 285px) !important; top: 0 !important; left: 285px !important; z-index: 9998 !important; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+        #vzt-landing-page header.desktop-full { left: 0 !important; width: 100% !important; }
+        
         #vzt-landing-page .brand-wrapper { display: flex !important; align-items: center !important; gap: 10px !important; }
         #vzt-landing-page .logo { font-size: 1.4rem !important; font-weight: 700 !important; letter-spacing: 1px !important; background: linear-gradient(45deg, #fff, #3b82f6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; margin: 0 !important; }
         #vzt-landing-page nav a { color: #f3f4f6 !important; text-decoration: none !important; margin: 0 15px !important; font-size: 0.95rem !important; font-weight: 500 !important; transition: color 0.3s !important; }
@@ -143,6 +154,8 @@ const Landing = ({
         #vzt-landing-page .metric-item { text-align: center !important; min-width: 150px !important; flex: 1 !important; }
         #vzt-landing-page .metric-value { font-size: 1.8rem !important; font-weight: 800 !important; color: #14b8a6 !important; }
         #vzt-landing-page .metric-label { font-size: 0.8rem !important; color: #94a3b8 !important; text-transform: uppercase !important; letter-spacing: 1px !important; margin-top: 6px !important; }
+        .vzt-sidebar-frame { text-align: left !important; }
+        .vzt-side-menu-list { text-align: left !important; }
 
         .vzt-promo-subbar { display: flex; justify-content: center; gap: 24px; font-size: 0.9rem; color: #d1d5db; background: #111827; border: 1px solid #1f2937; padding: 12px 24px; border-radius: 12px; max-width: 650px; margin: 30px auto 0 auto; }
         .vzt-promo-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 6px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; }
@@ -178,7 +191,14 @@ const Landing = ({
           .vzt-hamburger-trigger { display: block !important; }
           .vzt-sidebar-frame { transform: translateX(-100%) !important; }
           .vzt-sidebar-frame.mobile-open { transform: translateX(0) !important; }
-          .vzt-main-panel { margin-left: 0 !important; padding-top: 60px !important; }
+          .vzt-sidebar-frame.desktop-collapsed { transform: translateX(-100%) !important; }
+          .vzt-main-panel { margin-left: 0 !important; width: 100% !important; padding-top: 60px !important; }
+          #vzt-landing-page header { width: 100% !important; left: 0 !important; }
+          .vzt-desktop-toggle-btn { display: none !important; }
+          /* 🔥 FIXXED: Memberikan ruang ekstra di HP agar tulisan judul showcase tidak berdempetan */
+          .vzt-showcase-hero { margin: 100px 4% 30px 4% !important; padding: 50px 20px !important; }
+          .vzt-showcase-title { font-size: 1.7rem !important; line-height: 1.4 !important; }
+          .vzt-showcase-desc { font-size: 0.95rem !important; margin-bottom: 20px !important; }
         }
         @media (max-width: 768px) {
           #vzt-landing-page header { padding: 15px 5% !important; padding-left: 60px !important; }
@@ -195,8 +215,8 @@ const Landing = ({
         <i className={`fas ${isSidebarOpen ? 'fa-times' : 'fa-bars'}`}></i>
       </button>
 
-      {/* 🧭 NAVIGATION SIDEBAR DRAWER LEFT FRAME */}
-      <aside className={`vzt-sidebar-frame ${isSidebarOpen ? 'mobile-open' : ''}`}>
+      {/* 🧭 SIDEBAR DRAWER LEFT FRAME */}
+      <aside className={`vzt-sidebar-frame ${isSidebarOpen ? 'mobile-open' : ''} ${isSidebarCollapsed ? 'desktop-collapsed' : ''}`}>
         <div className="vzt-sidebar-brand">
           <img src={logoZoniqLarge} alt="ZoniqFi Sidebar Logo" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
           <h2>ZONIQFI HUB</h2>
@@ -220,8 +240,8 @@ const Landing = ({
         </div>
       </aside>
 
-      {/* 💻 MAIN CONTROLLER PANEL DISPLAY WORKSPACE */}
-      <main className="vzt-main-panel">
+      {/* 💻 MAIN WORKSPACE PANEL DISPLAY CONTAINER */}
+      <main className={`vzt-main-panel ${isSidebarCollapsed ? 'desktop-full' : ''}`}>
 
         {/* ==================================================================== */}
         {/* TAB 1: SOLANA DEFI SUITE - HALAMAN DEPAN LU TAMPIL UTUH TANPA KURANG */}
@@ -229,8 +249,11 @@ const Landing = ({
         {activeTab === 'defi' && (
           <div style={{ width: '100%' }}>
             {/* NAVBAR HEADER BROWSER LAYER */}
-            <header>
+            <header className={isSidebarCollapsed ? 'desktop-full' : ''}>
               <div className="brand-wrapper">
+                <button className="vzt-desktop-toggle-btn" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} title="Toggle Navigation Framework">
+                  <i className={`fas ${isSidebarCollapsed ? 'fa-ellipsis-v' : 'fa-bars'}`}></i>
+                </button>
                 <img src={logoZoniqLarge} alt="ZoniqFi Nav Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
                 <div className="logo">ZONIQFI</div>
               </div>
@@ -310,7 +333,7 @@ const Landing = ({
                 ))}
               </div>
 
-              {/* CLOSING TELEGRAM TELEGRAM EMBED ACTION CARD */}
+              {/* CLOSING TELEGRAM EMBED ACTION CARD */}
               <div className="vzt-cta-wrapper">
                 <div className="vzt-cta-card">
                   <h2 className="vzt-cta-title">📥 READY TO LAUNCH YOUR dAPP IN LESS THAN 48 HOURS?</h2>
@@ -349,11 +372,23 @@ const Landing = ({
         {/* TAB 2: PORTAL SHOWROOM REDIRECT PROVIZTO.COM */}
         {/* ==================================================================== */}
         {activeTab === 'provizto' && (
-          <div className="vzt-showcase-hero">
-            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>💎</div>
-            <h1 className="vzt-showcase-title">Provizto ($VIZTO) Utility Ecosystem</h1>
-            <p className="vzt-showcase-desc">The official entry point to unlock high-yield automated DeFi mechanics on Solana. Accumulating $VIZTO grants you direct access to MEV-shielded asset routing, premium USDC yield compounding, and decentralized affiliate incentives.</p>
-            <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="vzt-showcase-launch-btn vzt-btn-cyan">Buy $VIZTO & Launch App Template <i className="fas fa-arrow-right" style={{ marginLeft: '6px' }}></i></a>
+          <div style={{ width: '100%' }}>
+            {/* 🔥 FIXED: Tag penutup sudah dikoreksi menjadi </header> */}
+            <header className={isSidebarCollapsed ? 'desktop-full' : ''}>
+              <div className="brand-wrapper">
+                <button className="vzt-desktop-toggle-btn" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
+                  <i className={`fas ${isSidebarCollapsed ? 'fa-ellipsis-v' : 'fa-bars'}`}></i>
+                </button>
+                <img src={logoZoniqLarge} alt="ZoniqFi Nav Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+                <div className="logo">ZONIQFI // PROVIZTO</div>
+              </div>
+            </header>
+            <div className="vzt-showcase-hero">
+              <div style={{ fontSize: '3rem', marginBottom: '16px' }}>💎</div>
+              <h1 className="vzt-showcase-title">Provizto ($VIZTO) Utility Ecosystem</h1>
+              <p className="vzt-showcase-desc">The official entry point to unlock high-yield automated DeFi mechanics on Solana. Accumulating $VIZTO grants you direct access to MEV-shielded asset routing, premium USDC yield compounding, and decentralized affiliate incentives.</p>
+              <a href="https://provizto.com" target="_blank" rel="noopener noreferrer" className="vzt-showcase-launch-btn vzt-btn-cyan">Buy $VIZTO & Launch App Template <i className="fas fa-arrow-right" style={{ marginLeft: '6px' }}></i></a>
+            </div>
           </div>
         )}
 
@@ -361,11 +396,22 @@ const Landing = ({
         {/* TAB 3: PORTAL SHOWROOM REDIRECT GATEWAY.ZONIQFI.COM */}
         {/* ==================================================================== */}
         {activeTab === 'gateway' && (
-          <div className="vzt-showcase-hero">
-            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🏪</div>
-            <h1 className="vzt-showcase-title">Enterprise Hybrid B2B Gateway</h1>
-            <p className="vzt-showcase-desc">A premium infrastructure gateway bridging localized legacy Web2 traditional core-banking settlement flows directly into global non-custodial decentralized ledger ecosystems. Now fully integrated with global & local payment processors.</p>
-            <a href="https://gateway.zoniqfi.com/landing.html" target="_blank" rel="noopener noreferrer" className="vzt-showcase-launch-btn vzt-btn-blue">Launch Gateway Portal <i className="fas fa-external-link-alt" style={{ marginLeft: '6px' }}></i></a>
+          <div style={{ width: '100%' }}>
+            <header className={isSidebarCollapsed ? 'desktop-full' : ''}>
+              <div className="brand-wrapper">
+                <button className="vzt-desktop-toggle-btn" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
+                  <i className={`fas ${isSidebarCollapsed ? 'fa-ellipsis-v' : 'fa-bars'}`}></i>
+                </button>
+                <img src={logoZoniqLarge} alt="ZoniqFi Nav Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+                <div className="logo">ZONIQFI // B2B</div>
+              </div>
+            </header>
+            <div className="vzt-showcase-hero">
+              <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🏪</div>
+              <h1 className="vzt-showcase-title">Enterprise Hybrid B2B Gateway</h1>
+              <p className="vzt-showcase-desc">A premium infrastructure gateway bridging localized legacy Web2 traditional core-banking settlement flows directly into global non-custodial decentralized ledger ecosystems. Now fully integrated with global & local payment processors.</p>
+              <a href="https://gateway.zoniqfi.com/landing.html" target="_blank" rel="noopener noreferrer" className="vzt-showcase-launch-btn vzt-btn-blue">Launch Gateway Portal <i className="fas fa-external-link-alt" style={{ marginLeft: '6px' }}></i></a>
+            </div>
           </div>
         )}
 
