@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Landing from './Landing';
+import DefiLanding from './DefiLanding'; // 🔥 BARU: Import komponen paket DeFi yang sudah dipisahkan
 import logoZoniq from './assets/image_436281.png'; 
 import ComplianceModal from './components/ComplianceModal'; 
 import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRASI COMPONENT FORM
@@ -43,6 +44,9 @@ const INITIAL_PRICES = {
 };
 
 function App() {
+  // 🔥 BARU: Ambil data domain aktif untuk memilah rute tampilan
+  const hostname = typeof window !== 'undefined' ? window.location.hostname.toLowerCase() : '';
+
   const [view, setView] = useState('landing'); 
   
   // 🔥 INTEGRASI STATE BARU: Menyimpan jumlah data penjualan paket dApp SaaS B2B secara terpusat
@@ -322,8 +326,8 @@ function App() {
     setTxLog('');
     setReferrerInput('');
     setReferralVolume('$0.00');
-    setReferralEarned('$0.00'); // Reset keuntungan affiliate
-    setDistributionData(null); // Reset layout log premium saat disconnect
+    setReferralEarned('$0.00'); 
+    setDistributionData(null); 
     triggerBanner("Wallet disconnected.", "warning");
   };
 
@@ -373,9 +377,6 @@ function App() {
     setReceiveAmount('0.0');
   };
 
-  // ==========================================================================
-  // AMM DEX SWAP MOCK INTERCEPTOR + PREMIUM LOG INTEGRATION
-  // ==========================================================================
   const handleLaunchSwap = async () => {
     const amount = parseFloat(payAmount) || 0;
     if (amount <= 0) {
@@ -384,7 +385,7 @@ function App() {
     }
 
     setIsSwapLoading(true);
-    setDistributionData(null); // Clear log lama saat swap baru diproses
+    setDistributionData(null); 
     setTxLog(`Routing private transaction bundle on Solana Devnet via Jito Engine (MEV Protection)...`);
 
     try {
@@ -397,9 +398,8 @@ function App() {
       const projectTreasuryShare = (currentFee * 0.15).toFixed(5);
 
       setSwapsCount(prev => prev + 1);
-      setTxLog(''); // Hilangkan text banner loading mentah karena sudah sukses
+      setTxLog(''); 
 
-      // 🔥 INTEGRASI UTAMA: Memasukkan data parameter ZoniqFi ke state objek komponen premium
       setDistributionData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
@@ -591,7 +591,6 @@ function App() {
     navigator.clipboard.writeText(generatedUrl).then(() => triggerBanner("📋 Copied Link to Clipboard!", "success"));
   };
 
-  // 🔥 UPDATE LOGIKA: Menghitung pembagian hasil bersih persentase komisi secara dinamis
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
     if (inputVal === myWalletAddress && isConnected) {
@@ -622,10 +621,30 @@ function App() {
     setReferralEarned(`$${totalEarnedUsdc.toLocaleString('en-US', { minimumFractionDigits: 2 })} USDC`);
   };
 
+  // ==========================================================================
+  // 🔥 UTAMA: SERVERLESS SUBDOMAIN ROUTING PARSING MATRIX
+  // ==========================================================================
+  
+  // RUTE 1: Cek apakah domain yang diakses browser adalah defi.zoniqfi.com
+  if (hostname.includes('defi.zoniqfi.com')) {
+    return (
+      <>
+        <ComplianceModal />
+        <DefiLanding 
+          activeClients={activeClients} 
+          whiteLabelsLive={whiteLabelsLive} 
+          oneOffBoxes={oneOffBuyers} 
+        />
+      </>
+    );
+  }
+
+  // RUTE 2: Form Rahasia Onboarding
   if (view === 'onboarding-rahasia') {
     return <ClientOnboardingForm />;
   }
 
+  // RUTE 3: Portofolio Landing Page (Fallback / localhost / zoniqfi.com)
   if (view === 'landing') {
     return (
       <>
@@ -634,12 +653,13 @@ function App() {
           activeClients={activeClients} 
           whiteLabelsLive={whiteLabelsLive} 
           oneOffBuyers={oneOffBuyers} 
-          onLaunchApp={() => setView('dashboard')} 
+          onLaunchApp={() => window.location.href = `https://defi.${currentDomain}`} // Dialihkan dengan mulus ke subdomain paket DeFi baru
         />
       </>
     );
   }
 
+  // RUTE 4: Dashboard Workspace Utama (DEX Swap, Locker, Affiliate)
   return (
     <>
       <ComplianceModal />
@@ -792,7 +812,6 @@ function App() {
               <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
               <div className="stat-box">Boosted APY: Up to 49.1%</div>
               
-              {/* 🔥 BARUSAN DITAMBAHKAN: Baris penanda Social Proof kumulatif Global Assets */}
               <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', background: '#070a13', border: '1px solid #1e293b', padding: '12px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
                 <span style={{ color: '#94a3b8' }}>Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong></span>
                 <span style={{ color: '#94a3b8' }}>Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong></span>
@@ -895,7 +914,6 @@ function App() {
             <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
               <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-                {/* 🛠️ SANITIZED TYPO: Menghilangkan tanda backtick terselip di string fontSize agar build tidak rusak */}
                 <input 
                   type="text" 
                   id="refLink" 
@@ -969,33 +987,17 @@ function App() {
               </div>
             </div>
 
-            {/* 🔥 REVISI 3 KOLOM: Menyisipkan kolom Your Earned Commissions di samping kanan secara simetris */}
-            <style>{`
-  @media (max-width: 768px) {
-    .tier-stats {
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 10px !important;
-      padding: 16px !important;
-    }
-    .tier-item {
-      width: 100% !important;
-      text-align: left !important;
-    }
-  }
-`}</style>
-
-<div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
-  <div className="tier-item" style={{ color: '#94a3b8' }}>
-    Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
-  </div>
-  <div className="tier-item" style={{ color: '#94a3b8' }}>
-    Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
-  </div>
-  <div className="tier-item" style={{ color: '#94a3b8' }}>
-    Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>{referralEarned === '$0.00' && !isConnected ? '$0.00 USDC' : referralEarned}</span>
-  </div>
-</div>
+            <div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
+              <div className="tier-item" style={{ color: '#94a3b8' }}>
+                Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
+              </div>
+              <div className="tier-item" style={{ color: '#94a3b8' }}>
+                Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
+              </div>
+              <div className="tier-item" style={{ color: '#94a3b8' }}>
+                Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>{referralEarned === '$0.00' && !isConnected ? '$0.00 USDC' : referralEarned}</span>
+              </div>
+            </div>
           </section>
         )}
       </main>
@@ -1014,14 +1016,6 @@ function App() {
         gap: '16px',
         textAlign: 'center'
       }}>
-        <style>{`
-          @media (min-width: 769px) {
-            .dapp-footer {
-              flex-direction: row !important;
-              text-align: left !important;
-            }
-          }
-        `}</style>
         <p style={{ margin: 0, lineHeight: '1.5', maxWidth: '100%' }}>
           © 2026 ZoniqFi Hub. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.
         </p>
