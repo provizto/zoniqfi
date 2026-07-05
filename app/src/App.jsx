@@ -626,18 +626,18 @@ function App() {
   // ==========================================================================
   
   // RUTE 1: Cek apakah domain yang diakses browser adalah defi.zoniqfi.com
-  if (hostname.includes('defi.zoniqfi.com')) {
-    return (
-      <>
-        <ComplianceModal />
-        <DefiLanding 
-          activeClients={activeClients} 
-          whiteLabelsLive={whiteLabelsLive} 
-          oneOffBoxes={oneOffBuyers} 
-        />
-      </>
-    );
-  }
+  if (hostname.includes('defi')) {
+  return (
+    <>
+      <ComplianceModal />
+      <DefiLanding 
+        activeClients={activeClients} 
+        whiteLabelsLive={whiteLabelsLive} 
+        oneOffBoxes={oneOffBuyers} 
+      />
+    </>
+  );
+}
 
   // RUTE 2: Form Rahasia Onboarding
   if (view === 'onboarding-rahasia') {
