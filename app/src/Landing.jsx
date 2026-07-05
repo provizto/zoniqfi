@@ -12,10 +12,10 @@ const Landing = ({
   oneOffBoxes = 320, 
   onLaunchApp 
 }) => {
-  // STATE INTERFACES NAVIGATION, MOBILE DRAWER, & DESKTOP COLLAPSE/GESER
+  // 🔥 SEKARANG DEFAULT-NYA TRUE (Sembunyi/Garis Tiga Saat Pertama Kali Dibuka)
   const [activeTab, setActiveTab] = useState('defi'); 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Untuk Mobile
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // Untuk Geser Web Desktop
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // 🔥 DEFAULT TRUE: Desktop Sembunyi Dulu
   const [activeFaq, setActiveFaq] = useState(null);
 
   // Automatically inject FontAwesome and Google Fonts directly into the DOM Head
@@ -121,11 +121,11 @@ const Landing = ({
         /* 📱 RESPONSIVE HAMBURGER TRIGGERS */
         .vzt-hamburger-trigger { display: none !important; position: fixed !important; top: 16px !important; left: 16px !important; background: #1e2937 !important; border: 1px solid #374151 !important; color: #fff !important; padding: 10px 14px !important; border-radius: 8px !important; cursor: pointer !important; z-index: 100000 !important; font-size: 1.2rem !important; }
         
-        /* WEB DESKTOP SLIDE TOGGLE BUTTON (TITIK TIGA / BAR CONSOLE) */
+        /* WEB DESKTOP SLIDE TOGGLE BUTTON */
         .vzt-desktop-toggle-btn { background: #1e2937 !important; border: 1px solid #374151 !important; color: #94a3b8 !important; width: 34px !important; height: 34px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 8px !important; cursor: pointer !important; transition: all 0.2s ease !important; margin-right: 15px !important; }
         .vzt-desktop-toggle-btn:hover { color: #fff !important; border-color: #3b82f6 !important; background: #2563eb !important; }
 
-        /* 🔥 FIXXED & OPTIMIZED: PORTAL SCREEN SHOWCASE REDIRECT SPLASH */
+        /* PORTAL SCREEN SHOWCASE REDIRECT SPLASH */
         .vzt-showcase-hero { background: radial-gradient(circle at center, #111827 0%, #060911 100%) !important; padding: 80px 40px !important; border-radius: 20px !important; border: 1px solid #1f2937 !important; text-align: center; margin: 140px 8% 40px 8% !important; box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important; transition: all 0.3s ease !important; }
         .vzt-showcase-title { font-size: 2.2rem !important; font-weight: 800 !important; color: #fff !important; margin: 0 0 16px 0 !important; background: linear-gradient(90deg, #fff 50%, #14b8a6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
         .vzt-showcase-desc { color: #94a3b8 !important; font-size: 1.05rem !important; line-height: 1.6 !important; max-width: 680px !important; margin: 0 auto 30px auto !important; }
@@ -179,7 +179,7 @@ const Landing = ({
         #vzt-landing-page .btn-order { background: #1f2937 !important; color: #fff !important; text-align: center !important; padding: 12px !important; border-radius: 8px !important; font-weight: 600 !important; text-decoration: none !important; border: 1px solid #374151 !important; transition: background 0.3s !important; display: block !important; }
         #vzt-landing-page .pricing-card.popular-card .btn-order { background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important; border: none !important; }
         
-        #vzt-landing-page .faq-section { padding: 60px 8% 80px 8% !important; max-width: 900px !important; margin: 0 auto !important; }
+        #vzt-landing-page .faq-section { padding: 60px 8% !important; max-width: 900px !important; margin: 0 auto !important; }
         #vzt-landing-page .faq-item { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 8px !important; margin-bottom: 15px !important; overflow: hidden !important; }
         #vzt-landing-page .faq-question { padding: 20px !important; font-weight: 600 !important; cursor: pointer !important; display: flex !important; justify-content: space-between !important; align-items: center; color: #fff !important; }
         #vzt-landing-page .faq-answer { padding: 0 20px !important; max-height: 0px; overflow: hidden !important; color: #94a3b8 !important; line-height: 1.6 !important; font-size: 0.95rem !important; }
@@ -195,7 +195,6 @@ const Landing = ({
           .vzt-main-panel { margin-left: 0 !important; width: 100% !important; padding-top: 60px !important; }
           #vzt-landing-page header { width: 100% !important; left: 0 !important; }
           .vzt-desktop-toggle-btn { display: none !important; }
-          /* 🔥 FIXXED: Memberikan ruang ekstra di HP agar tulisan judul showcase tidak berdempetan */
           .vzt-showcase-hero { margin: 100px 4% 30px 4% !important; padding: 50px 20px !important; }
           .vzt-showcase-title { font-size: 1.7rem !important; line-height: 1.4 !important; }
           .vzt-showcase-desc { font-size: 0.95rem !important; margin-bottom: 20px !important; }
@@ -244,15 +243,16 @@ const Landing = ({
       <main className={`vzt-main-panel ${isSidebarCollapsed ? 'desktop-full' : ''}`}>
 
         {/* ==================================================================== */}
-        {/* TAB 1: SOLANA DEFI SUITE - HALAMAN DEPAN LU TAMPIL UTUH TANPA KURANG */}
+        {/* TAB 1: SOLANA DEFI SUITE */}
         {/* ==================================================================== */}
         {activeTab === 'defi' && (
           <div style={{ width: '100%' }}>
             {/* NAVBAR HEADER BROWSER LAYER */}
             <header className={isSidebarCollapsed ? 'desktop-full' : ''}>
               <div className="brand-wrapper">
+                {/* 🔥 LOGIKA SAKLAR IKON: Jika tersembunyi (collapsed) tampil fa-bars (garis tiga), jika terbuka tampil fa-ellipsis-v (titik tiga) */}
                 <button className="vzt-desktop-toggle-btn" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} title="Toggle Navigation Framework">
-                  <i className={`fas ${isSidebarCollapsed ? 'fa-ellipsis-v' : 'fa-bars'}`}></i>
+                  <i className={`fas ${isSidebarCollapsed ? 'fa-bars' : 'fa-ellipsis-v'}`}></i>
                 </button>
                 <img src={logoZoniqLarge} alt="ZoniqFi Nav Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
                 <div className="logo">ZONIQFI</div>
@@ -373,11 +373,10 @@ const Landing = ({
         {/* ==================================================================== */}
         {activeTab === 'provizto' && (
           <div style={{ width: '100%' }}>
-            {/* 🔥 FIXED: Tag penutup sudah dikoreksi menjadi </header> */}
             <header className={isSidebarCollapsed ? 'desktop-full' : ''}>
               <div className="brand-wrapper">
                 <button className="vzt-desktop-toggle-btn" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
-                  <i className={`fas ${isSidebarCollapsed ? 'fa-ellipsis-v' : 'fa-bars'}`}></i>
+                  <i className={`fas ${isSidebarCollapsed ? 'fa-bars' : 'fa-ellipsis-v'}`}></i>
                 </button>
                 <img src={logoZoniqLarge} alt="ZoniqFi Nav Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
                 <div className="logo">ZONIQFI // PROVIZTO</div>
@@ -400,7 +399,7 @@ const Landing = ({
             <header className={isSidebarCollapsed ? 'desktop-full' : ''}>
               <div className="brand-wrapper">
                 <button className="vzt-desktop-toggle-btn" onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}>
-                  <i className={`fas ${isSidebarCollapsed ? 'fa-ellipsis-v' : 'fa-bars'}`}></i>
+                  <i className={`fas ${isSidebarCollapsed ? 'fa-bars' : 'fa-ellipsis-v'}`}></i>
                 </button>
                 <img src={logoZoniqLarge} alt="ZoniqFi Nav Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
                 <div className="logo">ZONIQFI // B2B</div>
