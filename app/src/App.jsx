@@ -45,6 +45,15 @@ const INITIAL_PRICES = {
 function App() {
   const [view, setView] = useState('landing'); 
   
+  // 🔥 STATE TAB NAVIGASI ZONIQFI DENGAN DETEKSI PAKET OTOMATIS
+  const [activeTab, setActiveTab] = useState(() => {
+    if (SHOW_SWAP) return 'swap';
+    if (SHOW_OPTIMIZER) return 'vault';
+    if (SHOW_LOCKER) return 'staking';
+    if (SHOW_AFFILIATE) return 'affiliate';
+    return 'swap';
+  });
+
   // 🔥 INTEGRASI STATE BARU: Menyimpan jumlah data penjualan paket dApp SaaS B2B secara terpusat
   const [activeClients, setActiveClients] = useState(48);
   const [whiteLabelsLive, setWhiteLabelsLive] = useState(19);
@@ -123,7 +132,7 @@ function App() {
 
   const [referrerInput, setReferrerInput] = useState('');
   const [referralVolume, setReferralVolume] = useState('$0.00');
-  const [referralEarned, setReferralEarned] = useState('$0.00'); // 🔥 HANYA MENAMBAHKAN INI: Menyimpan hasil komisi dollar affiliate
+  const [referralEarned, setReferralEarned] = useState('$0.00'); 
   const [tierLabel, setTierLabel] = useState('Bronze (10%)');
   const [tierColor, setTierColor] = useState('#14b8a6');
 
@@ -322,8 +331,8 @@ function App() {
     setTxLog('');
     setReferrerInput('');
     setReferralVolume('$0.00');
-    setReferralEarned('$0.00'); // Reset keuntungan affiliate
-    setDistributionData(null); // Reset layout log premium saat disconnect
+    setReferralEarned('$0.00'); 
+    setDistributionData(null); 
     triggerBanner("Wallet disconnected.", "warning");
   };
 
@@ -373,9 +382,6 @@ function App() {
     setReceiveAmount('0.0');
   };
 
-  // ==========================================================================
-  // AMM DEX SWAP MOCK INTERCEPTOR + PREMIUM LOG INTEGRATION
-  // ==========================================================================
   const handleLaunchSwap = async () => {
     const amount = parseFloat(payAmount) || 0;
     if (amount <= 0) {
@@ -384,7 +390,7 @@ function App() {
     }
 
     setIsSwapLoading(true);
-    setDistributionData(null); // Clear log lama saat swap baru diproses
+    setDistributionData(null); 
     setTxLog(`Routing private transaction bundle on Solana Devnet via Jito Engine (MEV Protection)...`);
 
     try {
@@ -397,9 +403,8 @@ function App() {
       const projectTreasuryShare = (currentFee * 0.15).toFixed(5);
 
       setSwapsCount(prev => prev + 1);
-      setTxLog(''); // Hilangkan text banner loading mentah karena sudah sukses
+      setTxLog(''); 
 
-      // 🔥 INTEGRASI UTAMA: Memasukkan data parameter ZoniqFi ke state objek komponen premium
       setDistributionData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
@@ -566,7 +571,7 @@ function App() {
       const finalAmountReturned = stakedAmount - penaltyAmount;
 
       setZqiBalance(prev => prev + finalAmountReturned);
-      setProtocolTVL(prev => prev - (stakedAmount * tokenPrices.ZQI));
+      setProtocolTVL(prev => prev - (stakedAmount * tokenPrices.ZQI)); 
       
       triggerBanner(`🔥 Success: ${penaltyAmount} ZQI burned from supply!`, "success");
       
@@ -591,7 +596,6 @@ function App() {
     navigator.clipboard.writeText(generatedUrl).then(() => triggerBanner("📋 Copied Link to Clipboard!", "success"));
   };
 
-  // 🔥 UPDATE LOGIKA: Menghitung pembagian hasil bersih persentase komisi secara dinamis
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
     if (inputVal === myWalletAddress && isConnected) {
@@ -642,6 +646,82 @@ function App() {
 
   return (
     <>
+      {/* STYLE INTEGRASI TAB RESPONSIVE SINGLE-FRAME APP (PERFECT CENTER) */}
+      <style>{`
+        .dapp-container {
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 20px 15px !important;
+          box-sizing: border-box !important;
+        }
+        .dapp-nav-tabs-wrapper {
+          display: flex !important;
+          justify-content: center !important;
+          margin: 15px auto 25px auto !important;
+          max-width: 480px !important;
+          width: 100% !important;
+        }
+        .dapp-nav-tabs {
+          display: flex !important;
+          background: #0d1322 !important;
+          border: 1px solid #1e293b !important;
+          padding: 6px !important;
+          border-radius: 14px !important;
+          width: 100% !important;
+          gap: 6px !important;
+        }
+        .dapp-tab-btn {
+          flex: 1 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 6px !important;
+          padding: 10px 12px !important;
+          border-radius: 10px !important;
+          border: none !important;
+          background: transparent !important;
+          color: #94a3b8 !important;
+          font-weight: 700 !important;
+          font-size: 0.88rem !important;
+          cursor: pointer !important;
+          transition: all 0.2s ease !important;
+          white-space: nowrap !important;
+        }
+        .dapp-tab-btn:hover {
+          color: #ffffff !important;
+          background: rgba(255, 255, 255, 0.04) !important;
+        }
+        .dapp-tab-btn.active {
+          background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+          color: #ffffff !important;
+          box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
+        }
+        .dapp-single-frame-container {
+          max-width: 480px !important;
+          margin: 0 auto !important;
+          width: 100% !important;
+        }
+        .dapp-single-frame-container.wide-frame {
+          max-width: 780px !important;
+        }
+        .dapp-single-frame-container .product-card {
+          width: 100% !important;
+          box-sizing: border-box !important;
+          margin: 0 auto !important;
+        }
+        @media (max-width: 640px) {
+          .dapp-tab-btn {
+            font-size: 0.78rem !important;
+            padding: 8px 4px !important;
+            gap: 4px !important;
+          }
+        }
+      `}</style>
+
       <ComplianceModal />
 
       {securityBanner.show && (
@@ -727,22 +807,62 @@ function App() {
           <span>RPC Node Status: Operational ({SOLANA_NETWORK})</span>
         </div>
 
+        {/* TAB NAVIGATION BAR TERPADU DENGAN SINKRONISASI FILTER PAKET */}
+        <div className="dapp-nav-tabs-wrapper">
+          <div className="dapp-nav-tabs">
+            {SHOW_SWAP && (
+              <button 
+                className={`dapp-tab-btn ${activeTab === 'swap' ? 'active' : ''}`}
+                onClick={() => setActiveTab('swap')}
+              >
+                🔄 <span className="tab-text">Swap</span>
+              </button>
+            )}
+            {SHOW_OPTIMIZER && (
+              <button 
+                className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
+                onClick={() => setActiveTab('vault')}
+              >
+                📈 <span className="tab-text">Vault</span>
+              </button>
+            )}
+            {SHOW_LOCKER && (
+              <button 
+                className={`dapp-tab-btn ${activeTab === 'staking' ? 'active' : ''}`}
+                onClick={() => setActiveTab('staking')}
+              >
+                🔒 <span className="tab-text">Lock</span>
+              </button>
+            )}
+            {SHOW_AFFILIATE && (
+              <button 
+                className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
+                onClick={() => setActiveTab('affiliate')}
+              >
+                👥 <span className="tab-text">Affiliate</span>
+              </button>
+            )}
+          </div>
+        </div>
+
         {txLog && (
-          <div className="security-banner" style={{ display: 'block', background: '#111827', borderColor: '#1f2937', color: '#38bdf8', fontSize: '0.88rem', fontStyle: 'italic', whiteSpace: 'pre-line' }}>
+          <div className="security-banner" style={{ display: 'block', background: '#111827', borderColor: '#1f2937', color: '#38bdf8', fontSize: '0.88rem', fontStyle: 'italic', whiteSpace: 'pre-line', maxWidth: activeTab === 'affiliate' ? '780px' : '480px', margin: '0 auto 20px auto' }}>
             {txLog}
           </div>
         )}
 
         {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium saat Swap Sukses */}
         {distributionData && (
-          <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
+          <div style={{ maxWidth: activeTab === 'affiliate' ? '780px' : '480px', margin: '0 auto 20px auto', width: '100%' }}>
+            <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
+          </div>
         )}
 
-        {/* GRID UTAMA */}
-        <section className="products-grid">
+        {/* SINGLE-FRAME CONTAINER CENTERED */}
+        <div className={`dapp-single-frame-container ${activeTab === 'affiliate' ? 'wide-frame' : ''}`}>
           
           {/* MODUL 1: SWAP */}
-          {SHOW_SWAP && (
+          {SHOW_SWAP && activeTab === 'swap' && (
             <div className="product-card swap-card">
               <div className="card-title-row">
                 <h3>AMM DEX Swap</h3>
@@ -786,13 +906,12 @@ function App() {
           )}
 
           {/* MODUL 2: OPTIMIZER */}
-          {SHOW_OPTIMIZER && (
+          {SHOW_OPTIMIZER && activeTab === 'vault' && (
             <div className="product-card">
               <h3>Yield Optimizer</h3>
               <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
               <div className="stat-box">Boosted APY: Up to 49.1%</div>
               
-              {/* 🔥 BARUSAN DITAMBAHKAN: Baris penanda Social Proof kumulatif Global Assets */}
               <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', background: '#070a13', border: '1px solid #1e293b', padding: '12px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
                 <span style={{ color: '#94a3b8' }}>Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong></span>
                 <span style={{ color: '#94a3b8' }}>Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong></span>
@@ -817,7 +936,7 @@ function App() {
           )}
 
           {/* MODUL 3: LOCKER */}
-          {SHOW_LOCKER && (
+          {SHOW_LOCKER && activeTab === 'staking' && (
             <div className="product-card">
               <h3>ZQI Lock & Yield</h3>
               <p className="desc">Lock your $ZQI tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
@@ -874,130 +993,114 @@ function App() {
               </button>
             </div>
           )}
-        </section>
 
-        {/* MODUL 4: AFFILIATE / REFERRAL */}
-        {SHOW_AFFILIATE && (
-          <section className="affiliate-section" style={{ background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '30px', marginTop: '30px', color: '#94a3b8' }}>
-            <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
-              </h3>
-              <span className="shield-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
-                Anti-Sybil Active
-              </span>
-            </div>
-
-            <p style={{ fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '24px', color: '#94a3b8' }}>
-              Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>) to protect on-chain data validation.
-            </p>
-                 
-            <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
-              <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-                {/* 🛠️ SANITIZED TYPO: Menghilangkan tanda backtick terselip di string fontSize agar build tidak rusak */}
-                <input 
-                  type="text" 
-                  id="refLink" 
-                  value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
-                  readOnly 
-                  style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                />
-                <button 
-                  className="btn-copy" 
-                  id="copyBtn" 
-                  onClick={copyLink} 
-                  style={{ 
-                    background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#1e293b', 
-                    color: '#ffffff', cursor: 'pointer', height: '45px', padding: '0 16px', borderRadius: '8px', fontWeight: '700', border: isConnected ? 'none' : '1px solid #334155', fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '85px', boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', transition: 'all 0.3s ease'
-                  }}
-                >
-                  {isConnected ? "Copy Link" : "Connect"}
-                </button>
+          {/* MODUL 4: AFFILIATE / REFERRAL */}
+          {SHOW_AFFILIATE && activeTab === 'affiliate' && (
+            <section className="affiliate-section" style={{ background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '30px', margin: '0 auto', color: '#94a3b8' }}>
+              <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
+                </h3>
+                <span className="shield-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
+                  Anti-Sybil Active
+                </span>
               </div>
-            </div>
 
-            <div className="test-panel" style={{ background: 'rgba(30, 41, 59, 0.3)', border: '1px solid #1e293b', borderRadius: '8px', padding: '20px', marginBottom: '30px' }}>
-              <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '12px' }}>
-                • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
-              </label>
-              <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-                <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', padding: '12px 16px', color: '#ffffff', fontSize: '0.9rem', outline: 'none' }} />
-                <button 
-                  className="btn-test" 
-                  id="testBtn" 
-                  onClick={verifyReferralOnChain} 
-                  disabled={!isConnected} 
-                  style={{ 
-                    background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#111827', color: isConnected ? '#ffffff' : '#475569', border: isConnected ? 'none' : '1px solid #1e293b', height: '45px', padding: '0 12px', borderRadius: '6px', fontWeight: '700', cursor: isConnected ? 'pointer' : 'not-allowed', fontSize: '0.8rem', lineHeight: '1.2', textAlign: 'center', flexShrink: 0, minWidth: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', transition: 'all 0.3s ease'
-                  }}
-                >
-                  Verify<br/>Link
-                </button>
+              <p style={{ fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '24px', color: '#94a3b8' }}>
+                Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>) to protect on-chain data validation.
+              </p>
+                    
+              <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
+                <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                  <input 
+                    type="text" 
+                    id="refLink" 
+                    value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
+                    readOnly 
+                    style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  />
+                  <button 
+                    className="btn-copy" 
+                    id="copyBtn" 
+                    onClick={copyLink} 
+                    style={{ 
+                      background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#1e293b', 
+                      color: '#ffffff', cursor: 'pointer', height: '45px', padding: '0 16px', borderRadius: '8px', fontWeight: '700', border: isConnected ? 'none' : '1px solid #334155', fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '85px', boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isConnected ? "Copy Link" : "Connect"}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="tier-table-wrapper" style={{ marginBottom: '24px' }}>
-              <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', marginBottom: '16px' }}>Ecosystem Tier Structures:</p>
-              <div className="responsive-table-overflow">
-                <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
-                  <thead>
-                    <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>
-                      <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
-                      <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
-                      <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style={{ borderBottom: '1px solid #1e293b' }}>
-                      <td className="tier-bronze" style={{ padding: '14px 16px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
-                      <td style={{ padding: '14px 16px', color: '#64748b' }}>$0 - $10,000</td>
-                      <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>10%</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #1e293b' }}>
-                      <td className="tier-silver" style={{ padding: '14px 16px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
-                      <td style={{ padding: '14px 16px', color: '#64748b' }}>$10,001 - $100,000</td>
-                      <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>18%</td>
-                    </tr>
-                    <tr>
-                      <td className="tier-gold" style={{ padding: '14px 16px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
-                      <td style={{ padding: '14px 16px', color: '#64748b' }}>&gt; $100,000</td>
-                      <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>25%</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="test-panel" style={{ background: 'rgba(30, 41, 59, 0.3)', border: '1px solid #1e293b', borderRadius: '8px', padding: '20px', marginBottom: '30px' }}>
+                <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '12px' }}>
+                  • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
+                </label>
+                <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                  <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', padding: '12px 16px', color: '#ffffff', fontSize: '0.9rem', outline: 'none' }} />
+                  <button 
+                    className="btn-test" 
+                    id="testBtn" 
+                    onClick={verifyReferralOnChain} 
+                    disabled={!isConnected} 
+                    style={{ 
+                      background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#111827', color: isConnected ? '#ffffff' : '#475569', border: isConnected ? 'none' : '1px solid #1e293b', height: '45px', padding: '0 12px', borderRadius: '6px', fontWeight: '700', cursor: isConnected ? 'pointer' : 'not-allowed', fontSize: '0.8rem', lineHeight: '1.2', textAlign: 'center', flexShrink: 0, minWidth: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', transition: 'all 0.3s ease'
+                    }}
+                  >
+                    Verify<br/>Link
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {/* 🔥 REVISI 3 KOLOM: Menyisipkan kolom Your Earned Commissions di samping kanan secara simetris */}
-            <style>{`
-  @media (max-width: 768px) {
-    .tier-stats {
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      gap: 10px !important;
-      padding: 16px !important;
-    }
-    .tier-item {
-      width: 100% !important;
-      text-align: left !important;
-    }
-  }
-`}</style>
+              <div className="tier-table-wrapper" style={{ marginBottom: '24px' }}>
+                <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', marginBottom: '16px' }}>Ecosystem Tier Structures:</p>
+                <div className="responsive-table-overflow">
+                  <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+                    <thead>
+                      <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>
+                        <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
+                        <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
+                        <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style={{ borderBottom: '1px solid #1e293b' }}>
+                        <td className="tier-bronze" style={{ padding: '14px 16px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
+                        <td style={{ padding: '14px 16px', color: '#64748b' }}>$0 - $10,000</td>
+                        <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>10%</td>
+                      </tr>
+                      <tr style={{ borderBottom: '1px solid #1e293b' }}>
+                        <td className="tier-silver" style={{ padding: '14px 16px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
+                        <td style={{ padding: '14px 16px', color: '#64748b' }}>$10,001 - $100,000</td>
+                        <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>18%</td>
+                      </tr>
+                      <tr>
+                        <td className="tier-gold" style={{ padding: '14px 16px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
+                        <td style={{ padding: '14px 16px', color: '#64748b' }}>&gt; $100,000</td>
+                        <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>25%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
 
-<div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
-  <div className="tier-item" style={{ color: '#94a3b8' }}>
-    Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
-  </div>
-  <div className="tier-item" style={{ color: '#94a3b8' }}>
-    Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
-  </div>
-  <div className="tier-item" style={{ color: '#94a3b8' }}>
-    Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>{referralEarned === '$0.00' && !isConnected ? '$0.00 USDC' : referralEarned}</span>
-  </div>
-</div>
-          </section>
-        )}
+              <div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
+                <div className="tier-item" style={{ color: '#94a3b8' }}>
+                  Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
+                </div>
+                <div className="tier-item" style={{ color: '#94a3b8' }}>
+                  Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
+                </div>
+                <div className="tier-item" style={{ color: '#94a3b8' }}>
+                  Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>{referralEarned === '$0.00' && !isConnected ? '$0.00 USDC' : referralEarned}</span>
+                </div>
+              </div>
+            </section>
+          )}
+
+        </div>
       </main>
 
       {/* FOOTER FIXED RESPONSIVITAS */}
