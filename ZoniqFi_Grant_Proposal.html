@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZONIQFI ($ZQI) — Technical Grant Proposal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 18mm 16mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
+      line-height: 1.45;
+      font-size: 9.5pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      padding: 0;
+      max-width: 100%;
+    }
+
+    .page-break {
+      page-break-before: always;
+      margin-top: 25px;
+    }
+
+    .header-table {
+      width: 100%;
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-size: 16pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin: 0;
+    }
+
+    .subtitle {
+      font-size: 9pt;
+      color: #0369a1;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 3px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 8pt;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 10.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-left: 3.5px solid #0284c7;
+      padding-left: 8px;
+      margin: 12px 0 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      margin: 0 0 8px 0;
+      color: #334155;
+    }
+
+    ul {
+      margin: 4px 0 8px 18px;
+      padding: 0;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    strong {
+      color: #0f172a;
+    }
+
+    .ascii-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt;
+      line-height: 1.35;
+      color: #1e293b;
+      margin: 8px 0 12px 0;
+      white-space: pre;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 12px 0;
+      font-size: 8.5pt;
+    }
+
+    table.data-table th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 10px;
+      border: 1px solid #cbd5e1;
+    }
+
+    table.data-table td {
+      padding: 6px 10px;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+    }
+
+    table.data-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      color: #0369a1;
+      font-weight: 600;
+    }
+
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 8px;
+      margin-top: 15px;
+      font-size: 7.5pt;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PAGE 1: ENGLISH ==================== -->
+  <div class="page">
+    <table class="header-table" style="border:none;">
+      <tr>
+        <td>
+          <div class="title">ZONIQFI ($ZQI)</div>
+          <div class="subtitle">Solana Transaction v1 DeFi Suite & Real Yield Infrastructure</div>
+        </td>
+        <td style="text-align: right; vertical-align: top;">
+          <span class="badge">Colosseum & Superteam Grant Ready</span>
+        </td>
+      </tr>
+    </table>
+
+    <h2>1. Executive Summary</h2>
+    <p>
+      <strong>ZONIQFI</strong> is a turnkey, modular DeFi infrastructure protocol on Solana. It utilizes native <strong>Solana Transaction v1 (4,096-byte payload)</strong> to execute multi-tier swaps with deep MEV mitigation via Jito Block Engine, automated yield vaults, deflationary supply defense, and decentralized on-chain referrals integrated with the latest <strong>Solana Name Service (SNS)</strong> standards.
+    </p>
+
+    <h2>2. Problem Statement & Market Inefficiencies</h2>
+    <ul>
+      <li><strong>Pervasive MEV Exploitation:</strong> Arbitrage and sandwich bots in public mempools extract substantial value from retail traders.</li>
+      <li><strong>Inflationary Farm Vulnerabilities:</strong> Traditional AMMs rely on hyper-inflationary token emissions, causing liquidity drain during market downturns.</li>
+      <li><strong>Sybil Exploitation in Referral Programs:</strong> Conventional growth programs suffer from bot wash-trading and multi-wallet spamming.</li>
+    </ul>
+
+    <h2>3. Core Technical Architecture (Transaction v1 Pipeline)</h2>
+    <div class="ascii-box">[ Solana Transaction v1 Pipeline (Max 4,096 Bytes) ]
+│
+├── 1. Security & Pre-Execution Validation
+│   ├── Jito Engine Private Bundle Routing (Sandwich Attack Prevention)
+│   ├── Anti-Wash Trading Cooldown Enforcement (Max 1 tx / 10s per wallet PDA)
+│   └── SNS Identity Resolver (.sns & .sol Domain Support)
+│
+├── 2. Liquidity & Dynamic Settlement Core
+│   ├── Dynamic SPL Token Swap Routing (Jupiter v2 Price Engine API)
+│   └── 0.3% Flat Protocol Fee Assessment (Settled Atomically in USDC)
+│
+└── 3. Atomic Multi-Tier Fee Settlement
+    ├── 40% ➔ Yield Optimizer Vault (Auto-compounding APY up to 49.1%)
+    ├── 30% ➔ ZQI Real Yield Pool (USDC Staking Dividends)
+    ├── 15% ➔ Anti-Sybil Affiliate Treasury (Tiered Community Rewards)
+    └── 15% ➔ Project Treasury Operations (RPC & Infrastructure Maintenance)</div>
+
+    <h2>4. Protocol Specifications & On-Chain Verification</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Technical Implementation</th>
+          <th>Current On-Chain Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Transaction Standard</strong></td>
+          <td>Solana Transaction v1 (4,096-byte atomic bundle)</td>
+          <td>Verified on Devnet</td>
+        </tr>
+        <tr>
+          <td><strong>Smart Contract Program ID</strong></td>
+          <td><span class="mono">HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD</span></td>
+          <td>Executable (BPF Upgradeable)</td>
+        </tr>
+        <tr>
+          <td><strong>Price Feed Engine</strong></td>
+          <td>Jupiter Price Engine v2 Integration</td>
+          <td>Live dynamic feed matching</td>
+        </tr>
+        <tr>
+          <td><strong>Yield Mechanism</strong></td>
+          <td>100% Real Yield (USDC fee distribution)</td>
+          <td>Active on-chain settlement</td>
+        </tr>
+        <tr>
+          <td><strong>Supply Defense</strong></td>
+          <td>Multiplier Staking (1x - 2.5x) + 10% Burn Penalty</td>
+          <td>Deflationary Early Unlock</td>
+        </tr>
+        <tr>
+          <td><strong>Web3 Identity</strong></td>
+          <td>SNS Migration Support (.sol & .sns normalization)</td>
+          <td>Real-time domain resolution</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5. Milestone Roadmap & Grant Utilization</h2>
+    <ul>
+      <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Execute local fuzz testing and high-frequency sandwich attack simulations using LiteSVM to optimize compute unit (CU) consumption across atomic instructions.</li>
+      <li><strong>Milestone 2 — Smart Contract Audit:</strong> Submit repository for formal third-party audit, validating the 10% deflationary burn logic and atomic 4-way fee splitting vaults.</li>
+      <li><strong>Milestone 3 — Mainnet Beta & SNS SDK Integration:</strong> Deploy production contracts to Solana Mainnet with native wallet adapter resolution for .sns identities.</li>
+    </ul>
+
+    <div class="footer">
+      <span>© 2026 ZoniqFi Protocol • Confidential Grant Proposal</span>
+      <span>Live Preview: https://zoniqfi.com</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 2: INDONESIAN ==================== -->
+  <div class="page page-break">
+    <table class="header-table" style="border:none;">
+      <tr>
+        <td>
+          <div class="title">ZONIQFI ($ZQI)</div>
+          <div class="subtitle">Solana Transaction v1 DeFi Suite & Infrastruktur Real Yield</div>
+        </td>
+        <td style="text-align: right; vertical-align: top;">
+          <span class="badge">Proposal Akselerator & Hibah Web3</span>
+        </td>
+      </tr>
+    </table>
+
+    <h2>1. Ringkasan Eksekutif</h2>
+    <p>
+      <strong>ZONIQFI</strong> adalah protokol infrastruktur DeFi modular siap pakai di jaringan Solana. Platform ini mengimplementasikan standar <strong>Solana Transaction v1 (payload 4.096 byte)</strong> untuk mengeksekusi swap atomik dengan proteksi Anti-MEV melalui Jito Block Engine, auto-compounding yield vault, proteksi deflasi suplai, serta sistem referral on-chain yang mendukung migrasi <strong>Solana Name Service (SNS)</strong>.
+    </p>
+
+    <h2>2. Masalah & Ketidakefisienan Pasar</h2>
+    <ul>
+      <li><strong>Eksploitasi MEV & Sandwich Attack:</strong> Bot arbitrase di mempool publik Solana mengekstraksi nilai secara agresif dan merugikan pengguna ritel.</li>
+      <li><strong>Kerentanan Model Farm Inflasioner:</strong> AMM konvensional bergantung pada emisi token inflasi yang memicu hilangnya likuiditas saat pasar koreksi.</li>
+      <li><strong>Eksploitasi Bot Sybil pada Program Referral:</strong> Program pertumbuhan komunitas kerap disalahgunakan oleh bot multi-wallet dan manipulasi wash-trading.</li>
+    </ul>
+
+    <h2>3. Arsitektur Teknis Utama (Pipeline Transaction v1)</h2>
+    <div class="ascii-box">[ Pipeline Solana Transaction v1 (Maks. 4.096 Byte) ]
+│
+├── 1. Lapisan Keamanan & Pra-Validasi
+│   ├── Routing Bundle Privat Jito Engine (Proteksi Serangan Sandwich)
+│   ├── Verifikasi Cooldown Anti-Wash Trading (Maks 1 tx / 10s per PDA dompet)
+│   └── Resolver Identitas SNS (Dukungan Format Domain .sns & .sol)
+│
+├── 2. Inti Eksekusi Likuiditas & Pertukaran
+│   ├── Pertukaran Token SPL Dinamis (Integrasi Jupiter Price API v2)
+│   └── Penarikan Biaya Protokol 0.3% (Selesai Secara Atomik dalam USDC)
+│
+└── 3. Distribusi Biaya Multi-Tingkat Atomik
+    ├── 40% ➔ Yield Optimizer Vault (Kapitalisasi Majemuk APY s.d 49.1%)
+    ├── 30% ➔ ZQI Real Yield Pool (Dividen Staking Stabil dalam USDC)
+    ├── 15% ➔ Kas Afiliasi Anti-Sybil (Hadiah Komunitas Bertingkat)
+    └── 15% ➔ Kas Operasional Proyek (Infrastruktur RPC & Pemeliharaan)</div>
+
+    <h2>4. Spesifikasi Protokol & Status On-Chain</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Komponen</th>
+          <th>Implementasi Teknis</th>
+          <th>Status On-Chain Saat Ini</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Standar Transaksi</strong></td>
+          <td>Solana Transaction v1 (Bundle Atomik 4.096 Byte)</td>
+          <td>Terverifikasi di Devnet</td>
+        </tr>
+        <tr>
+          <td><strong>Program ID Smart Contract</strong></td>
+          <td><span class="mono">HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD</span></td>
+          <td>Executable (BPF Upgradeable)</td>
+        </tr>
+        <tr>
+          <td><strong>Mesin Harga (Oracle)</strong></td>
+          <td>Integrasi Jupiter Price Engine API v2</td>
+          <td>Pencocokan kurs dinamis aktif</td>
+        </tr>
+        <tr>
+          <td><strong>Model Imbal Hasil (Yield)</strong></td>
+          <td>100% Real Yield (Distribusi Biaya USDC Riil)</td>
+          <td>Settlement on-chain aktif</td>
+        </tr>
+        <tr>
+          <td><strong>Proteksi Suplai</strong></td>
+          <td>Staking Multiplier (1x - 2.5x) + Penalti Burn 10%</td>
+          <td>Emergency Early Unlock Deflasioner</td>
+        </tr>
+        <tr>
+          <td><strong>Identitas Web3</strong></td>
+          <td>Standar Migrasi SNS (Normalisasi .sol ke .sns)</td>
+          <td>Resolusi nama domain real-time</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5. Rencana Kerja (Roadmap) & Alokasi Hibah</h2>
+    <ul>
+      <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Melakukan simulasi fuzz testing dan serangan sandwich frekuensi tinggi menggunakan LiteSVM untuk mengoptimasi batas Compute Unit (CU).</li>
+      <li><strong>Milestone 2 — Audit Keamanan Smart Contract:</strong> Mengajukan kode program untuk audit pihak ketiga independen, khususnya validasi logika penalti burn 10% dan pembagian fee 4 arah.</li>
+      <li><strong>Milestone 3 — Peluncuran Mainnet Beta & Integrasi SDK SNS:</strong> Deployment kontrak produksi ke Solana Mainnet dengan integrasi mendalam pada adapter wallet berbasis domain .sns.</li>
+    </ul>
+
+    <div class="footer">
+      <span>© 2026 ZoniqFi Protocol • Dokumen Proposal Hibah Resmi</span>
+      <span>Pratinjau Langsung: https://zoniqfi.com</span>
+    </div>
+  </div>
+
+</body>
+</html>
