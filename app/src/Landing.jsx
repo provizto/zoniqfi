@@ -4,7 +4,7 @@ import logoZoniqLarge from './assets/image_436281.png';
 const Landing = ({ 
   activeClients = 48, 
   whiteLabelsLive = 19, 
-  oneOffBoxes = 320, 
+  oneOffBuyers = 320, 
   onLaunchApp 
 }) => {
   const [activeFaq, setActiveFaq] = useState(null);
@@ -34,15 +34,15 @@ const Landing = ({
     {
       id: "dex-swap",
       title: "AMM DEX Swap Engine",
-      badge: "MEV SECURE",
+      badge: "Tx v1 & MEV SECURE",
       badgeClass: "badge-cyan",
       icon: "fa-repeat",
-      desc: "Mesin pertukaran aset terdesentralisasi berkecepatan tinggi dengan integrasi routing Jito Block Engine untuk melindungi setiap order dari sandwich attack & front-running.",
+      desc: "Mesin pertukaran aset terdesentralisasi berkecepatan tinggi dengan integrasi routing Jito Block Engine dan format Solana Transaction v1 untuk melindungi setiap order secara atomik.",
       features: [
-        "Private Transaction Bundle via Jito",
-        "Anti-Wash Trading Protection (Daily Limit)",
-        "Dukungan multi-token SPL (SOL, USDC, USDT, Meme Coins)",
-        "Protokol Fee 0.3% dengan auto-split on-chain"
+        "Native Solana Transaction v1 (4.096 Byte Atomic Payload)",
+        "Private Transaction Bundle via Jito Engine (Anti-Sandwich)",
+        "Anti-Wash Trading Protection (Daily Limit On-Chain)",
+        "Protokol Fee 0.3% dengan auto-split on-chain 4 arah"
       ],
       btnText: "Buka AMM Swap Demo",
       btnClass: "btn-cyan-fill"
@@ -82,15 +82,15 @@ const Landing = ({
     {
       id: "onchain-affiliate",
       title: "Secure On-Chain Affiliate",
-      badge: "ANTI-SYBIL",
+      badge: "ANTI-SYBIL & SNS",
       badgeClass: "badge-emerald",
       icon: "fa-users-gear",
-      desc: "Sistem referral terdesentralisasi yang memberikan komisi transaksi bertingkat kepada komunitas dan merchant secara transparan langsung ke dompet.",
+      desc: "Sistem referral terdesentralisasi yang memberikan komisi transaksi bertingkat kepada komunitas dan merchant secara transparan langsung ke dompet pengguna.",
       features: [
+        "Dukungan Resolusi SNS Domain (.sns & .sol standard)",
         "Anti-Sybil Cooldown (Batasan 1 tx / 10s anti-bot spam)",
         "Struktur 3 Tier: Bronze (10%), Silver (18%), Gold (25%)",
-        "Verifikasi on-chain referral address instan",
-        "Pembuatan tautan referral otomatis berbasis Public Key"
+        "Verifikasi on-chain referral address & domain instan"
       ],
       btnText: "Buka Affiliate Demo",
       btnClass: "btn-emerald-fill"
@@ -98,10 +98,22 @@ const Landing = ({
   ];
 
   const faqData = [
-    { q: "Apa itu platform ZoniqFi?", a: "ZoniqFi adalah penyedia infrastruktur Web3 dan DeFi turnkey pada jaringan Solana. Kami menghadirkan modul siap pakai yang mencakup AMM Swap, Yield Vaults, Token Vesting Lock, hingga On-Chain Referral." },
-    { q: "Bagaimana cara kerja keamanan Anti-MEV pada AMM Swap?", a: "Modul AMM Swap merutekan transaksi melalui bundle privat Jito Engine, sehingga transaksi tidak terekspos di public mempool yang rentan terhadap manipulasi bot sandwich." },
-    { q: "Bagaimana proteksi suplai pada modul Staking & Lock?", a: "Setiap penarikan dana darurat sebelum masa epoch berakhir akan dikenakan penalti 10% yang langsung dibakar (burn on-chain) secara permanen untuk menjaga deflasi sirkulasi token." },
-    { q: "Apakah saya bisa menguji coba seluruh modul ini?", a: "Ya, klik tombol 'Live dApp Demo' atau tombol aksi pada masing-masing modul untuk menguji alur kerja lengkap di lingkungan Solana Sandbox." }
+    { 
+      q: "Apa keunggulan arsitektur Solana Transaction v1 di ZoniqFi?", 
+      a: "Format Transaction v1 memperluas kapasitas data payload hingga 4.096 byte. Hal ini memungkinkan ZoniqFi mengeksekusi validasi Anti-Wash, proteksi MEV, perpindahan likuiditas swap, dan distribusi fee 4 arah dalam satu transaksi atomik tanpa pembagian batch terpisah." 
+    },
+    { 
+      q: "Bagaimana cara kerja keamanan Anti-MEV pada AMM Swap?", 
+      a: "Modul AMM Swap merutekan transaksi melalui bundle privat Jito Engine, sehingga transaksi tidak terekspos di public mempool yang rentan terhadap manipulasi bot front-running dan sandwich attack." 
+    },
+    { 
+      q: "Apakah modul Affiliate mendukung domain Solana Name Service (SNS)?", 
+      a: "Ya. Sistem referral ZoniqFi terintegrasi dengan standar migrasi SNS, memungkinkan pengguna membuat dan memverifikasi tautan referral menggunakan nama domain (.sns / .sol) di samping Public Key standar." 
+    },
+    { 
+      q: "Bagaimana proteksi suplai pada modul Staking & Lock?", 
+      a: "Setiap penarikan dana darurat sebelum masa epoch berakhir akan dikenakan penalti 10% yang langsung dibakar (burn on-chain) secara permanen untuk menjaga deflasi sirkulasi token." 
+    }
   ];
 
   return (
@@ -237,13 +249,13 @@ const Landing = ({
         </div>
         
         <h1>MODULAR SOLANA DEFI SUITE</h1>
-        <p>Infrastruktur dApp terpadu untuk ekosistem token Solana. Dilengkapi proteksi transaksi Anti-MEV, instrumen staking multi-durasi, auto-compounding yield vault, dan sistem referral on-chain anti-bot.</p>
+        <p>Infrastruktur dApp terpadu untuk ekosistem token Solana. Dilengkapi format Solana Transaction v1 atomik, proteksi Anti-MEV via Jito Engine, staking multi-durasi, yield vault otomatis, dan integrasi identitas domain SNS.</p>
       </section>
 
-      {/* METRICS BANNER (SOCIAL PROOF TETAP AKTIF) */}
+      {/* METRICS BANNER */}
       <div className="metrics-banner">
         <div className="metric-item">
-          <div className="metric-value">{oneOffBoxes + activeClients + whiteLabelsLive}+</div>
+          <div className="metric-value">{oneOffBuyers + activeClients + whiteLabelsLive}+</div>
           <div className="metric-label">Total Licenses Issued</div>
         </div>
         <div className="metric-item">
@@ -255,7 +267,7 @@ const Landing = ({
           <div className="metric-label">Live Deployed White-Labels</div>
         </div>
         <div className="metric-item">
-          <div className="metric-value">{oneOffBoxes}+</div>
+          <div className="metric-value">{oneOffBuyers}+</div>
           <div className="metric-label">One-Off License Buyers</div>
         </div>
         <div className="metric-item">
