@@ -118,8 +118,8 @@ function App() {
   const [distributionData, setDistributionData] = useState(null);
 
   // 🔥 STATE MODAL: Notifikasi Sukses Swap Web3 Premium
-const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-const [successModalData, setSuccessModalData] = useState(null);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [successModalData, setSuccessModalData] = useState(null);
 
   const [calcAmount, setCalcAmount] = useState('0');
   const [projection, setProjection] = useState({ daily: "0.00", monthly: "0.00", annual: "0.00" });
@@ -646,12 +646,6 @@ const [successModalData, setSuccessModalData] = useState(null);
     return (
       <>
         <ComplianceModal />
-        <TransactionSuccessModal 
-        isOpen={isSuccessModalOpen} 
-        onClose={() => setIsSuccessModalOpen(false)} 
-        swapDetails={successModalData}
-        programId={PROGRAM_ID}
-        />
         <Landing 
           activeClients={activeClients} 
           whiteLabelsLive={whiteLabelsLive} 
@@ -741,6 +735,14 @@ const [successModalData, setSuccessModalData] = useState(null);
       `}</style>
 
       <ComplianceModal />
+
+      {/* 👉 TEMPATKAN MODAL DI SINI (Return Utama Dashboard) */}
+      <TransactionSuccessModal 
+        isOpen={isSuccessModalOpen} 
+        onClose={() => setIsSuccessModalOpen(false)} 
+        swapDetails={successModalData}
+        programId={PROGRAM_ID}
+      />
 
       {securityBanner.show && (
         <div id="securityBanner" style={{
