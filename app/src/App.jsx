@@ -5,6 +5,7 @@ import ComplianceModal from './components/ComplianceModal';
 import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRASI COMPONENT FORM
 import './App.css';
 import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR IMPORT: Disamakan dengan folder komponen lainnya agar tidak crash build
+import TransactionSuccessModal from './components/TransactionSuccessModal';
 
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
@@ -115,6 +116,10 @@ function App() {
 
   // 🔥 STATE INTEGRASI: Menyimpan data pembagian on-chain untuk komponen premium DistributionLog
   const [distributionData, setDistributionData] = useState(null);
+
+  // 🔥 STATE MODAL: Notifikasi Sukses Swap Web3 Premium
+const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+const [successModalData, setSuccessModalData] = useState(null);
 
   const [calcAmount, setCalcAmount] = useState('0');
   const [projection, setProjection] = useState({ daily: "0.00", monthly: "0.00", annual: "0.00" });
@@ -421,7 +426,14 @@ function App() {
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
       }
 
-      alert(`🎉 Swap Successful! (Demo Sandbox)\n\nYou exchanged ${amount} ${tokenPay} into ${receiveAmount} ${tokenReceive}.\nProtocol Fee settled safely.`);
+      // 🔥 Buka modal sukses kustom dan simpan data rinciannya
+      setSuccessModalData({
+        fromAmount: `${amount} ${tokenPay}`,
+        toAmount: `${receiveAmount} ${tokenReceive}`,
+        feeAmount: `${swapFee} ${tokenPay}`
+      });
+      setIsSuccessModalOpen(true);
+
       setPayAmount('');
       setReceiveAmount('0.0');
     } catch (error) {
@@ -634,6 +646,12 @@ function App() {
     return (
       <>
         <ComplianceModal />
+        <TransactionSuccessModal 
+        isOpen={isSuccessModalOpen} 
+        onClose={() => setIsSuccessModalOpen(false)} 
+        swapDetails={successModalData}
+        programId={PROGRAM_ID}
+        />
         <Landing 
           activeClients={activeClients} 
           whiteLabelsLive={whiteLabelsLive} 
