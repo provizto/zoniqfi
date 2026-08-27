@@ -22,14 +22,20 @@ const TransactionSuccessModal = ({
   return (
     <div style={{
       position: 'fixed',
-      inset: 0,
-      zIndex: 99999,
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      width: '100vw',
+      height: '100vh',
+      zIndex: 999999,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.85)',
       backdropFilter: 'blur(8px)',
-      padding: '20px'
+      padding: '20px',
+      boxSizing: 'border-box'
     }}>
       <div style={{
         backgroundColor: '#0b121f',
@@ -38,7 +44,7 @@ const TransactionSuccessModal = ({
         width: '100%',
         borderRadius: '16px',
         padding: '24px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.9)',
         color: '#ffffff',
         fontFamily: "'Inter', sans-serif",
         boxSizing: 'border-box',
@@ -65,10 +71,11 @@ const TransactionSuccessModal = ({
             style={{
               background: 'transparent',
               border: 'none',
-              color: '#64748b',
-              fontSize: '1.2rem',
+              color: '#94a3b8',
+              fontSize: '1.4rem',
               cursor: 'pointer',
-              lineHeight: 1
+              lineHeight: 1,
+              padding: '4px 8px'
             }}
           >
             ✕
@@ -143,7 +150,6 @@ const TransactionSuccessModal = ({
               border: '1px solid #1e293b',
               color: '#38bdf8',
               fontWeight: '700',
-              transition: '0.2s',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -163,8 +169,7 @@ const TransactionSuccessModal = ({
               border: 'none',
               color: '#ffffff',
               fontWeight: 'bold',
-              cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(139, 92, 246, 0.4)'
+              cursor: 'pointer'
             }}
           >
             Done
