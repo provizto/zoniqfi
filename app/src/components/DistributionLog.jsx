@@ -1,22 +1,20 @@
 import React from 'react';
 
 const DistributionLog = ({ programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD", swapData }) => {
-  // Fungsi untuk memotong Program ID agar rapi di HP
   const formatAddress = (addr) => {
     if (!addr) return "";
     return `${addr.slice(0, 6)}...${addr.slice(-6)}`;
   };
 
-  // Data tiruan berdasarkan image_c21b16.png jika data dinamis belum dioper
   const data = swapData || {
-    fromAmount: "5 USDC",
-    toAmount: "0.0294 SOL",
-    totalFee: "0.0150 USDC",
+    fromAmount: "20 USDC",
+    toAmount: "40.0000 ZQI",
+    totalFee: "0.0600 USDC",
     breakdown: [
-      { label: "Yield Optimizer Vault (40%)", amount: "0.00600 USDC", icon: "fa-vault" },
-      { label: "Liquidity Provision Pool (30%)", amount: "0.00450 USDC", icon: "fa-chart-pie" },
-      { label: "Affiliate Treasury (15%)", amount: "0.00225 USDC", icon: "fa-users" },
-      { label: "Dev & Infrastructure (15%)", amount: "0.00225 USDC", icon: "fa-server" },
+      { label: "Yield Optimizer Vault (40%)", amount: "0.02400 USDC", icon: "fa-vault" },
+      { label: "ZQI Real Yield Pool (30%)", amount: "0.01800 USDC", icon: "fa-chart-pie" },
+      { label: "Affiliate Treasury (15%)", amount: "0.00900 USDC", icon: "fa-users" },
+      { label: "Project Treasury Operations (15%)", amount: "0.00900 USDC", icon: "fa-server" },
     ]
   };
 
@@ -35,16 +33,37 @@ const DistributionLog = ({ programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nq
       textAlign: 'left'
     }}>
       
-      {/* HEADER: STATUS & PROGRAM ID */}
-      <div style={{ display: 'flex', justifyContent: 'between', alignItems: 'center', marginBottom: '18px', borderBottom: '1px solid #1f2937', paddingBottom: '12px' }}>
+      {/* HEADER: STATUS, TX V1 BADGE & PROGRAM LINK */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', borderBottom: '1px solid #1f2937', paddingBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="fas fa-circle-check" style={{ color: '#10b981', fontSize: '1.2rem' }}></i>
-          <span style={{ fontWeight: '700', color: '#10b981', letterSpacing: '0.5px', fontSize: '0.95rem' }}>SWAP SUCCESSFUL</span>
+          <i className="fas fa-circle-check" style={{ color: '#10b981', fontSize: '1.1rem' }}></i>
+          <span style={{ fontWeight: '700', color: '#10b981', letterSpacing: '0.5px', fontSize: '0.9rem' }}>SWAP SUCCESSFUL</span>
+          <span style={{ fontSize: '0.7rem', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', padding: '2px 6px', borderRadius: '4px', fontWeight: '700', border: '1px solid rgba(56, 189, 248, 0.3)' }}>Tx v1</span>
         </div>
-        <div style={{ marginLeft: 'auto', background: '#1f2937', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', color: '#94a3b8' }}>
-          <i className="fas fa-code" style={{ marginRight: '6px', color: '#14b8a6' }}></i>
-          Program: <span style={{ fontFamily: 'monospace', color: '#fff' }} title={programId}>{formatAddress(programId)}</span>
-        </div>
+        
+        {/* Solscan Clickable Link */}
+        <a 
+          href={`https://solscan.io/account/${programId}?cluster=devnet`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ 
+            background: '#1f2937', 
+            padding: '4px 10px', 
+            borderRadius: '6px', 
+            fontSize: '0.78rem', 
+            color: '#94a3b8',
+            textDecoration: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.2s ease',
+            border: '1px solid #334155'
+          }}
+        >
+          <i className="fas fa-code" style={{ color: '#14b8a6' }}></i>
+          <span style={{ fontFamily: 'monospace', color: '#38bdf8' }}>{formatAddress(programId)}</span>
+          <i className="fas fa-arrow-up-right-from-square" style={{ fontSize: '0.65rem', color: '#64748b' }}></i>
+        </a>
       </div>
 
       {/* SWAP DETAILS */}
@@ -78,7 +97,7 @@ const DistributionLog = ({ programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nq
               fontSize: '0.9rem'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'rgba(20, 184, 166, 0.1)', display: 'flex', alignItems: 'center', justifyInlines: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'rgba(20, 184, 166, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <i className={`fas ${item.icon}`} style={{ color: '#14b8a6', fontSize: '0.85rem' }}></i>
                 </div>
                 <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{item.label}</span>
