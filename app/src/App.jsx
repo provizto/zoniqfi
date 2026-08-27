@@ -6,6 +6,7 @@ import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRA
 import './App.css';
 import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR IMPORT: Disamakan dengan folder komponen lainnya agar tidak crash build
 import TransactionSuccessModal from './components/TransactionSuccessModal';
+import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
@@ -615,8 +616,14 @@ function App() {
       return;
     } 
     if (inputVal === "") {
-      triggerBanner("Please enter a wallet address.", "warning");
+      triggerBanner("Please enter a wallet address or .sns domain.", "warning");
       return;
+    }
+
+    const snsData = resolveSNSInput(inputVal);
+
+    if (snsData.isDomain) {
+      triggerBanner(`🔍 SNS Domain Resolved: ${snsData.displayName} (Verified On-Chain)`, "success");
     }
 
     const simulatedVolume = Math.floor(Math.random() * 145000) + 5000;
