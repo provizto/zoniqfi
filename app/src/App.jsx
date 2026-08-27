@@ -1153,7 +1153,7 @@ function App() {
           }
         `}</style>
         <p style={{ margin: 0, lineHeight: '1.5', maxWidth: '100%' }}>
-          © 2026 ZoniqFi Hub. All Rights Reserved. Premium Solana Software-as-a-Service Infrastructure.
+          © 2026 ZoniqFi Protocol. All Rights Reserved. Modular Solana DeFi & Real Yield Infrastructure.
         </p>
         <div className="footer-links-row" style={{ 
           display: 'flex', 
@@ -1162,9 +1162,36 @@ function App() {
           alignItems: 'center',
           flexWrap: 'wrap'
         }}>
-          <a href="https://provizto.github.io/zoniqfi-docs/" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Documentation</a>
-          <a href="#audit" onClick={() => alert('Security Audits underway.')} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Security Audit 🛡️</a>
-          <a href="#disclaimer" onClick={() => alert('Non-custodial sandbox environment.')} style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}>Legal Disclaimer</a>
+          <a 
+            href="/ZoniqFi_Grant_Proposal.html" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
+          >
+            Documentation
+          </a>
+
+          <a 
+            href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
+          >
+            Security Audit 🛡️
+          </a>
+
+          <a 
+            href="#disclaimer" 
+            onClick={(e) => {
+              e.preventDefault();
+              if (typeof setShowComplianceModal === 'function') {
+                setShowComplianceModal(true);
+              }
+            }} 
+            style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s', cursor: 'pointer' }}
+          >
+            Legal Disclaimer
+          </a>
         </div>
       </footer>
     </>
