@@ -11,7 +11,7 @@ const Landing = ({
 
   useEffect(() => {
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700;800&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
 
@@ -37,14 +37,14 @@ const Landing = ({
       badge: "Tx v1 & MEV SECURE",
       badgeClass: "badge-cyan",
       icon: "fa-repeat",
-      desc: "Mesin pertukaran aset terdesentralisasi berkecepatan tinggi dengan integrasi routing Jito Block Engine dan format Solana Transaction v1 untuk melindungi setiap order secara atomik.",
+      desc: "High-velocity decentralized exchange engine integrated with Jito Block Engine routing and Solana Transaction v1 format to secure atomic orders against sandwich attacks.",
       features: [
-        "Native Solana Transaction v1 (4.096 Byte Atomic Payload)",
-        "Private Transaction Bundle via Jito Engine (Anti-Sandwich)",
-        "Anti-Wash Trading Protection (Daily Limit On-Chain)",
-        "Protokol Fee 0.3% dengan auto-split on-chain 4 arah"
+        "Native Solana Transaction v1 (4,096-Byte Atomic Payload)",
+        "Private Transaction Bundles via Jito Engine (Anti-Sandwich)",
+        "Anti-Wash Trading Protection (On-Chain Cooldown Limits)",
+        "0.3% Flat Protocol Fee with 4-way atomic fee routing"
       ],
-      btnText: "Buka AMM Swap Demo",
+      btnText: "Launch AMM Swap Demo",
       btnClass: "btn-cyan-fill"
     },
     {
@@ -53,14 +53,14 @@ const Landing = ({
       badge: "AUTO-COMPOUND",
       badgeClass: "badge-blue",
       icon: "fa-vault",
-      desc: "Protokol vault penghasil imbal hasil otomatis. Cukup satu kali deposit USDC, sistem akan menjalankan kapitalisasi majemuk (compounding) secara berkala.",
+      desc: "Automated compounding yield generation protocol. Single-deposit USDC architecture executing periodic programmatic rebalancing and auto-compounding strategies.",
       features: [
-        "Boosted APY optimal hingga 49.1%",
-        "Daily Interest Rate 0.11% stabil",
-        "Kalkulator proyeksi keuntungan harian/bulanan/tahunan",
+        "Boosted APY optimizations up to 49.1%",
+        "Predictable 0.11% Daily Base Yield Rate",
+        "Dynamic real-time return projection calculator",
         "Non-custodial smart contract deposit logic"
       ],
-      btnText: "Buka Vault Demo",
+      btnText: "Launch Vault Demo",
       btnClass: "btn-blue-grad"
     },
     {
@@ -69,14 +69,14 @@ const Landing = ({
       badge: "CIRCULATING DEFENSE",
       badgeClass: "badge-purple",
       icon: "fa-lock",
-      desc: "Sistem penguncian suplai token native untuk menekan tekanan jual pasar (dumping) dan mendistribusikan dividen Real Yield dalam bentuk USDC stablecoin.",
+      desc: "Native token supply lock mechanism to mitigate secondary market selling pressure while distributing non-inflationary Real Yield dividends in stable USDC.",
       features: [
-        "Mode Kunci Fleksibel (Instant Horizon & Boosted Epoch)",
-        "Multiplier reward hingga 2.5x untuk lock jangka panjang",
-        "Deflationary Emergency Unlock (10% Burn Penalty)",
-        "Settlement klaim otomatis berbasis kalkulasi bobot poin"
+        "Flexible Locking Horizons (Instant Horizon & Boosted Epochs)",
+        "Up to 2.5x Reward Multiplier for long-term locks",
+        "Deflationary Emergency Early Unlock (10% Burn Penalty)",
+        "Automated reward weight settlement logic"
       ],
-      btnText: "Buka Staking Lock Demo",
+      btnText: "Launch Staking Lock Demo",
       btnClass: "btn-purple-grad"
     },
     {
@@ -85,34 +85,34 @@ const Landing = ({
       badge: "ANTI-SYBIL & SNS",
       badgeClass: "badge-emerald",
       icon: "fa-users-gear",
-      desc: "Sistem referral terdesentralisasi yang memberikan komisi transaksi bertingkat kepada komunitas dan merchant secara transparan langsung ke dompet pengguna.",
+      desc: "Decentralized tiered referral infrastructure distributing transparent transaction fee commissions directly to user and merchant wallets.",
       features: [
-        "Dukungan Resolusi SNS Domain (.sns & .sol standard)",
-        "Anti-Sybil Cooldown (Batasan 1 tx / 10s anti-bot spam)",
-        "Struktur 3 Tier: Bronze (10%), Silver (18%), Gold (25%)",
-        "Verifikasi on-chain referral address & domain instan"
+        "SNS Domain Resolution (.sns & .sol standards)",
+        "Anti-Sybil Cooldown Engine (1 tx / 10s anti-spam defense)",
+        "3-Tier Rebate Structure: Bronze (10%), Silver (18%), Gold (25%)",
+        "Instant on-chain referral verification & domain normalization"
       ],
-      btnText: "Buka Affiliate Demo",
+      btnText: "Launch Affiliate Demo",
       btnClass: "btn-emerald-fill"
     }
   ];
 
   const faqData = [
     { 
-      q: "Apa keunggulan arsitektur Solana Transaction v1 di ZoniqFi?", 
-      a: "Format Transaction v1 memperluas kapasitas data payload hingga 4.096 byte. Hal ini memungkinkan ZoniqFi mengeksekusi validasi Anti-Wash, proteksi MEV, perpindahan likuiditas swap, dan distribusi fee 4 arah dalam satu transaksi atomik tanpa pembagian batch terpisah." 
+      q: "What are the advantages of Solana Transaction v1 in ZoniqFi?", 
+      a: "The Transaction v1 format expands payload capacity up to 4,096 bytes. This allows ZoniqFi to execute anti-wash verification, MEV private bundle routing, swap liquidity settlement, and 4-way fee distributions in a single atomic instruction without multi-batch risk." 
     },
     { 
-      q: "Bagaimana cara kerja keamanan Anti-MEV pada AMM Swap?", 
-      a: "Modul AMM Swap merutekan transaksi melalui bundle privat Jito Engine, sehingga transaksi tidak terekspos di public mempool yang rentan terhadap manipulasi bot front-running dan sandwich attack." 
+      q: "How does Anti-MEV protection safeguard trades?", 
+      a: "The AMM Swap routes transactions through Jito Block Engine private bundles, completely bypassing public mempools vulnerable to predatory front-running and sandwich bots." 
     },
     { 
-      q: "Apakah modul Affiliate mendukung domain Solana Name Service (SNS)?", 
-      a: "Ya. Sistem referral ZoniqFi terintegrasi dengan standar migrasi SNS, memungkinkan pengguna membuat dan memverifikasi tautan referral menggunakan nama domain (.sns / .sol) di samping Public Key standar." 
+      q: "Does the Affiliate module support Solana Name Service (SNS) domains?", 
+      a: "Yes. ZoniqFi natively supports SNS migration standards, allowing users to register and verify referral connections using human-readable domain names (.sns / .sol) alongside raw Public Keys." 
     },
     { 
-      q: "Bagaimana proteksi suplai pada modul Staking & Lock?", 
-      a: "Setiap penarikan dana darurat sebelum masa epoch berakhir akan dikenakan penalti 10% yang langsung dibakar (burn on-chain) secara permanen untuk menjaga deflasi sirkulasi token." 
+      q: "How does the supply defense mechanism protect tokenomics?", 
+      a: "Any emergency early unlocks prior to epoch maturation trigger an automated 10% penalty that is burned on-chain permanently, creating continuous deflationary pressure on circulating supply." 
     }
   ];
 
@@ -219,7 +219,7 @@ const Landing = ({
           <div className="logo">ZONIQFI</div>
         </div>
         <nav>
-          <a href="#products">Modul DeFi</a>
+          <a href="#products">DeFi Modules</a>
           <a href="#faq">FAQ</a>
           <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer">Telegram</a>
         </nav>
@@ -249,7 +249,7 @@ const Landing = ({
         </div>
         
         <h1>MODULAR SOLANA DEFI SUITE</h1>
-        <p>Infrastruktur dApp terpadu untuk ekosistem token Solana. Dilengkapi format Solana Transaction v1 atomik, proteksi Anti-MEV via Jito Engine, staking multi-durasi, yield vault otomatis, dan integrasi identitas domain SNS.</p>
+        <p>Turnkey dApp infrastructure for the Solana ecosystem. Powered by atomic Solana Transaction v1 execution, Anti-MEV protection via Jito Engine, multi-duration staking, automated yield vaults, and SNS domain identity resolution.</p>
       </section>
 
       {/* METRICS BANNER */}
@@ -278,8 +278,8 @@ const Landing = ({
 
       {/* 4 DEFI PRODUCTS SECTION */}
       <section id="products" className="defi-section">
-        <h2 className="section-title">4 Produk & Modul DeFi Unggulan</h2>
-        <p className="section-desc">Eksplorasi modul smart contract dan antarmuka terdesentralisasi siap uji di jaringan Solana Sandbox.</p>
+        <h2 className="section-title">4 Core DeFi Infrastructure Modules</h2>
+        <p className="section-desc">Explore production-ready smart contract modules and decentralized interfaces in the Solana Sandbox environment.</p>
         
         <div className="defi-grid">
           {defiProducts.map((prod) => (
@@ -310,8 +310,8 @@ const Landing = ({
 
         <div className="vzt-cta-wrapper">
           <div className="vzt-cta-card">
-            <h2 className="vzt-cta-title">KONSULTASI & KUSTOMISASI DEFI ENGINE</h2>
-            <p className="vzt-cta-desc">Butuh integrasi kustom untuk token SPL atau penyesuaian alokasi fee treasury proyek Anda? Hubungi core developer secara langsung.</p>
+            <h2 className="vzt-cta-title">CUSTOM DEFI ENGINE INTEGRATION</h2>
+            <p className="vzt-cta-desc">Need custom SPL token support or bespoke treasury fee routing for your project? Connect directly with our core engineering team.</p>
             
             <a 
               href="https://t.me/zoniqfi" 
@@ -320,7 +320,7 @@ const Landing = ({
               className="vzt-tg-btn"
             >
               <i className="fab fa-telegram-plane"></i>
-              Hubungi Tim Developer di Telegram
+              Connect with Developer Team on Telegram
             </a>
           </div>
         </div>
@@ -328,8 +328,8 @@ const Landing = ({
 
       {/* FAQ SECTION */}
       <section id="faq" className="faq-section">
-        <h2 className="section-title">Pertanyaan Umum (FAQ)</h2>
-        <p className="section-desc">Jawaban ringkas seputar mekanisme transaksi, protokol keamanan, dan eksekusi dApp.</p>
+        <h2 className="section-title">Frequently Asked Questions (FAQ)</h2>
+        <p className="section-desc">Concise answers regarding transaction mechanics, security protocols, and dApp execution.</p>
         
         {faqData.map((faq, index) => (
           <div key={index} className="faq-item">
