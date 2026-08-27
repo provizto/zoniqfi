@@ -56,6 +56,9 @@ function App() {
     return 'swap';
   });
 
+  // State Modal Legal Disclaimer
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+
   // 🔥 INTEGRASI STATE BARU: Menyimpan jumlah data penjualan paket dApp SaaS B2B secara terpusat
   const [activeClients, setActiveClients] = useState(48);
   const [whiteLabelsLive, setWhiteLabelsLive] = useState(19);
@@ -1180,18 +1183,72 @@ function App() {
             Security Audit 🛡️
           </a>
 
-          <a 
-            href="#disclaimer" 
-            onClick={(e) => {
-              e.preventDefault();
-              if (typeof setShowComplianceModal === 'function') {
-                setShowComplianceModal(true);
-              }
-            }} 
-            style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s', cursor: 'pointer' }}
+          <button 
+            onClick={() => setShowDisclaimer(true)}
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              padding: 0, 
+              color: '#94a3b8', 
+              fontSize: '0.88rem', 
+              cursor: 'pointer',
+              textDecoration: 'none',
+              transition: 'color 0.2s'
+            }}
           >
             Legal Disclaimer
-          </a>
+          </button>
+          {/* MODAL LEGAL DISCLAIMER */}
+      {showDisclaimer && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.75)',
+          backdropFilter: 'blur(6px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 999999,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: '#111827',
+            border: '1px solid #1f2937',
+            borderRadius: '16px',
+            maxWidth: '480px',
+            width: '100%',
+            padding: '24px',
+            color: '#e2e8f0',
+            textAlign: 'left',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+          }}>
+            <h3 style={{ margin: '0 0 12px 0', fontSize: '1.2rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              🛡️ Protocol Disclaimer
+            </h3>
+            <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.6', margin: '0 0 16px 0' }}>
+              ZoniqFi is an experimental, non-custodial decentralized software architecture deployed on the Solana Devnet Sandbox. The protocol does not take custody of user assets, and interactions are governed strictly by immutable smart contract logic. Nothing on this platform constitutes financial or investment advice.
+            </p>
+            <button 
+              onClick={() => setShowDisclaimer(false)}
+              style={{
+                width: '100%',
+                padding: '12px',
+                background: 'linear-gradient(90deg, #2563eb 0%, #06b6d4 100%)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: '700',
+                cursor: 'pointer'
+              }}
+            >
+              I Understand
+            </button>
+          </div>
+        </div>
+      )}
         </div>
       </footer>
     </>
