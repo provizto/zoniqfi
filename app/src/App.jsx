@@ -426,6 +426,11 @@ function App() {
         ]
       });
 
+      // 🔥 Tambahkan baris ini jika ingin log fee otomatis hilang setelah 8 detik:
+      setTimeout(() => {
+        setDistributionData(null);
+      }, 10000);
+
       if (tokenReceive === 'ZQI') {
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
       }
