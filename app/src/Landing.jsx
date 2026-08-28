@@ -132,7 +132,7 @@ const Landing = ({ onLaunchApp }) => {
         #vzt-landing-page .vzt-promo-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 6px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; }
         #vzt-landing-page .vzt-promo-pulse { height: 8px; width: 8px; border-radius: 50%; background-color: #60a5fa; }
 
-        /* PROTOCOL SPECIFICATIONS ON-CHAIN BANNER */
+        /* METRICS BANNER */
         #vzt-landing-page .metrics-banner { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 30px !important; padding: 30px 8% !important; background: #111827 !important; border-top: 1px solid #1f2937 !important; border-bottom: 1px solid #1f2937 !important; }
         #vzt-landing-page .metric-item { text-align: center !important; min-width: 150px !important; flex: 1 !important; }
         #vzt-landing-page .metric-value { font-size: 1.8rem !important; font-weight: 800 !important; color: #14b8a6 !important; }
@@ -191,15 +191,73 @@ const Landing = ({ onLaunchApp }) => {
         .section-title { font-size: 2rem !important; font-weight: 800 !important; color: #ffffff !important; margin-bottom: 10px !important; text-align: center !important; }
         .section-desc { font-size: 1rem !important; color: #94a3b8 !important; max-width: 650px !important; margin: 0 auto 30px auto !important; text-align: center !important; }
 
+        /* MOBILE BOTTOM FOOTER NAVIGATION (DESKTOP HIDDEN) */
+        #vzt-landing-page .mobile-bottom-dock { display: none !important; }
+
         @media (max-width: 768px) {
+          #vzt-landing-page { padding-bottom: 80px !important; }
           #vzt-landing-page header { padding: 15px 5% !important; }
           #vzt-landing-page nav { display: none !important; }
+          #vzt-landing-page header .btn-launch { display: none !important; }
           #vzt-landing-page .hero { padding-top: 130px !important; }
           #vzt-landing-page .hero h1 { font-size: 2.1rem !important; }
           #vzt-landing-page .metrics-banner { flex-direction: column !important; gap: 20px !important; }
           #vzt-landing-page .defi-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
-          #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; }
+          #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; padding-bottom: 30px !important; }
           .vzt-tg-btn { width: 100%; justify-content: center; }
+
+          /* MOBILE BOTTOM DOCK DISPLAY */
+          #vzt-landing-page .mobile-bottom-dock {
+            display: flex !important;
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            background: rgba(11, 15, 25, 0.95) !important;
+            backdrop-filter: blur(16px) !important;
+            border-top: 1px solid #1f2937 !important;
+            padding: 10px 18px !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+            z-index: 999999 !important;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5) !important;
+          }
+          #vzt-landing-page .mobile-dock-item {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #94a3b8 !important;
+            text-decoration: none !important;
+            font-size: 0.72rem !important;
+            font-weight: 500 !important;
+            gap: 4px !important;
+            background: transparent !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 0 !important;
+          }
+          #vzt-landing-page .mobile-dock-item i {
+            font-size: 1.15rem !important;
+          }
+          #vzt-landing-page .mobile-dock-item:active,
+          #vzt-landing-page .mobile-dock-item:hover {
+            color: #14b8a6 !important;
+          }
+          #vzt-landing-page .mobile-dock-btn {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+            color: #fff !important;
+            padding: 9px 18px !important;
+            border-radius: 9999px !important;
+            font-weight: 700 !important;
+            font-size: 0.82rem !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            border: none !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
+          }
         }
       `}</style>
 
@@ -358,6 +416,26 @@ const Landing = ({ onLaunchApp }) => {
           </a>
         </div>
       </footer>
+
+      {/* MOBILE BOTTOM DOCK MENU (ONLY ON PHONES) */}
+      <div className="mobile-bottom-dock">
+        <a href="#products" className="mobile-dock-item">
+          <i className="fas fa-cubes"></i>
+          <span>Modules</span>
+        </a>
+        <a href="#faq" className="mobile-dock-item">
+          <i className="fas fa-circle-question"></i>
+          <span>FAQ</span>
+        </a>
+        <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="mobile-dock-item">
+          <i className="fab fa-telegram-plane"></i>
+          <span>Telegram</span>
+        </a>
+        <button onClick={onLaunchApp} className="mobile-dock-btn">
+          <i className="fas fa-bolt"></i>
+          <span>Launch dApp</span>
+        </button>
+      </div>
     </div>
   );
 };
