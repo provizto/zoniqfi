@@ -597,6 +597,10 @@ function App() {
       setShowRewardRow(false);
       setRewardClaimable(false); 
       setTxLog(`🔥 Deflationary Trigger: ${penaltyAmount.toFixed(2)} $ZQI permanently burned.`);
+      // 🔥 Otomatis hapus banner deflasi setelah 5 detik agar layar kembali bersih
+      setTimeout(() => {
+        setTxLog('');
+      }, 5000);
     } catch (error) {
       triggerBanner("⚠️ Emergency execution failed.", "error");
     }
@@ -881,9 +885,9 @@ function App() {
           </div>
         )}
 
-        {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium saat Swap Sukses */}
-        {distributionData && (
-          <div style={{ maxWidth: activeTab === 'affiliate' ? '780px' : '480px', margin: '0 auto 20px auto', width: '100%' }}>
+        {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium HANYA saat di Tab Swap */}
+        {distributionData && activeTab === 'swap' && (
+          <div style={{ maxWidth: '480px', margin: '0 auto 20px auto', width: '100%' }}>
             <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
           </div>
         )}
