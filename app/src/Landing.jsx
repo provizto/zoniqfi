@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import logoZoniqLarge from './assets/image_436281.png';
 
-const Landing = ({ 
-  activeClients = 48, 
-  whiteLabelsLive = 19, 
-  oneOffBuyers = 320, 
-  onLaunchApp 
-}) => {
+const Landing = ({ onLaunchApp }) => {
   const [activeFaq, setActiveFaq] = useState(null);
 
   useEffect(() => {
@@ -137,7 +132,7 @@ const Landing = ({
         #vzt-landing-page .vzt-promo-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 6px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; }
         #vzt-landing-page .vzt-promo-pulse { height: 8px; width: 8px; border-radius: 50%; background-color: #60a5fa; }
 
-        /* METRICS SOCIAL PROOF BANNER */
+        /* PROTOCOL SPECIFICATIONS ON-CHAIN BANNER */
         #vzt-landing-page .metrics-banner { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 30px !important; padding: 30px 8% !important; background: #111827 !important; border-top: 1px solid #1f2937 !important; border-bottom: 1px solid #1f2937 !important; }
         #vzt-landing-page .metric-item { text-align: center !important; min-width: 150px !important; flex: 1 !important; }
         #vzt-landing-page .metric-value { font-size: 1.8rem !important; font-weight: 800 !important; color: #14b8a6 !important; }
@@ -252,27 +247,27 @@ const Landing = ({
         <p>Turnkey dApp infrastructure for the Solana ecosystem. Powered by atomic Solana Transaction v1 execution, Anti-MEV protection via Jito Engine, multi-duration staking, automated yield vaults, and SNS domain identity resolution.</p>
       </section>
 
-      {/* METRICS BANNER */}
+      {/* PROTOCOL SPECIFICATIONS ON-CHAIN BANNER */}
       <div className="metrics-banner">
         <div className="metric-item">
-          <div className="metric-value">{oneOffBuyers + activeClients + whiteLabelsLive}+</div>
-          <div className="metric-label">Total Licenses Issued</div>
+          <div className="metric-value">4,096 B</div>
+          <div className="metric-label">Max Atomic Payload (Tx v1)</div>
         </div>
         <div className="metric-item">
-          <div className="metric-value">{activeClients}+</div>
-          <div className="metric-label">Active Enterprise Clients</div>
+          <div className="metric-value">0%</div>
+          <div className="metric-label">Token Inflation (USDC Real Yield)</div>
         </div>
         <div className="metric-item">
-          <div className="metric-value">{whiteLabelsLive}</div>
-          <div className="metric-label">Live Deployed White-Labels</div>
+          <div className="metric-value">10%</div>
+          <div className="metric-label">Deflationary Burn Defense</div>
         </div>
         <div className="metric-item">
-          <div className="metric-value">{oneOffBuyers}+</div>
-          <div className="metric-label">One-Off License Buyers</div>
+          <div className="metric-value">&lt; 400 ms</div>
+          <div className="metric-label">Jito MEV Settlement Latency</div>
         </div>
         <div className="metric-item">
-          <div className="metric-value">&lt; 48 Hours</div>
-          <div className="metric-label">Avg. Integration Speed</div>
+          <div className="metric-value">Devnet</div>
+          <div className="metric-label">Live Verified Architecture</div>
         </div>
       </div>
 
