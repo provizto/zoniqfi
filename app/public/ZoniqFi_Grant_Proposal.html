@@ -8,7 +8,7 @@
 
     @page {
       size: A4 portrait;
-      margin: 18mm 16mm;
+      margin: 14mm 14mm;
     }
 
     * {
@@ -21,8 +21,8 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: #0f172a;
       background: #ffffff;
-      line-height: 1.45;
-      font-size: 9.5pt;
+      line-height: 1.4;
+      font-size: 9pt;
       margin: 0;
       padding: 0;
     }
@@ -34,18 +34,19 @@
 
     .page-break {
       page-break-before: always;
-      margin-top: 25px;
+      break-before: page;
+      margin-top: 15px;
     }
 
     .header-table {
       width: 100%;
       border-bottom: 2px solid #0284c7;
-      padding-bottom: 10px;
-      margin-bottom: 14px;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .title {
-      font-size: 16pt;
+      font-size: 15pt;
       font-weight: 800;
       color: #0f172a;
       letter-spacing: -0.5px;
@@ -53,12 +54,12 @@
     }
 
     .subtitle {
-      font-size: 9pt;
+      font-size: 8.5pt;
       color: #0369a1;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 3px;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
     }
 
     .badge {
@@ -68,34 +69,34 @@
       border: 1px solid #bbf7d0;
       padding: 3px 8px;
       border-radius: 4px;
-      font-size: 8pt;
+      font-size: 7.5pt;
       font-weight: 700;
     }
 
     h2 {
-      font-size: 10.5pt;
+      font-size: 10pt;
       font-weight: 800;
       color: #0f172a;
       border-left: 3.5px solid #0284c7;
       padding-left: 8px;
-      margin: 12px 0 6px 0;
+      margin: 10px 0 5px 0;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     p {
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       color: #334155;
     }
 
     ul {
-      margin: 4px 0 8px 18px;
+      margin: 3px 0 6px 16px;
       padding: 0;
       color: #334155;
     }
 
     li {
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     strong {
@@ -106,20 +107,20 @@
       background: #f8fafc;
       border: 1px solid #cbd5e1;
       border-radius: 6px;
-      padding: 10px 12px;
+      padding: 8px 10px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 7.5pt;
-      line-height: 1.35;
+      font-size: 7.2pt;
+      line-height: 1.3;
       color: #1e293b;
-      margin: 8px 0 12px 0;
+      margin: 6px 0 10px 0;
       white-space: pre;
     }
 
     table.data-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 8px 0 12px 0;
-      font-size: 8.5pt;
+      margin: 6px 0 10px 0;
+      font-size: 8pt;
     }
 
     table.data-table th {
@@ -127,12 +128,12 @@
       color: #0f172a;
       font-weight: 700;
       text-align: left;
-      padding: 6px 10px;
+      padding: 5px 8px;
       border: 1px solid #cbd5e1;
     }
 
     table.data-table td {
-      padding: 6px 10px;
+      padding: 5px 8px;
       border: 1px solid #e2e8f0;
       color: #334155;
     }
@@ -143,16 +144,21 @@
 
     .mono {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 8pt;
+      font-size: 7.5pt;
       color: #0369a1;
       font-weight: 600;
+      text-decoration: none;
+    }
+
+    .mono:hover {
+      text-decoration: underline;
     }
 
     .footer {
       border-top: 1px solid #e2e8f0;
-      padding-top: 8px;
-      margin-top: 15px;
-      font-size: 7.5pt;
+      padding-top: 6px;
+      margin-top: 10px;
+      font-size: 7.2pt;
       color: #64748b;
       display: flex;
       justify-content: space-between;
@@ -167,7 +173,7 @@
       <tr>
         <td>
           <div class="title">ZONIQFI ($ZQI)</div>
-          <div class="subtitle">Solana Transaction v1 DeFi Suite & Real Yield Infrastructure</div>
+          <div class="subtitle">Solana Versioned Transaction Suite & Real Yield Infrastructure</div>
         </td>
         <td style="text-align: right; vertical-align: top;">
           <span class="badge">Colosseum & Superteam Grant Ready</span>
@@ -177,7 +183,7 @@
 
     <h2>1. Executive Summary</h2>
     <p>
-      <strong>ZONIQFI</strong> is a turnkey, modular DeFi infrastructure protocol on Solana. It utilizes native <strong>Solana Transaction v1 (4,096-byte payload)</strong> to execute multi-tier swaps with deep MEV mitigation via Jito Block Engine, automated yield vaults, deflationary supply defense, and decentralized on-chain referrals integrated with the latest <strong>Solana Name Service (SNS)</strong> standards.
+      <strong>ZONIQFI</strong> is a turnkey, modular DeFi infrastructure protocol on Solana. It utilizes native <strong>Solana Versioned Transaction architecture (ALTs & compact 1,232-byte payload)</strong> to execute multi-tier swaps with deep MEV mitigation via Jito Block Engine, automated yield vaults, deflationary supply defense, and decentralized on-chain referrals integrated with the latest <strong>Solana Name Service (SNS)</strong> standards.
     </p>
 
     <h2>2. Problem Statement & Market Inefficiencies</h2>
@@ -187,13 +193,13 @@
       <li><strong>Sybil Exploitation in Referral Programs:</strong> Conventional growth programs suffer from bot wash-trading and multi-wallet spamming.</li>
     </ul>
 
-    <h2>3. Core Technical Architecture (Transaction v1 Pipeline)</h2>
-    <div class="ascii-box">[ Solana Transaction v1 Pipeline (Max 4,096 Bytes) ]
+    <h2>3. Core Technical Architecture (Atomic Transaction Pipeline)</h2>
+    <div class="ascii-box">[ Solana Versioned Transaction Pipeline (Compact ALTs Engine) ]
 │
 ├── 1. Security & Pre-Execution Validation
 │   ├── Jito Engine Private Bundle Routing (Sandwich Attack Prevention)
 │   ├── Anti-Wash Trading Cooldown Enforcement (Max 1 tx / 10s per wallet PDA)
-│   └── SNS Identity Resolver (.sns & .sol Domain Support)
+│   └── SNS Identity Resolver (.sns & .sol Domain Normalization)
 │
 ├── 2. Liquidity & Dynamic Settlement Core
 │   ├── Dynamic SPL Token Swap Routing (Jupiter v2 Price Engine API)
@@ -217,12 +223,16 @@
       <tbody>
         <tr>
           <td><strong>Transaction Standard</strong></td>
-          <td>Solana Transaction v1 (4,096-byte atomic bundle)</td>
+          <td>Solana Versioned Transactions (v0 / ALTs Atomic Bundle)</td>
           <td>Verified on Devnet</td>
         </tr>
         <tr>
           <td><strong>Smart Contract Program ID</strong></td>
-          <td><span class="mono">HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD</span></td>
+          <td>
+            <a href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" target="_blank" class="mono">
+              HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD ↗
+            </a>
+          </td>
           <td>Executable (BPF Upgradeable)</td>
         </tr>
         <tr>
@@ -257,7 +267,7 @@
 
     <div class="footer">
       <span>© 2026 ZoniqFi Protocol • Confidential Grant Proposal</span>
-      <span>Live Preview: https://zoniqfi.com</span>
+      <span>Live Preview: https://vzt-beige.vercel.app</span>
     </div>
   </div>
 
@@ -267,7 +277,7 @@
       <tr>
         <td>
           <div class="title">ZONIQFI ($ZQI)</div>
-          <div class="subtitle">Solana Transaction v1 DeFi Suite & Infrastruktur Real Yield</div>
+          <div class="subtitle">Solana Versioned Transaction Suite & Infrastruktur Real Yield</div>
         </td>
         <td style="text-align: right; vertical-align: top;">
           <span class="badge">Proposal Akselerator & Hibah Web3</span>
@@ -277,7 +287,7 @@
 
     <h2>1. Ringkasan Eksekutif</h2>
     <p>
-      <strong>ZONIQFI</strong> adalah protokol infrastruktur DeFi modular siap pakai di jaringan Solana. Platform ini mengimplementasikan standar <strong>Solana Transaction v1 (payload 4.096 byte)</strong> untuk mengeksekusi swap atomik dengan proteksi Anti-MEV melalui Jito Block Engine, auto-compounding yield vault, proteksi deflasi suplai, serta sistem referral on-chain yang mendukung migrasi <strong>Solana Name Service (SNS)</strong>.
+      <strong>ZONIQFI</strong> adalah protokol infrastruktur DeFi modular siap pakai di jaringan Solana. Platform ini mengimplementasikan standar <strong>Solana Versioned Transaction (arsitektur ALTs kompak 1.232 byte)</strong> untuk mengeksekusi swap atomik dengan proteksi Anti-MEV melalui Jito Block Engine, auto-compounding yield vault, proteksi deflasi suplai, serta sistem referral on-chain yang mendukung migrasi <strong>Solana Name Service (SNS)</strong>.
     </p>
 
     <h2>2. Masalah & Ketidakefisienan Pasar</h2>
@@ -287,8 +297,8 @@
       <li><strong>Eksploitasi Bot Sybil pada Program Referral:</strong> Program pertumbuhan komunitas kerap disalahgunakan oleh bot multi-wallet dan manipulasi wash-trading.</li>
     </ul>
 
-    <h2>3. Arsitektur Teknis Utama (Pipeline Transaction v1)</h2>
-    <div class="ascii-box">[ Pipeline Solana Transaction v1 (Maks. 4.096 Byte) ]
+    <h2>3. Arsitektur Teknis Utama (Pipeline Transaksi Atomik)</h2>
+    <div class="ascii-box">[ Pipeline Solana Versioned Transaction (Mesin Kompak ALTs) ]
 │
 ├── 1. Lapisan Keamanan & Pra-Validasi
 │   ├── Routing Bundle Privat Jito Engine (Proteksi Serangan Sandwich)
@@ -317,12 +327,16 @@
       <tbody>
         <tr>
           <td><strong>Standar Transaksi</strong></td>
-          <td>Solana Transaction v1 (Bundle Atomik 4.096 Byte)</td>
+          <td>Solana Versioned Transactions (Bundle Atomik v0 / ALTs)</td>
           <td>Terverifikasi di Devnet</td>
         </tr>
         <tr>
           <td><strong>Program ID Smart Contract</strong></td>
-          <td><span class="mono">HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD</span></td>
+          <td>
+            <a href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" target="_blank" class="mono">
+              HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD ↗
+            </a>
+          </td>
           <td>Executable (BPF Upgradeable)</td>
         </tr>
         <tr>
@@ -357,7 +371,7 @@
 
     <div class="footer">
       <span>© 2026 ZoniqFi Protocol • Dokumen Proposal Hibah Resmi</span>
-      <span>Pratinjau Langsung: https://zoniqfi.com</span>
+      <span>Pratinjau Langsung: https://vzt-beige.vercel.app</span>
     </div>
   </div>
 
