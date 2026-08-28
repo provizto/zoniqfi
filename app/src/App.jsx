@@ -620,7 +620,6 @@ function App() {
     setShowEmergencyModal(true);
   };
 
-  // 2. Dijalankan saat user menekan 'Confirm & Burn' di modal
   const executeEmergencyUnlock = async () => {
     setShowEmergencyModal(false);
     setIsLockLoading(true);
