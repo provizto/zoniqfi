@@ -422,7 +422,7 @@ function App() {
   const handleLaunchSwap = async () => {
     const amount = parseFloat(payAmount) || 0;
     if (amount <= 0) {
-      alert('Please enter a valid token amount first.');
+      triggerBanner("⚠️ Please enter a valid token amount first.", "warning");
       return;
     }
 
@@ -552,11 +552,11 @@ function App() {
   const handleLockToken = async () => {
     const amount = parseFloat(lockAmount) || 0;
     if (amount <= 0) {
-      alert('Please enter a valid amount of $ZQI tokens to lock.');
+      triggerBanner("⚠️ Please enter a valid amount of $ZQI tokens to lock.", "warning");
       return;
     }
     if (amount > zqiBalance) {
-      alert('Insufficient $ZQI balance inside your secure wallet!');
+      triggerBanner("⚠️ Insufficient $ZQI balance inside your wallet!", "error");
       return;
     }
 
@@ -565,7 +565,6 @@ function App() {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      // 🔥 Notifikasi Web3 modern menggantikan alert putih peramban
       triggerBanner(`🎉 Successfully locked ${amount} $ZQI! Tokens cryptographically bound to Epoch.`, "success");
       setIsTokenLocked(true);
       setStakedAmount(amount); 
@@ -582,7 +581,7 @@ function App() {
       }, 8000); 
 
     } catch (error) {
-      alert('Transaction bundle rejected.');
+      triggerBanner("⚠️ Transaction bundle rejected.", "error");
     } finally {
       setIsLockLoading(false);
     }
