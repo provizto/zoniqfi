@@ -195,70 +195,73 @@ const Landing = ({ onLaunchApp }) => {
         #vzt-landing-page .mobile-bottom-dock { display: none !important; }
 
         @media (max-width: 768px) {
-          #vzt-landing-page { padding-bottom: 80px !important; }
-          #vzt-landing-page header { padding: 15px 5% !important; }
-          #vzt-landing-page nav { display: none !important; }
-          #vzt-landing-page header .btn-launch { display: none !important; }
-          #vzt-landing-page .hero { padding-top: 130px !important; }
-          #vzt-landing-page .hero h1 { font-size: 2.1rem !important; }
-          #vzt-landing-page .metrics-banner { flex-direction: column !important; gap: 20px !important; }
-          #vzt-landing-page .defi-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
-          #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; padding-bottom: 30px !important; }
-          .vzt-tg-btn { width: 100%; justify-content: center; }
+  #vzt-landing-page { padding-bottom: 92px !important; }
+  #vzt-landing-page header { padding: 15px 5% !important; }
+  #vzt-landing-page nav { display: none !important; }
+  #vzt-landing-page header .btn-launch { display: none !important; }
+  #vzt-landing-page .hero { padding-top: 130px !important; }
+  #vzt-landing-page .hero h1 { font-size: 2.1rem !important; }
+  #vzt-landing-page .metrics-banner { flex-direction: column !important; gap: 20px !important; }
+  #vzt-landing-page .defi-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+  #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; padding-bottom: 30px !important; }
+  .vzt-tg-btn { width: 100%; justify-content: center; }
 
-          /* MOBILE BOTTOM DOCK DISPLAY */
-          #vzt-landing-page .mobile-bottom-dock {
-            display: flex !important;
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            background: rgba(11, 15, 25, 0.95) !important;
-            backdrop-filter: blur(16px) !important;
-            border-top: 1px solid #1f2937 !important;
-            padding: 10px 18px !important;
-            justify-content: space-around !important;
-            align-items: center !important;
-            z-index: 999999 !important;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5) !important;
-          }
-          #vzt-landing-page .mobile-dock-item {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important;
-            color: #94a3b8 !important;
-            text-decoration: none !important;
-            font-size: 0.72rem !important;
-            font-weight: 500 !important;
-            gap: 4px !important;
-            background: transparent !important;
-            border: none !important;
-            cursor: pointer !important;
-            padding: 0 !important;
-          }
-          #vzt-landing-page .mobile-dock-item i {
-            font-size: 1.15rem !important;
-          }
-          #vzt-landing-page .mobile-dock-item:active,
-          #vzt-landing-page .mobile-dock-item:hover {
-            color: #14b8a6 !important;
-          }
-          #vzt-landing-page .mobile-dock-btn {
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
-            color: #fff !important;
-            padding: 9px 18px !important;
-            border-radius: 9999px !important;
-            font-weight: 700 !important;
-            font-size: 0.82rem !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 6px !important;
-            border: none !important;
-            cursor: pointer !important;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
-          }
-        }
+  /* MOBILE BOTTOM DOCK DISPLAY (ENLARGED) */
+  #vzt-landing-page .mobile-bottom-dock {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(11, 15, 25, 0.96) !important;
+    backdrop-filter: blur(16px) !important;
+    border-top: 1px solid #1f2937 !important;
+    padding: 12px 16px !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    z-index: 999999 !important;
+    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.6) !important;
+  }
+  #vzt-landing-page .mobile-dock-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #94a3b8 !important;
+    text-decoration: none !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    gap: 5px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+  }
+  #vzt-landing-page .mobile-dock-item i {
+    font-size: 1.35rem !important;
+  }
+  #vzt-landing-page .mobile-dock-item:active,
+  #vzt-landing-page .mobile-dock-item:hover {
+    color: #14b8a6 !important;
+  }
+  #vzt-landing-page .mobile-dock-btn {
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+    color: #fff !important;
+    padding: 11px 20px !important;
+    border-radius: 9999px !important;
+    font-weight: 700 !important;
+    font-size: 0.92rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 18px rgba(59, 130, 246, 0.45) !important;
+  }
+  #vzt-landing-page .mobile-dock-btn i {
+    font-size: 1.05rem !important;
+  }
+}
       `}</style>
 
       {/* NAVBAR HEADER */}
