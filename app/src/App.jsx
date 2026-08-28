@@ -105,7 +105,7 @@ function App() {
       console.warn("Session restore skipped:", e);
     }
   }, []);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [securityBanner, setSecurityBanner] = useState({ show: false, message: "", type: "success" });
   
@@ -588,13 +588,18 @@ function App() {
     }
   };
 
-  const claimVztReward = () => {
+  const claimZqiReward = () => {
     if (!rewardClaimable) {
-      alert("Smart Contract Refusal: Epoch locked! Cannot execute yield withdrawal yet.");
+      triggerBanner("⚠️ Smart Contract Refusal: Epoch locked! Cannot execute yield withdrawal yet.", "error");
       return;
     }
-    alert(`🎉 Claim Successful!\n\n${earnedUsdcDisplay} has been transferred back to your digital wallet.`);
+    
+    // 🔥 Notifikasi Web3 modern menggantikan alert bawaan
+    triggerBanner(`🎉 Claim Successful! ${earnedUsdcDisplay} has been transferred to your wallet.`, "success");
+    
+    // Reset status reward setelah berhasil diklaim
     setEarnedUsdcDisplay("0.00 USDC");
+    setRewardClaimable(false);
     setShowRewardRow(false);
   };
 
@@ -1045,7 +1050,20 @@ function App() {
               {isTokenLocked && !isLockLoading && showRewardRow && (
                 <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', marginTop: '-10px', marginBottom: '15px' }}>
                   <span>Yield Earned: <strong id="earnedUsdc" style={{ color: '#22c55e' }}>{earnedUsdcDisplay}</strong></span>
-                  <button className="btn-claim-vzt" onClick={claimVztReward} style={{ opacity: rewardClaimable ? 1 : 0.5, background: rewardClaimable ? "#22c55e" : "#4b5563", cursor: rewardClaimable ? "pointer" : "not-allowed", border: "none", padding: "6px 12px", borderRadius: "6px", color: "white", fontWeight: "600" }}>
+                  <button 
+                    className="btn-claim-reward" 
+                    onClick={claimZqiReward} 
+                    style={{ 
+                      opacity: rewardClaimable ? 1 : 0.5, 
+                      background: rewardClaimable ? "#22c55e" : "#4b5563", 
+                      cursor: rewardClaimable ? "pointer" : "not-allowed", 
+                      border: "none", 
+                      padding: "6px 12px", 
+                      borderRadius: "6px", 
+                      color: "white", 
+                      fontWeight: "600" 
+                    }}
+                  >
                     {rewardClaimable ? "Claim Reward" : "🔒 Epoch Locking..."}
                   </button>
                 </div>
