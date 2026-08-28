@@ -570,12 +570,17 @@ function App() {
       setStakedAmount(amount); 
       setZqiBalance(prev => prev - amount); 
       
-      const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
-      setEarnedUsdcDisplay(((amount * 0.05) * finalMultiplier).toFixed(2) + " USDC");
+      // 1. Saat baru dikunci, saldo hasil mulai dari 0.00 USDC
+      setEarnedUsdcDisplay("0.00 USDC");
       setShowRewardRow(true);
       setProtocolTVL(prev => prev + (amount * tokenPrices.ZQI)); 
 
+      // 2. Simulasi Epoch 8 detik: dividen baru terisi dan tombol claim menyala
       setTimeout(() => {
+        const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
+        const rewardAmount = ((amount * 0.05) * finalMultiplier).toFixed(2);
+        
+        setEarnedUsdcDisplay(`${rewardAmount} USDC`);
         setRewardClaimable(true);
         triggerBanner("✨ Smart Contract Update: Staking Epoch completed! Yield rewards are now claimable.", "success");
       }, 8000); 
@@ -593,13 +598,12 @@ function App() {
       return;
     }
     
-    // 🔥 Notifikasi Web3 modern menggantikan alert bawaan
+    // Notifikasi Web3 sukses klaim
     triggerBanner(`🎉 Claim Successful! ${earnedUsdcDisplay} has been transferred to your wallet.`, "success");
     
-    // Reset status reward setelah berhasil diklaim
+    // Reset saldo hasil ke 0.00 USDC dan matikan status claimable (baris tetap terlihat)
     setEarnedUsdcDisplay("0.00 USDC");
     setRewardClaimable(false);
-    setShowRewardRow(false);
   };
 
   const handleEmergencyUnlock = async () => {
@@ -1047,23 +1051,28 @@ function App() {
               </div>
 
               {isTokenLocked && !isLockLoading && showRewardRow && (
-                <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', marginTop: '-10px', marginBottom: '15px' }}>
-                  <span>Yield Earned: <strong id="earnedUsdc" style={{ color: '#22c55e' }}>{earnedUsdcDisplay}</strong></span>
+                <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-10px', marginBottom: '15px', background: 'rgba(15, 23, 42, 0.6)', padding: '10px 14px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                  <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
+                    Yield Earned: <strong id="earnedUsdc" style={{ color: rewardClaimable ? '#22c55e' : '#ffffff', fontSize: '1rem', marginLeft: '4px' }}>{earnedUsdcDisplay}</strong>
+                  </span>
                   <button 
                     className="btn-claim-reward" 
                     onClick={claimZqiReward} 
+                    disabled={!rewardClaimable}
                     style={{ 
-                      opacity: rewardClaimable ? 1 : 0.5, 
-                      background: rewardClaimable ? "#22c55e" : "#4b5563", 
+                      opacity: rewardClaimable ? 1 : 0.7, 
+                      background: rewardClaimable ? "#22c55e" : "#334155", 
                       cursor: rewardClaimable ? "pointer" : "not-allowed", 
                       border: "none", 
-                      padding: "6px 12px", 
+                      padding: "8px 14px", 
                       borderRadius: "6px", 
-                      color: "white", 
-                      fontWeight: "600" 
+                      color: rewardClaimable ? "#ffffff" : "#94a3b8", 
+                      fontWeight: "600",
+                      fontSize: "0.85rem",
+                      transition: "all 0.2s ease"
                     }}
                   >
-                    {rewardClaimable ? "Claim Reward" : "🔒 Epoch Locking..."}
+                    {rewardClaimable ? "Claim Reward" : (earnedUsdcDisplay === "0.00 USDC" ? "✓ Claimed" : "🔒 Epoch Accumulating...")}
                   </button>
                 </div>
               )}
