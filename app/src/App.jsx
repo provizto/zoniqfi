@@ -86,7 +86,26 @@ function App() {
 
   const [isConnected, setIsConnected] = useState(false);
   const [myWalletAddress, setMyWalletAddress] = useState("");
-  const [activeProviderName, setActiveProviderName] = useState(""); 
+  const [activeProviderName, setActiveProviderName] = useState("");
+  
+  // 🔥 AUTO-RECONNECT: Memulihkan sesi wallet saat browser di-refresh
+  useEffect(() => {
+    try {
+      const savedSession = localStorage.getItem('zoniq_wallet_session');
+      if (savedSession) {
+        const { provider, address } = JSON.parse(savedSession);
+        if (address) {
+          setMyWalletAddress(address);
+          setActiveProviderName(provider || "Wallet");
+          setIsConnected(true);
+          setZqiBalance(address.startsWith("GNT") ? 1000000.00 : 5000.00);
+        }
+      }
+    } catch (e) {
+      console.warn("Session restore skipped:", e);
+    }
+  }, []);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [securityBanner, setSecurityBanner] = useState({ show: false, message: "", type: "success" });
   
@@ -302,6 +321,12 @@ function App() {
       setActiveProviderName(walletName);
       setIsConnected(true);
 
+      // 🔥 Simpan status sesi ke localStorage
+      localStorage.setItem('zoniq_wallet_session', JSON.stringify({
+        provider: walletName,
+        address: pubKey
+      }));
+
       if (pubKey.startsWith("GNT") || pubKey.length > 30) {
         setZqiBalance(1000000.00); 
         triggerBanner(`👑 VIP Grantor Wallet Detected! Core Revenue-Share Active.`, "success");
@@ -324,6 +349,9 @@ function App() {
   };
 
   const disconnectWallet = () => {
+    // 🔥 Bersihkan sesi tersimpan
+    localStorage.removeItem('zoniq_wallet_session');
+
     setMyWalletAddress("");
     setActiveProviderName("");
     setZqiBalance(0);
