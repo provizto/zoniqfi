@@ -565,8 +565,8 @@ function App() {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert(`🎉 Successfully locked ${amount} $ZQI!\n\nSmart Contract Rule Applied: Tokens are cryptographically bound to the Sandbox Epoch.`);
-      
+      // 🔥 Notifikasi Web3 modern menggantikan alert putih peramban
+      triggerBanner(`🎉 Successfully locked ${amount} $ZQI! Tokens cryptographically bound to Epoch.`, "success");
       setIsTokenLocked(true);
       setStakedAmount(amount); 
       setZqiBalance(prev => prev - amount); 
