@@ -112,156 +112,155 @@ const Landing = ({ onLaunchApp }) => {
   ];
 
   return (
-    <div id="vzt-landing-page">
+    <div id="zqi-landing-page">
       <style>{`
-        #vzt-landing-page { background-color: #0b0f19 !important; color: #f3f4f6 !important; min-height: 100vh !important; font-family: 'Inter', sans-serif !important; margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; text-align: left !important; }
-        #vzt-landing-page * { box-sizing: border-box !important; }
-        #vzt-landing-page header { display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 15px 8% !important; border-bottom: 1px solid #1f2937 !important; background: rgba(11, 15, 25, 0.8) !important; backdrop-filter: blur(12px) !important; position: fixed !important; width: 100% !important; top: 0 !important; left: 0 !important; z-index: 99999 !important; }
-        #vzt-landing-page .brand-wrapper { display: flex !important; align-items: center !important; gap: 10px !important; }
-        #vzt-landing-page .logo { font-size: 1.4rem !important; font-weight: 700 !important; letter-spacing: 1px !important; background: linear-gradient(45deg, #fff, #3b82f6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; margin: 0 !important; }
-        #vzt-landing-page nav a { color: #f3f4f6 !important; text-decoration: none !important; margin: 0 15px !important; font-size: 0.95rem !important; font-weight: 500 !important; transition: color 0.3s !important; }
-        #vzt-landing-page nav a:hover { color: #14b8a6 !important; }
-        #vzt-landing-page .btn-launch { background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important; color: #fff !important; padding: 10px 22px !important; border-radius: 8px !important; text-decoration: none !important; font-weight: 600 !important; border: none !important; cursor: pointer !important; display: inline-block !important; }
-        #vzt-landing-page .btn-launch:hover { opacity: 0.95 !important; }
+        #zqi-landing-page { background-color: #0b0f19 !important; color: #f3f4f6 !important; min-height: 100vh !important; font-family: 'Inter', sans-serif !important; margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; text-align: left !important; }
+        #zqi-landing-page * { box-sizing: border-box !important; }
+        #zqi-landing-page header { display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 15px 8% !important; border-bottom: 1px solid #1f2937 !important; background: rgba(11, 15, 25, 0.8) !important; backdrop-filter: blur(12px) !important; position: fixed !important; width: 100% !important; top: 0 !important; left: 0 !important; z-index: 99999 !important; }
+        #zqi-landing-page .brand-wrapper { display: flex !important; align-items: center !important; gap: 10px !important; }
+        #zqi-landing-page .logo { font-size: 1.4rem !important; font-weight: 700 !important; letter-spacing: 1px !important; background: linear-gradient(45deg, #fff, #3b82f6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; margin: 0 !important; }
+        #zqi-landing-page nav a { color: #f3f4f6 !important; text-decoration: none !important; margin: 0 15px !important; font-size: 0.95rem !important; font-weight: 500 !important; transition: color 0.3s !important; }
+        #zqi-landing-page nav a:hover { color: #14b8a6 !important; }
+        #zqi-landing-page .btn-launch { background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important; color: #fff !important; padding: 10px 22px !important; border-radius: 8px !important; text-decoration: none !important; font-weight: 600 !important; border: none !important; cursor: pointer !important; display: inline-block !important; }
+        #zqi-landing-page .btn-launch:hover { opacity: 0.95 !important; }
         
-        #vzt-landing-page .hero { padding: 150px 8% 40px 8% !important; text-align: center !important; background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%) !important; }
-        #vzt-landing-page .hero-logo-container { margin-bottom: 20px !important; display: flex !important; justify-content: center !important; align-items: center !important; }
-        #vzt-landing-page .hero h1 { font-size: 3rem !important; font-weight: 800 !important; line-height: 1.25 !important; margin-bottom: 20px !important; background: linear-gradient(90deg, #fff 40%, #14b8a6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
-        #vzt-landing-page .hero p { font-size: 1.15rem !important; color: #94a3b8 !important; max-width: 800px !important; margin: 0 auto !important; line-height: 1.6 !important; }
+        #zqi-landing-page .hero { padding: 150px 8% 40px 8% !important; text-align: center !important; background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%) !important; }
+        #zqi-landing-page .hero-logo-container { margin-bottom: 20px !important; display: flex !important; justify-content: center !important; align-items: center !important; }
+        #zqi-landing-page .hero h1 { font-size: 3rem !important; font-weight: 800 !important; line-height: 1.25 !important; margin-bottom: 20px !important; background: linear-gradient(90deg, #fff 40%, #14b8a6) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
+        #zqi-landing-page .hero p { font-size: 1.15rem !important; color: #94a3b8 !important; max-width: 800px !important; margin: 0 auto !important; line-height: 1.6 !important; }
         
-        #vzt-landing-page .vzt-promo-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 6px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; }
-        #vzt-landing-page .vzt-promo-pulse { height: 8px; width: 8px; border-radius: 50%; background-color: #60a5fa; }
+        #zqi-landing-page .zqi-promo-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 6px 16px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; }
+        #zqi-landing-page .zqi-promo-pulse { height: 8px; width: 8px; border-radius: 50%; background-color: #60a5fa; }
 
         /* METRICS BANNER */
-        #vzt-landing-page .metrics-banner { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 30px !important; padding: 30px 8% !important; background: #111827 !important; border-top: 1px solid #1f2937 !important; border-bottom: 1px solid #1f2937 !important; }
-        #vzt-landing-page .metric-item { text-align: center !important; min-width: 150px !important; flex: 1 !important; }
-        #vzt-landing-page .metric-value { font-size: 1.8rem !important; font-weight: 800 !important; color: #14b8a6 !important; }
-        #vzt-landing-page .metric-label { font-size: 0.8rem !important; color: #94a3b8 !important; text-transform: uppercase !important; letter-spacing: 1px !important; margin-top: 6px !important; }
+        #zqi-landing-page .metrics-banner { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 30px !important; padding: 30px 8% !important; }
+        #zqi-landing-page .metric-value { font-size: 1.8rem !important; font-weight: 800 !important; color: #14b8a6 !important; }
+        #zqi-landing-page .metric-label { font-size: 0.8rem !important; color: #94a3b8 !important; text-transform: uppercase !important; letter-spacing: 1px !important; margin-top: 6px !important; }
 
         /* DEFI 4 PRODUCTS GRID */
-        #vzt-landing-page .defi-section { padding: 60px 8% !important; background: #090d16 !important; }
-        #vzt-landing-page .defi-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 30px !important; margin-top: 40px !important; }
-        #vzt-landing-page .defi-card { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 18px !important; padding: 35px 28px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; transition: all 0.3s ease !important; }
-        #vzt-landing-page .defi-card:hover { transform: translateY(-4px) !important; border-color: #3b82f6 !important; box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important; }
+        #zqi-landing-page .defi-section { padding: 60px 8% !important; background: #090d16 !important; }
+        #zqi-landing-page .defi-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 30px !important; margin-top: 40px !important; }
+        #zqi-landing-page .defi-card { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 18px !important; padding: 35px 28px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; transition: all 0.3s ease !important; }
+        #zqi-landing-page .defi-card:hover { transform: translateY(-4px) !important; border-color: #3b82f6 !important; box-shadow: 0 12px 30px rgba(0,0,0,0.3) !important; }
         
-        #vzt-landing-page .card-header-meta { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 18px !important; }
-        #vzt-landing-page .product-icon { font-size: 1.4rem !important; color: #38bdf8 !important; }
-        #vzt-landing-page .badge-pill { font-size: 0.75rem !important; font-weight: 700 !important; padding: 4px 10px !important; border-radius: 6px !important; }
-        #vzt-landing-page .badge-cyan { background: rgba(20, 184, 166, 0.15) !important; color: #14b8a6 !important; border: 1px solid rgba(20, 184, 166, 0.3) !important; }
-        #vzt-landing-page .badge-blue { background: rgba(59, 130, 246, 0.15) !important; color: #60a5fa !important; border: 1px solid rgba(59, 130, 246, 0.3) !important; }
-        #vzt-landing-page .badge-purple { background: rgba(168, 85, 247, 0.15) !important; color: #c084fc !important; border: 1px solid rgba(168, 85, 247, 0.3) !important; }
-        #vzt-landing-page .badge-emerald { background: rgba(34, 197, 94, 0.15) !important; color: #4ade80 !important; border: 1px solid rgba(34, 197, 94, 0.3) !important; }
+        #zqi-landing-page .card-header-meta { display: flex !important; justify-content: space-between !important; align-items: center !important; margin-bottom: 18px !important; }
+        #zqi-landing-page .product-icon { font-size: 1.4rem !important; color: #38bdf8 !important; }
+        #zqi-landing-page .badge-pill { font-size: 0.75rem !important; font-weight: 700 !important; padding: 4px 10px !important; border-radius: 6px !important; }
+        #zqi-landing-page .badge-cyan { background: rgba(20, 184, 166, 0.15) !important; color: #14b8a6 !important; border: 1px solid rgba(20, 184, 166, 0.3) !important; }
+        #zqi-landing-page .badge-blue { background: rgba(59, 130, 246, 0.15) !important; color: #60a5fa !important; border: 1px solid rgba(59, 130, 246, 0.3) !important; }
+        #zqi-landing-page .badge-purple { background: rgba(168, 85, 247, 0.15) !important; color: #c084fc !important; border: 1px solid rgba(168, 85, 247, 0.3) !important; }
+        #zqi-landing-page .badge-emerald { background: rgba(34, 197, 94, 0.15) !important; color: #4ade80 !important; border: 1px solid rgba(34, 197, 94, 0.3) !important; }
 
-        #vzt-landing-page .defi-card h3 { font-size: 1.4rem !important; font-weight: 700 !important; color: #ffffff !important; margin: 0 0 12px 0 !important; }
-        #vzt-landing-page .defi-card p { font-size: 0.92rem !important; color: #94a3b8 !important; line-height: 1.6 !important; margin-bottom: 20px !important; }
-        #vzt-landing-page .defi-features { list-style: none !important; padding: 0 !important; margin: 0 0 25px 0 !important; }
-        #vzt-landing-page .defi-features li { font-size: 0.88rem !important; color: #e2e8f0 !important; margin-bottom: 10px !important; display: flex !important; align-items: center !important; gap: 10px !important; }
-        #vzt-landing-page .defi-features i { color: #10b981 !important; font-size: 0.85rem !important; flex-shrink: 0 !important; }
+        #zqi-landing-page .defi-card h3 { font-size: 1.4rem !important; font-weight: 700 !important; color: #ffffff !important; margin: 0 0 12px 0 !important; }
+        #zqi-landing-page .defi-card p { font-size: 0.92rem !important; color: #94a3b8 !important; line-height: 1.6 !important; margin-bottom: 20px !important; }
+        #zqi-landing-page .defi-features { list-style: none !important; padding: 0 !important; margin: 0 0 25px 0 !important; }
+        #zqi-landing-page .defi-features li { font-size: 0.88rem !important; color: #e2e8f0 !important; margin-bottom: 10px !important; display: flex !important; align-items: center !important; gap: 10px !important; }
+        #zqi-landing-page .defi-features i { color: #10b981 !important; font-size: 0.85rem !important; flex-shrink: 0 !important; }
 
-        #vzt-landing-page .btn-action-card { width: 100% !important; padding: 13px !important; border-radius: 8px !important; font-weight: 700 !important; font-size: 0.92rem !important; cursor: pointer !important; border: none !important; transition: all 0.2s ease !important; display: flex !important; justify-content: center !important; align-items: center !important; gap: 8px !important; }
-        #vzt-landing-page .btn-cyan-fill { background: #14b8a6 !important; color: #fff !important; }
-        #vzt-landing-page .btn-cyan-fill:hover { background: #0d9488 !important; }
-        #vzt-landing-page .btn-blue-grad { background: linear-gradient(90deg, #2563eb 0%, #06b6d4 100%) !important; color: #fff !important; }
-        #vzt-landing-page .btn-blue-grad:hover { opacity: 0.95 !important; }
-        #vzt-landing-page .btn-purple-grad { background: linear-gradient(90deg, #8b5cf6 0%, #d946ef 100%) !important; color: #fff !important; }
-        #vzt-landing-page .btn-purple-grad:hover { opacity: 0.95 !important; }
-        #vzt-landing-page .btn-emerald-fill { background: #10b981 !important; color: #fff !important; }
-        #vzt-landing-page .btn-emerald-fill:hover { background: #059669 !important; }
+        #zqi-landing-page .btn-action-card { width: 100% !important; padding: 13px !important; border-radius: 8px !important; font-weight: 700 !important; font-size: 0.92rem !important; cursor: pointer !important; border: none !important; transition: all 0.2s ease !important; display: flex !important; justify-content: center !important; align-items: center !important; gap: 8px !important; }
+        #zqi-landing-page .btn-cyan-fill { background: #14b8a6 !important; color: #fff !important; }
+        #zqi-landing-page .btn-cyan-fill:hover { background: #0d9488 !important; }
+        #zqi-landing-page .btn-blue-grad { background: linear-gradient(90deg, #2563eb 0%, #06b6d4 100%) !important; color: #fff !important; }
+        #zqi-landing-page .btn-blue-grad:hover { opacity: 0.95 !important; }
+        #zqi-landing-page .btn-purple-grad { background: linear-gradient(90deg, #8b5cf6 0%, #d946ef 100%) !important; color: #fff !important; }
+        #zqi-landing-page .btn-purple-grad:hover { opacity: 0.95 !important; }
+        #zqi-landing-page .btn-emerald-fill { background: #10b981 !important; color: #fff !important; }
+        #zqi-landing-page .btn-emerald-fill:hover { background: #059669 !important; }
 
         /* CTA BOX */
-        .vzt-cta-wrapper { max-width: 850px; margin: 40px auto 20px auto; text-align: center; }
-        .vzt-cta-card { background: linear-gradient(180deg, #111827 0%, #060911 100%); border: 1px solid #1f2937; border-radius: 20px; padding: 35px 25px; }
-        .vzt-cta-title { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
-        .vzt-cta-desc { font-size: 0.95rem; color: #94a3b8; max-width: 600px; margin: 0 auto 25px auto; line-height: 1.6; }
-        .vzt-tg-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(90deg, #7c3aed 0%, #2563eb 100%); color: #fff !important; font-weight: 700; font-size: 1rem; padding: 14px 32px; border-radius: 12px; text-decoration: none !important; transition: all 0.3s ease; }
-        .vzt-tg-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+        .zqi-cta-wrapper { max-width: 850px; margin: 40px auto 20px auto; text-align: center; }
+        .zqi-cta-card { background: linear-gradient(180deg, #111827 0%, #060911 100%); border: 1px solid #1f2937; border-radius: 20px; padding: 35px 25px; }
+        .zqi-cta-title { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+        .zqi-cta-desc { font-size: 0.95rem; color: #94a3b8; max-width: 600px; margin: 0 auto 25px auto; line-height: 1.6; }
+        .zqi-tg-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(90deg, #7c3aed 0%, #2563eb 100%); color: #fff !important; font-weight: 700; font-size: 1rem; padding: 14px 32px; border-radius: 12px; text-decoration: none !important; transition: all 0.3s ease; }
+        .zqi-tg-btn:hover { transform: translateY(-2px); opacity: 0.95; }
 
         /* FAQ */
-        #vzt-landing-page .faq-section { padding: 60px 8% 80px 8% !important; max-width: 900px !important; margin: 0 auto !important; }
-        #vzt-landing-page .faq-item { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 8px !important; margin-bottom: 15px !important; overflow: hidden !important; }
-        #vzt-landing-page .faq-question { padding: 18px 20px !important; font-weight: 600 !important; cursor: pointer !important; display: flex !important; justify-content: space-between !important; align-items: center; color: #fff !important; }
-        #vzt-landing-page .faq-answer { padding: 0 20px !important; max-height: 0px; overflow: hidden !important; transition: max-height 0.3s ease, padding 0.3s ease !important; color: #94a3b8 !important; line-height: 1.6 !important; font-size: 0.92rem !important; }
+        #zqi-landing-page .faq-section { padding: 60px 8% 80px 8% !important; max-width: 900px !important; margin: 0 auto !important; }
+        #zqi-landing-page .faq-item { background: #111827 !important; border: 1px solid #1f2937 !important; border-radius: 8px !important; margin-bottom: 15px !important; overflow: hidden !important; }
+        #zqi-landing-page .faq-question { padding: 18px 20px !important; font-weight: 600 !important; cursor: pointer !important; display: flex !important; justify-content: space-between !important; align-items: center; color: #fff !important; }
+        #zqi-landing-page .faq-answer { padding: 0 20px !important; max-height: 0px; overflow: hidden !important; transition: max-height 0.3s ease, padding 0.3s ease !important; color: #94a3b8 !important; line-height: 1.6 !important; font-size: 0.92rem !important; }
 
         /* FOOTER */
-        #vzt-landing-page footer { border-top: 1px solid #1f2937 !important; padding: 35px 8% !important; display: flex !important; justify-content: space-between !important; align-items: center !important; background: #060911 !important; }
-        #vzt-landing-page .footer-social-row { display: flex !important; gap: 16px !important; }
-        #vzt-landing-page .social-icon-btn { color: #64748b !important; font-size: 1.25rem !important; text-decoration: none !important; transition: color 0.2s ease; }
-        #vzt-landing-page .social-icon-btn:hover { color: #38bdf8 !important; }
+        #zqi-landing-page footer { border-top: 1px solid #1f2937 !important; padding: 35px 8% !important; display: flex !important; justify-content: space-between !important; align-items: center !important; background: #060911 !important; }
+        #zqi-landing-page .footer-social-row { display: flex !important; gap: 16px !important; }
+        #zqi-landing-page .social-icon-btn { color: #64748b !important; font-size: 1.25rem !important; text-decoration: none !important; transition: color 0.2s ease; }
+        #zqi-landing-page .social-icon-btn:hover { color: #38bdf8 !important; }
         
         .section-title { font-size: 2rem !important; font-weight: 800 !important; color: #ffffff !important; margin-bottom: 10px !important; text-align: center !important; }
         .section-desc { font-size: 1rem !important; color: #94a3b8 !important; max-width: 650px !important; margin: 0 auto 30px auto !important; text-align: center !important; }
 
         /* MOBILE BOTTOM FOOTER NAVIGATION (DESKTOP HIDDEN) */
-        #vzt-landing-page .mobile-bottom-dock { display: none !important; }
+        #zqi-landing-page .mobile-bottom-dock { display: none !important; }
 
         @media (max-width: 768px) {
-  #vzt-landing-page { padding-bottom: 92px !important; }
-  #vzt-landing-page header { padding: 15px 5% !important; }
-  #vzt-landing-page nav { display: none !important; }
-  #vzt-landing-page header .btn-launch { display: none !important; }
-  #vzt-landing-page .hero { padding-top: 130px !important; }
-  #vzt-landing-page .hero h1 { font-size: 2.1rem !important; }
-  #vzt-landing-page .metrics-banner { flex-direction: column !important; gap: 20px !important; }
-  #vzt-landing-page .defi-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
-  #vzt-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; padding-bottom: 30px !important; }
-  .vzt-tg-btn { width: 100%; justify-content: center; }
+          #zqi-landing-page { padding-bottom: 92px !important; }
+          #zqi-landing-page header { padding: 15px 5% !important; }
+          #zqi-landing-page nav { display: none !important; }
+          #zqi-landing-page header .btn-launch { display: none !important; }
+          #zqi-landing-page .hero { padding-top: 130px !important; }
+          #zqi-landing-page .hero h1 { font-size: 2.1rem !important; }
+          #zqi-landing-page .metrics-banner { flex-direction: column !important; gap: 20px !important; }
+          #zqi-landing-page .defi-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
+          #zqi-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; padding-bottom: 30px !important; }
+          .zqi-tg-btn { width: 100%; justify-content: center; }
 
-  /* MOBILE BOTTOM DOCK DISPLAY (ENLARGED) */
-  #vzt-landing-page .mobile-bottom-dock {
-    display: flex !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    background: rgba(11, 15, 25, 0.96) !important;
-    backdrop-filter: blur(16px) !important;
-    border-top: 1px solid #1f2937 !important;
-    padding: 12px 16px !important;
-    justify-content: space-around !important;
-    align-items: center !important;
-    z-index: 999999 !important;
-    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.6) !important;
-  }
-  #vzt-landing-page .mobile-dock-item {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: #94a3b8 !important;
-    text-decoration: none !important;
-    font-size: 0.82rem !important;
-    font-weight: 600 !important;
-    gap: 5px !important;
-    background: transparent !important;
-    border: none !important;
-    cursor: pointer !important;
-    padding: 0 !important;
-  }
-  #vzt-landing-page .mobile-dock-item i {
-    font-size: 1.35rem !important;
-  }
-  #vzt-landing-page .mobile-dock-item:active,
-  #vzt-landing-page .mobile-dock-item:hover {
-    color: #14b8a6 !important;
-  }
-  #vzt-landing-page .mobile-dock-btn {
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
-    color: #fff !important;
-    padding: 11px 20px !important;
-    border-radius: 9999px !important;
-    font-weight: 700 !important;
-    font-size: 0.92rem !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    border: none !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 18px rgba(59, 130, 246, 0.45) !important;
-  }
-  #vzt-landing-page .mobile-dock-btn i {
-    font-size: 1.05rem !important;
-  }
-}
+          /* MOBILE BOTTOM DOCK DISPLAY (ENLARGED) */
+          #zqi-landing-page .mobile-bottom-dock {
+            display: flex !important;
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            background: rgba(11, 15, 25, 0.96) !important;
+            backdrop-filter: blur(16px) !important;
+            border-top: 1px solid #1f2937 !important;
+            padding: 12px 16px !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+            z-index: 999999 !important;
+            box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.6) !important;
+          }
+          #zqi-landing-page .mobile-dock-item {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #94a3b8 !important;
+            text-decoration: none !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            gap: 5px !important;
+            background: transparent !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 0 !important;
+          }
+          #zqi-landing-page .mobile-dock-item i {
+            font-size: 1.35rem !important;
+          }
+          #zqi-landing-page .mobile-dock-item:active,
+          #zqi-landing-page .mobile-dock-item:hover {
+            color: #14b8a6 !important;
+          }
+          #zqi-landing-page .mobile-dock-btn {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+            color: #fff !important;
+            padding: 11px 20px !important;
+            border-radius: 9999px !important;
+            font-weight: 700 !important;
+            font-size: 0.92rem !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            border: none !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 18px rgba(59, 130, 246, 0.45) !important;
+          }
+          #zqi-landing-page .mobile-dock-btn i {
+            font-size: 1.05rem !important;
+          }
+        }
       `}</style>
 
       {/* NAVBAR HEADER */}
@@ -293,14 +292,14 @@ const Landing = ({ onLaunchApp }) => {
             style={{ 
               width: '100px', 
               height: '100px', 
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.35))'
+              objectFit: 'contain', 
+              filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.35))' 
             }} 
           />
         </div>
         
-        <div className="vzt-promo-badge">
-          <span className="vzt-promo-pulse"></span>
+        <div className="zqi-promo-badge">
+          <span className="zqi-promo-pulse"></span>
           Solana Web3 Infrastructure Suite v5.0
         </div>
         
@@ -364,16 +363,16 @@ const Landing = ({ onLaunchApp }) => {
           ))}
         </div>
 
-        <div className="vzt-cta-wrapper">
-          <div className="vzt-cta-card">
-            <h2 className="vzt-cta-title">CUSTOM DEFI ENGINE INTEGRATION</h2>
-            <p className="vzt-cta-desc">Need custom SPL token support or bespoke treasury fee routing for your project? Connect directly with our core engineering team.</p>
+        <div className="zqi-cta-wrapper">
+          <div className="zqi-cta-card">
+            <h2 className="zqi-cta-title">CUSTOM DEFI ENGINE INTEGRATION</h2>
+            <p className="zqi-cta-desc">Need custom SPL token support or bespoke treasury fee routing for your project? Connect directly with our core engineering team.</p>
             
             <a 
               href="https://t.me/zoniqfi" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="vzt-tg-btn"
+              className="zqi-tg-btn"
             >
               <i className="fab fa-telegram-plane"></i>
               Connect with Developer Team on Telegram
@@ -405,7 +404,7 @@ const Landing = ({ onLaunchApp }) => {
       </section>
 
       {/* FOOTER */}
-      <footer>
+      <footer style={{ borderTop: '1px solid #1f2937', padding: '35px 8%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#060911' }}>
         <p>© 2026 ZoniqFi. All Rights Reserved. Solana DeFi & Web3 Infrastructure.</p>
         <div className="footer-social-row">
           <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Telegram">
