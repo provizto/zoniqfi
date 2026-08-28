@@ -113,6 +113,7 @@ function App() {
   const [isSwapLoading, setIsSwapLoading] = useState(false);
   const [isLockLoading, setIsLockLoading] = useState(false);
   const [isTokenLocked, setIsTokenLocked] = useState(false);
+  const [showEmergencyModal, setShowEmergencyModal] = useState(false);
   const [swapsCount, setSwapsCount] = useState(45210); 
   
   const [zqiBalance, setZqiBalance] = useState(0); 
@@ -606,7 +607,8 @@ function App() {
     setRewardClaimable(false);
   };
 
-  const handleEmergencyUnlock = async () => {
+  // 1. Membuka modal konfirmasi buatan kita (bukan popup browser)
+  const triggerEmergencyModal = () => {
     if (!isConnected) {
       triggerBanner("⚠️ Please connect your wallet first!", "error");
       return;
@@ -615,12 +617,13 @@ function App() {
       triggerBanner("⚠️ [Error]: No locked assets detected to execute early withdrawal.", "error");
       return;
     }
+    setShowEmergencyModal(true);
+  };
 
-    const penaltyPercentageText = EMERGENCY_BURN_PENALTY_RATE * 100;
-    const alertMessage = `⚠️ ALERT: EMERGENCY UNLOCK SYSTEM\n\n• Total Locked Assets: ${stakedAmount} ZQI\n• ${penaltyPercentageText}% Penalty to BURN: ${stakedAmount * EMERGENCY_BURN_PENALTY_RATE} ZQI\n\nProceed early unlock?`;
-
-    const confirmWithdraw = confirm(alertMessage);
-    if (!confirmWithdraw) return;
+  // 2. Dijalankan saat user menekan 'Confirm & Burn' di modal
+  const executeEmergencyUnlock = async () => {
+    setShowEmergencyModal(false);
+    setIsLockLoading(true);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -630,20 +633,23 @@ function App() {
       setZqiBalance(prev => prev + finalAmountReturned);
       setProtocolTVL(prev => prev - (stakedAmount * tokenPrices.ZQI)); 
       
-      triggerBanner(`🔥 Success: ${penaltyAmount} ZQI burned from supply!`, "success");
+      triggerBanner(`🔥 Emergency Unlock: ${penaltyAmount.toFixed(2)} $ZQI Burned (10% Penalty). ${finalAmountReturned.toFixed(2)} $ZQI returned!`, "warning");
       
       setStakedAmount(0);
       setLockAmount("0");
       setIsTokenLocked(false);
       setShowRewardRow(false);
       setRewardClaimable(false); 
+      setEarnedUsdcDisplay("0.00 USDC");
+      
       setTxLog(`🔥 Deflationary Trigger: ${penaltyAmount.toFixed(2)} $ZQI permanently burned.`);
-      // 🔥 Otomatis hapus banner deflasi setelah 5 detik agar layar kembali bersih
       setTimeout(() => {
         setTxLog('');
       }, 5000);
     } catch (error) {
       triggerBanner("⚠️ Emergency execution failed.", "error");
+    } finally {
+      setIsLockLoading(false);
     }
   };
 
@@ -1081,7 +1087,7 @@ function App() {
                 {isLockLoading ? 'Processing Lock...' : isTokenLocked ? '✓ Token Locked' : !isConnected ? 'Connect Wallet' : (!lockAmount || parseFloat(lockAmount) <= 0) ? 'Enter an Amount' : 'Lock Token'}
               </button>
 
-              <button className="btn-action" id="emergencyUnlockBtn" onClick={handleEmergencyUnlock} disabled={!isTokenLocked || isLockLoading} style={{ marginTop: "12px", width: "100%", padding: "12px", borderRadius: "8px", fontWeight: "600", background: (isTokenLocked && !isLockLoading) ? "#ef4444" : "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.4)", color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#ef4444", cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", pointerEvents: (isTokenLocked && !isLockLoading) ? "auto" : "none" }}>
+              <button className="btn-action" id="emergencyUnlockBtn" onClick={triggerEmergencyModal} disabled={!isTokenLocked || isLockLoading} style={{ marginTop: "12px", width: "100%", padding: "12px", borderRadius: "8px", fontWeight: "600", background: (isTokenLocked && !isLockLoading) ? "#ef4444" : "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.4)", color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#ef4444", cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", pointerEvents: (isTokenLocked && !isLockLoading) ? "auto" : "none" }}>
                 <i className="fas fa-exclamation-triangle" style={{ marginRight: '6px' }}></i> Emergency Early Unlock (10% Penalty)
               </button>
             </div>
@@ -1312,6 +1318,95 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* MODAL KONFIRMASI EMERGENCY EARLY UNLOCK (DARK-MODE WEB3) */}
+      {showEmergencyModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.82)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 999999,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: '#0d1322',
+            border: '1px solid #ef4444',
+            borderRadius: '16px',
+            maxWidth: '440px',
+            width: '100%',
+            padding: '24px',
+            color: '#e2e8f0',
+            textAlign: 'left',
+            boxShadow: '0 20px 50px rgba(239, 68, 68, 0.25)'
+          }}>
+            <h3 style={{ margin: '0 0 14px 0', fontSize: '1.25rem', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              ⚠️ Emergency Unlock Warning
+            </h3>
+            
+            <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: '1.5', margin: '0 0 16px 0' }}>
+              You are executing an early principal redemption before epoch maturity. The protocol will automatically trigger a <strong>10% deflationary penalty burn</strong>.
+            </p>
+
+            <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '8px', padding: '14px', marginBottom: '20px', fontSize: '0.88rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ color: '#94a3b8' }}>Total Locked Assets:</span>
+                <strong style={{ color: '#ffffff' }}>{stakedAmount} $ZQI</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ color: '#ef4444' }}>Deflationary Burn (10%):</span>
+                <strong style={{ color: '#ef4444' }}>-{(stakedAmount * 0.10).toFixed(2)} $ZQI</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #1e293b', paddingTop: '8px' }}>
+                <span style={{ color: '#22c55e' }}>Returned to Wallet:</span>
+                <strong style={{ color: '#22c55e' }}>+{(stakedAmount * 0.90).toFixed(2)} $ZQI</strong>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button 
+                onClick={() => setShowEmergencyModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: '#1e293b',
+                  color: '#ffffff',
+                  border: '1px solid #334155',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel / Keep Locked
+              </button>
+              
+              <button 
+                onClick={executeEmergencyUnlock}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)'
+                }}
+              >
+                Confirm & Burn
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
         </div>
       </footer>
     </>
