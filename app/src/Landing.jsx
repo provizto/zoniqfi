@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import logoZoniqLarge from './assets/image_436281.png';
+import InvestorPitchModal from './components/InvestorPitchModal';
 
 const Landing = ({ onLaunchApp }) => {
   const [activeFaq, setActiveFaq] = useState(null);
+  const [showPitchModal, setShowPitchModal] = useState(false);
 
   useEffect(() => {
     const fontLink = document.createElement('link');
@@ -279,9 +281,29 @@ const Landing = ({ onLaunchApp }) => {
           <a href="#faq">FAQ</a>
           <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer">Telegram</a>
         </nav>
-        <button onClick={onLaunchApp} className="btn-launch">
-          Live dApp Demo
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button 
+            onClick={() => setShowPitchModal(true)} 
+            style={{
+              background: 'rgba(59, 130, 246, 0.15)',
+              border: '1px solid #3b82f6',
+              color: '#60a5fa',
+              padding: '9px 16px',
+              borderRadius: '8px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              fontSize: '0.88rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            📊 Pitch Deck & Funding
+          </button>
+          <button onClick={onLaunchApp} className="btn-launch">
+            Live dApp Demo
+          </button>
+        </div>
       </header>
 
       {/* HERO SECTION */}
@@ -439,6 +461,12 @@ const Landing = ({ onLaunchApp }) => {
           <span>Launch dApp</span>
         </button>
       </div>
+
+      {/* MODAL PITCH DECK & INSTITUTIONAL FUNDING BRIEF */}
+      <InvestorPitchModal 
+        isOpen={showPitchModal} 
+        onClose={() => setShowPitchModal(false)} 
+      />
     </div>
   );
 };

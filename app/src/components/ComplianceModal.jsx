@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ComplianceModal = () => {
+const ComplianceModal = ({ onDecline }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -15,6 +15,13 @@ const ComplianceModal = () => {
     setIsOpen(false);
   };
 
+  const handleDecline = (e) => {
+    if (onDecline) {
+      e.preventDefault();
+      onDecline();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -27,17 +34,17 @@ const ComplianceModal = () => {
       
       <div style={{
         backgroundColor: '#111111', border: '1px solid #27272a',
-        maxWidth: '500px', width: '100%', borderRadius: '12px',
-        padding: '24px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
-        color: '#ffffff', fontFamily: 'sans-serif', boxSizing: 'border-box',
+        maxWidth: '520px', width: '100%', borderRadius: '14px',
+        padding: '24px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.6)',
+        color: '#ffffff', fontFamily: "'Inter', sans-serif", boxSizing: 'border-box',
         display: 'flex', flexDirection: 'column'
       }}>
         
-        {/* PERBAIKAN SINTAKS: Inject stylesheet kustom untuk scrollbar agar lolos validasi compiler */}
+        {/* Custom scrollbar styling */}
         <style dangerouslySetInnerHTML={{__html: `
-          .vzt-scroll-area::-webkit-scrollbar { width: 4px; }
-          .vzt-scroll-area::-webkit-scrollbar-track { background: #111; }
-          .vzt-scroll-area::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+          .zqi-scroll-area::-webkit-scrollbar { width: 4px; }
+          .zqi-scroll-area::-webkit-scrollbar-track { background: #111; }
+          .zqi-scroll-area::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
         `}} />
 
         <h2 style={{
@@ -48,14 +55,14 @@ const ComplianceModal = () => {
           ZONIQFI | TERMS & DEMO COMPLIANCE
         </h2>
         
-        {/* AREA SCROLL DENGAN CLASS KHUSUS */}
-        <div className="vzt-scroll-area" style={{
+        {/* SCROLL AREA */}
+        <div className="zqi-scroll-area" style={{
           fontSize: '0.85rem', color: '#a1a1aa', lineHeight: '1.6', 
           display: 'flex', flexDirection: 'column', gap: '12px',
           maxHeight: '260px', overflowY: 'auto', paddingRight: '6px'
         }}>
           <p style={{ margin: 0 }}>
-            By clicking <strong>"I Agree & Enter App"</strong>, you explicitly acknowledge that you are entering the official white-label sandbox preview for the <strong>ZoniqFi Infrastructure Protocol</strong>.
+            By clicking <strong>"I Agree & Enter App"</strong>, you explicitly acknowledge that you are entering the official sandbox preview for the <strong>ZoniqFi Infrastructure Protocol</strong>.
           </p>
           
           <div style={{
@@ -64,32 +71,35 @@ const ComplianceModal = () => {
           }}>
             <p style={{ color: '#fbbf24', fontWeight: 'bold', margin: '0 0 4px 0' }}>⚠️ LIVE ENVIRONMENT SIMULATION:</p>
             <p style={{ margin: 0, color: '#e4e4e7' }}>
-              This interface serves as a secure multi-tenant staging architecture. All cryptographic interactions are isolated to the Solana Devnet cluster to guarantee risk-free parameters.
+              This interface serves as a secure multi-tenant staging architecture. All cryptographic interactions are isolated to the Solana Devnet cluster to guarantee risk-free testing parameters.
             </p>
           </div>
 
           <p style={{ fontSize: '0.75rem', margin: 0 }}>
-            1. <strong>White-Label Customization:</strong> All features shown, including the token swap and real-yield pool allocations, can be customized completely with your tokenomics architecture within 24 hours.
+            1. <strong>White-Label Customization:</strong> All protocol modules, fee routing matrices, and real-yield pools can be adapted to custom SPL tokenomics.
           </p>
           
           <p style={{ fontSize: '0.75rem', margin: 0 }}>
-            2. <strong>Non-Custodial Logic:</strong> ZoniqFi software infrastructure layers never store or manage user private keys. Every network handshake is signed directly by the user's secure browser wallet extension.
+            2. <strong>Non-Custodial Logic:</strong> ZoniqFi software infrastructure layers never store or manage user private keys. Every network handshake is signed directly by the user's browser wallet extension.
           </p>
 
           <p style={{ fontSize: '0.75rem', margin: 0 }}>
-            3. <strong>Anti-Exploit Mitigations:</strong> Production licenses feature deep Jito Engine bundles to mitigate heavy front-running risks and include tiered referral structures equipped with malicious multi-wallet prevention.
+            3. <strong>Anti-Exploit Mitigations:</strong> Features deep Jito Block Engine bundles to mitigate front-running/sandwich risks and includes tiered referral structures equipped with malicious multi-wallet prevention.
           </p>
         </div>
 
+        {/* ACTION BUTTONS */}
         <div style={{
           marginTop: '24px', display: 'flex', gap: '12px', width: '100%', flexShrink: 0
         }}>
           <a 
-            href="https://zoniqfi.com" 
+            href="/" 
+            onClick={handleDecline}
             style={{
               flex: 1, textDecoration: 'none', textAlign: 'center', padding: '10px 0',
               borderRadius: '8px', fontSize: '0.875rem', backgroundColor: '#18181b',
-              border: '1px solid #27272a', color: '#a1a1aa', fontWeight: '600', transition: '0.2s'
+              border: '1px solid #27272a', color: '#a1a1aa', fontWeight: '600', transition: '0.2s',
+              cursor: 'pointer', display: 'inline-block'
             }}
           >
             Decline & Exit
