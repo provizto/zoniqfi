@@ -98,7 +98,30 @@ function App() {
           setMyWalletAddress(address);
           setActiveProviderName(provider || "Wallet");
           setIsConnected(true);
-          setZqiBalance(address.startsWith("GNT") ? 1000000.00 : 5000.00);
+          let baseBal = address.startsWith("GNT") ? 1000000.00 : 5000.00;
+
+          // Baca sesi staking jika ada
+          const savedStaking = localStorage.getItem('zoniq_staking_session');
+          if (savedStaking) {
+            const stData = JSON.parse(savedStaking);
+            if (stData.isLocked) {
+              setIsTokenLocked(true);
+              setStakedAmount(stData.amount || 1000);
+              setShowRewardRow(true);
+              setEarnedUsdcDisplay(stData.earnedDisplay || "75.00 USDC");
+              setRewardClaimable(true);
+              baseBal = Math.max(0, baseBal - (stData.amount || 1000));
+            }
+          }
+
+          // Baca sesi vault jika ada
+          const savedVault = localStorage.getItem('zoniq_vault_session');
+          if (savedVault) {
+            const vData = JSON.parse(savedVault);
+            if (vData.calcAmount) setCalcAmount(vData.calcAmount.toString());
+          }
+
+          setZqiBalance(baseBal);
         }
       }
     } catch (e) {
@@ -352,6 +375,8 @@ function App() {
   const disconnectWallet = () => {
     // 🔥 Bersihkan sesi tersimpan
     localStorage.removeItem('zoniq_wallet_session');
+    localStorage.removeItem('zoniq_staking_session');
+    localStorage.removeItem('zoniq_vault_session');
 
     setMyWalletAddress("");
     setActiveProviderName("");
@@ -508,7 +533,8 @@ function App() {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      setProtocolTVL(prev => prev + amountValue); 
+      setProtocolTVL(prev => prev + amountValue);
+      localStorage.setItem('zoniq_vault_session', JSON.stringify({ calcAmount: amountValue })); 
       triggerBanner("✅ Success: Deposited " + amountValue.toLocaleString('en-US') + " USDC into the Auto-Compounding Vault!", "success");
     } catch (error) {
       triggerBanner("⚠️ Transaction execution timed out.", "error");
@@ -580,6 +606,7 @@ function App() {
       setTimeout(() => {
         const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
         const rewardAmount = ((amount * 0.05) * finalMultiplier).toFixed(2);
+        localStorage.setItem('zoniq_staking_session', JSON.stringify({ isLocked: true, amount, multiplier: finalMultiplier, mode: lockCalculationMode, earnedDisplay: `${rewardAmount} USDC` }));
         
         setEarnedUsdcDisplay(`${rewardAmount} USDC`);
         setRewardClaimable(true);
@@ -628,6 +655,7 @@ function App() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       const penaltyAmount = stakedAmount * EMERGENCY_BURN_PENALTY_RATE;
       const finalAmountReturned = stakedAmount - penaltyAmount;
+      localStorage.removeItem('zoniq_staking_session');
 
       setZqiBalance(prev => prev + finalAmountReturned);
       setProtocolTVL(prev => prev - (stakedAmount * tokenPrices.ZQI)); 
