@@ -294,16 +294,16 @@ function App() {
       }
     } 
     else if (walletType === 'okx') {
-      const okxProvider = window.okxwallet?.solana;
+      const okxProvider = window.okxwallet?.solana || (window.solana?.isOkxWallet ? window.solana : null) || window.okxwallet?.solanaProvider;
       if (okxProvider) {
         executeConnect(okxProvider, "OKX Wallet");
       } else {
-        alert("OKX Wallet extension not found! Directing to installation portal.");
-        window.open("https://www.okx.com/web3", "_blank");
+        // Fallback demo sandbox otomatis
+        executeConnect(null, "OKX Wallet");
       }
     }
     else if (walletType === 'coinbase') {
-      const cbProvider = window.coinbaseWalletExtension?.solana || window.solana?.isCoinbaseWallet;
+      const cbProvider = window.coinbaseSolana || window.coinbaseWalletExtension?.solana || (window.solana?.isCoinbaseWallet ? window.solana : null);
       if (cbProvider) {
         executeConnect(cbProvider, "Coinbase");
       } else {
