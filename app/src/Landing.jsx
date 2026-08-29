@@ -133,10 +133,11 @@ const Landing = ({ onLaunchApp }) => {
         #zqi-landing-page .zqi-promo-pulse { height: 8px; width: 8px; border-radius: 50%; background-color: #60a5fa; }
 
         /* METRICS BANNER */
-        #zqi-landing-page .metrics-banner { display: flex !important; justify-content: center !important; flex-wrap: wrap !important; gap: 30px !important; padding: 30px 8% !important; }
+        #zqi-landing-page .metrics-banner { display: grid !important; grid-template-columns: repeat(5, 1fr) !important; gap: 20px !important; padding: 30px 8% !important; text-align: center !important; max-width: 1200px !important; margin: 0 auto !important; }
+        #zqi-landing-page .metric-item { text-align: center !important; }
         #zqi-landing-page .metric-value { font-size: 1.8rem !important; font-weight: 800 !important; color: #14b8a6 !important; }
         #zqi-landing-page .metric-label { font-size: 0.8rem !important; color: #94a3b8 !important; text-transform: uppercase !important; letter-spacing: 1px !important; margin-top: 6px !important; }
-
+        
         /* DEFI 4 PRODUCTS GRID */
         #zqi-landing-page .defi-section { padding: 60px 8% !important; background: #090d16 !important; }
         #zqi-landing-page .defi-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 30px !important; margin-top: 40px !important; }
