@@ -307,8 +307,8 @@ function App() {
       if (cbProvider) {
         executeConnect(cbProvider, "Coinbase");
       } else {
-        alert("Coinbase Wallet not detected. Opening download page.");
-        window.open("https://www.coinbase.com/wallet", "_blank");
+        // Fallback otomatis ke mode sandbox jika ekstensi belum terpasang
+        executeConnect(null, "Coinbase");
       }
     }
     else if (walletType === 'ledger') {
