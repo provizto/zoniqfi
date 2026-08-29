@@ -201,7 +201,7 @@ const Landing = ({ onLaunchApp }) => {
           #zqi-landing-page header .btn-launch { display: none !important; }
           #zqi-landing-page .hero { padding-top: 130px !important; }
           #zqi-landing-page .hero h1 { font-size: 2.1rem !important; }
-          #zqi-landing-page .metrics-banner { flex-direction: column !important; gap: 20px !important; }
+          #zqi-landing-page .metrics-banner { grid-template-columns: repeat(2, 1fr) !important; gap: 24px !important; }
           #zqi-landing-page .defi-grid { grid-template-columns: 1fr !important; gap: 20px !important; }
           #zqi-landing-page footer { flex-direction: column !important; gap: 20px !important; text-align: center !important; padding-bottom: 30px !important; }
           .zqi-tg-btn { width: 100%; justify-content: center; }
