@@ -1,1 +1,28 @@
-node_modules
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Rust & Anchor build outputs
+target/
+.anchor/
+test-ledger/
+
+# Next.js / Frontend build
+.next/
+out/
+build/
+dist/
+
+# Environment variables & Keypairs (Keamanan)
+.env
+.env*.local
+*.pem
+*.keypair.json
+id.json
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
