@@ -480,10 +480,10 @@ function App() {
         ]
       });
 
-      // 🔥 Tambahkan baris ini jika ingin log fee otomatis hilang setelah 8 detik:
+      // 🔥 Tambahkan baris ini jika ingin log fee otomatis hilang setelah 15 detik:
       setTimeout(() => {
         setDistributionData(null);
-      }, 10000);
+      }, 15000);
 
       if (tokenReceive === 'ZQI') {
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
@@ -672,7 +672,7 @@ function App() {
       setTxLog(`🔥 Deflationary Trigger: ${penaltyAmount.toFixed(2)} $ZQI permanently burned.`);
       setTimeout(() => {
         setTxLog('');
-      }, 5000);
+      }, 8000);
     } catch (error) {
       triggerBanner("⚠️ Emergency execution failed.", "error");
     } finally {
@@ -1064,9 +1064,20 @@ function App() {
                 <button className={`tab-btn ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="tabWizard" onClick={() => switchLockCalculationView('wizard')}>Boosted Lock</button>
               </div>
 
-              <div className="pool-meta-row">
+              <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
-                <span>Your Balance: <strong id="vztBalance">{zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} ZQI</strong></span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  Your Balance: <strong id="zqiBalance">{zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} ZQI</strong>
+                  {isConnected && zqiBalance > 0 && !isTokenLocked && (
+                    <button 
+                      type="button" 
+                      onClick={() => setLockAmount(zqiBalance.toString())}
+                      style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                    >
+                      MAX
+                    </button>
+                  )}
+                </span>
               </div>
 
               <div className="lock-input-group">
