@@ -1,25 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-const ComplianceModal = ({ onDecline }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    const hasAccepted = localStorage.getItem('zoniqfi_demo_disclaimer_accepted');
-    if (!hasAccepted) {
-      setIsOpen(true);
-    }
-  }, []);
-
+const ComplianceModal = ({ isOpen = true, onClose, onAccept }) => {
   const handleAccept = () => {
-    localStorage.setItem('zoniqfi_demo_disclaimer_accepted', 'true');
-    setIsOpen(false);
+    localStorage.setItem('zoniq_terms_accepted', 'true');
+    if (onAccept) onAccept();
   };
 
   const handleDecline = (e) => {
-    if (onDecline) {
-      e.preventDefault();
-      onDecline();
-    }
+    e.preventDefault();
+    if (onClose) onClose();
   };
 
   if (!isOpen) return null;
@@ -92,19 +81,20 @@ const ComplianceModal = ({ onDecline }) => {
         <div style={{
           marginTop: '24px', display: 'flex', gap: '12px', width: '100%', flexShrink: 0
         }}>
-          <a 
-            href="/" 
+          <button 
+            type="button"
             onClick={handleDecline}
             style={{
-              flex: 1, textDecoration: 'none', textAlign: 'center', padding: '10px 0',
+              flex: 1, textAlign: 'center', padding: '10px 0',
               borderRadius: '8px', fontSize: '0.875rem', backgroundColor: '#18181b',
               border: '1px solid #27272a', color: '#a1a1aa', fontWeight: '600', transition: '0.2s',
-              cursor: 'pointer', display: 'inline-block'
+              cursor: 'pointer'
             }}
           >
             Decline & Exit
-          </a>
+          </button>
           <button 
+            type="button"
             onClick={handleAccept}
             style={{
               flex: 1, padding: '10px 0', borderRadius: '8px', fontSize: '0.875rem',
