@@ -59,6 +59,24 @@ function App() {
   // State Modal Legal Disclaimer
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
+  // State dan Fungsi Modal Kepatuhan
+  const [showCompliance, setShowCompliance] = useState(false);
+
+  const handleLaunchWithCompliance = () => {
+    const isAccepted = localStorage.getItem('zoniq_terms_accepted');
+    if (isAccepted === 'true') {
+      setView('dashboard');
+    } else {
+      setShowCompliance(true);
+    }
+  };
+
+  const handleAcceptCompliance = () => {
+    localStorage.setItem('zoniq_terms_accepted', 'true');
+    setShowCompliance(false);
+    setView('dashboard');
+  };
+
   // 🔥 INTEGRASI STATE BARU: Menyimpan jumlah data penjualan paket dApp SaaS B2B secara terpusat
   const [activeClients, setActiveClients] = useState(48);
   const [whiteLabelsLive, setWhiteLabelsLive] = useState(19);
@@ -733,12 +751,18 @@ function App() {
   if (view === 'landing') {
     return (
       <>
-        <ComplianceModal />
+        {showCompliance && (
+          <ComplianceModal 
+            isOpen={showCompliance}
+            onClose={() => setShowCompliance(false)}
+            onAccept={handleAcceptCompliance}
+          />
+        )}
         <Landing 
           activeClients={activeClients} 
           whiteLabelsLive={whiteLabelsLive} 
           oneOffBuyers={oneOffBuyers} 
-          onLaunchApp={() => setView('dashboard')} 
+          onLaunchApp={handleLaunchWithCompliance} 
         />
       </>
     );
@@ -821,8 +845,6 @@ function App() {
           }
         }
       `}</style>
-
-      <ComplianceModal />
 
       {/* 👉 TEMPATKAN MODAL DI SINI (Return Utama Dashboard) */}
       <TransactionSuccessModal 
