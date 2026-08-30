@@ -1,7 +1,7 @@
 # ⚡ ZoniqFi Protocol — Modular Solana DeFi Suite & Real-Yield Infrastructure
 
 [![Solana Devnet](https://img.shields.io/badge/Solana-Devnet%20Verified-14F195?logo=solana&logoColor=white)](https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet)
-[![Live Sandbox Preview](https://img.shields.io/badge/Live%20Demo-vzt--beige.vercel.app-0284c7)](https://vzt-beige.vercel.app)
+[![Live Sandbox Preview](https://img.shields.io/badge/Live%20Demo-vzt--beige.vercel.app-0284c7)](https://zoniqfi.vercel.app)
 [![Telegram Support](https://img.shields.io/badge/Telegram-Core%20Dev-229ED9?logo=telegram&logoColor=white)](https://t.me/zoniqfi)
 
 **ZoniqFi Protocol** is an enterprise-grade, modular DeFi infrastructure engineered on Solana. Leveraging **Solana Versioned Transactions (v0 / ALTs)**, **Jito Block Engine Anti-MEV routing**, and **Solana Name Service (SNS)** identity resolution, ZoniqFi provides a turnkey DeFi execution layer designed to capture protocol revenue and distribute non-inflationary **USDC Real Yield** to ecosystem participants.
@@ -56,7 +56,7 @@
 | Parameter | Technical Standard | Status |
 | :--- | :--- | :--- |
 | **Network Cluster** | Solana Devnet (Staging) ➔ Mainnet-Beta (Q1 2027) | Verified & Active |
-| **Live Sandbox Deployment** | [vzt-beige.vercel.app](https://vzt-beige.vercel.app) | Live Preview Active |
+| **Live Sandbox Deployment** | [zoniqfi.vercel.app](https://zoniqfi.vercel.app) | Live Preview Active |
 | **Smart Contract Program ID** | [`HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD`](https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet) | Executable (BPF Upgradeable) |
 | **Transaction Standard** | Solana Versioned Transactions (v0 / ALTs) | Verified |
 | **Oracle & Pricing** | Jupiter Price Engine v2 Integration | Real-time Stream |
@@ -96,7 +96,7 @@ $ZQI functions strictly as a protocol utility, governance, and fee-capture asset
 ✉️ Institutional Inquiries & Grants
 Lead Architect: @zoniqfi
 
-Live Sandbox dApp: https://vzt-beige.vercel.app
+Live Sandbox dApp: https://zoniqfi.vercel.app
 
 Official Channel: t.me/zoniqfi
 
