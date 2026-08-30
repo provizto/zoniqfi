@@ -906,14 +906,10 @@ function App() {
       )}
 
       <main className="dapp-container">
-        <div className="wallet-status" id="walletStatus" style={{ color: isConnected ? "#22c55e" : "#94a3b8" }}>
-          {isConnected ? `Wallet Status: Connected to Solana Devnet via ${activeProviderName}` : "Wallet Status: Disconnected (Network: Solana)"}
-        </div>
-        
-        <div className="rpc-status-container">
-          <span className="rpc-status-indicator"></span>
-          <span>RPC Node Status: Operational ({SOLANA_NETWORK})</span>
-        </div>
+  <div className="rpc-status-container" style={{ marginBottom: '10px', fontSize: '0.82rem', color: '#94a3b8' }}>
+    <span className="rpc-status-indicator"></span>
+    <span>RPC Node: Operational ({SOLANA_NETWORK})</span>
+  </div>
 
         {/* TAB NAVIGATION BAR TERPADU DENGAN SINKRONISASI FILTER PAKET */}
         <div className="dapp-nav-tabs-wrapper">
@@ -980,7 +976,21 @@ function App() {
 
               {/* FIELD INPUT: YOU PAY */}
               <div className="swap-input-container">
-                <label>You Pay</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: '600', margin: 0 }}>You Pay</label>
+                  {isConnected && (
+                    <div style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span>Balance: <strong style={{ color: '#ffffff' }}>{tokenPay === 'ZQI' ? zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) : (tokenPay === 'USDC' ? '5,000.00' : '10.50')} {tokenPay}</strong></span>
+                      <button 
+                        type="button" 
+                        onClick={() => setPayAmount(tokenPay === 'ZQI' ? zqiBalance.toString() : (tokenPay === 'USDC' ? '5000' : '10.5'))}
+                        style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                      >
+                        MAX
+                      </button>
+                    </div>
+                  )}
+                </div>
                 <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
                   <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
                   <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0b0f19', color: '#fff', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', outline: 'none', cursor: 'pointer' }}>
@@ -992,7 +1002,7 @@ function App() {
               </div>
 
               <div className="swap-switch-row"><button className="btn-switch-tokens" onClick={switchTokens}>⇅</button></div>
-
+              
               {/* FIELD INPUT: YOU RECEIVE */}
               <div className="swap-input-container">
                 <label>You Receive (Estimated)</label>
@@ -1229,7 +1239,7 @@ function App() {
         </div>
       </main>
 
-      {/* FOOTER FIXED RESPONSIVITAS */}
+      {/* FOOTER */}
       <footer className="dapp-footer" style={{ 
         borderTop: '1px solid #1f2937', 
         padding: '24px 5%', 
@@ -1287,14 +1297,17 @@ function App() {
               padding: 0, 
               color: '#94a3b8', 
               fontSize: '0.88rem', 
-              cursor: 'pointer',
-              textDecoration: 'none',
-              transition: 'color 0.2s'
+              cursor: 'pointer', 
+              textDecoration: 'none', 
+              transition: 'color 0.2s' 
             }}
           >
             Legal Disclaimer
           </button>
-          {/* MODAL LEGAL DISCLAIMER */}
+        </div>
+      </footer>
+
+      {/* MODAL LEGAL DISCLAIMER */}
       {showDisclaimer && (
         <div style={{
           position: 'fixed',
@@ -1346,7 +1359,7 @@ function App() {
         </div>
       )}
 
-      {/* MODAL KONFIRMASI EMERGENCY EARLY UNLOCK (DARK-MODE WEB3) */}
+      {/* MODAL EMERGENCY EARLY UNLOCK */}
       {showEmergencyModal && (
         <div style={{
           position: 'fixed',
@@ -1433,9 +1446,6 @@ function App() {
           </div>
         </div>
       )}
-
-        </div>
-      </footer>
     </>
   );
 }
