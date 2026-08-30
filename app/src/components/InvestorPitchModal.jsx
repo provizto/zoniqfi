@@ -219,8 +219,13 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               
               {/* Phase 1 */}
               <div style={{ borderLeft: '3px solid #14b8a6', paddingLeft: '16px' }}>
-                <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT)</span>
-                <h4 style={{ margin: '2px 0 6px 0', color: '#fff', fontSize: '1rem' }}>Devnet Sandbox & Multi-Wallet Architecture</h4>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT)</span>
+                  <span style={{ fontSize: '0.75rem', background: 'rgba(20, 184, 166, 0.15)', color: '#14b8a6', padding: '2px 8px', borderRadius: '4px', fontWeight: '700', border: '1px solid rgba(20, 184, 166, 0.3)' }}>
+                    Bootstrapped (MVP Live)
+                  </span>
+                </div>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '1rem' }}>Devnet Sandbox & Multi-Wallet Architecture</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.85rem' }}>
                   Completion of all 4 modular contracts on Solana Devnet, Solana Wallet Standard integration (Phantom, Solflare, OKX, Backpack, Coinbase, Ledger), and SNS domain resolver.
                 </p>
