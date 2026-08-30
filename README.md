@@ -1,180 +1,103 @@
-# ⚡ ZoniqFi Hub — Premium Solana White-Label dApp Infrastructure
+# ⚡ ZoniqFi Protocol — Modular Solana DeFi Suite & Real-Yield Infrastructure
 
-Welcome to the official technical specification and deployment portal for the **ZoniqFi Hub**. This premium, turnkey dApp infrastructure is engineered specifically for the Solana blockchain. Built using React, Vite, and fully integrated with the **Jupiter Price API v2** and **Jito MEV-Protection Engine**, this repository provides a high-performing utility suite for project owners and token creators looking to supercharge holder retention, accelerate trading volume, and establish a real ecosystem within 24 hours.
+[![Solana Devnet](https://img.shields.io/badge/Solana-Devnet%20Verified-14F195?logo=solana&logoColor=white)](https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet)
+[![Live Sandbox Preview](https://img.shields.io/badge/Live%20Demo-vzt--beige.vercel.app-0284c7)](https://vzt-beige.vercel.app)
+[![Telegram Support](https://img.shields.io/badge/Telegram-Core%20Dev-229ED9?logo=telegram&logoColor=white)](https://t.me/zoniqfi)
 
-As the core developer of this protocol, I offer flexible, enterprise-grade software licenses tailored to your tokenomics and community scale.
-
----
-
-## 🚀 Key Features & Modular Architecture (Devnet Verified)
-
-The application utilizes an intelligent, built-in **Package Detection Engine** driven by URL parameters (`?pkg=...`). This allows you to pick, choose, and unlock specific modular layers according to your operational budget and community roadmap:
-
-### 1. AMM DEX Swap (Anti-MEV Secure)
-* **Live Price Feeds:** Automatically syncs real-time market rates every 30 seconds by leveraging Solana's premier liquidity aggregator (Jupiter API v2).
-* **Jito MEV Shield:** Shields retail traders from malicious front-running and sandwich bots using simulated Jito private transaction bundles.
-* **Anti-Wash Trading:** Embedded internal algorithms to track daily transaction cycles, protecting your charts from artificial volume manipulation.
-
-### 2. Yield Optimizer Vaults
-* **Auto-Compounding Logic:** Automated asset management protocol offering optimized daily yield simulations (up to 0.11% daily / 49.1% APY).
-* **Global Trust & Social Proof:** Integrated real-time tracking of Global Vault TVL and Active Depositors counters to foster instant credibility.
-* **Interactive Forecast Calculator:** An embedded projection panel (Daily, Monthly, Annual metrics) designed to gamify user interaction and incentivize long-term asset locking.
-
-### 3. ZQI Lock & Yield Hub
-* **Cryptographic Staking Epoch:** A secure on-chain locking mechanism for the custom native utility token **$ZQI** bound to a 7-day epoch horizon.
-* **Real Yield Distribution:** Staking rewards are accrued and paid out in stablecoins (USDC), completely mitigating selling pressure on your primary project token.
-* **Deflationary Burn Penalty:** Strict protocol enforcement where premature vault unlocks incur a mandatory 10% deflationary supply burn penalty.
-
-### 4. Tiered On-Chain Affiliate (Referral System)
-* **Sybil Attack Prevention:** Imposes a strict cooldown rate-limit (maximum 1 transaction per 10 seconds) to completely block multi-wallet bot manipulation.
-* **Transparent Commissions Display:** Real-time calculation showing exact claimable USDC commission earnings alongside network volume.
-* **Dynamic Tiering Matrix:** Automated commission tier calculation based on user referral trading volume:
-    * **Bronze Tier:** Volume $0 - $10,000 ➜ 10% Commission
-    * **Silver Tier:** Volume $10,001 - $100,000 ➜ 18% Commission
-    * **Gold Tier:** Volume > $100,000 ➜ 25% Commission
+**ZoniqFi Protocol** is an enterprise-grade, modular DeFi infrastructure engineered on Solana. Leveraging **Solana Versioned Transactions (v0 / ALTs)**, **Jito Block Engine Anti-MEV routing**, and **Solana Name Service (SNS)** identity resolution, ZoniqFi provides a turnkey DeFi execution layer designed to capture protocol revenue and distribute non-inflationary **USDC Real Yield** to ecosystem participants.
 
 ---
 
-## 📊 Live Market Data Integration Matrix (Jupiter Price API)
+## 🏛️ Core Architectural Modules
 
-The dApp actively tracks top-tier Solana ecosystem assets in the background using their official on-chain mint addresses:
+[ Solana Versioned Transaction Pipeline (Compact ALTs Engine) ]
+│
+├── 1. Security & Pre-Execution Validation
+│   ├── Jito Engine Private Bundle Routing (Anti-Sandwich / MEV Defense)
+│   ├── Anti-Wash Trading Rate-Limiting (Max 1 tx / 10s per PDA)
+│   └── SNS Identity Resolver (.sol & .sns Domain Normalization)
+│
+├── 2. Liquidity & Dynamic Settlement Core
+│   ├── Dynamic SPL Token Swap Execution (Jupiter Price API v2)
+│   └── 0.3% Flat Protocol Fee Assessment (Settled Atomically in USDC)
+│
+└── 3. Atomic Multi-Tier Fee Routing
+├── 40% ➔ Yield Optimizer Vault (Auto-Compounding APY up to 49.1%)
+├── 30% ➔ $ZQI Real Yield Staking Pool (USDC Staking Dividends)
+├── 15% ➔ Anti-Sybil Affiliate Treasury (Tiered Community Rebates)
+└── 15% ➔ Operations Treasury (Dedicated RPC & Node Maintenance)
 
-| Token Asset | Description | Feed Status |
+### 1. AMM DEX Swap Engine (Anti-MEV Atomic Swaps)
+* **Atomic Execution:** Powered by Solana Transaction v1 (up to 4,096-byte payload capacity).
+* **MEV Elimination:** Routes swap instructions through Jito Block Engine private bundles to mitigate front-running and predatory sandwich bots.
+* **Fee Capitalization:** A flat 0.3% protocol fee is atomically distributed to protocol vaults without native token emission inflation.
+
+### 2. Yield Optimizer Vault (Automated Compounding)
+* **Non-Custodial Architecture:** Single-deposit USDC architecture executing periodic programmatic rebalancing.
+* **Performance:** Baseline 0.11% daily rate with dynamic boosted optimizations up to 49.1% APY.
+
+### 3. $ZQI Supply Lock & Real Yield Engine
+* **Circulating Supply Defense:** Staking horizons with weighted reward multipliers:
+  * **30 Days:** 1.0x Weight
+  * **90 Days:** 1.5x Weight
+  * **180 Days:** 2.5x Weight
+* **Deflationary Burn Mechanism:** Premature early exits (*Emergency Unlock*) trigger a mandatory 10% penalty permanently burned on-chain.
+* **0% Inflation:** All staking rewards are settled and distributed strictly in stable USDC.
+
+### 4. Secure On-Chain Affiliate Engine
+* **Web3 Identity:** Integrated domain resolution for Solana Name Service (`.sol` / `.sns`).
+* **Anti-Sybil Engine:** Embedded on-chain rate limits (1 tx / 10s threshold) mitigating multi-wallet manipulation.
+* **Tiered Rebates:** Bronze (10% on $0–$10k), Silver (18% on $10k–$100k), and Gold (25% on >$100k volume).
+
+---
+
+## 📊 Protocol Specifications & Status
+
+| Parameter | Technical Standard | Status |
 | :--- | :--- | :--- |
-| **SOL / WSOL** | Native Solana & Wrapped SOL | Live Market Feed |
-| **USDC / USDT** | Major US Dollar Stablecoins | Live Market Feed |
-| **ZQI** | ZoniqFi Utility Token ($0.50 Base) | Locked/Static (Fully Customizable) |
-| **WIF / BONK / POPCAT** | Solana Blue-chip Meme Assets | Live Market Feed |
-| **RENDER** | AI DePIN Network Token | Live Market Feed |
-| **JitoSOL / JUP / PYTH** | Core DeFi & Oracle Infrastructure | Live Market Feed |
+| **Network Cluster** | Solana Devnet (Staging) ➔ Mainnet-Beta (Q1 2027) | Verified & Active |
+| **Live Sandbox Deployment** | [vzt-beige.vercel.app](https://vzt-beige.vercel.app) | Live Preview Active |
+| **Smart Contract Program ID** | [`HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD`](https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet) | Executable (BPF Upgradeable) |
+| **Transaction Standard** | Solana Versioned Transactions (v0 / ALTs) | Verified |
+| **Oracle & Pricing** | Jupiter Price Engine v2 Integration | Real-time Stream |
+| **Identity Standard** | Solana Name Service (SNS) Parser | Verified |
 
 ---
 
-## 💼 Available Licensing Tiers
+## 🛠️ Local Development Setup
 
-I offer 5 standalone and combined licensing options depending on your token's immediate objectives:
+Ensure you have **Node.js (v18+)** and **npm** installed.
 
-1.  **Entry / Viral Launch ($499):** AMM Swap + Affiliate System (Perfect for micro-cap meme coins needing rapid volume acceleration).
-2.  **Token Velocity ($1,299):** AMM Swap + Yield Optimizer + Affiliate (Our most popular package to mitigate heavy market sell-offs).
-3.  **Whale Retention Suite ($1,199):** Token Locker Hub + Real Yield USDC Pool + Affiliate (Engineered to lock up circulating supply).
-4.  **Safe Staking Hub ($1,099):** Yield Optimizer + Token Locker Hub (A pure DeFi asset management platform).
-5.  **Ultimate DeFi Suite ($2,499):** Full, unhindered access to all 4-in-1 core modular feature sets for complete ecosystem dominance.
-
----
-
-## Total Cost of Ownership (TCO) Overview
-
-================================================================================
-           ZONIQFI ECOSYSTEM INFRASTRUCTURE — COST DISCLOSURE FORM
-================================================================================
-
-[ CLIENT & PROJECT DETAILS ]
-• Client / Team Name: __________________________________________________
-• Primary Token Ticker: ________________________________________________
-• Target Deployment Domain: ____________________________________________
-
---------------------------------------------------------------------------------
-1. CORE CORE CORE CORE PLATFORM LICENSE FEE (Paid to ZoniqFi Team)
---------------------------------------------------------------------------------
-[ ] Entry / Viral Launch Suite                 : $499.00
-[ ] Token Velocity Bundle (3-in-1)             : $1,299.00
-[ ] Whale Retention Suite                      : $1,199.00
-[ ] Safe Staking Hub                           : $1,099.00
-[ ] Ultimate DeFi Suite (4-in-1)               : $2,499.00
-
-* Payment Terms: 50% Upfront Deposit ($_________) | 50% Upon Devnet Delivery ($_________)
-* Accepted Method: USDC / SOL via Solana Network
-
---------------------------------------------------------------------------------
-2. INTERNAL DEVELOPMENT & SETUP CHARGES (Paid to ZoniqFi Team)
---------------------------------------------------------------------------------
-• Custom Visual UI Rebranding Fee              : INCLUDED in Package
-• Initial Server Routing & Setup (Vercel/DNS)  : INCLUDED in Package
-• Post-Launch Technical Support (First 14 Days) : FREE / INCLUDED
-[ ] Optional Monthly Maintenance Retainer      : $99.00 / month (Optional Add-on)
-
---------------------------------------------------------------------------------
-3. ESTIMATED EXTERNAL OPERATION COSTS (Third-Party / Client's Expense)
---------------------------------------------------------------------------------
-The client must fund these directly using their operational wallet/accounts:
-• Custom Domain Registration (.com/.xyz/.io)  : ~$10.00 – $40.00 / year
-• Solana On-Chain Storage Rent (Rent-Exempt)   : ~0.10 – 1.50+ SOL (One-time, Reclaimable)
-• Raydium/Orca Liquidity Pool Creation Fee     : ~0.20 – 2.00 SOL (Solana Network Fee)
-• Production-Grade RPC Node (Helius/QuickNode) : Free tier baseline / Premium at $49.00/mo
-
---------------------------------------------------------------------------------
-TOTAL PROJECT EST. INITIAL CAPITAL: $_____________ + (~2.5 SOL Network Reserve)
---------------------------------------------------------------------------------
-
-By proceeding with the upfront deposit, the client acknowledges the pricing layout 
-and agrees to provide the required third-party operational assets when requested.
-
-Authorized Developer Signature: [ ZoniqFi Core ]
-Client Confirmation Sign/Date : _______________________________________________
-
-## 🛠️ Deployment & White-Label Delivery
-
-Upon purchase of a software license, I handle the execution and delivery process:
-
-* **Frontend Customization:** I will fully rebrand the dApp with your token name, logos, custom tickers, color schemes, and official project links.
-* **Domain Routing:** The functional dApp will be deployed to your custom domain or subdomain (e.g., `swap.yourtoken.com`).
-* **Devnet Testing Environment:** By default, your preview build will be launched on **Solana Devnet** to ensure extensive bug-free validation without burning real SOL transaction fees.
-* **Mainnet Switchover:** When you are ready to go live, the core network parameter can be migrated from `"devnet"` to `"mainnet-beta"` inside the configuration file with a single line change.
-
----
-
-## 🛠️ Local Installation & Development
-
-Ensure you have [Node.js](https://nodejs.org/) installed on your machine before running the setup commands.
-
-1.  **Clone the Repository:**
 ```bash
-    git clone [https://github.com/username/zoniqfi-hub.git](https://github.com/username/zoniqfi-hub.git)
-    cd zoniqfi-hub
-    ```
+# 1. Clone repository
+git clone [https://github.com/zoniqfi/zoniqfi-protocol.git](https://github.com/zoniqfi/zoniqfi-protocol.git)
+cd zoniqfi-protocol
 
-2.  **Install Dependencies:**
-```bash
-    npm install
-    ```
+# 2. Install dependencies
+npm install
 
-3.  **Launch the Local Development Server:**
-```bash
-    npm run dev
-    ```
-    The application will now be live at `http://localhost:5173`.
+# 3. Launch development server
+npm run dev
 
-4.  **Testing Modular Package Queries:**
-    Append the query strings to your local URL to test the responsive visual parameters for each package tier:
-    * `http://localhost:5173/?pkg=entry`
-    * `http://localhost:5173/?pkg=velocity`
-    * `http://localhost:5173/?pkg=whale`
-    * `http://localhost:5173/?pkg=staking`
+The dApp sandbox will be accessible locally at http://localhost:5173.
 
----
+🗺️ Milestone Roadmap & Capital Allocation
+Phase 1 (Q3 2026 — Current): Devnet Sandbox, multi-wallet standard integration (Phantom, Solflare, OKX, Coinbase, Backpack, Ledger), and SNS resolver.
 
-## 🌐 Production & Vercel Deployment Ready
+Phase 2 (Q4 2026 — Target: $40k–$60k): Formal smart contract security audit (OtterSec / Sec3 / Kudelski), Anchor PDA account migration, and Dedicated RPC cluster setup.
 
-This dApp frontend code is fully optimized to ensure a **100% Successful Build Pass** on platforms like Vercel or Netlify. All broken external image references have been thoroughly sanitized to preserve a clean, modern, high-end Web3 UI/UX aesthetic.
+Phase 3 (Q1 2027 — Target: $100k–$150k): Solana Mainnet-Beta deployment, Protocol-Owned Liquidity (POL) seeding, and live USDC Real Yield activation.
 
-* **Default Network Cluster:** `Solana Devnet` (Prevents real SOL gas-fee burn during the client sales pitch and demo phase).
-* **Mainnet Migration:** Simply switch the string variable parameter `SOLANA_NETWORK` from `"devnet"` to `"mainnet-beta"` in the root config file once your client is ready to launch their token ecosystem live.
+Phase 4 (Q2–Q3 2027 — Target: $50k–$80k): B2B White-Label Turnkey Gateway, developer SDK release, and institutional merchant expansion in Singapore/Southeast Asia.
 
-### 🔗 Live Production Testing Links
-* **Entry Package:** `https://staking.zoniqfi.com/?pkg=entry`
-* **Velocity Package:** `https://staking.zoniqfi.com/?pkg=velocity`
-* **Whale Package:** `https://staking.zoniqfi.com/?pkg=whale`
-* **Staking Package:** `https://staking.zoniqfi.com/?pkg=staking`
-* **Onboarding Form:** `https://staking.zoniqfi.com/?view=onboarding`
+📄 Compliance & Regulatory Notice
+$ZQI functions strictly as a protocol utility, governance, and fee-capture asset. It does not constitute a security, collective investment scheme (CIS), or consumer digital payment token under MAS regulatory frameworks. All testing interactions are strictly isolated to the Solana Devnet cluster.
 
----
+✉️ Institutional Inquiries & Grants
+Lead Architect: @zoniqfi
 
-## ✉️ Acquire A License
+Live Sandbox dApp: https://vzt-beige.vercel.app
 
-Ready to elevate your token utility ecosystem? Contact me directly via the official Telegram channel to consult on your deployment parameters, verify custom features, and acquire your commercial dApp license.
+Official Channel: t.me/zoniqfi
 
-* **Official Contact:** [@zoniqfi](https://t.me/zoniqfi)
-
----
-
-© 2026 ZoniqFi. All Rights Reserved. Premium Solana Software-as-a-Service (SaaS) Infrastructure.
+© 2026 ZoniqFi Protocol. All Rights Reserved.
