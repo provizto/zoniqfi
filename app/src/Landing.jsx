@@ -465,7 +465,7 @@ const Landing = ({ onLaunchApp }) => {
             </a>
             <span style={{ color: '#334155' }}>•</span>
             <a 
-              href="https://hybrid-ecom-platform.vercel.app/" 
+              href="https://www.zoniqfinance.com/" 
               target="_blank" 
               rel="noopener noreferrer" 
               style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}
