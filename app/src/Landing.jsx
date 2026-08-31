@@ -427,8 +427,56 @@ const Landing = ({ onLaunchApp }) => {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid #1f2937', padding: '35px 8%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#060911' }}>
-        <p>© 2026 ZoniqFi. All Rights Reserved. Solana DeFi & Web3 Infrastructure.</p>
+      <footer style={{ 
+        borderTop: '1px solid #1f2937', 
+        padding: '35px 8%', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        background: '#060911',
+        flexWrap: 'wrap',
+        gap: '15px'
+      }}>
+        <div>
+          <p style={{ margin: '0 0 6px 0', fontSize: '0.9rem', color: '#94a3b8' }}>
+            © 2026 ZoniqFi. All Rights Reserved. Solana DeFi & Web3 Infrastructure.
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.82rem' }}>
+            <a 
+              href="https://github.com/provizto/zoniqfi" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#64748b')}
+            >
+              GitHub
+            </a>
+            <span style={{ color: '#334155' }}>•</span>
+            <a 
+              href="https://github.com/provizto/zoniqfi-docs" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#64748b')}
+            >
+              Docs
+            </a>
+            <span style={{ color: '#334155' }}>•</span>
+            <a 
+              href="https://hybrid-ecom-platform.vercel.app/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#64748b', textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#34d399')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#64748b')}
+            >
+              PayFi Gateway ↗
+            </a>
+          </div>
+        </div>
+
         <div className="footer-social-row">
           <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="social-icon-btn" title="Telegram">
             <i className="fab fa-telegram"></i>
