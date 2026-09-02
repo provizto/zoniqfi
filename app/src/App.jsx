@@ -723,6 +723,8 @@ function App() {
 
     if (snsData.isDomain) {
       triggerBanner(`🔍 SNS Domain Resolved: ${snsData.displayName} (Verified On-Chain)`, "success");
+    } else {
+      triggerBanner(`✅ Referrer Verified On-Chain: ${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`, "success");
     }
 
     const simulatedVolume = Math.floor(Math.random() * 145000) + 5000;
