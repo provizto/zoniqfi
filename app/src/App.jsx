@@ -711,7 +711,7 @@ function App() {
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
     if (inputVal.startsWith("0x")) {
-      triggerBanner("⚠️ Alamat EVM dideteksi (0x...). Gunakan alamat Solana!", "error");
+      triggerBanner("⚠️ EVM address detected (0x...). Only Solana network is supported!", "error");
       return;
     }
     if (inputVal === "") {
@@ -870,41 +870,64 @@ function App() {
         </div>
       )}
 
-      {/* HEADER UTAMA */}
-      <header className="dapp-header" style={{
+      {/* HEADER UTAMA (RESPONSIF MOBILE & DESKTOP) */}
+      <header style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '16px 5%',
+        padding: '12px 16px',
         background: '#060911',
-        borderBottom: '1px solid #1f2937'
+        borderBottom: '1px solid #1f2937',
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
-        <div className="header-left" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* KIRI: LOGO + BRAND */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <img 
             src={logoZoniq} 
-            alt="ZoniqFi Logo" 
-            style={{ 
-              width: '32px', 
-              height: '32px', 
-              objectFit: 'contain' 
-            }} 
+            alt="ZoniqFi" 
+            style={{ width: '26px', height: '26px', objectFit: 'contain' }} 
           />
-          <div className="logo" style={{ 
-            fontSize: '1.35rem', 
-            fontWeight: 'bold', 
-            color: '#ffffff', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            fontFamily: 'sans-serif'
-          }}>
-            ZONIQFI <span className="vzt-badge" style={{ fontSize: '0.75rem', padding: '2px 6px', backgroundColor: '#1e293b', borderRadius: '4px', color: '#14F195' }}>$ZQI</span>
-          </div>
+          <span style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#ffffff' }}>
+            ZONIQFI
+          </span>
+          <span style={{ fontSize: '0.65rem', padding: '2px 5px', backgroundColor: '#1e293b', borderRadius: '4px', color: '#14F195', fontWeight: 'bold' }}>
+            $ZQI
+          </span>
         </div>
-        <div className="header-right">
-          <button onClick={() => setView('landing')} className="btn-home" style={{ background: 'transparent', border: '1px solid #1f2937', color: '#f3f4f6', cursor: 'pointer', padding: '8px 16px', borderRadius: '6px', marginRight: '10px', fontWeight: '600' }}>Back to Home</button>
-          <button className="btn-connect" id="walletBtn" onClick={openWalletModal} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 'bold', border: 'none', color: '#fff', cursor: 'pointer', background: isConnected ? "#22c55e" : "linear-gradient(135deg, #8b5cf6, #3b82f6)" }}>
-            {isConnected ? `Connected (${activeProviderName}): ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect Wallet"}
+
+        {/* KANAN: TOMBOL RINGKAS */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button 
+            onClick={() => setView('landing')} 
+            style={{ 
+              background: 'transparent', 
+              border: '1px solid #374151', 
+              color: '#9ca3af', 
+              cursor: 'pointer', 
+              padding: '6px 10px', 
+              borderRadius: '6px', 
+              fontSize: '0.75rem', 
+              fontWeight: '600' 
+            }}>
+            Home
+          </button>
+          
+          <button 
+            id="walletBtn" 
+            onClick={openWalletModal} 
+            style={{ 
+              padding: '6px 12px', 
+              borderRadius: '6px', 
+              fontWeight: 'bold', 
+              border: 'none', 
+              color: '#fff', 
+              cursor: 'pointer', 
+              fontSize: '0.75rem',
+              background: isConnected ? "#10b981" : "linear-gradient(135deg, #8b5cf6, #3b82f6)",
+              whiteSpace: 'nowrap'
+            }}>
+            {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
           </button>
         </div>
       </header>
