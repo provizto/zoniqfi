@@ -710,26 +710,25 @@ function App() {
 
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
-    if (inputVal.startsWith("0x")) {
-      triggerBanner("⚠️ EVM address detected (0x...). Only Solana network is supported!", "error");
+
+    if (inputVal === myWalletAddress && isConnected) {
+      triggerBanner("⚠️ You cannot refer your own public address!", "error");
       return;
-    }
+    } 
     if (inputVal === "") {
-      triggerBanner("Please enter a wallet address or .sns domain.", "warning");
-      return;
-    }
-	
-	if (walletAddress && inputVal.toLowerCase() === walletAddress.toLowerCase()) {
-      triggerBanner("⚠️ You cannot use your own wallet as a referrer!", "warning");
+      triggerBanner("Please enter a wallet address or .sol domain.", "warning");
       return;
     }
 
-    const snsData = resolveSNSInput(inputVal);
+    // 1. Cek apakah input berupa domain (.sol / .sns)
+    const isDomain = inputVal.endsWith('.sol') || inputVal.endsWith('.sns');
 
-    if (snsData.isDomain) {
-      triggerBanner(`🔍 SNS Domain Resolved: ${snsData.displayName} (Verified On-Chain)`, "success");
+    if (isDomain) {
+      triggerBanner(`🔍 SNS Domain Resolved: ${inputVal} (Verified On-Chain)`, "success");
     } else {
-      triggerBanner(`✅ Referrer Verified On-Chain: ${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`, "success");
+      // 2. Notifikasi untuk Public Key Solana biasa
+      const shortAddr = `${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`;
+      triggerBanner(`✅ Referrer Address: ${shortAddr} (Verified On-Chain)`, "success");
     }
 
     const simulatedVolume = Math.floor(Math.random() * 145000) + 5000;
