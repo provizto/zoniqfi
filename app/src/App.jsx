@@ -11,6 +11,8 @@ import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 // 🔥 IMPORT RESMI SOLANA WALLET ADAPTER UI (GAMBAR 2)
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import '@solana/wallet-adapter-react-ui/styles.css';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { Transaction, SystemProgram, PublicKey } from '@solana/web3.js';
 
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
@@ -50,6 +52,8 @@ const INITIAL_PRICES = {
 
 function App() {
   const { setVisible } = useWalletModal(); // Hook pemicu pop-up resmi Gambar 2
+  const { connection } = useConnection();
+  const { publicKey, sendTransaction } = useWallet();
   const [view, setView] = useState('landing'); 
   
   // 🔥 STATE TAB NAVIGASI ZONIQFI DENGAN DETEKSI PAKET OTOMATIS
@@ -472,13 +476,32 @@ function App() {
       return;
     }
 
+    if (!publicKey) {
+      setVisible(true);
+      return;
+    }
+
     setIsSwapLoading(true);
     setDistributionData(null); 
-    setTxLog(`Routing private transaction bundle on Solana Devnet via Jito Engine (MEV Protection)...`);
+    setTxLog(`Initiating on-chain swap via Devnet Program... Please approve transaction in your wallet.`);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2500));
-      
+      // Buat transaksi Devnet mikro ke Program ID ZoniqFi
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(PROGRAM_ID),
+          lamports: 1000, // micro-gas fee Devnet
+        })
+      );
+
+      // Membuka jendela pop-up Solflare/Phantom (Approve / Reject)
+      const signature = await sendTransaction(transaction, connection);
+      setTxLog(`Transaction broadcasted! Confirming on Devnet: ${signature.slice(0, 8)}...`);
+
+      // Menunggu validasi blok
+      await connection.confirmTransaction(signature, 'confirmed');
+
       const currentFee = parseFloat(swapFee) || 0;
       const vaultShare = (currentFee * 0.40).toFixed(5);
       const poolShare = (currentFee * 0.30).toFixed(5);
@@ -500,26 +523,29 @@ function App() {
         ]
       });
 
-      setTimeout(() => {
-        setDistributionData(null);
-      }, 15000);
-
       if (tokenReceive === 'ZQI') {
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
       }
 
+      // Tampilkan modal sukses lengkap dengan hash transaksi Devnet asli
       setSuccessModalData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
-        feeAmount: `${swapFee} ${tokenPay}`
+        feeAmount: `${swapFee} ${tokenPay}`,
+        txSignature: signature
       });
       setIsSuccessModalOpen(true);
 
       setPayAmount('');
       setReceiveAmount('0.0');
     } catch (error) {
-      setTxLog('Transaction routing failed.');
-      setDistributionData(null);
+      console.error("Swap on-chain error:", error);
+      if (error.message && error.message.includes("User rejected")) {
+        triggerBanner("⚠️ Transaction rejected by user.", "warning");
+      } else {
+        triggerBanner("⚠️ Transaction failed on Devnet.", "error");
+      }
+      setTxLog('');
     } finally {
       setIsSwapLoading(false);
     }
