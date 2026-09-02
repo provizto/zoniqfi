@@ -720,6 +720,12 @@ function App() {
       return;
     }
 
+    // Cegah input cuma ekstensi tanpa nama domain di depannya
+    if (inputVal.toLowerCase() === ".sns" || inputVal.toLowerCase() === ".sol") {
+      triggerBanner("⚠️ Please enter a complete domain name (e.g. alice.sol or bonk.sns)", "warning");
+      return;
+    }
+
     const snsData = resolveSNSInput(inputVal);
 
     if (snsData.isDomain) {
@@ -727,7 +733,7 @@ function App() {
     } else {
       triggerBanner(`✅ Referrer Verified On-Chain: ${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`, "success");
     }
-    
+
     const simulatedVolume = Math.floor(Math.random() * 145000) + 5000;
     setReferralVolume(`$${simulatedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}`);
 
