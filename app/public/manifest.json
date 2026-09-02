@@ -1,0 +1,22 @@
+{
+  "short_name": "ZoniqFi",
+  "name": "ZoniqFi Protocol",
+  "description": "Next-Gen Solana AMM & Hybrid B2B Gateway",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/favicon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#060911",
+  "theme_color": "#060911",
+  "display": "standalone",
+  "orientation": "portrait"
+}
