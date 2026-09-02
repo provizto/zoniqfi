@@ -710,10 +710,10 @@ function App() {
 
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
-    if (inputVal === myWalletAddress && isConnected) {
-      triggerBanner("⚠️ You cannot refer your own public address!", "error");
+    if (inputVal.startsWith("0x")) {
+      triggerBanner("⚠️ Alamat EVM dideteksi (0x...). Gunakan alamat Solana!", "error");
       return;
-    } 
+    }
     if (inputVal === "") {
       triggerBanner("Please enter a wallet address or .sns domain.", "warning");
       return;
