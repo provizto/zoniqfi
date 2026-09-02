@@ -11,7 +11,8 @@ const TransactionSuccessModal = ({
   const data = swapDetails || {
     fromAmount: "20 USDC",
     toAmount: "40.0000 ZQI",
-    feeAmount: "0.0600 USDC"
+    feeAmount: "0.0600 USDC",
+    txSignature: null
   };
 
   const formatShortAddress = (addr) => {
@@ -19,37 +20,48 @@ const TransactionSuccessModal = ({
     return `${addr.slice(0, 6)}...${addr.slice(-6)}`;
   };
 
+  // Prioritaskan link ke detail transaksi jika hash tersedia
+  const solscanUrl = data.txSignature 
+    ? `https://solscan.io/tx/${data.txSignature}?cluster=devnet`
+    : `https://solscan.io/account/${programId}?cluster=devnet`;
+
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      width: '100vw',
-      height: '100vh',
-      zIndex: 999999,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.85)',
-      backdropFilter: 'blur(8px)',
-      padding: '20px',
-      boxSizing: 'border-box'
-    }}>
-      <div style={{
-        backgroundColor: '#0b121f',
-        border: '1px solid #1e293b',
-        maxWidth: '440px',
-        width: '100%',
-        borderRadius: '16px',
-        padding: '24px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.9)',
-        color: '#ffffff',
-        fontFamily: "'Inter', sans-serif",
-        boxSizing: 'border-box',
-        textAlign: 'left'
-      }}>
+    <div 
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+        backdropFilter: 'blur(8px)',
+        padding: '20px',
+        boxSizing: 'border-box'
+      }}
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: '#0b121f',
+          border: '1px solid #1e293b',
+          maxWidth: '440px',
+          width: '100%',
+          borderRadius: '16px',
+          padding: '24px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.9)',
+          color: '#ffffff',
+          fontFamily: "'Inter', sans-serif",
+          boxSizing: 'border-box',
+          textAlign: 'left'
+        }}
+      >
         
         {/* Header Modal */}
         <div style={{
@@ -118,6 +130,12 @@ const TransactionSuccessModal = ({
             <span>Received:</span>
             <span style={{ color: '#38bdf8', fontWeight: '700' }}>{data.toAmount}</span>
           </div>
+          {data.feeAmount && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+              <span>Protocol Fee (0.3%):</span>
+              <span style={{ color: '#a78bfa', fontWeight: '600' }}>{data.feeAmount}</span>
+            </div>
+          )}
           <div style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
@@ -136,7 +154,7 @@ const TransactionSuccessModal = ({
         {/* Tombol Aksi */}
         <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
           <a
-            href={`https://solscan.io/account/${programId}?cluster=devnet`}
+            href={solscanUrl}
             target="_blank"
             rel="noopener noreferrer"
             style={{

@@ -1,22 +1,32 @@
 import React from 'react';
 
+const defaultBreakdown = [
+  { label: "Yield Optimizer Vault (40%)", amount: "0.02400 USDC", icon: "fa-vault" },
+  { label: "ZQI Real Yield Pool (30%)", amount: "0.01800 USDC", icon: "fa-chart-pie" },
+  { label: "Affiliate Treasury (15%)", amount: "0.00900 USDC", icon: "fa-users" },
+  { label: "Project Treasury Operations (15%)", amount: "0.00900 USDC", icon: "fa-server" },
+];
+
 const DistributionLog = ({ programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD", swapData }) => {
   const formatAddress = (addr) => {
     if (!addr) return "";
+    if (addr.length <= 12) return addr;
     return `${addr.slice(0, 6)}...${addr.slice(-6)}`;
   };
 
-  const data = swapData || {
-    fromAmount: "20 USDC",
-    toAmount: "40.0000 ZQI",
-    totalFee: "0.0600 USDC",
-    breakdown: [
-      { label: "Yield Optimizer Vault (40%)", amount: "0.02400 USDC", icon: "fa-vault" },
-      { label: "ZQI Real Yield Pool (30%)", amount: "0.01800 USDC", icon: "fa-chart-pie" },
-      { label: "Affiliate Treasury (15%)", amount: "0.00900 USDC", icon: "fa-users" },
-      { label: "Project Treasury Operations (15%)", amount: "0.00900 USDC", icon: "fa-server" },
-    ]
+  // Penggabungan props yang aman agar tidak crash jika swapData parsial
+  const data = {
+    fromAmount: swapData?.fromAmount || "20 USDC",
+    toAmount: swapData?.toAmount || "40.0000 ZQI",
+    totalFee: swapData?.totalFee || "0.0600 USDC",
+    txSignature: swapData?.txSignature || null,
+    breakdown: swapData?.breakdown || defaultBreakdown
   };
+
+  // Prioritaskan link transaksi jika hash tersedia, fallback ke program account
+  const solscanUrl = data.txSignature
+    ? `https://solscan.io/tx/${data.txSignature}?cluster=devnet`
+    : `https://solscan.io/account/${programId}?cluster=devnet`;
 
   return (
     <div style={{
@@ -43,7 +53,7 @@ const DistributionLog = ({ programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nq
         
         {/* Solscan Clickable Link */}
         <a 
-          href={`https://solscan.io/account/${programId}?cluster=devnet`}
+          href={solscanUrl}
           target="_blank"
           rel="noopener noreferrer"
           style={{ 
@@ -61,7 +71,7 @@ const DistributionLog = ({ programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nq
           }}
         >
           <i className="fas fa-code" style={{ color: '#14b8a6' }}></i>
-          <span style={{ fontFamily: 'monospace', color: '#38bdf8' }}>{formatAddress(programId)}</span>
+          <span style={{ fontFamily: 'monospace', color: '#38bdf8' }}>{formatAddress(data.txSignature || programId)}</span>
           <i className="fas fa-arrow-up-right-from-square" style={{ fontSize: '0.65rem', color: '#64748b' }}></i>
         </a>
       </div>

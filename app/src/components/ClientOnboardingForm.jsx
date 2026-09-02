@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const ClientOnboardingForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     projectName: '',
     tokenTicker: '',
@@ -15,14 +16,17 @@ const ClientOnboardingForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     // ==========================================================================
     // TARGET TRANSMISI DATA (FormSubmit Bypass CORS Engine)
     // ==========================================================================
     const EMAIL_TUJUAN = "zoniqfi@gmail.com"; 
 
-    // Merakit payload data terstruktur untuk dikirimkan ke kotak masuk email Anda
+    // Merakit payload data terstruktur untuk dikirimkan ke kotak masuk email
     const payload = {
+      _subject: `ZoniqFi Onboarding: ${formData.projectName || 'New White-Label Client'}`,
+      _captcha: "false",
       "Project Name": formData.projectName,
       "Token Ticker": formData.tokenTicker,
       "Branding Colors / Hex": formData.brandColors,
@@ -59,13 +63,14 @@ const ClientOnboardingForm = () => {
           hostingPreference: 'cloudflare',
           clientSignature: ''
         });
-        e.target.reset();
       } else {
         throw new Error("Formsubmit routing validation rejected.");
       }
     } catch (error) {
       console.error("Submission Error Details:", error);
       alert("⚠️ Connection sync failed. Please reach out directly to @zoniqfi on Telegram.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -123,8 +128,25 @@ const ClientOnboardingForm = () => {
           <input type="text" required value={formData.clientSignature} placeholder="@username or Solana Public Key" style={{ width: '100%', padding: '10px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', color: '#fff', outline: 'none' }} onChange={e => setFormData({...formData, clientSignature: e.target.value})} />
         </div>
 
-        <button type="submit" style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)', border: 'none', borderRadius: '8px', color: '#fff', fontWeight: '700', fontSize: '1rem', cursor: 'pointer', boxShadow: '0 4px 14px rgba(139, 92, 246, 0.4)', transition: 'all 0.2s' }}>
-          Submit Onboarding Data
+        <button 
+          type="submit" 
+          disabled={isSubmitting}
+          style={{ 
+            width: '100%', 
+            padding: '14px', 
+            background: isSubmitting ? '#4b5563' : 'linear-gradient(135deg, #8b5cf6, #3b82f6)', 
+            border: 'none', 
+            borderRadius: '8px', 
+            color: '#fff', 
+            fontWeight: '700', 
+            fontSize: '1rem', 
+            cursor: isSubmitting ? 'not-allowed' : 'pointer', 
+            boxShadow: isSubmitting ? 'none' : '0 4px 14px rgba(139, 92, 246, 0.4)', 
+            transition: 'all 0.2s',
+            opacity: isSubmitting ? 0.7 : 1
+          }}
+        >
+          {isSubmitting ? 'Transmitting Data...' : 'Submit Onboarding Data'}
         </button>
       </form>
     </div>

@@ -13,7 +13,21 @@ export const isSNSDomain = (input) => {
 };
 
 export const resolveSNSInput = (input) => {
-  const trimmed = input.trim();
+  if (!input || typeof input !== 'string') {
+    return {
+      isValid: false,
+      resolvedAddress: "",
+      displayName: "",
+      isDomain: false
+    };
+  }
+
+  let trimmed = input.trim();
+  
+  // Ekstrak parameter jika input berupa link lengkap
+  if (trimmed.includes("?ref=")) {
+    trimmed = trimmed.split("?ref=")[1].split("&")[0].trim();
+  }
   
   if (!isSNSDomain(trimmed)) {
     return {
@@ -24,8 +38,10 @@ export const resolveSNSInput = (input) => {
     };
   }
 
-  const normalizedDomain = trimmed.endsWith('.sol') 
-    ? trimmed.replace('.sol', '.sns') 
+  // Ganti ekstensi hanya pada akhir string
+  const lower = trimmed.toLowerCase();
+  const normalizedDomain = lower.endsWith('.sol') 
+    ? trimmed.slice(0, -4) + '.sns' 
     : trimmed;
 
   return {
