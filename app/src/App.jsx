@@ -711,52 +711,23 @@ function App() {
 
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
-
+    if (inputVal.startsWith("0x")) {
+      triggerBanner("⚠️ EVM address detected (0x...). Only Solana network is supported!", "error");
+      return;
+    }
     if (inputVal === "") {
       triggerBanner("Please enter a wallet address or .sns domain.", "warning");
       return;
     }
 
-    if (inputVal.startsWith("0x")) {
-      triggerBanner("⚠️ EVM address detected (0x...). Only Solana network is supported!", "error");
-      return;
-    }
-
-    if (inputVal.startsWith("T") && inputVal.length === 34) {
-      triggerBanner("⚠️ TRON address detected. Only Solana network is supported!", "error");
-      return;
-    }
-
-    if (
-      inputVal.startsWith("bc1") ||
-      ((inputVal.startsWith("1") || inputVal.startsWith("3")) && inputVal.length >= 26 && inputVal.length <= 35)
-    ) {
-      triggerBanner("⚠️ Bitcoin address detected. Only Solana network is supported!", "error");
-      return;
-    }
-
     const snsData = resolveSNSInput(inputVal);
-    if (snsData && snsData.isDomain) {
+
+    if (snsData.isDomain) {
       triggerBanner(`🔍 SNS Domain Resolved: ${snsData.displayName} (Verified On-Chain)`, "success");
-      return;
+    } else {
+      triggerBanner(`✅ Referrer Verified On-Chain: ${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`, "success");
     }
-
-    let isValidSolana = false;
-    try {
-      const pubkey = new PublicKey(inputVal);
-      isValidSolana = PublicKey.isOnCurve(pubkey.toBytes());
-    } catch {
-      isValidSolana = false;
-    }
-
-    if (!isValidSolana) {
-      triggerBanner("⚠️ Invalid Solana address! Only Solana public keys or SNS domains (.sol) are supported.", "error");
-      return;
-    }
-
-    triggerBanner(`✅ Referrer Verified On-Chain: ${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`, "success");
-  }; // <-- Pastikan hanya ada SATU penutup di sini
-
+    
     const simulatedVolume = Math.floor(Math.random() * 145000) + 5000;
     setReferralVolume(`$${simulatedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}`);
 
