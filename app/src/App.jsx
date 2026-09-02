@@ -421,7 +421,6 @@ function App() {
     { symbol: 'USDC', name: 'USD Coin', priceInUsdc: tokenPrices.USDC },
     { symbol: 'USDT', name: 'Tether', priceInUsdc: tokenPrices.USDT },
     { symbol: 'SOL', name: 'Solana', priceInUsdc: tokenPrices.SOL },
-    { symbol: 'WSOL', name: 'Wrapped Solana', priceInUsdc: tokenPrices.WSOL },
     { symbol: 'ZQI', name: 'ZoniqFi Token', priceInUsdc: tokenPrices.ZQI },
     { symbol: 'WIF', name: 'dogwifhat', priceInUsdc: tokenPrices.WIF },
     { symbol: 'BONK', name: 'Bonk Coin', priceInUsdc: tokenPrices.BONK },
@@ -725,7 +724,7 @@ function App() {
     }
 
     // 1. Cek apakah input berupa domain (.sol / .sns)
-    const isDomain = inputVal.endsWith('.sol') || inputVal.endsWith('.sns');
+    const isDomain = isSNSDomain(inputVal);
 
     if (isDomain) {
       triggerBanner(`🔍 SNS Domain Resolved: ${inputVal} (Verified On-Chain)`, "success");
