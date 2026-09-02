@@ -173,7 +173,7 @@
       <tr>
         <td>
           <div class="title">ZONIQFI ($ZQI)</div>
-          <div class="subtitle">Solana Versioned Transaction Suite & Real Yield Infrastructure</div>
+          <div class="subtitle">Solana Transaction v1 Suite & Real Yield Infrastructure</div>
         </td>
         <td style="text-align: right; vertical-align: top;">
           <span class="badge">Colosseum & Superteam Grant Ready</span>
@@ -183,23 +183,23 @@
 
     <h2>1. Executive Summary</h2>
     <p>
-      <strong>ZONIQFI</strong> is a turnkey, modular DeFi infrastructure protocol on Solana. It utilizes native <strong>Solana Versioned Transaction architecture (ALTs & compact 1,232-byte payload)</strong> to execute multi-tier swaps with deep MEV mitigation via Jito Block Engine, automated yield vaults, deflationary supply defense, and decentralized on-chain referrals integrated with the latest <strong>Solana Name Service (SNS)</strong> standards.
+      <strong>ZONIQFI</strong> is a turnkey, modular DeFi infrastructure protocol on Solana. It utilizes native <strong>Solana Transaction v1 architecture (4,096-byte atomic payload)</strong> to execute multi-tier swaps with deep MEV mitigation via Jito Block Engine, automated yield vaults, deflationary supply defense, and decentralized on-chain referrals integrated with <strong>Solana Name Service (SNS)</strong> standards.
     </p>
 
     <h2>2. Problem Statement & Market Inefficiencies</h2>
     <ul>
       <li><strong>Pervasive MEV Exploitation:</strong> Arbitrage and sandwich bots in public mempools extract substantial value from retail traders.</li>
       <li><strong>Inflationary Farm Vulnerabilities:</strong> Traditional AMMs rely on hyper-inflationary token emissions, causing liquidity drain during market downturns.</li>
-      <li><strong>Sybil Exploitation in Referral Programs:</strong> Conventional growth programs suffer from bot wash-trading and multi-wallet spamming.</li>
+      <li><strong>Sybil Exploitation in Referral Programs:</strong> Conventional growth programs suffer from bot wash-trading, self-referral bypasses, and multi-wallet spamming.</li>
     </ul>
 
     <h2>3. Core Technical Architecture (Atomic Transaction Pipeline)</h2>
-    <div class="ascii-box">[ Solana Versioned Transaction Pipeline (Compact ALTs Engine) ]
+    <div class="ascii-box">[ Solana Transaction v1 Pipeline (4,096-Byte Atomic Engine) ]
 │
 ├── 1. Security & Pre-Execution Validation
 │   ├── Jito Engine Private Bundle Routing (Sandwich Attack Prevention)
 │   ├── Anti-Wash Trading Cooldown Enforcement (Max 1 tx / 10s per wallet PDA)
-│   └── SNS Identity Resolver (.sns & .sol Domain Normalization)
+│   └── SNS Identity Resolver & Anti Self-Referral Validation (.sns & .sol)
 │
 ├── 2. Liquidity & Dynamic Settlement Core
 │   ├── Dynamic SPL Token Swap Routing (Jupiter v2 Price Engine API)
@@ -223,7 +223,7 @@
       <tbody>
         <tr>
           <td><strong>Transaction Standard</strong></td>
-          <td>Solana Versioned Transactions (v0 / ALTs Atomic Bundle)</td>
+          <td>Solana Transaction v1 (4,096-byte Atomic Payload)</td>
           <td>Verified on Devnet</td>
         </tr>
         <tr>
@@ -252,7 +252,7 @@
         </tr>
         <tr>
           <td><strong>Web3 Identity</strong></td>
-          <td>SNS Migration Support (.sol & .sns normalization)</td>
+          <td>SNS Resolution (.sol & .sns) + Self-Referral Rejection</td>
           <td>Real-time domain resolution</td>
         </tr>
       </tbody>
@@ -260,14 +260,14 @@
 
     <h2>5. Milestone Roadmap & Grant Utilization</h2>
     <ul>
-      <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Execute local fuzz testing and high-frequency sandwich attack simulations using LiteSVM to optimize compute unit (CU) consumption across atomic instructions.</li>
+      <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Execute local fuzz testing and high-frequency sandwich attack simulations using LiteSVM to optimize compute unit (CU) consumption across atomic v1 instructions.</li>
       <li><strong>Milestone 2 — Smart Contract Audit:</strong> Submit repository for formal third-party audit, validating the 10% deflationary burn logic and atomic 4-way fee splitting vaults.</li>
       <li><strong>Milestone 3 — Mainnet Beta & SNS SDK Integration:</strong> Deploy production contracts to Solana Mainnet with native wallet adapter resolution for .sns identities.</li>
     </ul>
 
     <div class="footer">
       <span>© 2026 ZoniqFi Protocol • Confidential Grant Proposal</span>
-      <span>Live Preview: https://zoniqfi.vercel.app</span>
+      <span>Live Platform: https://zoniqfi.com</span>
     </div>
   </div>
 
@@ -277,7 +277,7 @@
       <tr>
         <td>
           <div class="title">ZONIQFI ($ZQI)</div>
-          <div class="subtitle">Solana Versioned Transaction Suite & Infrastruktur Real Yield</div>
+          <div class="subtitle">Solana Transaction v1 Suite & Infrastruktur Real Yield</div>
         </td>
         <td style="text-align: right; vertical-align: top;">
           <span class="badge">Proposal Akselerator & Hibah Web3</span>
@@ -287,23 +287,23 @@
 
     <h2>1. Ringkasan Eksekutif</h2>
     <p>
-      <strong>ZONIQFI</strong> adalah protokol infrastruktur DeFi modular siap pakai di jaringan Solana. Platform ini mengimplementasikan standar <strong>Solana Versioned Transaction (arsitektur ALTs kompak 1.232 byte)</strong> untuk mengeksekusi swap atomik dengan proteksi Anti-MEV melalui Jito Block Engine, auto-compounding yield vault, proteksi deflasi suplai, serta sistem referral on-chain yang mendukung migrasi <strong>Solana Name Service (SNS)</strong>.
+      <strong>ZONIQFI</strong> adalah protokol infrastruktur DeFi modular siap pakai di jaringan Solana. Platform ini mengimplementasikan arsitektur mutakhir <strong>Solana Transaction v1 (payload atomik 4.096 byte)</strong> untuk mengeksekusi swap atomik dengan proteksi Anti-MEV melalui Jito Block Engine, auto-compounding yield vault, proteksi deflasi suplai, serta sistem referral on-chain terintegrasi <strong>Solana Name Service (SNS)</strong>.
     </p>
 
     <h2>2. Masalah & Ketidakefisienan Pasar</h2>
     <ul>
       <li><strong>Eksploitasi MEV & Sandwich Attack:</strong> Bot arbitrase di mempool publik Solana mengekstraksi nilai secara agresif dan merugikan pengguna ritel.</li>
       <li><strong>Kerentanan Model Farm Inflasioner:</strong> AMM konvensional bergantung pada emisi token inflasi yang memicu hilangnya likuiditas saat pasar koreksi.</li>
-      <li><strong>Eksploitasi Bot Sybil pada Program Referral:</strong> Program pertumbuhan komunitas kerap disalahgunakan oleh bot multi-wallet dan manipulasi wash-trading.</li>
+      <li><strong>Eksploitasi Bot Sybil pada Program Referral:</strong> Program pertumbuhan kerap disalahgunakan oleh self-referral, bot multi-wallet, dan manipulasi wash-trading.</li>
     </ul>
 
     <h2>3. Arsitektur Teknis Utama (Pipeline Transaksi Atomik)</h2>
-    <div class="ascii-box">[ Pipeline Solana Versioned Transaction (Mesin Kompak ALTs) ]
+    <div class="ascii-box">[ Pipeline Solana Transaction v1 (Mesin Atomik 4.096 Byte) ]
 │
 ├── 1. Lapisan Keamanan & Pra-Validasi
 │   ├── Routing Bundle Privat Jito Engine (Proteksi Serangan Sandwich)
 │   ├── Verifikasi Cooldown Anti-Wash Trading (Maks 1 tx / 10s per PDA dompet)
-│   └── Resolver Identitas SNS (Dukungan Format Domain .sns & .sol)
+│   └── Resolver Identitas SNS & Proteksi Anti Self-Referral (.sns & .sol)
 │
 ├── 2. Inti Eksekusi Likuiditas & Pertukaran
 │   ├── Pertukaran Token SPL Dinamis (Integrasi Jupiter Price API v2)
@@ -327,7 +327,7 @@
       <tbody>
         <tr>
           <td><strong>Standar Transaksi</strong></td>
-          <td>Solana Versioned Transactions (Bundle Atomik v0 / ALTs)</td>
+          <td>Solana Transaction v1 (Payload Atomik 4.096 Byte)</td>
           <td>Terverifikasi di Devnet</td>
         </tr>
         <tr>
@@ -356,7 +356,7 @@
         </tr>
         <tr>
           <td><strong>Identitas Web3</strong></td>
-          <td>Standar Migrasi SNS (Normalisasi .sol ke .sns)</td>
+          <td>Standar Migrasi SNS (.sns/.sol) + Penolakan Self-Referral</td>
           <td>Resolusi nama domain real-time</td>
         </tr>
       </tbody>
@@ -364,14 +364,14 @@
 
     <h2>5. Rencana Kerja (Roadmap) & Alokasi Hibah</h2>
     <ul>
-      <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Melakukan simulasi fuzz testing dan serangan sandwich frekuensi tinggi menggunakan LiteSVM untuk mengoptimasi batas Compute Unit (CU).</li>
+      <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Melakukan simulasi fuzz testing dan serangan sandwich frekuensi tinggi menggunakan LiteSVM untuk mengoptimasi batas Compute Unit (CU) transaksi v1 atomik.</li>
       <li><strong>Milestone 2 — Audit Keamanan Smart Contract:</strong> Mengajukan kode program untuk audit pihak ketiga independen, khususnya validasi logika penalti burn 10% dan pembagian fee 4 arah.</li>
       <li><strong>Milestone 3 — Peluncuran Mainnet Beta & Integrasi SDK SNS:</strong> Deployment kontrak produksi ke Solana Mainnet dengan integrasi mendalam pada adapter wallet berbasis domain .sns.</li>
     </ul>
 
     <div class="footer">
       <span>© 2026 ZoniqFi Protocol • Dokumen Proposal Hibah Resmi</span>
-      <span>Pratinjau Langsung: https://zoniqfi.vercel.app</span>
+      <span>Platform Langsung: https://zoniqfi.com</span>
     </div>
   </div>
 
