@@ -709,7 +709,11 @@ function App() {
   };
 
   const verifyReferralOnChain = () => {
-    const inputVal = referrerInput.trim();
+    let inputVal = referrerInput.trim();
+
+    if (inputVal.includes("?ref=")) {
+      inputVal = inputVal.split("?ref=")[1].split("&")[0].trim();
+    }
 
     if (inputVal === myWalletAddress && isConnected) {
       triggerBanner("⚠️ You cannot refer your own public address!", "error");
