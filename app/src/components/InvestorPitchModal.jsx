@@ -6,34 +6,40 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(3, 7, 18, 0.88)',
-      backdropFilter: 'blur(10px)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 999999,
-      padding: '20px'
-    }}>
-      <div style={{
-        background: '#0d1322',
-        border: '1px solid #1e293b',
-        borderRadius: '20px',
-        maxWidth: '860px',
-        width: '100%',
-        maxHeight: '90vh',
+    <div 
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(3, 7, 18, 0.88)',
+        backdropFilter: 'blur(10px)',
         display: 'flex',
-        flexDirection: 'column',
-        boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)',
-        overflow: 'hidden',
-        color: '#f3f4f6',
-        fontFamily: "'Inter', sans-serif"
-      }}>
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 999999,
+        padding: '20px'
+      }}
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: '#0d1322',
+          border: '1px solid #1e293b',
+          borderRadius: '20px',
+          maxWidth: '860px',
+          width: '100%',
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)',
+          overflow: 'hidden',
+          color: '#f3f4f6',
+          fontFamily: "'Inter', sans-serif"
+        }}
+      >
         {/* MODAL HEADER */}
         <div style={{
           padding: '20px 28px',
@@ -205,6 +211,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '20px', color: '#cbd5e1', fontSize: '0.85rem' }}>
                   <li><strong>Solana Name Service:</strong> Supports direct domain resolution for human-readable identities (.sns / .sol).</li>
+                  <li><strong>URL & Address Parsing:</strong> Native handling of raw pubkeys and full referral links (?ref=) with automated self-referral rejection.</li>
                   <li><strong>Tiered Rebates:</strong> Bronze (10% on $0–$10k volume), Silver (18% on $10k–$100k), and Gold (25% on &gt;$100k).</li>
                   <li><strong>Anti-Sybil Cooldown:</strong> 1 transaction per 10-second threshold prevents manipulation.</li>
                 </ul>
@@ -346,10 +353,13 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px'
+              gap: '8px'
             }}
           >
-            <i className="fab fa-telegram-plane"></i> Contact Core Lead
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/>
+            </svg>
+            Contact Core Lead
           </a>
         </div>
       </div>
