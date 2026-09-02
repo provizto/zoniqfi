@@ -7,7 +7,6 @@ import './App.css';
 import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR IMPORT: Disamakan dengan folder komponen lainnya agar tidak crash build
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
-import { PublicKey } from '@solana/web3.js';
 
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
