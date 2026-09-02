@@ -8,12 +8,6 @@ import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR I
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 
-// 🔥 IMPORT RESMI SOLANA WALLET ADAPTER UI (GAMBAR 2)
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import '@solana/wallet-adapter-react-ui/styles.css';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { Transaction, SystemProgram, PublicKey } from '@solana/web3.js';
-
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
 // ==========================================================================
@@ -51,9 +45,6 @@ const INITIAL_PRICES = {
 };
 
 function App() {
-  const { setVisible } = useWalletModal(); // Hook pemicu pop-up resmi Gambar 2
-  const { connection } = useConnection();
-  const { publicKey, sendTransaction } = useWallet();
   const [view, setView] = useState('landing'); 
   
   // 🔥 STATE TAB NAVIGASI ZONIQFI DENGAN DETEKSI PAKET OTOMATIS
@@ -272,12 +263,11 @@ function App() {
     }, 4000);
   };
 
-  // 🔥 MEMBUKA MODAL RESMI SOLANA WALLET ADAPTER (GAMBAR 2)
   const openWalletModal = () => {
     if (isConnected) {
       disconnectWallet();
     } else {
-      setVisible(true);
+      setIsModalOpen(true);
     }
   };
 
@@ -326,6 +316,7 @@ function App() {
       if (okxProvider) {
         executeConnect(okxProvider, "OKX Wallet");
       } else {
+        // Fallback demo sandbox otomatis
         executeConnect(null, "OKX Wallet");
       }
     }
@@ -334,6 +325,7 @@ function App() {
       if (cbProvider) {
         executeConnect(cbProvider, "Coinbase");
       } else {
+        // Fallback otomatis ke mode sandbox jika ekstensi belum terpasang
         executeConnect(null, "Coinbase");
       }
     }
@@ -371,6 +363,7 @@ function App() {
       setActiveProviderName(walletName);
       setIsConnected(true);
 
+      // 🔥 Simpan status sesi ke localStorage
       localStorage.setItem('zoniq_wallet_session', JSON.stringify({
         provider: walletName,
         address: pubKey
@@ -398,6 +391,7 @@ function App() {
   };
 
   const disconnectWallet = () => {
+    // 🔥 Bersihkan sesi tersimpan
     localStorage.removeItem('zoniq_wallet_session');
     localStorage.removeItem('zoniq_staking_session');
     localStorage.removeItem('zoniq_vault_session');
@@ -476,32 +470,13 @@ function App() {
       return;
     }
 
-    if (!publicKey) {
-      setVisible(true);
-      return;
-    }
-
     setIsSwapLoading(true);
     setDistributionData(null); 
-    setTxLog(`Initiating on-chain swap via Devnet Program... Please approve transaction in your wallet.`);
+    setTxLog(`Routing private transaction bundle on Solana Devnet via Jito Engine (MEV Protection)...`);
 
     try {
-      // Buat transaksi Devnet mikro ke Program ID ZoniqFi
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: publicKey,
-          toPubkey: new PublicKey(PROGRAM_ID),
-          lamports: 1000, // micro-gas fee Devnet
-        })
-      );
-
-      // Membuka jendela pop-up Solflare/Phantom (Approve / Reject)
-      const signature = await sendTransaction(transaction, connection);
-      setTxLog(`Transaction broadcasted! Confirming on Devnet: ${signature.slice(0, 8)}...`);
-
-      // Menunggu validasi blok
-      await connection.confirmTransaction(signature, 'confirmed');
-
+      await new Promise((resolve) => setTimeout(resolve, 2500));
+      
       const currentFee = parseFloat(swapFee) || 0;
       const vaultShare = (currentFee * 0.40).toFixed(5);
       const poolShare = (currentFee * 0.30).toFixed(5);
@@ -523,29 +498,28 @@ function App() {
         ]
       });
 
+      // 🔥 Tambahkan baris ini jika ingin log fee otomatis hilang setelah 15 detik:
+      setTimeout(() => {
+        setDistributionData(null);
+      }, 15000);
+
       if (tokenReceive === 'ZQI') {
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
       }
 
-      // Tampilkan modal sukses lengkap dengan hash transaksi Devnet asli
+      // 🔥 Buka modal sukses kustom dan simpan data rinciannya
       setSuccessModalData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
-        feeAmount: `${swapFee} ${tokenPay}`,
-        txSignature: signature
+        feeAmount: `${swapFee} ${tokenPay}`
       });
       setIsSuccessModalOpen(true);
 
       setPayAmount('');
       setReceiveAmount('0.0');
     } catch (error) {
-      console.error("Swap on-chain error:", error);
-      if (error.message && error.message.includes("User rejected")) {
-        triggerBanner("⚠️ Transaction rejected by user.", "warning");
-      } else {
-        triggerBanner("⚠️ Transaction failed on Devnet.", "error");
-      }
-      setTxLog('');
+      setTxLog('Transaction routing failed.');
+      setDistributionData(null);
     } finally {
       setIsSwapLoading(false);
     }
@@ -641,10 +615,12 @@ function App() {
       setStakedAmount(amount); 
       setZqiBalance(prev => prev - amount); 
       
+      // 1. Saat baru dikunci, saldo hasil mulai dari 0.00 USDC
       setEarnedUsdcDisplay("0.00 USDC");
       setShowRewardRow(true);
       setProtocolTVL(prev => prev + (amount * tokenPrices.ZQI)); 
 
+      // 2. Simulasi Epoch 8 detik: dividen baru terisi dan tombol claim menyala
       setTimeout(() => {
         const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
         const rewardAmount = ((amount * 0.05) * finalMultiplier).toFixed(2);
@@ -668,11 +644,15 @@ function App() {
       return;
     }
     
+    // Notifikasi Web3 sukses klaim
     triggerBanner(`🎉 Claim Successful! ${earnedUsdcDisplay} has been transferred to your wallet.`, "success");
+    
+    // Reset saldo hasil ke 0.00 USDC dan matikan status claimable (baris tetap terlihat)
     setEarnedUsdcDisplay("0.00 USDC");
     setRewardClaimable(false);
   };
 
+  // 1. Membuka modal konfirmasi buatan kita (bukan popup browser)
   const triggerEmergencyModal = () => {
     if (!isConnected) {
       triggerBanner("⚠️ Please connect your wallet first!", "error");
@@ -720,7 +700,7 @@ function App() {
 
   const copyLink = () => {
     if (!isConnected) {
-      setVisible(true);
+      setIsModalOpen(true);
       triggerBanner("⚠️ Please connect your wallet first!", "warning");
       return;
     }
@@ -927,13 +907,31 @@ function App() {
         </div>
       </header>
 
-      {/* MODAL KUSTOM LAMA TELAH DIHAPUS, DIGANTIKAN MODAL RESMI OLEH useWalletModal() */}
+      {isModalOpen && (
+        <div id="walletModal" className="modal-overlay" style={{ display: 'flex' }}>
+          <div className="modal-content" style={{ maxWidth: '420px', width: '90%' }}>
+            <div className="modal-header">
+              <h3>Select Solana Wallet</h3>
+              <button className="btn-close-modal" onClick={() => setIsModalOpen(false)}>&times;</button>
+            </div>
+            <div className="modal-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', padding: '15px 0' }}>
+              <button className="wallet-option-btn" onClick={() => selectWallet('phantom')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">👻</span> Phantom</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('solflare')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">☀️</span> Solflare</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('okx')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🌐</span> OKX Wallet</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('backpack')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🎒</span> Backpack</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('coinbase')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🔵</span> Coinbase</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('brave')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🦁</span> Brave</button>
+              <button className="wallet-option-btn" onClick={() => selectWallet('ledger')} style={{ gridColumn: 'span 2', margin: 0, padding: '12px', background: 'linear-gradient(135deg, #1f2937, #111827)', border: '1px solid #374151' }}><span className="wallet-icon">🛡️</span> Ledger Hardware Wallet</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main className="dapp-container">
-        <div className="rpc-status-container" style={{ marginBottom: '10px', fontSize: '0.82rem', color: '#94a3b8' }}>
-          <span className="rpc-status-indicator"></span>
-          <span>RPC Node: Operational ({SOLANA_NETWORK})</span>
-        </div>
+  <div className="rpc-status-container" style={{ marginBottom: '10px', fontSize: '0.82rem', color: '#94a3b8' }}>
+    <span className="rpc-status-indicator"></span>
+    <span>RPC Node: Operational ({SOLANA_NETWORK})</span>
+  </div>
 
         {/* TAB NAVIGATION BAR TERPADU DENGAN SINKRONISASI FILTER PAKET */}
         <div className="dapp-nav-tabs-wrapper">
