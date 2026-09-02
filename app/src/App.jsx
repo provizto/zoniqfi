@@ -710,32 +710,25 @@ function App() {
 
   const verifyReferralOnChain = () => {
     const inputVal = referrerInput.trim();
-
+    if (inputVal.startsWith("0x")) {
+      triggerBanner("⚠️ EVM address detected (0x...). Only Solana network is supported!", "error");
+      return;
+    }
     if (inputVal === "") {
       triggerBanner("Please enter a wallet address or .sns domain.", "warning");
       return;
     }
-
-    if (inputVal.startsWith("0x")) {
-      triggerBanner("⚠️ EVM address detected (0x...). Only Solana network is supported!", "error");
+	
+	if (walletAddress && inputVal.toLowerCase() === walletAddress.toLowerCase()) {
+      triggerBanner("⚠️ You cannot use your own wallet as a referrer!", "warning");
       return;
     }
 
     const snsData = resolveSNSInput(inputVal);
 
     if (snsData.isDomain) {
-      if (inputVal.length < 5) {
-        triggerBanner("⚠️ Please enter a complete domain name (e.g. alice.sol or bonk.sns)", "warning");
-        return;
-      }
       triggerBanner(`🔍 SNS Domain Resolved: ${snsData.displayName} (Verified On-Chain)`, "success");
     } else {
-      // Kunci utama: Alamat Solana wajib 32 - 44 karakter
-      if (inputVal.length < 32 || inputVal.length > 44) {
-        triggerBanner("⚠️ Invalid Solana address! Address must be 32-44 characters long.", "error");
-        return;
-      }
-
       triggerBanner(`✅ Referrer Verified On-Chain: ${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`, "success");
     }
 
