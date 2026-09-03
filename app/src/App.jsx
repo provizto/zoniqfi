@@ -477,14 +477,20 @@ function App() {
       await new Promise((resolve) => setTimeout(resolve, 2500));
       
       const currentFee = parseFloat(swapFee) || 0;
-      const vaultShare = (currentFee * 0.40).toFixed(5);
-      const poolShare = (currentFee * 0.30).toFixed(5);
-      const affiliateShare = (currentFee * 0.15).toFixed(5);
-      const projectTreasuryShare = (currentFee * 0.15).toFixed(5);
+      const vaultShareNum = currentFee * 0.40;
+      const poolShareNum = currentFee * 0.30;
+      const affiliateShareNum = currentFee * 0.15;
+      const opsShareNum = currentFee * 0.15;
+
+      const vaultShare = vaultShareNum.toFixed(5);
+      const poolShare = poolShareNum.toFixed(5);
+      const affiliateShare = affiliateShareNum.toFixed(5);
+      const projectTreasuryShare = opsShareNum.toFixed(5);
 
       setSwapsCount(prev => prev + 1);
       setTxLog(''); 
 
+      // 1. DATA RINGKASAN DISTRIBUSI ON-CHAIN
       setDistributionData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
@@ -497,22 +503,50 @@ function App() {
         ]
       });
 
-      // 🔥 Tambahkan baris ini jika ingin log fee otomatis hilang setelah 15 detik:
+      // Otomatis bersihkan kartu log setelah 15 detik
       setTimeout(() => {
         setDistributionData(null);
       }, 15000);
 
+      // 2. REAKTIF KE MODUL VAULT: Naikkan TVL Protokol
+      setProtocolTVL(prev => prev + Math.round(vaultShareNum * 100) / 100);
+
+      // 3. REAKTIF KE MODUL LOCK ($ZQI Staking):
+      // Jika user sedang mengunci token, bagi hasil USDC langsung bertambah
+      if (isTokenLocked) {
+        const currentEarned = parseFloat(earnedUsdcDisplay) || 0;
+        const updatedEarned = (currentEarned + poolShareNum).toFixed(2);
+        setEarnedUsdcDisplay(`${updatedEarned} USDC`);
+        setRewardClaimable(true);
+      }
+
+      // 4. REAKTIF KE MODUL AFFILIATE:
+      // Jika ada referrer yang diuji/aktif, volume dan komisi langsung bertambah
+      if (referrerInput.trim() !== '') {
+        const currentVol = parseFloat(referralVolume.replace(/[^0-9.-]+/g, "")) || 0;
+        const newVol = currentVol + amount;
+        setReferralVolume(`$${newVol.toLocaleString('en-US', { minimumFractionDigits: 2 })}`);
+
+        const currentEarned = parseFloat(referralEarned.replace(/[^0-9.-]+/g, "")) || 0;
+        const newEarned = currentEarned + affiliateShareNum;
+        setReferralEarned(`$${newEarned.toFixed(2)} USDC`);
+      }
+
+      // 5. UPDATE SALDO TOKEN USER
       if (tokenReceive === 'ZQI') {
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
       }
 
-      // 🔥 Buka modal sukses kustom dan simpan data rinciannya
+      // 6. POPUP SUKSES & SIMPAN KE MODAL
       setSuccessModalData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
         feeAmount: `${swapFee} ${tokenPay}`
       });
       setIsSuccessModalOpen(true);
+
+      // Notifikasi alirkan 15% ke Developer Treasury
+      triggerBanner(`✅ Swap Executed! 15% Ops Fee (${opsShareNum.toFixed(4)} ${tokenPay}) routed to Developer Treasury.`, "success");
 
       setPayAmount('');
       setReceiveAmount('0.0');

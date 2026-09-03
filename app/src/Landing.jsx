@@ -7,20 +7,21 @@ const Landing = ({ onLaunchApp }) => {
   const [showPitchModal, setShowPitchModal] = useState(false);
 
   useEffect(() => {
-    const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap';
-    fontLink.rel = 'stylesheet';
-    document.head.appendChild(fontLink);
+    // Pastikan font Inter terpasang
+    if (!document.querySelector('link[href*="fonts.googleapis.com/css2?family=Inter"]')) {
+      const fontLink = document.createElement('link');
+      fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap';
+      fontLink.rel = 'stylesheet';
+      document.head.appendChild(fontLink);
+    }
 
-    const faLink = document.createElement('link');
-    faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
-    faLink.rel = 'stylesheet';
-    document.head.appendChild(faLink);
-
-    return () => {
-      if (document.head.contains(fontLink)) document.head.removeChild(fontLink);
-      if (document.head.contains(faLink)) document.head.removeChild(faLink);
-    };
+    // Pastikan FontAwesome terpasang permanen untuk Landing maupun Dashboard
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+      const faLink = document.createElement('link');
+      faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
+      faLink.rel = 'stylesheet';
+      document.head.appendChild(faLink);
+    }
   }, []);
 
   const toggleFaq = (index) => {
