@@ -26,3 +26,5 @@ id.json
 Thumbs.db
 .vscode/
 .idea/
+
+devnet-key.json
