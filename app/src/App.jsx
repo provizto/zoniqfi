@@ -1054,7 +1054,7 @@ function App() {
         </div>
       </header>
 
-      {isModalOpen && (
+      {false && isModalOpen && (
         <div id="walletModal" className="modal-overlay" style={{ display: 'flex' }}>
           <div className="modal-content" style={{ maxWidth: '420px', width: '90%' }}>
             <div className="modal-header">
