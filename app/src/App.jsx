@@ -9,7 +9,7 @@ import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 
 // Hook Resmi Solana Wallet Adapter
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
 // ==========================================================================
@@ -74,6 +74,31 @@ function App() {
       setMyWalletAddress('');
     }
   }, [connected, publicKey]);
+
+  // Saldo SOL Otomatis
+  const { connection } = useConnection();
+  const [solBalance, setSolBalance] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchBalance = async () => {
+      if (publicKey && connection) {
+        try {
+          const balance = await connection.getBalance(publicKey);
+          if (isMounted) {
+            setSolBalance((balance / 1e9).toFixed(3));
+          }
+        } catch (err) {
+          console.error("Gagal mengambil saldo SOL:", err);
+        }
+      } else {
+        setSolBalance(null);
+      }
+    };
+
+    fetchBalance();
+    return () => { isMounted = false; };
+  }, [publicKey, connection]);
   
   // 🔥 STATE TAB NAVIGASI ZONIQFI DENGAN DETEKSI PAKET OTOMATIS
   const [activeTab, setActiveTab] = useState(() => {
@@ -1052,7 +1077,7 @@ function App() {
             }}></span>
             Devnet
           </div>
-          
+
           <button 
             onClick={() => setView('landing')} 
             style={{ 
@@ -1108,6 +1133,19 @@ function App() {
               flexDirection: 'column',
               gap: '4px'
             }}>
+              {/* Ringkasan Saldo SOL */}
+              <div style={{
+                padding: '8px 10px',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderRadius: '6px',
+                border: '1px solid #1f2937',
+                marginBottom: '4px'
+              }}>
+                <div style={{ fontSize: '0.68rem', color: '#9ca3af' }}>SOL Balance</div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#10b981' }}>
+                  {solBalance !== null ? `${solBalance} SOL` : 'Loading...'}
+                </div>
+              </div>
               {/* Salin Alamat */}
               <button
                 onClick={() => {
