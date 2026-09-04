@@ -28,7 +28,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
         style={{
           background: '#0b1326',
           border: '1px solid rgba(56, 189, 248, 0.25)',
-          borderRadius: '18px',
+          borderRadius: '20px',
           maxWidth: '860px',
           width: '100%',
           maxHeight: '90vh',
@@ -58,8 +58,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 fontSize: '1.15rem', 
                 fontWeight: '800', 
                 letterSpacing: '0.3px', 
-                color: '#ffffff',
-                textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)'
+                color: '#ffffff'
               }}>
                 ZoniqFi Protocol Pitch & Institutional Brief
               </h2>
@@ -91,84 +90,89 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* MODAL TAB NAVIGATION */}
+        {/* UNIFIED SEGMENTED TAB TRACK (PRESISI SAMA RATA & TIDAK MELOMPAT) */}
         <div style={{
-          display: 'flex',
+          padding: '12px 20px',
           borderBottom: '1px solid #1e293b',
-          background: '#070c18',
-          padding: '10px 20px',
-          gap: '10px',
-          overflowX: 'auto',
-          whiteSpace: 'nowrap'
+          background: '#070c18'
         }}>
-          <button 
-            type="button"
-            onClick={() => setActiveTab('modules')} 
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '9px 18px',
-              borderRadius: '8px',
-              fontSize: '0.84rem',
-              fontWeight: activeTab === 'modules' ? '700' : '600',
-              color: activeTab === 'modules' ? '#ffffff' : '#94a3b8',
-              background: activeTab === 'modules' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'rgba(255, 255, 255, 0.04)',
-              border: activeTab === 'modules' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
-              boxShadow: activeTab === 'modules' ? '0 4px 14px rgba(59, 130, 246, 0.35)' : 'none',
-              cursor: 'pointer',
-              flexShrink: 0,
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Core DeFi Modules
-          </button>
+          <div style={{
+            display: 'flex',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '12px',
+            padding: '4px',
+            gap: '6px'
+          }}>
+            <button 
+              type="button"
+              onClick={() => setActiveTab('modules')} 
+              style={{
+                flex: 1,
+                height: '38px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '8px',
+                fontSize: '0.84rem',
+                fontWeight: activeTab === 'modules' ? '700' : '600',
+                color: activeTab === 'modules' ? '#ffffff' : '#94a3b8',
+                background: activeTab === 'modules' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
+                border: 'none',
+                boxShadow: activeTab === 'modules' ? '0 2px 10px rgba(59, 130, 246, 0.4)' : 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Core DeFi Modules
+            </button>
 
-          <button 
-            type="button"
-            onClick={() => setActiveTab('roadmap')} 
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '9px 18px',
-              borderRadius: '8px',
-              fontSize: '0.84rem',
-              fontWeight: activeTab === 'roadmap' ? '700' : '600',
-              color: activeTab === 'roadmap' ? '#ffffff' : '#94a3b8',
-              background: activeTab === 'roadmap' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'rgba(255, 255, 255, 0.04)',
-              border: activeTab === 'roadmap' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
-              boxShadow: activeTab === 'roadmap' ? '0 4px 14px rgba(59, 130, 246, 0.35)' : 'none',
-              cursor: 'pointer',
-              flexShrink: 0,
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Roadmap & Funding Milestones
-          </button>
+            <button 
+              type="button"
+              onClick={() => setActiveTab('roadmap')} 
+              style={{
+                flex: 1,
+                height: '38px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '8px',
+                fontSize: '0.84rem',
+                fontWeight: activeTab === 'roadmap' ? '700' : '600',
+                color: activeTab === 'roadmap' ? '#ffffff' : '#94a3b8',
+                background: activeTab === 'roadmap' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
+                border: 'none',
+                boxShadow: activeTab === 'roadmap' ? '0 2px 10px rgba(59, 130, 246, 0.4)' : 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Roadmap & Funding Milestones
+            </button>
 
-          <button 
-            type="button"
-            onClick={() => setActiveTab('flywheel')} 
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '9px 18px',
-              borderRadius: '8px',
-              fontSize: '0.84rem',
-              fontWeight: activeTab === 'flywheel' ? '700' : '600',
-              color: activeTab === 'flywheel' ? '#ffffff' : '#94a3b8',
-              background: activeTab === 'flywheel' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'rgba(255, 255, 255, 0.04)',
-              border: activeTab === 'flywheel' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
-              boxShadow: activeTab === 'flywheel' ? '0 4px 14px rgba(59, 130, 246, 0.35)' : 'none',
-              cursor: 'pointer',
-              flexShrink: 0,
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Economic Flywheel
-          </button>
+            <button 
+              type="button"
+              onClick={() => setActiveTab('flywheel')} 
+              style={{
+                flex: 1,
+                height: '38px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '8px',
+                fontSize: '0.84rem',
+                fontWeight: activeTab === 'flywheel' ? '700' : '600',
+                color: activeTab === 'flywheel' ? '#ffffff' : '#94a3b8',
+                background: activeTab === 'flywheel' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
+                border: 'none',
+                boxShadow: activeTab === 'flywheel' ? '0 2px 10px rgba(59, 130, 246, 0.4)' : 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Economic Flywheel
+            </button>
+          </div>
         </div>
 
         {/* MODAL SCROLLABLE BODY */}
@@ -310,7 +314,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>35% Smart Contract Audits:</strong> Formal code verification & penetration testing.
                   </div>
-                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1f2937' }}>
+                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding for minimal slippage.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
