@@ -1030,6 +1030,29 @@ function App() {
 
         {/* KANAN: TOMBOL RINGKAS */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
+          {/* BADGE NETWORK */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px',
+            background: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            padding: '5px 9px',
+            borderRadius: '6px',
+            fontSize: '0.72rem',
+            fontWeight: '600',
+            color: '#34d399'
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#10b981',
+              boxShadow: '0 0 6px #10b981'
+            }}></span>
+            Devnet
+          </div>
+          
           <button 
             onClick={() => setView('landing')} 
             style={{ 
