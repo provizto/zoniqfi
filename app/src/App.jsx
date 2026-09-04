@@ -1277,7 +1277,7 @@ function App() {
                       transition: "all 0.2s ease"
                     }}
                   >
-                    {rewardClaimable ? "Claim Reward" : (earnedUsdcDisplay === "0.00 USDC" ? "✓ Claimed" : "🔒 Epoch Accumulating...")}
+                    {rewardClaimable ? "Claim Reward" : (localStorage.getItem('zoniq_staking_session')?.includes('"isClaimed":true') ? "✓ Claimed" : "🔒 Epoch Accumulating...")}
                   </button>
                 </div>
               )}
