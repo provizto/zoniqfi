@@ -49,9 +49,16 @@ const INITIAL_PRICES = {
 };
 
 function App() {
-  const [view, setView] = useState('landing');
+  const [view, setView] = useState(() => {
+  return localStorage.getItem('zoniq_current_view') || 'landing';
+});
   const { publicKey, connected, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
+
+  // Simpan tampilan terakhir agar tidak reset ke landing saat F5/refresh
+  useEffect(() => {
+    localStorage.setItem('zoniq_current_view', view);
+  }, [view]);
 
   // Sinkronisasi otomatis Wallet Adapter resmi ke state ZoniqFi
   useEffect(() => {
