@@ -1810,7 +1810,7 @@ function App() {
           flexWrap: 'wrap'
         }}>
           <a 
-            href="https://github.com/provizto/zoniqfi-docs" 
+            href="#docs" onClick={(e) => { e.preventDefault(); setIsGuideOpen(true); }} 
             target="_blank" 
             rel="noopener noreferrer" 
             style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
