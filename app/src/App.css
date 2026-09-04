@@ -1190,7 +1190,19 @@ input[type="number"] {
   padding: 0 4px;
 }
 
+/* ==========================================================================
+   KHUSUS TAMPILAN HP (DESKTOP TIDAK BERUBAH)
+   ========================================================================== */
 @media (max-width: 768px) {
+  .protocol-pipeline {
+    max-width: 480px; /* Lebar presisi mengikuti kartu swap */
+    width: 100%;
+    box-sizing: border-box;
+    margin: 16px auto;
+    padding: 16px;
+    border-radius: 16px;
+  }
+
   .pipeline-steps {
     flex-direction: column;
     align-items: stretch;
@@ -1201,26 +1213,35 @@ input[type="number"] {
     display: none;
   }
 
-  /* KUNCI PERBAIKAN DI HP */
   .pipeline-step {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    text-align: left; /* Matikan efek center dari parent card */
+    align-items: center;
+    text-align: left;
     gap: 12px;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 10px 12px;
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-sizing: border-box;
   }
 
   .step-num {
-    flex-shrink: 0; /* Mencegah badge angka gepeng */
-    margin-top: 1px;
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    padding: 3px 7px;
   }
 
   .step-info {
-    text-align: left; /* Pastikan teks judul & deskripsi rata kiri */
+    text-align: left;
+  }
+
+  .step-info strong {
+    font-size: 0.88rem;
+  }
+
+  .step-info p {
+    font-size: 0.72rem;
   }
 }
 
