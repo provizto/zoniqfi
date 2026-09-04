@@ -1195,11 +1195,12 @@ input[type="number"] {
    ========================================================================== */
 @media (max-width: 768px) {
   .protocol-pipeline {
-    max-width: 480px; /* Lebar presisi mengikuti kartu swap */
-    width: 100%;
+    /* Gunakan 92% agar selalu menyisakan ruang napas di tepi kiri & kanan layar HP */
+    width: 92%;
+    max-width: 440px; 
     box-sizing: border-box;
-    margin: 16px auto;
-    padding: 16px;
+    margin: 20px auto; /* auto di kiri-kanan menjaga posisi tetap di tengah presisi */
+    padding: 16px 14px;
     border-radius: 16px;
   }
 
