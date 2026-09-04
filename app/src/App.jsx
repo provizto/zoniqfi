@@ -1616,39 +1616,53 @@ function App() {
         </div>
       </main>
 
-      {/* PANDUAN 4 LANGKAH ALUR PROTOKOL */}
+      {/* 4-STEP WORKFLOW GUIDE (EN) */}
         <div className="protocol-guide-wrapper">
-          <div className="protocol-guide-title">
-            <span>⚡ Alur Eksekusi Protokol ZoniqFi</span>
+          <div className="protocol-guide-header">
+            <span className="protocol-badge">EXECUTION FUNNEL</span>
+            <h3>How ZoniqFi Works</h3>
+            <p>A seamless four-step pipeline from asset acquisition to on-chain yields.</p>
           </div>
 
           <div className="protocol-guide-grid">
             <div className="guide-card">
-              <div className="guide-step-num">01</div>
-              <div className="guide-card-icon">🔄</div>
-              <h4>Swap ($ZQI)</h4>
-              <p>Tukarkan SOL atau USDC untuk mengamankan alokasi awal token $ZQI.</p>
+              <div className="guide-top-bar">
+                <span className="guide-icon-badge">🔄</span>
+                <span className="guide-step-tag">STEP 01</span>
+              </div>
+              <h4>Acquire $ZQI</h4>
+              <p>Swap SOL or USDC seamlessly to secure early $ZQI allocation at base valuation.</p>
+              <div className="guide-card-accent"></div>
             </div>
 
             <div className="guide-card">
-              <div className="guide-step-num">02</div>
-              <div className="guide-card-icon">🔒</div>
-              <h4>Lock (Yield)</h4>
-              <p>Kunci $ZQI untuk mulai menerima dividen Real Yield harian dalam bentuk USDC.</p>
+              <div className="guide-top-bar">
+                <span className="guide-icon-badge">🔒</span>
+                <span className="guide-step-tag">STEP 02</span>
+              </div>
+              <h4>Lock & Earn</h4>
+              <p>Commit $ZQI into fixed maturity lockers to harvest daily Real Yield distributions in USDC.</p>
+              <div className="guide-card-accent"></div>
             </div>
 
             <div className="guide-card">
-              <div className="guide-step-num">03</div>
-              <div className="guide-card-icon">📈</div>
-              <h4>Vault (Grow)</h4>
-              <p>Simpan aset di brankas otomatis untuk melipatgandakan hasil jangka panjang.</p>
+              <div className="guide-top-bar">
+                <span className="guide-icon-badge">📈</span>
+                <span className="guide-step-tag">STEP 03</span>
+              </div>
+              <h4>Auto-Compound</h4>
+              <p>Deposit LP & protocol assets into automated vaults for algorithmic compound returns.</p>
+              <div className="guide-card-accent"></div>
             </div>
 
             <div className="guide-card">
-              <div className="guide-step-num">04</div>
-              <div className="guide-card-icon">👥</div>
-              <h4>Affiliate (Earn)</h4>
-              <p>Bagikan tautan rujukan unik Anda dan raih bagi hasil komisi on-chain.</p>
+              <div className="guide-top-bar">
+                <span className="guide-icon-badge">👥</span>
+                <span className="guide-step-tag">STEP 04</span>
+              </div>
+              <h4>Refer & Grow</h4>
+              <p>Share your multi-tier affiliate link to earn instant on-chain commission rebates.</p>
+              <div className="guide-card-accent"></div>
             </div>
           </div>
         </div>
