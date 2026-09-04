@@ -252,7 +252,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           display: 'flex',
           gap: '8px',
           overflowX: 'auto',
-          whiteSpace: 'nowrap'
+          whiteSpace: 'nowrap',
           flexShrink: 0
         }}>
           {Object.keys(t.tabs).map((secKey) => (
@@ -284,7 +284,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* SCROLLABLE BODY */}
-        <div style={{ padding: '22px 24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ padding: '22px 24px', overflowY: 'auto', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
           
           {/* 01. SWAP */}
           {(activeSection === 'all' || activeSection === 'swap') && (
