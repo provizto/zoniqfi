@@ -800,7 +800,7 @@ function App() {
 
   const copyLink = () => {
     if (!isConnected) {
-      setIsModalOpen(true);
+      setVisible(true);
       triggerBanner("⚠️ Please connect your wallet first!", "warning");
       return;
     }
@@ -1061,7 +1061,7 @@ function App() {
         </div>
       </header>
 
-      {false && isModalOpen && (
+      {false && (
         <div id="walletModal" className="modal-overlay" style={{ display: 'flex' }}>
           <div className="modal-content" style={{ maxWidth: '420px', width: '90%' }}>
             <div className="modal-header">
