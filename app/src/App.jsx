@@ -55,6 +55,9 @@ function App() {
   const { publicKey, connected, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
 
+  const [showWalletMenu, setShowWalletMenu] = useState(false);
+  const [copied, setCopied] = useState(false);
+
   // Simpan tampilan terakhir agar tidak reset ke landing saat F5/refresh
   useEffect(() => {
     localStorage.setItem('zoniq_current_view', view);
@@ -1026,7 +1029,7 @@ function App() {
         </div>
 
         {/* KANAN: TOMBOL RINGKAS */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
           <button 
             onClick={() => setView('landing')} 
             style={{ 
@@ -1044,7 +1047,13 @@ function App() {
           
           <button 
             id="walletBtn" 
-            onClick={openWalletModal} 
+            onClick={() => {
+              if (!isConnected) {
+                openWalletModal();
+              } else {
+                setShowWalletMenu((prev) => !prev);
+              }
+            }} 
             style={{ 
               padding: '6px 12px', 
               borderRadius: '6px', 
@@ -1058,6 +1067,100 @@ function App() {
             }}>
             {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
           </button>
+
+          {/* DROPDOWN MENU SAAT TERKONEKSI */}
+          {isConnected && showWalletMenu && (
+            <div style={{
+              position: 'absolute',
+              top: '110%',
+              right: 0,
+              background: '#111827',
+              border: '1px solid #374151',
+              borderRadius: '8px',
+              padding: '6px',
+              minWidth: '160px',
+              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
+              zIndex: 100,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px'
+            }}>
+              {/* Salin Alamat */}
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(myWalletAddress);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1500);
+                }}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#e5e7eb',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  fontSize: '0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#1f2937')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+              >
+                📋 {copied ? "Copied!" : "Copy Address"}
+              </button>
+
+              {/* Solana Explorer / Solscan */}
+              <a
+                href={`https://solscan.io/account/${myWalletAddress}?cluster=devnet`}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  color: '#e5e7eb',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  fontSize: '0.75rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#1f2937')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+              >
+                🔍 Solscan
+              </a>
+
+              <hr style={{ border: 'none', borderTop: '1px solid #1f2937', margin: '2px 0' }} />
+
+              {/* Disconnect */}
+              <button
+                onClick={() => {
+                  setShowWalletMenu(false);
+                  disconnect();
+                }}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#ef4444',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  fontSize: '0.75rem',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+              >
+                🚪 Disconnect
+              </button>
+            </div>
+          )}
         </div>
       </header>
 
