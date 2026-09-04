@@ -1194,10 +1194,33 @@ input[type="number"] {
   .pipeline-steps {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 10px;
   }
+
   .pipeline-arrow {
     display: none;
+  }
+
+  /* KUNCI PERBAIKAN DI HP */
+  .pipeline-step {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left; /* Matikan efek center dari parent card */
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  .step-num {
+    flex-shrink: 0; /* Mencegah badge angka gepeng */
+    margin-top: 1px;
+  }
+
+  .step-info {
+    text-align: left; /* Pastikan teks judul & deskripsi rata kiri */
   }
 }
 
