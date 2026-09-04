@@ -138,8 +138,15 @@ function App() {
               setIsTokenLocked(true);
               setStakedAmount(stData.amount || 1000);
               setShowRewardRow(true);
-              setEarnedUsdcDisplay(stData.earnedDisplay || "75.00 USDC");
-              setRewardClaimable(true);
+              
+              // Gunakan nilai tersimpan (jika sudah diklaim, nilainya '0.00 USDC')
+              const currentReward = stData.earnedDisplay || "0.00 USDC";
+              setEarnedUsdcDisplay(currentReward);
+              
+              // Tombol klaim HANYA menyala jika reward BUKAN 0.00 USDC dan belum diklaim
+              const isClaimable = currentReward !== "0.00 USDC" && !stData.isClaimed;
+              setRewardClaimable(isClaimable);
+
               baseBal = Math.max(0, baseBal - (stData.amount || 1000));
             }
           }
@@ -701,12 +708,23 @@ function App() {
       return;
     }
     
-    // Notifikasi Web3 sukses klaim
     triggerBanner(`🎉 Claim Successful! ${earnedUsdcDisplay} has been transferred to your wallet.`, "success");
     
-    // Reset saldo hasil ke 0.00 USDC dan matikan status claimable (baris tetap terlihat)
     setEarnedUsdcDisplay("0.00 USDC");
     setRewardClaimable(false);
+
+    // 💾 UPDATE STORAGE AGAR STATUS KLAIM TERSIMPAN PERMANEN
+    try {
+      const savedStaking = localStorage.getItem('zoniq_staking_session');
+      if (savedStaking) {
+        const parsed = JSON.parse(savedStaking);
+        parsed.earnedDisplay = "0.00 USDC";
+        parsed.isClaimed = true;
+        localStorage.setItem('zoniq_staking_session', JSON.stringify(parsed));
+      }
+    } catch (err) {
+      console.warn("Failed to update claim state:", err);
+    }
   };
 
   // 1. Membuka modal konfirmasi buatan kita (bukan popup browser)
