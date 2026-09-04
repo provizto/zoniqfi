@@ -1061,26 +1061,6 @@ function App() {
         </div>
       </header>
 
-      {false && (
-        <div id="walletModal" className="modal-overlay" style={{ display: 'flex' }}>
-          <div className="modal-content" style={{ maxWidth: '420px', width: '90%' }}>
-            <div className="modal-header">
-              <h3>Select Solana Wallet</h3>
-              <button className="btn-close-modal" onClick={() => setIsModalOpen(false)}>&times;</button>
-            </div>
-            <div className="modal-body" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', padding: '15px 0' }}>
-              <button className="wallet-option-btn" onClick={() => selectWallet('phantom')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">👻</span> Phantom</button>
-              <button className="wallet-option-btn" onClick={() => selectWallet('solflare')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">☀️</span> Solflare</button>
-              <button className="wallet-option-btn" onClick={() => selectWallet('okx')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🌐</span> OKX Wallet</button>
-              <button className="wallet-option-btn" onClick={() => selectWallet('backpack')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🎒</span> Backpack</button>
-              <button className="wallet-option-btn" onClick={() => selectWallet('coinbase')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🔵</span> Coinbase</button>
-              <button className="wallet-option-btn" onClick={() => selectWallet('brave')} style={{ margin: 0, padding: '12px' }}><span className="wallet-icon">🦁</span> Brave</button>
-              <button className="wallet-option-btn" onClick={() => selectWallet('ledger')} style={{ gridColumn: 'span 2', margin: 0, padding: '12px', background: 'linear-gradient(135deg, #1f2937, #111827)', border: '1px solid #374151' }}><span className="wallet-icon">🛡️</span> Ledger Hardware Wallet</button>
-            </div>
-          </div>
-        </div>
-      )}
-
       <main className="dapp-container">
   <div className="rpc-status-container" style={{ marginBottom: '10px', fontSize: '0.82rem', color: '#94a3b8' }}>
     <span className="rpc-status-indicator"></span>
