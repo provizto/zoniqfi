@@ -95,6 +95,18 @@ function App() {
     const activePackage = urlParams ? urlParams.get('pkg') : null;
     const currentViewParam = urlParams ? urlParams.get('view') : null;
     
+    // 🛡️ TAHAP 2: SIMPAN & BACA REFERRAL LINK (ANTI-HILANG SAAT REFRESH)
+    const refParam = urlParams ? urlParams.get('ref') : null;
+    if (refParam) {
+      localStorage.setItem('zoniq_cached_referrer', refParam);
+      setReferrerInput(refParam);
+    } else {
+      const savedRef = localStorage.getItem('zoniq_cached_referrer');
+      if (savedRef) {
+        setReferrerInput(savedRef);
+      }
+    }
+
     if (currentViewParam === 'onboarding') {
       setView('onboarding-rahasia');
     } else if (activePackage) {
