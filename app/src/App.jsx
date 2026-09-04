@@ -1281,10 +1281,24 @@ function App() {
       <div className="ticker-container">
         <div className="ticker-track">
           {[...tickerPrices, ...tickerPrices].map((item, idx) => (
-            <div key={idx} className="ticker-item">
+            <div 
+              key={idx} 
+              className={`ticker-item ${item.isZqi ? 'zqi-ticker-highlight' : ''}`}
+              onClick={() => {
+                if (item.isZqi) {
+                  const swapBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.toLowerCase().includes('swap'));
+                  if (swapBtn) swapBtn.click();
+                  const dapp = document.querySelector('.dapp-container');
+                  if (dapp) dapp.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              style={item.isZqi ? { cursor: 'pointer' } : {}}
+              title={item.isZqi ? 'Klik untuk Swap $ZQI' : ''}
+            >
               <span className="ticker-sym">{item.symbol}</span>
               <span className="ticker-price">{item.price}</span>
-              <span className={`ticker-change ${item.isZqi ? 'zqi-tag' : (item.change.startsWith('+') ? 'up' : 'down')}`}>
+              <span className={`ticker-change ${item.isZqi ? 'zqi-tag pulse-active' : (item.change.startsWith('+') ? 'up' : 'down')}`}>
+                {item.isZqi && <span className="ticker-pulse-dot"></span>}
                 {item.change}
               </span>
             </div>
