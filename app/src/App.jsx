@@ -1242,20 +1242,20 @@ function App() {
                 🔄 <span className="tab-text">Swap</span>
               </button>
             )}
-            {SHOW_OPTIMIZER && (
-              <button 
-                className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
-                onClick={() => setActiveTab('vault')}
-              >
-                📈 <span className="tab-text">Vault</span>
-              </button>
-            )}
             {SHOW_LOCKER && (
               <button 
                 className={`dapp-tab-btn ${activeTab === 'staking' ? 'active' : ''}`}
                 onClick={() => setActiveTab('staking')}
               >
                 🔒 <span className="tab-text">Lock</span>
+              </button>
+            )}
+            {SHOW_OPTIMIZER && (
+              <button 
+                className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
+                onClick={() => setActiveTab('vault')}
+              >
+                📈 <span className="tab-text">Vault</span>
               </button>
             )}
             {SHOW_AFFILIATE && (
