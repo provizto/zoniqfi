@@ -58,6 +58,57 @@ function App() {
   const [showWalletMenu, setShowWalletMenu] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // LIVE TICKER STATE
+  const [tickerPrices, setTickerPrices] = useState([
+    { symbol: 'ZQI', price: '$0.0500', change: 'PRESALE', isZqi: true },
+    { symbol: 'SOL', price: '$145.20', change: '+3.4%' },
+    { symbol: 'JUP', price: '$0.82', change: '+2.1%' },
+    { symbol: 'RENDER', price: '$5.40', change: '-0.8%' },
+    { symbol: 'BONK', price: '$0.000018', change: '+5.2%' },
+  ]);
+
+  useEffect(() => {
+    const fetchPrices = async () => {
+      try {
+        const res = await fetch(
+          'https://api.coingecko.com/api/v3/simple/price?ids=solana,jupiter-exchange-solana,render-token,bonk&vs_currencies=usd&include_24hr_change=true'
+        );
+        const data = await res.json();
+        if (data) {
+          setTickerPrices([
+            { symbol: 'ZQI', price: '$0.0500', change: 'PRESALE', isZqi: true },
+            { 
+              symbol: 'SOL', 
+              price: `$${data.solana?.usd?.toFixed(2) || '145.20'}`, 
+              change: `${(data.solana?.usd_24h_change || 0) >= 0 ? '+' : ''}${data.solana?.usd_24h_change?.toFixed(2)}%` 
+            },
+            { 
+              symbol: 'JUP', 
+              price: `$${data['jupiter-exchange-solana']?.usd?.toFixed(3) || '0.82'}`, 
+              change: `${(data['jupiter-exchange-solana']?.usd_24h_change || 0) >= 0 ? '+' : ''}${data['jupiter-exchange-solana']?.usd_24h_change?.toFixed(2)}%` 
+            },
+            { 
+              symbol: 'RENDER', 
+              price: `$${data['render-token']?.usd?.toFixed(2) || '5.40'}`, 
+              change: `${(data['render-token']?.usd_24h_change || 0) >= 0 ? '+' : ''}${data['render-token']?.usd_24h_change?.toFixed(2)}%` 
+            },
+            { 
+              symbol: 'BONK', 
+              price: `$${data.bonk?.usd?.toFixed(6) || '0.000018'}`, 
+              change: `${(data.bonk?.usd_24h_change || 0) >= 0 ? '+' : ''}${data.bonk?.usd_24h_change?.toFixed(2)}%` 
+            },
+          ]);
+        }
+      } catch (err) {
+        // Fallback jika rate-limit tercapai
+      }
+    };
+
+    fetchPrices();
+    const interval = setInterval(fetchPrices, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Simpan tampilan terakhir agar tidak reset ke landing saat F5/refresh
   useEffect(() => {
     localStorage.setItem('zoniq_current_view', view);
@@ -1224,6 +1275,21 @@ function App() {
           )}
         </div>
       </header>
+
+      {/* LIVE MARKET TICKER STRIP */}
+      <div className="ticker-container">
+        <div className="ticker-track">
+          {[...tickerPrices, ...tickerPrices].map((item, idx) => (
+            <div key={idx} className="ticker-item">
+              <span className="ticker-sym">{item.symbol}</span>
+              <span className="ticker-price">{item.price}</span>
+              <span className={`ticker-change ${item.isZqi ? 'zqi-tag' : (item.change.startsWith('+') ? 'up' : 'down')}`}>
+                {item.change}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <main className="dapp-container">
   <div className="rpc-status-container" style={{ marginBottom: '10px', fontSize: '0.82rem', color: '#94a3b8' }}>

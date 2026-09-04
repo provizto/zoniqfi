@@ -1200,3 +1200,69 @@ input[type="number"] {
     display: none;
   }
 }
+
+/* ==========================================================================
+   LIVE MARQUEE TICKER
+   ========================================================================== */
+.ticker-container {
+  width: 100%;
+  overflow: hidden;
+  background: rgba(10, 15, 26, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 8px 0;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: 32px;
+  animation: marquee-scroll 24s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+}
+
+.ticker-sym {
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.ticker-price {
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+.ticker-change.up {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.ticker-change.down {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.ticker-change.zqi-tag {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
