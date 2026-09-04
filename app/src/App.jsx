@@ -1281,34 +1281,32 @@ function App() {
       <div style={{
         background: 'linear-gradient(90deg, #070e17 0%, #0c2135 50%, #070e17 100%)',
         borderBottom: '1px solid rgba(56, 189, 248, 0.25)',
-        padding: '6px 0',
+        padding: '7px 0',
         color: '#e2e8f0',
         fontSize: '0.78rem',
         fontWeight: '600',
         letterSpacing: '0.04em',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        display: 'flex',
+        userSelect: 'none'
       }}>
-        <marquee scrollamount="6" style={{ display: 'block', width: '100%' }}>
-          <span>🔥 <span style={{ color: '#38bdf8' }}>PRESALE ROUND 1 ACTIVE</span></span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span>1 $ZQI = <span style={{ color: '#34d399', fontWeight: '700' }}>$0.0500 USDC</span></span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span>TOTAL SUPPLY: <span style={{ color: '#f8fafc', fontWeight: '700' }}>100,000,000 $ZQI</span></span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span style={{ color: '#a78bfa' }}>REAL YIELD STAKING LIVE</span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span style={{ color: '#38bdf8' }}>DEVNET VERIFIED</span>
-          <span style={{ margin: '0 28px', color: '#334155' }}>✦</span>
-          <span>🔥 <span style={{ color: '#38bdf8' }}>PRESALE ROUND 1 ACTIVE</span></span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span>1 $ZQI = <span style={{ color: '#34d399', fontWeight: '700' }}>$0.0500 USDC</span></span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span>TOTAL SUPPLY: <span style={{ color: '#f8fafc', fontWeight: '700' }}>100,000,000 $ZQI</span></span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span style={{ color: '#a78bfa' }}>REAL YIELD STAKING LIVE</span>
-          <span style={{ margin: '0 16px', color: '#475569' }}>•</span>
-          <span style={{ color: '#38bdf8' }}>DEVNET VERIFIED</span>
-        </marquee>
+        <div className="ticker-track" style={{ animationDuration: '32s' }}>
+          {[1, 2, 3, 4].map((num) => (
+            <div key={num} style={{ display: 'inline-flex', alignItems: 'center', gap: '16px' }}>
+              <span>🔥 <span style={{ color: '#38bdf8' }}>PRESALE ROUND 1 ACTIVE</span></span>
+              <span style={{ color: '#475569' }}>•</span>
+              <span>1 $ZQI = <span style={{ color: '#34d399', fontWeight: '700' }}>$0.0500 USDC</span></span>
+              <span style={{ color: '#475569' }}>•</span>
+              <span>TOTAL SUPPLY: <span style={{ color: '#f8fafc', fontWeight: '700' }}>100,000,000 $ZQI</span></span>
+              <span style={{ color: '#475569' }}>•</span>
+              <span style={{ color: '#a78bfa' }}>REAL YIELD STAKING LIVE</span>
+              <span style={{ color: '#475569' }}>•</span>
+              <span style={{ color: '#38bdf8' }}>DEVNET VERIFIED</span>
+              <span style={{ margin: '0 16px', color: '#334155' }}>✦</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* LIVE MARKET TICKER STRIP */}
