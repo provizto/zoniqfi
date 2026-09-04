@@ -1292,9 +1292,31 @@ function App() {
                 </button>
               )}
 
-              <button className="btn-action" id="emergencyUnlockBtn" onClick={triggerEmergencyModal} disabled={!isTokenLocked || isLockLoading} style={{ marginTop: "12px", width: "100%", padding: "12px", borderRadius: "8px", fontWeight: "600", background: (isTokenLocked && !isLockLoading) ? "#ef4444" : "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.4)", color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#ef4444", cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", pointerEvents: (isTokenLocked && !isLockLoading) ? "auto" : "none" }}>
-                <i className="fas fa-exclamation-triangle" style={{ marginRight: '6px' }}></i> Emergency Early Unlock (10% Penalty)
-              </button>
+              <button 
+  type="button"
+  id="emergencyUnlockBtn" 
+  onClick={triggerEmergencyModal} 
+  disabled={!isTokenLocked || isLockLoading} 
+  style={{ 
+    marginTop: "12px", 
+    width: "100%", 
+    padding: "12px", 
+    borderRadius: "8px", 
+    fontWeight: "700", 
+    fontSize: "0.88rem",
+    background: (isTokenLocked && !isLockLoading) ? "linear-gradient(135deg, #dc2626, #b91c1c)" : "#1e1b2e", 
+    border: "1px solid rgba(239, 68, 68, 0.5)", 
+    color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#f87171", 
+    cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", 
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px",
+    boxShadow: (isTokenLocked && !isLockLoading) ? "0 4px 15px rgba(220, 38, 38, 0.35)" : "none"
+  }}
+>
+  ⚠️ Emergency Early Unlock (10% Penalty)
+</button>
             </div>
           )}
 
