@@ -4,7 +4,8 @@ const TransactionSuccessModal = ({
   isOpen, 
   onClose, 
   swapDetails = null,
-  programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD"
+  programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD",
+  onNavigateTab // Props callback baru untuk memindahkan tab navigasi
 }) => {
   if (!isOpen) return null;
 
@@ -24,6 +25,21 @@ const TransactionSuccessModal = ({
   const solscanUrl = data.txSignature 
     ? `https://solscan.io/tx/${data.txSignature}?cluster=devnet`
     : `https://solscan.io/account/${programId}?cluster=devnet`;
+
+  // Deteksi token yang diterima untuk aksi terpandu
+  const isReceivedZQI = data.toAmount && data.toAmount.includes("ZQI");
+  const isReceivedUSDC = data.toAmount && data.toAmount.includes("USDC");
+
+  const handleActionClick = () => {
+    if (onNavigateTab) {
+      if (isReceivedZQI) {
+        onNavigateTab('staking');
+      } else if (isReceivedUSDC) {
+        onNavigateTab('vault');
+      }
+    }
+    onClose();
+  };
 
   return (
     <div 
@@ -151,7 +167,7 @@ const TransactionSuccessModal = ({
           </div>
         </div>
 
-        {/* Tombol Aksi */}
+        {/* Tombol Aksi Terpandu */}
         <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
           <a
             href={solscanUrl}
@@ -177,20 +193,27 @@ const TransactionSuccessModal = ({
             Solscan ↗
           </a>
           <button
-            onClick={onClose}
+            onClick={handleActionClick}
             style={{
-              flex: 1,
-              padding: '11px 0',
+              flex: 1.4,
+              padding: '11px 8px',
               borderRadius: '8px',
               fontSize: '0.85rem',
-              background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
+              background: isReceivedZQI 
+                ? 'linear-gradient(135deg, #10b981, #059669)' 
+                : 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
               border: 'none',
               color: '#ffffff',
               fontWeight: 'bold',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              whiteSpace: 'nowrap'
             }}
           >
-            Done
+            {isReceivedZQI 
+              ? "Stake $ZQI (Real Yield) →" 
+              : isReceivedUSDC 
+              ? "Deposit to Vault →" 
+              : "Done"}
           </button>
         </div>
 

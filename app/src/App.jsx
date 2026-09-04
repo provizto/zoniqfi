@@ -891,11 +891,12 @@ function App() {
 
       {/* 👉 TEMPATKAN MODAL DI SINI (Return Utama Dashboard) */}
       <TransactionSuccessModal 
-        isOpen={isSuccessModalOpen} 
-        onClose={() => setIsSuccessModalOpen(false)} 
-        swapDetails={successModalData}
-        programId={PROGRAM_ID}
-      />
+  isOpen={isSuccessModalOpen} 
+  onClose={() => setIsSuccessModalOpen(false)} 
+  swapDetails={successModalData}
+  programId={PROGRAM_ID}
+  onNavigateTab={(tabName) => setActiveTab(tabName)}
+/>
 
       {securityBanner.show && (
         <div id="securityBanner" style={{
