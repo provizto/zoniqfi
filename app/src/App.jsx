@@ -1616,53 +1616,50 @@ function App() {
         </div>
       </main>
 
-      {/* 4-STEP WORKFLOW GUIDE (EN) */}
-        <div className="protocol-guide-wrapper">
-          <div className="protocol-guide-header">
-            <span className="protocol-badge">EXECUTION FUNNEL</span>
-            <h3>How ZoniqFi Works</h3>
-            <p>A seamless four-step pipeline from asset acquisition to on-chain yields.</p>
+      {/* HORIZONTAL PROTOCOL PIPELINE (EN) */}
+        <div className="protocol-pipeline">
+          <div className="pipeline-header">
+            <span className="pipeline-dot"></span>
+            <span className="pipeline-title">PROTOCOL EXECUTION FLOW</span>
           </div>
 
-          <div className="protocol-guide-grid">
-            <div className="guide-card">
-              <div className="guide-top-bar">
-                <span className="guide-icon-badge">🔄</span>
-                <span className="guide-step-tag">STEP 01</span>
+          <div className="pipeline-steps">
+            <div className="pipeline-step">
+              <span className="step-num">01</span>
+              <div className="step-info">
+                <strong>Swap</strong>
+                <p>Acquire $ZQI using SOL or USDC</p>
               </div>
-              <h4>Acquire $ZQI</h4>
-              <p>Swap SOL or USDC seamlessly to secure early $ZQI allocation at base valuation.</p>
-              <div className="guide-card-accent"></div>
             </div>
 
-            <div className="guide-card">
-              <div className="guide-top-bar">
-                <span className="guide-icon-badge">🔒</span>
-                <span className="guide-step-tag">STEP 02</span>
+            <span className="pipeline-arrow">→</span>
+
+            <div className="pipeline-step">
+              <span className="step-num">02</span>
+              <div className="step-info">
+                <strong>Lock</strong>
+                <p>Stake $ZQI for daily USDC Real Yield</p>
               </div>
-              <h4>Lock & Earn</h4>
-              <p>Commit $ZQI into fixed maturity lockers to harvest daily Real Yield distributions in USDC.</p>
-              <div className="guide-card-accent"></div>
             </div>
 
-            <div className="guide-card">
-              <div className="guide-top-bar">
-                <span className="guide-icon-badge">📈</span>
-                <span className="guide-step-tag">STEP 03</span>
+            <span className="pipeline-arrow">→</span>
+
+            <div className="pipeline-step">
+              <span className="step-num">03</span>
+              <div className="step-info">
+                <strong>Vault</strong>
+                <p>Compound returns automatically</p>
               </div>
-              <h4>Auto-Compound</h4>
-              <p>Deposit LP & protocol assets into automated vaults for algorithmic compound returns.</p>
-              <div className="guide-card-accent"></div>
             </div>
 
-            <div className="guide-card">
-              <div className="guide-top-bar">
-                <span className="guide-icon-badge">👥</span>
-                <span className="guide-step-tag">STEP 04</span>
+            <span className="pipeline-arrow">→</span>
+
+            <div className="pipeline-step">
+              <span className="step-num">04</span>
+              <div className="step-info">
+                <strong>Affiliate</strong>
+                <p>Earn on-chain referral rebates</p>
               </div>
-              <h4>Refer & Grow</h4>
-              <p>Share your multi-tier affiliate link to earn instant on-chain commission rebates.</p>
-              <div className="guide-card-accent"></div>
             </div>
           </div>
         </div>
