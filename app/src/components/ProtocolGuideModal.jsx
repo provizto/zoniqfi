@@ -253,6 +253,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           gap: '8px',
           overflowX: 'auto',
           whiteSpace: 'nowrap'
+          flexShrink: 0
         }}>
           {Object.keys(t.tabs).map((secKey) => (
             <button
