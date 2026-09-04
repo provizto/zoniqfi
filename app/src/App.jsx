@@ -151,6 +151,17 @@ function App() {
             if (vData.calcAmount) setCalcAmount(vData.calcAmount.toString());
           }
 
+          // 🛡️ TAHAP 2: BACA SESI AFFILIATE (PULIHKAN TIER & VOLUME SAAT REFRESH)
+          const savedAffiliate = localStorage.getItem('zoniq_affiliate_data');
+          if (savedAffiliate) {
+            const aff = JSON.parse(savedAffiliate);
+            if (aff.referrer) setReferrerInput(aff.referrer);
+            if (aff.volume) setReferralVolume(aff.volume);
+            if (aff.earned) setReferralEarned(aff.earned);
+            if (aff.tier) setTierLabel(aff.tier);
+            if (aff.color) setTierColor(aff.color);
+          }
+
           setZqiBalance(baseBal);
         }
       }
@@ -407,6 +418,7 @@ function App() {
     localStorage.removeItem('zoniq_wallet_session');
     localStorage.removeItem('zoniq_staking_session');
     localStorage.removeItem('zoniq_vault_session');
+    localStorage.removeItem('zoniq_affiliate_data');
 
     setMyWalletAddress("");
     setActiveProviderName("");
@@ -781,22 +793,42 @@ function App() {
     }
 
     const simulatedVolume = Math.floor(Math.random() * 145000) + 5000;
-    setReferralVolume(`$${simulatedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}`);
+    const formattedVolume = `$${simulatedVolume.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    setReferralVolume(formattedVolume);
 
     let rate = 0.10;
+    let label = "Bronze (10%)";
+    let color = "#14b8a6";
+
     if (simulatedVolume <= 10000) {
-      setTierLabel("Bronze (10%)"); setTierColor("#14b8a6");
+      label = "Bronze (10%)";
+      color = "#14b8a6";
       rate = 0.10;
     } else if (simulatedVolume > 10000 && simulatedVolume <= 100000) {
-      setTierLabel("Silver (18%)"); setTierColor("#3b82f6");
+      label = "Silver (18%)";
+      color = "#3b82f6";
       rate = 0.18;
     } else {
-      setTierLabel("Gold (25%)"); setTierColor("#a855f7");
+      label = "Gold (25%)";
+      color = "#a855f7";
       rate = 0.25;
     }
 
+    setTierLabel(label);
+    setTierColor(color);
+
     const totalEarnedUsdc = simulatedVolume * rate;
-    setReferralEarned(`$${totalEarnedUsdc.toLocaleString('en-US', { minimumFractionDigits: 2 })} USDC`);
+    const formattedEarned = `$${totalEarnedUsdc.toLocaleString('en-US', { minimumFractionDigits: 2 })} USDC`;
+    setReferralEarned(formattedEarned);
+
+    // 🛡️ SIMPAN HASIL VERIFIKASI KE STORAGE (ANTI-RESET SAAT REFRESH)
+    localStorage.setItem('zoniq_affiliate_data', JSON.stringify({
+      referrer: inputVal,
+      volume: formattedVolume,
+      earned: formattedEarned,
+      tier: label,
+      color: color
+    }));
   };
 
   if (view === 'onboarding-rahasia') {
