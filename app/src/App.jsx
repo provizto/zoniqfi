@@ -1816,25 +1816,6 @@ function App() {
             type="button"
             onClick={() => setIsGuideOpen(true)}
             style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#94a3b8',
-              fontSize: 'inherit',
-              fontFamily: 'inherit',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'color 0.2s'
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
-          >
-            Documentation
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setIsGuideOpen(true)}
-            style={{
               background: 'rgba(56, 189, 248, 0.1)',
               border: '1px solid rgba(56, 189, 248, 0.3)',
               color: '#38bdf8',

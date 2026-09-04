@@ -1,7 +1,7 @@
 ﻿import React, { useState } from 'react';
 
 const ProtocolGuideModal = ({ isOpen, onClose }) => {
-  const [lang, setLang] = useState('EN'); // EN sebagai default utama
+  const [lang, setLang] = useState('EN');
   const [activeSection, setActiveSection] = useState('all');
 
   if (!isOpen) return null;
@@ -11,7 +11,6 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
       badge: "OFFICIAL ARCHITECTURE & USER MANUAL",
       title: "ZoniqFi Protocol Operational Guide",
       subtitle: "Comprehensive architectural breakdown and module interactions.",
-      modulesTitle: "Core Protocol Modules",
       tabs: { all: "All Modules", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Affiliate" },
       modules: {
         swap: {
@@ -66,7 +65,6 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
       badge: "PANDUAN OPERASIONAL & ARSITEKTUR RESMI",
       title: "Panduan Protokol ZoniqFi",
       subtitle: "Penjelasan mendalam arsitektur modul dan mekanisme transaksi.",
-      modulesTitle: "Modul Utama Protokol",
       tabs: { all: "Semua Modul", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Afiliasi" },
       modules: {
         swap: {
@@ -181,7 +179,6 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {/* LANGUAGE SWITCHER CAPSULE (EN PRIMARY) */}
             <div style={{
               display: 'flex',
               background: 'rgba(255, 255, 255, 0.06)',
@@ -225,7 +222,6 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
               </button>
             </div>
 
-            {/* CLOSE BUTTON */}
             <button 
               type="button"
               onClick={onClose}
@@ -248,7 +244,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* SECTION FILTER TABS */}
+        {/* SECTION FILTER TABS (PRESISI & TERTATA) */}
         <div style={{
           padding: '10px 20px',
           borderBottom: '1px solid #1e293b',
@@ -264,14 +260,21 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
               type="button"
               onClick={() => setActiveSection(secKey)}
               style={{
-                padding: '6px 14px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '32px',
+                padding: '0 14px',
+                boxSizing: 'border-box',
                 borderRadius: '6px',
                 fontSize: '0.8rem',
                 fontWeight: activeSection === secKey ? '700' : '600',
                 color: activeSection === secKey ? '#ffffff' : '#94a3b8',
-                background: activeSection === secKey ? 'rgba(56, 189, 248, 0.15)' : 'transparent',
-                border: activeSection === secKey ? '1px solid #38bdf8' : '1px solid transparent',
-                cursor: 'pointer'
+                background: activeSection === secKey ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.03)',
+                border: activeSection === secKey ? '1px solid #38bdf8' : '1px solid rgba(255, 255, 255, 0.06)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                flexShrink: 0
               }}
             >
               {t.tabs[secKey]}
@@ -348,7 +351,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* 04. AFFILIATE (WITH TWO MECHANISMS EMPHASIS) */}
+          {/* 04. AFFILIATE */}
           {(activeSection === 'all' || activeSection === 'affiliate') && (
             <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '14px', padding: '18px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
@@ -361,7 +364,6 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
               </div>
               <p style={{ color: '#94a3b8', fontSize: '0.86rem', margin: '0 0 14px 0' }}>{t.modules.affiliate.desc}</p>
               
-              {/* TWO BOXES EXPLANATION */}
               <div style={{ background: '#0b1120', border: '1px solid #1e293b', borderRadius: '10px', padding: '14px', marginBottom: '14px' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '0.86rem', color: '#38bdf8' }}>{t.modules.affiliate.subBoxTitle}</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
