@@ -1,103 +1,142 @@
-# ⚡ ZoniqFi Protocol — Modular Solana DeFi Suite & Real-Yield Infrastructure
+# ⚡ ZoniqFi Protocol — Technical Architecture & Protocol Specification
 
-[![Solana Devnet](https://img.shields.io/badge/Solana-Devnet%20Verified-14F195?logo=solana&logoColor=white)](https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet)
-[![Live Sandbox Preview](https://img.shields.io/badge/Live%20Demo-vzt--beige.vercel.app-0284c7)](https://zoniqfi.vercel.app)
-[![Telegram Support](https://img.shields.io/badge/Telegram-Core%20Dev-229ED9?logo=telegram&logoColor=white)](https://t.me/zoniqfi)
+Welcome to the official technical documentation and architecture repository for **ZoniqFi Protocol**.
 
-**ZoniqFi Protocol** is an enterprise-grade, modular DeFi infrastructure engineered on Solana. Leveraging **Solana Versioned Transactions (v0 / ALTs)**, **Jito Block Engine Anti-MEV routing**, and **Solana Name Service (SNS)** identity resolution, ZoniqFi provides a turnkey DeFi execution layer designed to capture protocol revenue and distribute non-inflationary **USDC Real Yield** to ecosystem participants.
+ZoniqFi is an institutional-grade, modular DeFi infrastructure protocol architected natively for the Solana blockchain. Built with Anchor/Rust and leveraging **Solana Transaction v1 (4,096-byte atomic payload)**, the protocol integrates **Jito Block Engine private bundle routing (Anti-MEV)**, an autonomous **USDC single-asset Yield Optimizer**, a deflationary **$ZQI Real Yield Lock**, and an **SNS-integrated Tiered On-Chain Referral Engine**.
 
 ---
 
-## 🏛️ Core Architectural Modules
+## 🏛️ Core Protocol Architecture & Fee Routing
 
-[ Solana Versioned Transaction Pipeline (Compact ALTs Engine) ]
-│
-├── 1. Security & Pre-Execution Validation
-│   ├── Jito Engine Private Bundle Routing (Anti-Sandwich / MEV Defense)
-│   ├── Anti-Wash Trading Rate-Limiting (Max 1 tx / 10s per PDA)
-│   └── SNS Identity Resolver (.sol & .sns Domain Normalization)
-│
-├── 2. Liquidity & Dynamic Settlement Core
-│   ├── Dynamic SPL Token Swap Execution (Jupiter Price API v2)
-│   └── 0.3% Flat Protocol Fee Assessment (Settled Atomically in USDC)
-│
-└── 3. Atomic Multi-Tier Fee Routing
-├── 40% ➔ Yield Optimizer Vault (Auto-Compounding APY up to 49.1%)
-├── 30% ➔ $ZQI Real Yield Staking Pool (USDC Staking Dividends)
-├── 15% ➔ Anti-Sybil Affiliate Treasury (Tiered Community Rebates)
-└── 15% ➔ Operations Treasury (Dedicated RPC & Node Maintenance)
+ZoniqFi resolves toxic MEV extraction (sandwich/front-running attacks) and token emission inflation through an atomic, fee-capitalized economic flywheel.
 
-### 1. AMM DEX Swap Engine (Anti-MEV Atomic Swaps)
-* **Atomic Execution:** Powered by Solana Transaction v1 (up to 4,096-byte payload capacity).
-* **MEV Elimination:** Routes swap instructions through Jito Block Engine private bundles to mitigate front-running and predatory sandwich bots.
-* **Fee Capitalization:** A flat 0.3% protocol fee is atomically distributed to protocol vaults without native token emission inflation.
+```text
+                  [ Solana Transaction v1 ]
+                  (4,096-Byte Atomic Tx)
+                             │
+                             ▼
+              [ Jito Block Engine Routing ]
+               (Anti-MEV Private Bundle)
+                             │
+                             ▼
+              [ 0.3% Flat Protocol Fee ]
+                             │
+       ┌─────────────┬───────┴─────┬─────────────┐
+       ▼             ▼             ▼             ▼
+    [ 40% ]       [ 30% ]       [ 15% ]       [ 15% ]
+  Yield Vault    $ZQI Lock     Affiliate    Operations
+ (Compounding)  (Real Yield)   Treasury    & Core Dev
+```
+
+---
+
+## 🚀 The 4 Core DeFi Infrastructure Modules
+
+### 1. AMM DEX Swap Engine (Anti-MEV Atomic Execution)
+* **Solana Transaction v1 (Versioned Tx):** Packs complex verification, swap routing, and multi-vault distributions into a single 4,096-byte atomic payload.
+* **Jito Block Engine Private Bundles:** Routes transactions directly to validators, completely bypassing the public mempool to eliminate front-running and sandwich bots.
+* **Anti-Wash Trading Protection:** Programmatic on-chain cooldown limits prevent artificial volume inflation.
+* **0.3% Flat Protocol Fee:** Split atomically across Yield Vaults (40%), $ZQI Real Yield Pool (30%), Affiliate Treasury (15%), and Project Operations (15%).
 
 ### 2. Yield Optimizer Vault (Automated Compounding)
-* **Non-Custodial Architecture:** Single-deposit USDC architecture executing periodic programmatic rebalancing.
-* **Performance:** Baseline 0.11% daily rate with dynamic boosted optimizations up to 49.1% APY.
+* **Single-Deposit USDC Liquidity:** Eliminates impermanent loss risk through deterministic single-asset staking strategies.
+* **Autonomous Execution:** Periodically executes auto-compounding cycles via non-custodial smart contracts without requiring user-side gas expenditure.
+* **Deterministic Yield Engine:** Baseline programmatic daily rate of 0.11% with boosted optimizations reaching up to **49.1% APY**.
 
-### 3. $ZQI Supply Lock & Real Yield Engine
-* **Circulating Supply Defense:** Staking horizons with weighted reward multipliers:
-  * **30 Days:** 1.0x Weight
-  * **90 Days:** 1.5x Weight
-  * **180 Days:** 2.5x Weight
-* **Deflationary Burn Mechanism:** Premature early exits (*Emergency Unlock*) trigger a mandatory 10% penalty permanently burned on-chain.
-* **0% Inflation:** All staking rewards are settled and distributed strictly in stable USDC.
+### 3. $ZQI Lock & Real Yield (Deflationary Supply Defense)
+* **0% Inflation Real Yield:** Staking rewards are distributed strictly in stable **USDC** derived from protocol swap fees, avoiding secondary market sell pressure from token emissions.
+* **Lock Multipliers & Reward Weights:**
+  * **30-Day Horizon:** 1.0x Reward Multiplier
+  * **90-Day Horizon:** 1.5x Reward Multiplier
+  * **180-Day Horizon:** 2.5x Reward Multiplier
+* **Deflationary Burn Defense:** Premature emergency unlocks trigger a mandatory **10% penalty burned permanently on-chain**.
 
-### 4. Secure On-Chain Affiliate Engine
-* **Web3 Identity:** Integrated domain resolution for Solana Name Service (`.sol` / `.sns`).
-* **Anti-Sybil Engine:** Embedded on-chain rate limits (1 tx / 10s threshold) mitigating multi-wallet manipulation.
-* **Tiered Rebates:** Bronze (10% on $0–$10k), Silver (18% on $10k–$100k), and Gold (25% on >$100k volume).
+### 4. Secure On-Chain Affiliate (SNS-Integrated Referral)
+* **Solana Name Service Support:** Natively resolves human-readable domain identities (.sol / .sns) alongside raw Public Keys.
+* **URL Parsing & Self-Referral Prevention:** Programmatic query handling (?ref=) with automated rejection of self-referral transactions.
+* **Anti-Sybil Cooldown Engine:** Enforces a strict rate limit (1 transaction per 10 seconds) to prevent multi-wallet bot manipulation.
+* **3-Tier Volume Rebates:**
+  * **Bronze Tier ($0 – $10,000 Volume):** 10% Commission Rebate
+  * **Silver Tier ($10,001 – $100,000 Volume):** 18% Commission Rebate
+  * **Gold Tier (> $100,000 Volume):** 25% Commission Rebate
 
 ---
 
-## 📊 Protocol Specifications & Status
+## 🔄 Self-Sustaining Economic Flywheel
 
-| Parameter | Technical Standard | Status |
+1. **Traffic & Referral Inflow:** The On-Chain Affiliate engine incentivizes creators, referrers, and merchants to drive swap volume into the protocol.
+2. **Fee Capitalization:** Every transaction charges a 0.3% fee collected directly as stable USDC revenue, completely bypassing token inflation.
+3. **Supply Lock & Deflation:** Users lock $ZQI to capture 30% of protocol fees in USDC dividends. Early exits trigger a 10% burn, permanently reducing circulating supply.
+4. **Compounding Liquidity:** 40% of swap fees feed the Yield Vault, continuously boosting APY and protocol-locked TVL.
+
+---
+
+## 🗺️ Roadmap & Capital Milestones
+
+### Phase 1 • Q3 2026 (Current Execution)
+* **Status:** Bootstrapped (MVP Live on Devnet)
+* Deployment of all 4 modular smart contracts on Solana Devnet.
+* Solana Wallet Standard integration (Phantom, Solflare, Backpack, OKX, Coinbase, Ledger).
+* SNS domain resolution engine integration.
+
+### Phase 2 • Q4 2026 (Audit & Anchor PDA Migration)
+* **Target Capital:** $40,000 – $60,000
+* Third-party smart contract security audit (OtterSec / Kudelski / Sec3).
+* Transition to full production Anchor Program Derived Addresses (PDA).
+* Dedicated high-throughput RPC cluster deployment.
+
+### Phase 3 • Q1 2027 (Mainnet-Beta Launch & Liquidity)
+* **Target Capital:** $100,000 – $150,000
+* Solana Mainnet-Beta protocol deployment.
+* Protocol-Owned Liquidity (POL) injection for $ZQI/USDC and $ZQI/SOL pairs.
+* Activation of live 0.3% fee-to-USDC yield distribution engine.
+
+### Phase 4 • Q2–Q3 2027 (B2B Infrastructure & Regional Expansion)
+* **Target Capital:** $50,000 – $80,000
+* Deployment of turnkey B2B white-label infrastructure and developer SDKs.
+* Institutional merchant and partner onboarding in Singapore and Southeast Asia.
+
+---
+
+## 📊 Capital Allocation Framework (Use of Funds)
+
+| Category | Allocation | Strategic Objective |
 | :--- | :--- | :--- |
-| **Network Cluster** | Solana Devnet (Staging) ➔ Mainnet-Beta (Q1 2027) | Verified & Active |
-| **Live Sandbox Deployment** | [zoniqfi.vercel.app](https://zoniqfi.vercel.app) | Live Preview Active |
-| **Smart Contract Program ID** | [`HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD`](https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet) | Executable (BPF Upgradeable) |
-| **Transaction Standard** | Solana Versioned Transactions (v0 / ALTs) | Verified |
-| **Oracle & Pricing** | Jupiter Price Engine v2 Integration | Real-time Stream |
-| **Identity Standard** | Solana Name Service (SNS) Parser | Verified |
+| **Smart Contract Audits** | **35%** | Formal code verification, penetration testing, and vulnerability remediation. |
+| **Protocol Liquidity (POL)** | **30%** | Seeding primary DEX liquidity pools to ensure minimal slippage. |
+| **Core Engineering** | **20%** | Dedicated RPC node cluster, Jito relayer gas fees, and Rust smart contract maintenance. |
+| **Institutional BizDev** | **15%** | Regional merchant onboarding, compliance, and legal framework setup. |
 
 ---
 
-## 🛠️ Local Development Setup
+## 💻 Local Development & Testing
 
-Ensure you have **Node.js (v18+)** and **npm** installed.
+### Prerequisites
+* Node.js (v18.x or later)
+* Rust & Cargo
+* Solana CLI (v1.18+)
+* Anchor Framework (v0.29+)
+
+### Installation & Commands
 
 ```bash
-# 1. Clone repository
-git clone [https://github.com/zoniqfi/zoniqfi-protocol.git](https://github.com/zoniqfi/zoniqfi-protocol.git)
-cd zoniqfi-protocol
-
-# 2. Install dependencies
+git clone https://github.com/provizto/zoniqfi.git
+cd zoniqfi
 npm install
-
-# 3. Launch development server
+anchor build
+anchor test
 npm run dev
+```
 
-The dApp sandbox will be accessible locally at http://localhost:5173.
+---
 
-🗺️ Milestone Roadmap & Capital Allocation
-Phase 1 (Q3 2026 — Current): Devnet Sandbox, multi-wallet standard integration (Phantom, Solflare, OKX, Coinbase, Backpack, Ledger), and SNS resolver.
+## 🔗 Official Verification Links
 
-Phase 2 (Q4 2026 — Target: $40k–$60k): Formal smart contract security audit (OtterSec / Sec3 / Kudelski), Anchor PDA account migration, and Dedicated RPC cluster setup.
+* Live dApp (Solana Devnet): https://zoniqfi.com
+* Smart Contract Repository: https://github.com/provizto/zoniqfi
+* Technical Documentation: https://github.com/provizto/zoniqfi-docs
+* Direct Engineering Channel: https://t.me/zoniqfi
 
-Phase 3 (Q1 2027 — Target: $100k–$150k): Solana Mainnet-Beta deployment, Protocol-Owned Liquidity (POL) seeding, and live USDC Real Yield activation.
+---
 
-Phase 4 (Q2–Q3 2027 — Target: $50k–$80k): B2B White-Label Turnkey Gateway, developer SDK release, and institutional merchant expansion in Singapore/Southeast Asia.
-
-📄 Compliance & Regulatory Notice
-$ZQI functions strictly as a protocol utility, governance, and fee-capture asset. It does not constitute a security, collective investment scheme (CIS), or consumer digital payment token under MAS regulatory frameworks. All testing interactions are strictly isolated to the Solana Devnet cluster.
-
-✉️ Institutional Inquiries & Grants
-Lead Architect: @zoniqfi
-
-Live Sandbox dApp: https://zoniqfi.vercel.app
-
-Official Channel: t.me/zoniqfi
-
-© 2026 ZoniqFi Protocol. All Rights Reserved.
+© 2026 ZoniqFi Protocol. All Rights Reserved. Built for the Solana Ecosystem.
