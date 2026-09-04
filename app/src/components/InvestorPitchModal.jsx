@@ -53,7 +53,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.2rem', color: '#38bdf8' }}>⚡</span>
-              <h2 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '800', letterSpacing: '0.5px' }}>
+              <h2 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '800', letterSpacing: '0.5px', color: '#f8fafc' }}>
                 ZoniqFi Protocol Pitch & Institutional Brief
               </h2>
             </div>
@@ -94,52 +94,70 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           whiteSpace: 'nowrap',
           scrollbarWidth: 'none'
         }}>
-          <button 
-            onClick={() => setActiveTab('modules')}
-            style={{
-              background: activeTab === 'modules' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'transparent',
-              color: activeTab === 'modules' ? '#fff' : '#94a3b8',
-              border: 'none',
-              padding: '8px 14px',
+          <button onClick={() => setActiveTab('modules')} style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '38px',
+              minHeight: '38px',
+              lineHeight: 1,
+              padding: '0 16px',
+              margin: 0,
+              boxSizing: 'border-box',
+              background: activeTab === 'modules' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'rgba(255, 255, 255, 0.04)',
+              color: activeTab === 'modules' ? '#ffffff' : '#94a3b8',
+              border: activeTab === 'modules' ? '1px solid rgba(139, 92, 246, 0.5)' : '1px solid transparent',
               borderRadius: '8px',
               fontWeight: '700',
               fontSize: '0.85rem',
               cursor: 'pointer',
-              flexShrink: 0
-            }}
-          >
+              flexShrink: 0,
+              transition: 'all 0.2s ease'
+            }}>
             Core DeFi Modules
           </button>
-          <button 
-            onClick={() => setActiveTab('roadmap')}
-            style={{
-              background: activeTab === 'roadmap' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'transparent',
-              color: activeTab === 'roadmap' ? '#fff' : '#94a3b8',
-              border: 'none',
-              padding: '8px 14px',
+          <button onClick={() => setActiveTab('roadmap')} style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '38px',
+              minHeight: '38px',
+              lineHeight: 1,
+              padding: '0 16px',
+              margin: 0,
+              boxSizing: 'border-box',
+              background: activeTab === 'roadmap' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'rgba(255, 255, 255, 0.04)',
+              color: activeTab === 'roadmap' ? '#ffffff' : '#94a3b8',
+              border: activeTab === 'roadmap' ? '1px solid rgba(139, 92, 246, 0.5)' : '1px solid transparent',
               borderRadius: '8px',
               fontWeight: '700',
               fontSize: '0.85rem',
               cursor: 'pointer',
-              flexShrink: 0
-            }}
-          >
+              flexShrink: 0,
+              transition: 'all 0.2s ease'
+            }}>
             Roadmap & Funding Milestones
           </button>
-          <button 
-            onClick={() => setActiveTab('flywheel')}
-            style={{
-              background: activeTab === 'flywheel' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'transparent',
-              color: activeTab === 'flywheel' ? '#fff' : '#94a3b8',
-              border: 'none',
-              padding: '8px 14px',
+          <button onClick={() => setActiveTab('flywheel')} style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '38px',
+              minHeight: '38px',
+              lineHeight: 1,
+              padding: '0 16px',
+              margin: 0,
+              boxSizing: 'border-box',
+              background: activeTab === 'flywheel' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'rgba(255, 255, 255, 0.04)',
+              color: activeTab === 'flywheel' ? '#ffffff' : '#94a3b8',
+              border: activeTab === 'flywheel' ? '1px solid rgba(139, 92, 246, 0.5)' : '1px solid transparent',
               borderRadius: '8px',
               fontWeight: '700',
               fontSize: '0.85rem',
               cursor: 'pointer',
-              flexShrink: 0
-            }}
-          >
+              flexShrink: 0,
+              transition: 'all 0.2s ease'
+            }}>
             Economic Flywheel
           </button>
         </div>
