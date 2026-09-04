@@ -1616,6 +1616,43 @@ function App() {
         </div>
       </main>
 
+      {/* PANDUAN 4 LANGKAH ALUR PROTOKOL */}
+        <div className="protocol-guide-wrapper">
+          <div className="protocol-guide-title">
+            <span>⚡ Alur Eksekusi Protokol ZoniqFi</span>
+          </div>
+
+          <div className="protocol-guide-grid">
+            <div className="guide-card">
+              <div className="guide-step-num">01</div>
+              <div className="guide-card-icon">🔄</div>
+              <h4>Swap ($ZQI)</h4>
+              <p>Tukarkan SOL atau USDC untuk mengamankan alokasi awal token $ZQI.</p>
+            </div>
+
+            <div className="guide-card">
+              <div className="guide-step-num">02</div>
+              <div className="guide-card-icon">🔒</div>
+              <h4>Lock (Yield)</h4>
+              <p>Kunci $ZQI untuk mulai menerima dividen Real Yield harian dalam bentuk USDC.</p>
+            </div>
+
+            <div className="guide-card">
+              <div className="guide-step-num">03</div>
+              <div className="guide-card-icon">📈</div>
+              <h4>Vault (Grow)</h4>
+              <p>Simpan aset di brankas otomatis untuk melipatgandakan hasil jangka panjang.</p>
+            </div>
+
+            <div className="guide-card">
+              <div className="guide-step-num">04</div>
+              <div className="guide-card-icon">👥</div>
+              <h4>Affiliate (Earn)</h4>
+              <p>Bagikan tautan rujukan unik Anda dan raih bagi hasil komisi on-chain.</p>
+            </div>
+          </div>
+        </div>
+
       {/* FOOTER */}
       <footer className="dapp-footer" style={{ 
         borderTop: '1px solid #1f2937', 
