@@ -1778,7 +1778,7 @@ function App() {
           flexWrap: 'wrap'
         }}>
           <a 
-            href="/ZoniqFi_Grant_Proposal.html" 
+            href="https://github.com/provizto/zoniqfi-docs" 
             target="_blank" 
             rel="noopener noreferrer" 
             style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
@@ -1787,12 +1787,21 @@ function App() {
           </a>
 
           <a 
+            href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
+          >
+            $ZQI Explorer 🔍
+          </a>
+
+          <a 
             href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" 
             target="_blank" 
             rel="noopener noreferrer" 
             style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
           >
-            Security Audit 🛡️
+            Smart Contract ⚙️
           </a>
 
           <button 
