@@ -15,7 +15,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
         right: 0,
         bottom: 0,
         background: 'rgba(3, 7, 18, 0.88)',
-        backdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(12px)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -26,15 +26,15 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
       <div 
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: '#0d1322',
-          border: '1px solid #1e293b',
-          borderRadius: '20px',
+          background: '#0b1326',
+          border: '1px solid rgba(56, 189, 248, 0.25)',
+          borderRadius: '18px',
           maxWidth: '860px',
           width: '100%',
           maxHeight: '90vh',
           display: 'flex',
           flexDirection: 'column',
-          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)',
+          boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 25px rgba(56, 189, 248, 0.08)',
           overflow: 'hidden',
           color: '#f3f4f6',
           fontFamily: "'Inter', sans-serif"
@@ -42,7 +42,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
       >
         {/* MODAL HEADER */}
         <div style={{
-          padding: '18px 24px',
+          padding: '20px 24px',
           borderBottom: '1px solid #1e293b',
           display: 'flex',
           justifyContent: 'space-between',
@@ -52,23 +52,31 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '1.2rem', color: '#38bdf8' }}>⚡</span>
-              <h2 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '800', letterSpacing: '0.5px', color: '#f8fafc' }}>
+              <span style={{ fontSize: '1.25rem', color: '#38bdf8' }}>⚡</span>
+              <h2 style={{ 
+                margin: 0, 
+                fontSize: '1.15rem', 
+                fontWeight: '800', 
+                letterSpacing: '0.3px', 
+                color: '#ffffff',
+                textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)'
+              }}>
                 ZoniqFi Protocol Pitch & Institutional Brief
               </h2>
             </div>
-            <p style={{ margin: '4px 0 0 0', fontSize: '0.78rem', color: '#94a3b8' }}>
+            <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>
               Institutional Presentation & Grant Allocation Proposal
             </p>
           </div>
           <button 
+            type="button"
             onClick={onClose}
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
+              background: 'rgba(255, 255, 255, 0.06)',
               border: '1px solid #334155',
               borderRadius: '8px',
-              color: '#94a3b8',
-              fontSize: '1.2rem',
+              color: '#cbd5e1',
+              fontSize: '1.25rem',
               cursor: 'pointer',
               width: '34px',
               height: '34px',
@@ -83,81 +91,82 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* MODAL TAB NAVIGATION (RESPONSIVE SCROLL FOR MOBILE) */}
+        {/* MODAL TAB NAVIGATION */}
         <div style={{
           display: 'flex',
           borderBottom: '1px solid #1e293b',
-          background: '#090e1b',
-          padding: '8px 20px',
+          background: '#070c18',
+          padding: '10px 20px',
           gap: '10px',
           overflowX: 'auto',
-          whiteSpace: 'nowrap',
-          scrollbarWidth: 'none'
+          whiteSpace: 'nowrap'
         }}>
-          <button onClick={() => setActiveTab('modules')} style={{
+          <button 
+            type="button"
+            onClick={() => setActiveTab('modules')} 
+            style={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              height: '38px',
-              minHeight: '38px',
-              lineHeight: 1,
-              padding: '0 16px',
-              margin: 0,
-              boxSizing: 'border-box',
-              background: activeTab === 'modules' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'rgba(255, 255, 255, 0.04)',
-              color: activeTab === 'modules' ? '#ffffff' : '#94a3b8',
-              border: activeTab === 'modules' ? '1px solid rgba(139, 92, 246, 0.5)' : '1px solid transparent',
+              padding: '9px 18px',
               borderRadius: '8px',
-              fontWeight: '700',
-              fontSize: '0.85rem',
+              fontSize: '0.84rem',
+              fontWeight: activeTab === 'modules' ? '700' : '600',
+              color: activeTab === 'modules' ? '#ffffff' : '#94a3b8',
+              background: activeTab === 'modules' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'rgba(255, 255, 255, 0.04)',
+              border: activeTab === 'modules' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
+              boxShadow: activeTab === 'modules' ? '0 4px 14px rgba(59, 130, 246, 0.35)' : 'none',
               cursor: 'pointer',
               flexShrink: 0,
               transition: 'all 0.2s ease'
-            }}>
+            }}
+          >
             Core DeFi Modules
           </button>
-          <button onClick={() => setActiveTab('roadmap')} style={{
+
+          <button 
+            type="button"
+            onClick={() => setActiveTab('roadmap')} 
+            style={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              height: '38px',
-              minHeight: '38px',
-              lineHeight: 1,
-              padding: '0 16px',
-              margin: 0,
-              boxSizing: 'border-box',
-              background: activeTab === 'roadmap' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'rgba(255, 255, 255, 0.04)',
-              color: activeTab === 'roadmap' ? '#ffffff' : '#94a3b8',
-              border: activeTab === 'roadmap' ? '1px solid rgba(139, 92, 246, 0.5)' : '1px solid transparent',
+              padding: '9px 18px',
               borderRadius: '8px',
-              fontWeight: '700',
-              fontSize: '0.85rem',
+              fontSize: '0.84rem',
+              fontWeight: activeTab === 'roadmap' ? '700' : '600',
+              color: activeTab === 'roadmap' ? '#ffffff' : '#94a3b8',
+              background: activeTab === 'roadmap' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'rgba(255, 255, 255, 0.04)',
+              border: activeTab === 'roadmap' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
+              boxShadow: activeTab === 'roadmap' ? '0 4px 14px rgba(59, 130, 246, 0.35)' : 'none',
               cursor: 'pointer',
               flexShrink: 0,
               transition: 'all 0.2s ease'
-            }}>
+            }}
+          >
             Roadmap & Funding Milestones
           </button>
-          <button onClick={() => setActiveTab('flywheel')} style={{
+
+          <button 
+            type="button"
+            onClick={() => setActiveTab('flywheel')} 
+            style={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              height: '38px',
-              minHeight: '38px',
-              lineHeight: 1,
-              padding: '0 16px',
-              margin: 0,
-              boxSizing: 'border-box',
-              background: activeTab === 'flywheel' ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : 'rgba(255, 255, 255, 0.04)',
-              color: activeTab === 'flywheel' ? '#ffffff' : '#94a3b8',
-              border: activeTab === 'flywheel' ? '1px solid rgba(139, 92, 246, 0.5)' : '1px solid transparent',
+              padding: '9px 18px',
               borderRadius: '8px',
-              fontWeight: '700',
-              fontSize: '0.85rem',
+              fontSize: '0.84rem',
+              fontWeight: activeTab === 'flywheel' ? '700' : '600',
+              color: activeTab === 'flywheel' ? '#ffffff' : '#94a3b8',
+              background: activeTab === 'flywheel' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'rgba(255, 255, 255, 0.04)',
+              border: activeTab === 'flywheel' ? '1px solid rgba(139, 92, 246, 0.6)' : '1px solid rgba(255, 255, 255, 0.06)',
+              boxShadow: activeTab === 'flywheel' ? '0 4px 14px rgba(59, 130, 246, 0.35)' : 'none',
               cursor: 'pointer',
               flexShrink: 0,
               transition: 'all 0.2s ease'
-            }}>
+            }}
+          >
             Economic Flywheel
           </button>
         </div>
@@ -165,11 +174,10 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
         {/* MODAL SCROLLABLE BODY */}
         <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1, fontSize: '0.9rem', lineHeight: '1.6' }}>
           
-          {/* TAB 1: CORE DEFI MODULES (SWAP -> LOCK -> VAULT -> AFFILIATE) */}
+          {/* TAB 1: CORE DEFI MODULES */}
           {activeTab === 'modules' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               
-              {/* 01: SWAP */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#38bdf8', fontSize: '1rem', fontWeight: '700' }}>
@@ -187,7 +195,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </ul>
               </div>
 
-              {/* 02: LOCK */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#c084fc', fontSize: '1rem', fontWeight: '700' }}>
@@ -204,7 +211,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </ul>
               </div>
 
-              {/* 03: VAULT */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#60a5fa', fontSize: '1rem', fontWeight: '700' }}>
@@ -221,7 +227,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </ul>
               </div>
 
-              {/* 04: AFFILIATE */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#4ade80', fontSize: '1rem', fontWeight: '700' }}>
@@ -246,7 +251,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           {activeTab === 'roadmap' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
               
-              {/* Phase 1 */}
               <div style={{ borderLeft: '3px solid #14b8a6', paddingLeft: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT)</span>
@@ -260,7 +264,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
               </div>
 
-              {/* Phase 2 */}
               <div style={{ borderLeft: '3px solid #3b82f6', paddingLeft: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: '#3b82f6', fontWeight: '700' }}>PHASE 2 • Q4 2026</span>
@@ -272,7 +275,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
               </div>
 
-              {/* Phase 3 */}
               <div style={{ borderLeft: '3px solid #8b5cf6', paddingLeft: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: '#8b5cf6', fontWeight: '700' }}>PHASE 3 • Q1 2027</span>
@@ -284,7 +286,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
               </div>
 
-              {/* Phase 4 */}
               <div style={{ borderLeft: '3px solid #ec4899', paddingLeft: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: '#ec4899', fontWeight: '700' }}>PHASE 4 • Q2-Q3 2027</span>
@@ -296,8 +297,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
               </div>
 
-              {/* Use of Funds Grid: Responsive Auto-Fit (1 Kolom di HP, 2 Kolom di Web) */}
-              <div style={{ background: '#0b1120', border: '1px solid #1e293b', borderRadius: '12px', padding: '16px', marginTop: '6px' }}>
+              <div style={{ background: '#070c18', border: '1px solid #1e293b', borderRadius: '12px', padding: '16px', marginTop: '6px' }}>
                 <h5 style={{ margin: '0 0 10px 0', color: '#fff', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   Capital Allocation Framework (Use of Funds)
                 </h5>
@@ -307,16 +307,16 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   gap: '10px', 
                   fontSize: '0.82rem' 
                 }}>
-                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px' }}>
+                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>35% Smart Contract Audits:</strong> Formal code verification & penetration testing.
                   </div>
-                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px' }}>
+                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding for minimal slippage.
                   </div>
-                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px' }}>
+                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>20% Core Engineering:</strong> Dedicated RPC cluster, Jito relayer fees & Rust logic.
                   </div>
-                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px' }}>
+                  <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>15% Institutional BizDev:</strong> Singapore / SEA merchant onboarding & legal compliance.
                   </div>
                 </div>
@@ -325,9 +325,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* TAB 3: ECONOMIC FLYWHEEL (LINEAR 4-STEP ALIGNMENT) */}
+          {/* TAB 3: ECONOMIC FLYWHEEL */}
           {activeTab === 'flywheel' && (
-            <div style={{ background: '#0b1120', border: '1px solid #1e293b', borderRadius: '12px', padding: '18px' }}>
+            <div style={{ background: '#070c18', border: '1px solid #1e293b', borderRadius: '12px', padding: '18px' }}>
               <h4 style={{ margin: '0 0 10px 0', color: '#10b981', fontSize: '1.05rem' }}>
                 Self-Sustaining Protocol Flywheel
               </h4>
@@ -336,16 +336,16 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               </p>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.83rem' }}>
-                <div style={{ padding: '10px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
+                <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
                   <strong>Step 1 (Swap Velocity & Fee Capitalization):</strong> Users swap SOL/USDC for $ZQI. Every trade incurs a 0.3% protocol fee converted directly into non-inflationary real yield.
                 </div>
-                <div style={{ padding: '10px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #c084fc' }}>
+                <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #c084fc' }}>
                   <strong>Step 2 (Supply Constraint & Lock Deflation):</strong> Traders lock $ZQI to capture 30% of swap fees in USDC dividends. Emergency unlocks trigger an automated 10% token burn.
                 </div>
-                <div style={{ padding: '10px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #60a5fa' }}>
+                <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #60a5fa' }}>
                   <strong>Step 3 (Vault Compounding & TVL Expansion):</strong> 40% of swap fees feed the USDC Yield Vault, autonomously compounding returns and deepening protocol-owned liquidity.
                 </div>
-                <div style={{ padding: '10px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
+                <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
                   <strong>Step 4 (Affiliate Distribution & Viral Flow):</strong> 15% of swap fees fund the tiered referral engine, driving creators and traders back into Step 1.
                 </div>
               </div>
@@ -356,7 +356,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
 
         {/* MODAL FOOTER */}
         <div style={{
-          padding: '14px 24px',
+          padding: '16px 24px',
           borderTop: '1px solid #1e293b',
           display: 'flex',
           justifyContent: 'space-between',
@@ -373,9 +373,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
+              background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
               color: '#fff',
-              padding: '8px 16px',
+              padding: '8px 18px',
               borderRadius: '8px',
               fontSize: '0.82rem',
               fontWeight: '700',
