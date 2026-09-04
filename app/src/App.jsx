@@ -8,6 +8,10 @@ import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR I
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 
+// Hook Resmi Solana Wallet Adapter
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
 // ==========================================================================
@@ -45,7 +49,9 @@ const INITIAL_PRICES = {
 };
 
 function App() {
-  const [view, setView] = useState('landing'); 
+  const [view, setView] = useState('landing');
+  const { publicKey, connected, disconnect } = useWallet();
+  const { setVisible } = useWalletModal();
   
   // 🔥 STATE TAB NAVIGASI ZONIQFI DENGAN DETEKSI PAKET OTOMATIS
   const [activeTab, setActiveTab] = useState(() => {
