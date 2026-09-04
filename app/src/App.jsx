@@ -1,3 +1,4 @@
+import ProtocolGuideModal from './components/ProtocolGuideModal';
 import { useState, useEffect } from 'react';
 import Landing from './Landing';
 import logoZoniq from './assets/image_436281.png'; 
@@ -50,6 +51,7 @@ const INITIAL_PRICES = {
 };
 
 function App() {
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [view, setView] = useState(() => {
   return localStorage.getItem('zoniq_current_view') || 'landing';
 });
@@ -1727,7 +1729,8 @@ function App() {
           )}
 
         </div>
-      </main>
+      <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+    </main>
 
       {/* HORIZONTAL PROTOCOL PIPELINE (EN) */}
         <div className="protocol-pipeline">
@@ -1817,6 +1820,27 @@ function App() {
           >
             Documentation
           </a>
+
+          <button
+            type="button"
+            onClick={() => setIsGuideOpen(true)}
+            style={{
+              background: 'rgba(56, 189, 248, 0.1)',
+              border: '1px solid rgba(56, 189, 248, 0.3)',
+              color: '#38bdf8',
+              borderRadius: '6px',
+              padding: '4px 10px',
+              fontSize: '0.78rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            📖 Protocol Guide [EN/ID]
+          </button>
 
           <a 
             href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
