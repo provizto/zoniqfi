@@ -52,6 +52,18 @@ function App() {
   const [view, setView] = useState('landing');
   const { publicKey, connected, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
+
+  // Sinkronisasi otomatis Wallet Adapter resmi ke state ZoniqFi
+  useEffect(() => {
+    if (connected && publicKey) {
+      const address = publicKey.toBase58();
+      setMyWalletAddress(address);
+      setIsConnected(true);
+    } else if (!connected) {
+      setIsConnected(false);
+      setMyWalletAddress('');
+    }
+  }, [connected, publicKey]);
   
   // 🔥 STATE TAB NAVIGASI ZONIQFI DENGAN DETEKSI PAKET OTOMATIS
   const [activeTab, setActiveTab] = useState(() => {
@@ -300,10 +312,10 @@ function App() {
   };
 
   const openWalletModal = () => {
-    if (isConnected) {
-      disconnectWallet();
+    if (connected) {
+      disconnect();
     } else {
-      setIsModalOpen(true);
+      setVisible(true);
     }
   };
 
