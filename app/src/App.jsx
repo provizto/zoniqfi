@@ -1,4 +1,5 @@
 import ProtocolGuideModal from './components/ProtocolGuideModal';
+import InvestorPitchModal from './components/InvestorPitchModal';
 import { useState, useEffect } from 'react';
 import Landing from './Landing';
 import logoZoniq from './assets/image_436281.png'; 
@@ -52,8 +53,9 @@ const INITIAL_PRICES = {
 
 function App() {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [showPitchModal, setShowPitchModal] = useState(false);
   const [view, setView] = useState(() => {
-  return localStorage.getItem('zoniq_current_view') || 'landing';
+  return localStorage.getItem('zoniq_current_view') || 'dapp';
 });
   const { publicKey, connected, disconnect } = useWallet();
   const { setVisible } = useWalletModal();
@@ -1832,6 +1834,25 @@ function App() {
           >
             📖 Protocol Guide [EN/ID]
           </button>
+          <button
+            type="button"
+            onClick={() => setShowPitchModal(true)}
+            style={{
+              background: 'rgba(59, 130, 246, 0.15)',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              color: '#60a5fa',
+              borderRadius: '6px',
+              padding: '4px 10px',
+              fontSize: '0.78rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px'
+            }}
+          >
+            📊 Pitch Deck
+          </button>
 
           <a 
             href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
@@ -1868,6 +1889,32 @@ function App() {
           </button>
         </div>
       </footer>
+
+        {/* MOBILE BOTTOM DOCK (MENU KHUSUS HP) */}
+      <div className="mobile-bottom-dock">
+        <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="mobile-dock-item">
+          <i className="fab fa-telegram-plane"></i>
+          <span>Telegram</span>
+        </a>
+        <a href="https://github.com/provizto/zoniqfi-docs" target="_blank" rel="noopener noreferrer" className="mobile-dock-item">
+          <i className="fas fa-book"></i>
+          <span>Docs</span>
+        </a>
+        <a href="https://github.com/provizto/zoniqfi" target="_blank" rel="noopener noreferrer" className="mobile-dock-item">
+          <i className="fab fa-github"></i>
+          <span>GitHub</span>
+        </a>
+        <button type="button" onClick={() => setShowPitchModal(true)} className="mobile-dock-btn">
+          <i className="fas fa-chart-pie"></i>
+          <span>Pitch Deck</span>
+        </button>
+      </div>
+
+      {/* POP-UP MODAL PITCH DECK */}
+      <InvestorPitchModal 
+        isOpen={showPitchModal} 
+        onClose={() => setShowPitchModal(false)} 
+      />
 
       {/* MODAL LEGAL DISCLAIMER */}
       {showDisclaimer && (
