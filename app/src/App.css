@@ -351,14 +351,14 @@ body {
 .swap-switch-row {
     display: flex; 
     justify-content: center; 
-    margin: -18px 0; 
+    margin: 8px 0; /* Ubah dari -18px menjadi 8px positif untuk memberi celah napas */
     position: relative; 
     z-index: 2;
 }
 
 .btn-switch-tokens {
-    background: #1f2937; 
-    border: 2px solid #334155; 
+    background: #0f172a; /* Warna latar sedikit lebih tegas agar kontras */
+    border: 1px solid rgba(56, 189, 248, 0.3); /* Border aksen cyan tipis elegan */
     color: #38bdf8; 
     border-radius: 50%; 
     width: 32px; 
@@ -370,6 +370,13 @@ body {
     font-weight: bold; 
     font-size: 14px; 
     outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Efek bayangan agar tampak melayang rapi */
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-switch-tokens:hover {
+    transform: rotate(180deg); /* Animasi putar halus saat kursor diarahkan */
+    border-color: #38bdf8;
 }
 
 .static-token-label {
