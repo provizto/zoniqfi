@@ -351,31 +351,31 @@ body {
 .swap-switch-row {
     display: flex; 
     justify-content: center; 
-    margin: 8px 0; /* Ubah dari -18px menjadi 8px positif untuk memberi celah napas */
+    margin: -11px 0; /* Menempel seimbang tepat di pertemuan kedua border */
     position: relative; 
-    z-index: 2;
+    z-index: 5; /* Pastikan selalu berada di lapisan teratas kotak */
 }
 
 .btn-switch-tokens {
-    background: #0f172a; /* Warna latar sedikit lebih tegas agar kontras */
-    border: 1px solid rgba(56, 189, 248, 0.3); /* Border aksen cyan tipis elegan */
+    background: #0b0f19; /* Samakan dengan warna background kotak swap */
+    border: 2px solid #1f2937; /* Border serasi dengan border kotak input */
     color: #38bdf8; 
     border-radius: 50%; 
-    width: 32px; 
-    height: 32px; 
+    width: 30px; 
+    height: 30px; 
     cursor: pointer; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
     font-weight: bold; 
-    font-size: 14px; 
+    font-size: 13px; 
     outline: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Efek bayangan agar tampak melayang rapi */
+    box-shadow: 0 0 0 3px #0b0f19, 0 2px 6px rgba(0, 0, 0, 0.6); /* Ring border luar agar garis kotak di belakangnya terpotong rapi */
     transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-switch-tokens:hover {
-    transform: rotate(180deg); /* Animasi putar halus saat kursor diarahkan */
+    transform: rotate(180deg);
     border-color: #38bdf8;
 }
 
