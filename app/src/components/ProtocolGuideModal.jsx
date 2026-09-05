@@ -1,123 +1,137 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
+
+const CONTENT = {
+  EN: {
+    badge: "OFFICIAL ARCHITECTURE & USER MANUAL",
+    title: "ZoniqFi Protocol Operational Guide",
+    subtitle: "Comprehensive architectural breakdown and module interactions.",
+    tabs: { all: "All Modules", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Affiliate" },
+    modules: {
+      swap: {
+        tag: "TX V1 ATOMIC",
+        title: "01. AMM DEX Swap Engine",
+        desc: "High-throughput decentralized exchange architecture utilizing Solana Transaction v1 (4,096-byte atomic payload) integrated with Jito Block Engine private bundles.",
+        highlights: [
+          { label: "Anti-MEV Protection", val: "Private transaction routing completely eliminates front-running and sandwich attacks." },
+          { label: "0.3% Flat Protocol Fee", val: "Distributed systematically: 40% to Yield Vault, 30% to $ZQI Real Yield Pool, 15% to Affiliate Treasury, and 15% to Operations." },
+          { label: "Anti-Wash Trading", val: "Strict rate-limit filters to prevent artificial volume inflation." }
+        ]
+      },
+      lock: {
+        tag: "0% INFLATION",
+        title: "02. $ZQI Lock & Real Yield",
+        desc: "Native token staking mechanism that distributes pure USDC dividends generated from platform trading volume, creating non-inflationary yield.",
+        highlights: [
+          { label: "Lock Multipliers", val: "30 Days (1.0x), 90 Days (1.5x), and 180 Days (2.5x weight) for dividend calculation." },
+          { label: "USDC Real Yield", val: "Dividends paid directly in stable USDC, avoiding token dilution." },
+          { label: "Deflationary Defense", val: "Emergency early unlocks incur a mandatory 10% penalty permanently burned on-chain." }
+        ]
+      },
+      vault: {
+        tag: "NON-CUSTODIAL",
+        title: "03. Yield Optimizer Vault",
+        desc: "Automated compounding yield generation protocol tailored for USDC single-asset liquidity.",
+        highlights: [
+          { label: "Predictable Yield", val: "Programmatic baseline daily yield of 0.11%, scaling up to 49.1% APY via automated compounding." },
+          { label: "Gasless Execution", val: "Smart contracts auto-compound profits periodically without requiring manual gas transactions from depositors." },
+          { label: "Instant Liquidity", val: "Withdraw principal and accumulated yield at any time subject to pool liquidity." }
+        ]
+      },
+      affiliate: {
+        tag: "SNS & ON-CHAIN",
+        title: "04. On-Chain Affiliate Protocol",
+        desc: "Decentralized growth infrastructure distributing transparent commission rebates to referrers and creators.",
+        subBoxTitle: "Understanding The Two Referral Mechanisms:",
+        box1Title: "1. YOUR REFERRAL LINK (For You to Share)",
+        box1Desc: "Share your unique URL (e.g. zoniqfi.com?ref=YourWallet). When visitors open this link and connect their wallet, the smart contract permanently binds them as your referee. All future trades generate automated rebates for you.",
+        box2Title: "2. REFERRER ADDRESS (Manual Fallback)",
+        box2Desc: "For organic visitors who entered without a link. They paste your wallet address or SNS domain (e.g. name.sol) and click 'Verify Link' to anchor the sponsorship on-chain.",
+        highlights: [
+          { label: "Tiered Rebates", val: "Bronze (10% on $0–$10k volume), Silver (18% on $10k–$100k), Gold (25% on >$100k volume)." },
+          { label: "SNS Integration", val: "Full support for Solana Name Service (.sol / .sns) domain resolution." },
+          { label: "Anti-Sybil Cooldown", val: "10-second threshold per transaction prevents automated referral farming." }
+        ]
+      }
+    },
+    closeBtn: "Close Guide"
+  },
+  ID: {
+    badge: "PANDUAN OPERASIONAL & ARSITEKTUR RESMI",
+    title: "Panduan Protokol ZoniqFi",
+    subtitle: "Penjelasan mendalam arsitektur modul dan mekanisme transaksi.",
+    tabs: { all: "Semua Modul", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Afiliasi" },
+    modules: {
+      swap: {
+        tag: "TX V1 ATOMIC",
+        title: "01. AMM DEX Swap Engine",
+        desc: "Arsitektur pertukaran terdesentralisasi berkecepatan tinggi memanfaatkan Solana Transaction v1 (payload 4.096-byte) terintegrasi dengan bundel privat Jito Block Engine.",
+        highlights: [
+          { label: "Perlindungan Anti-MEV", val: "Perutean transaksi privat mengeliminasi serangan front-running dan sandwich secara total." },
+          { label: "Biaya Flat 0.3%", val: "Didistribusikan secara transparan: 40% ke Yield Vault, 30% ke Kolam Real Yield $ZQI, 15% ke Kas Afiliasi, dan 15% untuk Operasional." },
+          { label: "Anti-Wash Trading", val: "Filter ambang batas transaksi on-chain untuk mencegah manipulasi volume semu." }
+        ]
+      },
+      lock: {
+        tag: "0% INFLASI",
+        title: "02. $ZQI Lock & Real Yield",
+        desc: "Mekanisme penguncian token asli yang membagikan dividen likuid USDC murni dari perputaran biaya trading platform tanpa emisi inflasi.",
+        highlights: [
+          { label: "Pengali Kunci (Multiplier)", val: "30 Hari (1.0x), 90 Hari (1.5x), dan 180 Hari (2.5x bobot) untuk alokasi porsi dividen." },
+          { label: "Dividen USDC Riil", val: "Imbal hasil dibagikan dalam stablecoin USDC, menjaga nilai modal investor dari risiko volatilitas." },
+          { label: "Pertahanan Deflasi", val: "Pembukaan kunci darurat sebelum jatuh tempo memicu denda penalti 10% yang dibakar (burned) permanen." }
+        ]
+      },
+      vault: {
+        tag: "NON-KUSTODIAL",
+        title: "03. Yield Optimizer Vault",
+        desc: "Protokol penghasil imbal hasil majemuk otomatis yang dioptimalkan untuk likuiditas aset tunggal USDC.",
+        highlights: [
+          { label: "Hasil Terprogram", val: "Tingkat dasar harian terprogram 0.11%, dapat mencapai optimalisasi hingga 49.1% APY melalui efek majemuk." },
+          { label: "Bebas Biaya Gas Manual", val: "Smart contract menggandakan imbal hasil secara otomatis tanpa pengguna perlu mengeksekusi panen manual." },
+          { label: "Likuiditas Fleksibel", val: "Penarikan modal pokok dan akumulasi bunga dapat dilakukan sewaktu-waktu sesuai ketersediaan likuiditas." }
+        ]
+      },
+      affiliate: {
+        tag: "SNS & ON-CHAIN",
+        title: "04. Protokol Afiliasi On-Chain",
+        desc: "Infrastruktur pertumbuhan terdesentralisasi yang memberikan komisi rabat transparan kepada kreator dan pengundang.",
+        subBoxTitle: "Perbedaan Dua Fitur Rujukan:",
+        box1Title: "1. YOUR REFERRAL LINK (Untuk Anda Sebarkan)",
+        box1Desc: "Bagikan tautan unik Anda (contoh: zoniqfi.com?ref=DompetAnda). Saat teman membuka tautan ini dan mengkoneksikan dompet, smart contract mengunci mereka sebagai bawahan Anda secara permanen. Anda otomatis memperoleh rabat setiap mereka melakukan transaksi.",
+        box2Title: "2. REFERRER ADDRESS (Alternatif Verifikasi Manual)",
+        box2Desc: "Disediakan untuk pengguna yang datang langsung tanpa tautan rujukan. Mereka cukup menempelkan alamat dompet atau domain SNS Anda (misal: nama.sol) lalu mengeklik 'Verify Link' untuk mengikat rujukan secara on-chain.",
+        highlights: [
+          { label: "Komisi Berjenjang", val: "Bronze (rabat 10% pada volume $0–$10k), Silver (18% pada volume $10k–$100k), Gold (25% pada volume >$100k)." },
+          { label: "Integrasi Domain SNS", val: "Mendukung penuh pembacaan domain Solana Name Service (.sol / .sns)." },
+          { label: "Cooldown Anti-Sybil", val: "Jeda 10 detik per transaksi rujukan untuk memitigasi eksploitasi bot." }
+        ]
+      }
+    },
+    closeBtn: "Tutup Panduan"
+  }
+};
 
 const ProtocolGuideModal = ({ isOpen, onClose }) => {
   const [lang, setLang] = useState('EN');
   const [activeSection, setActiveSection] = useState('all');
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose?.();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
-  const content = {
-    EN: {
-      badge: "OFFICIAL ARCHITECTURE & USER MANUAL",
-      title: "ZoniqFi Protocol Operational Guide",
-      subtitle: "Comprehensive architectural breakdown and module interactions.",
-      tabs: { all: "All Modules", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Affiliate" },
-      modules: {
-        swap: {
-          tag: "TX V1 ATOMIC",
-          title: "01. AMM DEX Swap Engine",
-          desc: "High-throughput decentralized exchange architecture utilizing Solana Transaction v1 (4,096-byte atomic payload) integrated with Jito Block Engine private bundles.",
-          highlights: [
-            { label: "Anti-MEV Protection", val: "Private transaction routing completely eliminates front-running and sandwich attacks." },
-            { label: "0.3% Flat Protocol Fee", val: "Distributed systematically: 40% to Yield Vault, 30% to $ZQI Real Yield Pool, 15% to Affiliate Treasury, and 15% to Operations." },
-            { label: "Anti-Wash Trading", val: "Strict rate-limit filters to prevent artificial volume inflation." }
-          ]
-        },
-        lock: {
-          tag: "0% INFLATION",
-          title: "02. $ZQI Lock & Real Yield",
-          desc: "Native token staking mechanism that distributes pure USDC dividends generated from platform trading volume, creating non-inflationary yield.",
-          highlights: [
-            { label: "Lock Multipliers", val: "30 Days (1.0x), 90 Days (1.5x), and 180 Days (2.5x weight) for dividend calculation." },
-            { label: "USDC Real Yield", val: "Dividends paid directly in stable USDC, avoiding token dilution." },
-            { label: "Deflationary Defense", val: "Emergency early unlocks incur a mandatory 10% penalty permanently burned on-chain." }
-          ]
-        },
-        vault: {
-          tag: "NON-CUSTODIAL",
-          title: "03. Yield Optimizer Vault",
-          desc: "Automated compounding yield generation protocol tailored for USDC single-asset liquidity.",
-          highlights: [
-            { label: "Predictable Yield", val: "Programmatic baseline daily yield of 0.11%, scaling up to 49.1% APY via automated compounding." },
-            { label: "Gasless Execution", val: "Smart contracts auto-compound profits periodically without requiring manual gas transactions from depositors." },
-            { label: "Instant Liquidity", val: "Withdraw principal and accumulated yield at any time subject to pool liquidity." }
-          ]
-        },
-        affiliate: {
-          tag: "SNS & ON-CHAIN",
-          title: "04. On-Chain Affiliate Protocol",
-          desc: "Decentralized growth infrastructure distributing transparent commission rebates to referrers and creators.",
-          subBoxTitle: "Understanding The Two Referral Mechanisms:",
-          box1Title: "1. YOUR REFERRAL LINK (For You to Share)",
-          box1Desc: "Share your unique URL (e.g. zoniqfi.com?ref=YourWallet). When visitors open this link and connect their wallet, the smart contract permanently binds them as your referee. All future trades generate automated rebates for you.",
-          box2Title: "2. REFERRER ADDRESS (Manual Fallback)",
-          box2Desc: "For organic visitors who entered without a link. They paste your wallet address or SNS domain (e.g. name.sol) and click 'Verify Link' to anchor the sponsorship on-chain.",
-          highlights: [
-            { label: "Tiered Rebates", val: "Bronze (10% on $0–$10k volume), Silver (18% on $10k–$100k), Gold (25% on >$100k volume)." },
-            { label: "SNS Integration", val: "Full support for Solana Name Service (.sol / .sns) domain resolution." },
-            { label: "Anti-Sybil Cooldown", val: "10-second threshold per transaction prevents automated referral farming." }
-          ]
-        }
-      },
-      closeBtn: "Close Guide"
-    },
-    ID: {
-      badge: "PANDUAN OPERASIONAL & ARSITEKTUR RESMI",
-      title: "Panduan Protokol ZoniqFi",
-      subtitle: "Penjelasan mendalam arsitektur modul dan mekanisme transaksi.",
-      tabs: { all: "Semua Modul", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Afiliasi" },
-      modules: {
-        swap: {
-          tag: "TX V1 ATOMIC",
-          title: "01. AMM DEX Swap Engine",
-          desc: "Arsitektur pertukaran terdesentralisasi berkecepatan tinggi memanfaatkan Solana Transaction v1 (payload 4.096-byte) terintegrasi dengan bundel privat Jito Block Engine.",
-          highlights: [
-            { label: "Perlindungan Anti-MEV", val: "Perutean transaksi privat mengeliminasi serangan front-running dan sandwich secara total." },
-            { label: "Biaya Flat 0.3%", val: "Didistribusikan secara transparan: 40% ke Yield Vault, 30% ke Kolam Real Yield $ZQI, 15% ke Kas Afiliasi, dan 15% untuk Operasional." },
-            { label: "Anti-Wash Trading", val: "Filter ambang batas transaksi on-chain untuk mencegah manipulasi volume semu." }
-          ]
-        },
-        lock: {
-          tag: "0% INFLASI",
-          title: "02. $ZQI Lock & Real Yield",
-          desc: "Mekanisme penguncian token asli yang membagikan dividen likuid USDC murni dari perputaran biaya trading platform tanpa emisi inflasi.",
-          highlights: [
-            { label: "Pengali Kunci (Multiplier)", val: "30 Hari (1.0x), 90 Hari (1.5x), dan 180 Hari (2.5x bobot) untuk alokasi porsi dividen." },
-            { label: "Dividen USDC Riil", val: "Imbal hasil dibagikan dalam stablecoin USDC, menjaga nilai modal investor dari risiko volatilitas." },
-            { label: "Pertahanan Deflasi", val: "Pembukaan kunci darurat sebelum jatuh tempo memicu denda penalti 10% yang dibakar (burned) permanen." }
-          ]
-        },
-        vault: {
-          tag: "NON-KUSTODIAL",
-          title: "03. Yield Optimizer Vault",
-          desc: "Protokol penghasil imbal hasil majemuk otomatis yang dioptimalkan untuk likuiditas aset tunggal USDC.",
-          highlights: [
-            { label: "Hasil Terprogram", val: "Tingkat dasar harian terprogram 0.11%, dapat mencapai optimalisasi hingga 49.1% APY melalui efek majemuk." },
-            { label: "Bebas Biaya Gas Manual", val: "Smart contract menggandakan imbal hasil secara otomatis tanpa pengguna perlu mengeksekusi panen manual." },
-            { label: "Likuiditas Fleksibel", val: "Penarikan modal pokok dan akumulasi bunga dapat dilakukan sewaktu-waktu sesuai ketersediaan likuiditas." }
-          ]
-        },
-        affiliate: {
-          tag: "SNS & ON-CHAIN",
-          title: "04. Protokol Afiliasi On-Chain",
-          desc: "Infrastruktur pertumbuhan terdesentralisasi yang memberikan komisi rabat transparan kepada kreator dan pengundang.",
-          subBoxTitle: "Perbedaan Dua Fitur Rujukan:",
-          box1Title: "1. YOUR REFERRAL LINK (Untuk Anda Sebarkan)",
-          box1Desc: "Bagikan tautan unik Anda (contoh: zoniqfi.com?ref=DompetAnda). Saat teman membuka tautan ini dan mengkoneksikan dompet, smart contract mengunci mereka sebagai bawahan Anda secara permanen. Anda otomatis memperoleh rabat setiap mereka melakukan transaksi.",
-          box2Title: "2. REFERRER ADDRESS (Alternatif Verifikasi Manual)",
-          box2Desc: "Disediakan untuk pengguna yang datang langsung tanpa tautan rujukan. Mereka cukup menempelkan alamat dompet atau domain SNS Anda (misal: nama.sol) lalu mengeklik 'Verify Link' untuk mengikat rujukan secara on-chain.",
-          highlights: [
-            { label: "Komisi Berjenjang", val: "Bronze (rabat 10% pada volume $0–$10k), Silver (18% pada volume $10k–$100k), Gold (25% pada volume >$100k)." },
-            { label: "Integrasi Domain SNS", val: "Mendukung penuh pembacaan domain Solana Name Service (.sol / .sns)." },
-            { label: "Cooldown Anti-Sybil", val: "Jeda 10 detik per transaksi rujukan untuk memitigasi eksploitasi bot." }
-          ]
-        }
-      },
-      closeBtn: "Tutup Panduan"
-    }
-  };
-
-  const t = content[lang];
+  const t = CONTENT[lang];
 
   return (
     <div 
@@ -154,7 +168,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           fontFamily: "'Inter', sans-serif"
         }}
       >
-        {/* MODAL HEADER WITH BILINGUAL SWITCHER */}
+        {/* MODAL HEADER */}
         <div style={{
           padding: '18px 24px',
           borderBottom: '1px solid #1e293b',
@@ -162,7 +176,8 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           background: '#080d1a',
-          gap: '12px'
+          gap: '12px',
+          flexWrap: 'wrap'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -244,7 +259,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* SECTION FILTER TABS (PRESISI & TERTATA) */}
+        {/* SECTION FILTER TABS */}
         <div style={{
           padding: '10px 20px',
           borderBottom: '1px solid #1e293b',
@@ -398,7 +413,9 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          background: '#080d1a'
+          background: '#080d1a',
+          flexWrap: 'wrap',
+          gap: '8px'
         }}>
           <span style={{ fontSize: '0.76rem', color: '#64748b' }}>
             © 2026 ZoniqFi Protocol • Decentralized Technical Documentation

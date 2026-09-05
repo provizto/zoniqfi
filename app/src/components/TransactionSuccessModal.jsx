@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const TransactionSuccessModal = ({ 
   isOpen, 
   onClose, 
   swapDetails = null,
   programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD",
-  onNavigateTab // Props callback baru untuk memindahkan tab navigasi
+  onNavigateTab
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose?.();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const data = swapDetails || {
@@ -18,15 +35,14 @@ const TransactionSuccessModal = ({
 
   const formatShortAddress = (addr) => {
     if (!addr) return "";
-    return `${addr.slice(0, 6)}...${addr.slice(-6)}`;
+    return `${addr.slice(0, 4)}...${addr.slice(-4)}`;
   };
 
-  // Prioritaskan link ke detail transaksi jika hash tersedia
-  const solscanUrl = data.txSignature 
+  const isTx = Boolean(data.txSignature);
+  const solscanUrl = isTx 
     ? `https://solscan.io/tx/${data.txSignature}?cluster=devnet`
     : `https://solscan.io/account/${programId}?cluster=devnet`;
 
-  // Deteksi token yang diterima untuk aksi terpandu
   const isReceivedZQI = data.toAmount && data.toAmount.includes("ZQI");
   const isReceivedUSDC = data.toAmount && data.toAmount.includes("USDC");
 
@@ -38,20 +54,17 @@ const TransactionSuccessModal = ({
         onNavigateTab('vault');
       }
     }
-    onClose();
+    onClose?.();
   };
 
   return (
     <div 
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100vw',
-        height: '100vh',
+        inset: 0,
         zIndex: 999999,
         display: 'flex',
         alignItems: 'center',
@@ -95,7 +108,9 @@ const TransactionSuccessModal = ({
             </span>
           </div>
           <button 
+            type="button"
             onClick={onClose}
+            aria-label="Close modal"
             style={{
               background: 'transparent',
               border: 'none',
@@ -190,9 +205,10 @@ const TransactionSuccessModal = ({
               gap: '6px'
             }}
           >
-            Solscan ↗
+            {isTx ? 'View Tx ↗' : 'Program ↗'}
           </a>
           <button
+            type="button"
             onClick={handleActionClick}
             style={{
               flex: 1.4,

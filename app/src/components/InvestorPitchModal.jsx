@@ -1,19 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+const TABS = [
+  { id: 'modules', label: 'Core DeFi Modules' },
+  { id: 'roadmap', label: 'Roadmap & Funding Milestones' },
+  { id: 'flywheel', label: 'Economic Flywheel' }
+];
 
 const InvestorPitchModal = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState('modules');
+
+  // Menangani tombol ESC & mencegah background scrolling saat modal terbuka
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <div 
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        inset: 0,
         background: 'rgba(3, 7, 18, 0.88)',
         backdropFilter: 'blur(12px)',
         display: 'flex',
@@ -70,6 +93,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           <button 
             type="button"
             onClick={onClose}
+            aria-label="Close modal"
             style={{
               background: 'rgba(255, 255, 255, 0.06)',
               border: '1px solid #334155',
@@ -90,7 +114,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* UNIFIED SEGMENTED TAB TRACK (PRESISI SAMA RATA & TIDAK MELOMPAT) */}
+        {/* UNIFIED SEGMENTED TAB TRACK */}
         <div style={{
           padding: '12px 20px',
           borderBottom: '1px solid #1e293b',
@@ -104,84 +128,42 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
             padding: '4px',
             gap: '6px'
           }}>
-            <button 
-              type="button"
-              onClick={() => setActiveTab('modules')} 
-              style={{
-                flex: 1,
-                height: '38px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '8px',
-                fontSize: '0.84rem',
-                fontWeight: activeTab === 'modules' ? '700' : '600',
-                color: activeTab === 'modules' ? '#ffffff' : '#94a3b8',
-                background: activeTab === 'modules' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
-                border: 'none',
-                boxShadow: activeTab === 'modules' ? '0 2px 10px rgba(59, 130, 246, 0.4)' : 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              Core DeFi Modules
-            </button>
-
-            <button 
-              type="button"
-              onClick={() => setActiveTab('roadmap')} 
-              style={{
-                flex: 1,
-                height: '38px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '8px',
-                fontSize: '0.84rem',
-                fontWeight: activeTab === 'roadmap' ? '700' : '600',
-                color: activeTab === 'roadmap' ? '#ffffff' : '#94a3b8',
-                background: activeTab === 'roadmap' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
-                border: 'none',
-                boxShadow: activeTab === 'roadmap' ? '0 2px 10px rgba(59, 130, 246, 0.4)' : 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              Roadmap & Funding Milestones
-            </button>
-
-            <button 
-              type="button"
-              onClick={() => setActiveTab('flywheel')} 
-              style={{
-                flex: 1,
-                height: '38px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '8px',
-                fontSize: '0.84rem',
-                fontWeight: activeTab === 'flywheel' ? '700' : '600',
-                color: activeTab === 'flywheel' ? '#ffffff' : '#94a3b8',
-                background: activeTab === 'flywheel' ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
-                border: 'none',
-                boxShadow: activeTab === 'flywheel' ? '0 2px 10px rgba(59, 130, 246, 0.4)' : 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              Economic Flywheel
-            </button>
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    flex: 1,
+                    height: '38px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '8px',
+                    fontSize: '0.84rem',
+                    fontWeight: isActive ? '700' : '600',
+                    color: isActive ? '#ffffff' : '#94a3b8',
+                    background: isActive ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
+                    border: 'none',
+                    boxShadow: isActive ? '0 2px 10px rgba(59, 130, 246, 0.4)' : 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* MODAL SCROLLABLE BODY */}
         <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1, fontSize: '0.9rem', lineHeight: '1.6' }}>
-          
           {/* TAB 1: CORE DEFI MODULES */}
           {activeTab === 'modules' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#38bdf8', fontSize: '1rem', fontWeight: '700' }}>
@@ -247,14 +229,12 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <li><strong>Anti-Sybil Cooldown:</strong> 1 transaction per 10-second threshold prevents manipulation.</li>
                 </ul>
               </div>
-
             </div>
           )}
 
           {/* TAB 2: ROADMAP & FUNDING */}
           {activeTab === 'roadmap' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              
               <div style={{ borderLeft: '3px solid #14b8a6', paddingLeft: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT)</span>
@@ -325,7 +305,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </div>
-
             </div>
           )}
 
@@ -355,7 +334,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
-
         </div>
 
         {/* MODAL FOOTER */}
@@ -370,7 +348,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           gap: '10px'
         }}>
           <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
-            © 2026 ZoniqFi Protocol • Confidential Institutional Brief
+            &copy; 2026 ZoniqFi Protocol &bull; Confidential Institutional Brief
           </span>
           <a
             href="https://t.me/zoniqfi"
