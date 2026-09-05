@@ -22,7 +22,7 @@ const CONTENT = {
         title: "02. $ZQI Lock & Real Yield",
         desc: "Native token staking mechanism that distributes pure USDC dividends generated from platform trading volume, creating non-inflationary yield.",
         highlights: [
-          { label: "Lock Multipliers", val: "30 Days (1.0x), 90 Days (1.5x), and 180 Days (2.5x weight) for dividend calculation." },
+          { label: "Lock Durations & Multipliers", val: "Flexible to long-term options: 7 Days (0.5x), 15 Days (0.75x), 30 Days (1.0x), 90 Days (1.5x), and 180 Days (2.5x weight) for dividend calculation." },
           { label: "USDC Real Yield", val: "Dividends paid directly in stable USDC, avoiding token dilution." },
           { label: "Deflationary Defense", val: "Emergency early unlocks incur a mandatory 10% penalty permanently burned on-chain." }
         ]
@@ -76,7 +76,7 @@ const CONTENT = {
         title: "02. $ZQI Lock & Real Yield",
         desc: "Mekanisme penguncian token asli yang membagikan dividen likuid USDC murni dari perputaran biaya trading platform tanpa emisi inflasi.",
         highlights: [
-          { label: "Pengali Kunci (Multiplier)", val: "30 Hari (1.0x), 90 Hari (1.5x), dan 180 Hari (2.5x bobot) untuk alokasi porsi dividen." },
+          { label: "Durasi & Pengali Kunci", val: "Pilihan fleksibel hingga jangka panjang: 7 Hari (0.5x), 15 Hari (0.75x), 30 Hari (1.0x), 90 Hari (1.5x), dan 180 Hari (2.5x bobot) untuk alokasi porsi dividen." },
           { label: "Dividen USDC Riil", val: "Imbal hasil dibagikan dalam stablecoin USDC, menjaga nilai modal investor dari risiko volatilitas." },
           { label: "Pertahanan Deflasi", val: "Pembukaan kunci darurat sebelum jatuh tempo memicu denda penalti 10% yang dibakar (burned) permanen." }
         ]

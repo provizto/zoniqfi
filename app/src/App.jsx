@@ -766,7 +766,7 @@ function App() {
     const amount = parseFloat(lockAmount) || 0;
 
     // Menentukan multiplier dinamis berdasarkan pilihan 7, 15, atau 30 hari
-    const instantMultiplier = instantDays === 30 ? 2.5 : instantDays === 15 ? 1.5 : 1.0;
+    const instantMultiplier = instantDays === 30 ? 1.0 : instantDays === 15 ? 0.75 : 0.5;
 
     if (lockCalculationMode === 'manual') {
       const weightedScore = amount * instantMultiplier;
@@ -1583,9 +1583,9 @@ function App() {
                   </label>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
                     {[
-                      { days: 7, label: "7 Days (1.0x)" },
-                      { days: 15, label: "15 Days (1.5x)" },
-                      { days: 30, label: "30 Days (2.5x)" }
+                      { days: 7, label: "7 Days (0.5x)" },
+                      { days: 15, label: "15 Days (0.75x)" },
+                      { days: 30, label: "30 Days (1.0x)" }
                     ].map((item) => (
                       <button
                         key={item.days}
