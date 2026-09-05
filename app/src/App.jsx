@@ -1419,20 +1419,22 @@ function App() {
               </button>
             )}
             {SHOW_OPTIMIZER && (
-              <button 
-                className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
-                onClick={() => setActiveTab('vault')}
-              >
-                📈 <span className="tab-text">Vault</span>
-              </button>
-            )}
-            {SHOW_AFFILIATE && (
-              <button 
-                className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
-                onClick={() => setActiveTab('affiliate')}
-              >
-                👥 <span className="tab-text">Affiliate</span>
-              </button>
+  <button 
+    type="button"
+    className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
+    onClick={() => setActiveTab('vault')}
+  >
+    📈 <span className="tab-text">Vault</span>
+  </button>
+)}
+{SHOW_AFFILIATE && (
+  <button 
+    type="button"
+    className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
+    onClick={() => setActiveTab('affiliate')}
+  >
+    👥 <span className="tab-text">Affiliate</span>
+  </button>
             )}
           </div>
         </div>
