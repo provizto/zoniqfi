@@ -1,3 +1,4 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
 /* ==========================================================================
    1. CORE & LAYOUT STYLES (ORIGINAL BASE)
    ========================================================================== */
@@ -1353,4 +1354,179 @@ input[type="number"] {
 @keyframes pulseDotAnim {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.4); opacity: 0.4; }
+}
+
+/* ==========================================================================
+   DAPP FOOTER & MOBILE DOCK
+   ========================================================================== */
+.dapp-footer {
+  border-top: 1px solid #1f2937;
+  padding: 30px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #060911;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.footer-copy {
+  margin: 0 0 6px 0;
+  font-size: 0.88rem;
+  color: #94a3b8;
+  text-align: left;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #38bdf8;
+}
+
+.footer-links .highlight-link:hover {
+  color: #34d399;
+}
+
+.footer-pitch-link {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.footer-pitch-link:hover {
+  color: #60a5fa;
+}
+
+.footer-dot {
+  color: #334155;
+}
+
+.footer-social-row {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-social-row .social-icon-btn {
+  color: #64748b;
+  font-size: 1.25rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-social-row .social-icon-btn:hover {
+  color: #38bdf8;
+}
+
+/* DESKTOP: DOCK HP DISEMBUNYIKAN */
+.mobile-bottom-dock {
+  display: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE HP (MAX-WIDTH: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Beri bantalan bawah di body/app agar footer tidak tertutup dock HP */
+  .app-container,
+  body {
+    padding-bottom: 84px !important;
+  }
+
+  .dapp-footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 18px;
+    padding: 24px 6% 40px 6%;
+  }
+
+  .footer-copy {
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+
+  .footer-social-row {
+    justify-content: center;
+  }
+
+  /* TAMPILKAN DOCK DI HP */
+  .mobile-bottom-dock {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(11, 15, 25, 0.94) !important;
+    backdrop-filter: blur(16px) !important;
+    border-top: 1px solid #1f2937 !important;
+    padding: 10px 18px !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    z-index: 9999 !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .mobile-dock-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #94a3b8 !important;
+    text-decoration: none !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    gap: 4px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+  .mobile-dock-item i {
+    font-size: 1.25rem !important;
+  }
+
+  .mobile-dock-item:active {
+    color: #38bdf8 !important;
+  }
+
+  /* TOMBOL PITCH DECK MENONJOL DI HP */
+  .mobile-dock-btn {
+    background: linear-gradient(135deg, #2563eb, #06b6d4) !important;
+    color: #fff !important;
+    padding: 10px 18px !important;
+    border-radius: 9999px !important;
+    font-weight: 700 !important;
+    font-size: 0.88rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 14px rgba(37, 99, 235, 0.4) !important;
+  }
+
+  .mobile-dock-btn:active {
+    opacity: 0.9;
+    transform: scale(0.97);
+  }
 }
