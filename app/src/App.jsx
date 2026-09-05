@@ -304,7 +304,8 @@ function App() {
   const [swapsCount, setSwapsCount] = useState(45210); 
   
   const [zqiBalance, setZqiBalance] = useState(0); 
-  const [stakedAmount, setStakedAmount] = useState(0); 
+  const [usdcBalance, setUsdcBalance] = useState(50.00); // Saldo awal simulasi dompet USDC
+  const [stakedAmount, setStakedAmount] = useState(0);
   
   const [protocolTVL, setProtocolTVL] = useState(1248500);
 
@@ -578,16 +579,19 @@ function App() {
     { symbol: 'PYTH', name: 'Pyth Network', priceInUsdc: tokenPrices.PYTH }
   ];
 
+  // GANTI DENGAN KODE INI
   useEffect(() => {
     const amount = parseFloat(payAmount) || 0;
-    const calculatedFee = amount * 0.003;
+    const calculatedFee = amount * 0.003; // Biaya protokol flat 0.3%
     setSwapFee(calculatedFee.toFixed(4));
 
     const payTokenData = tokens.find(t => t.symbol === tokenPay);
     const receiveTokenData = tokens.find(t => t.symbol === tokenReceive);
 
     if (payTokenData && receiveTokenData) {
-      const totalValueInUsdc = amount * payTokenData.priceInUsdc;
+      // Potong fee 0.3% terlebih dahulu sebelum dieksekusi ke token tujuan
+      const netAmount = Math.max(0, amount - calculatedFee);
+      const totalValueInUsdc = netAmount * payTokenData.priceInUsdc;
       const rawReceive = totalValueInUsdc / receiveTokenData.priceInUsdc;
       setReceiveAmount(rawReceive.toFixed(4));
     } else {
@@ -659,10 +663,11 @@ function App() {
       setProtocolTVL(prev => prev + Math.round(vaultShareNum * 100) / 100);
 
       // 3. REAKTIF KE MODUL LOCK ($ZQI Staking):
-      // Jika user sedang mengunci token, bagi hasil USDC langsung bertambah
+      // Jika user sedang mengunci token, bagi hasil USDC (30%) langsung bertambah secara presisi
       if (isTokenLocked) {
         const currentEarned = parseFloat(earnedUsdcDisplay) || 0;
-        const updatedEarned = (currentEarned + poolShareNum).toFixed(2);
+        // Gunakan 4 desimal agar penambahan 0.0180 USDC terlihat jelas di layar
+        const updatedEarned = (currentEarned + poolShareNum).toFixed(4);
         setEarnedUsdcDisplay(`${updatedEarned} USDC`);
         setRewardClaimable(true);
       }
@@ -679,9 +684,13 @@ function App() {
         setReferralEarned(`$${newEarned.toFixed(2)} USDC`);
       }
 
-      // 5. UPDATE SALDO TOKEN USER
+      // 5. UPDATE SALDO TOKEN USER (Dua Arah: Beli & Jual)
       if (tokenReceive === 'ZQI') {
+        // Jika menukar USDC -> ZQI, saldo ZQI bertambah
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
+      } else if (tokenPay === 'ZQI') {
+        // Jika menukar balik ZQI -> USDC, saldo ZQI berkurang
+        setZqiBalance(prev => Math.max(0, prev - amount));
       }
 
       // 6. POPUP SUKSES & SIMPAN KE MODAL
@@ -756,10 +765,16 @@ function App() {
     if (isTokenLocked) return;
     const amount = parseFloat(lockAmount) || 0;
 
+    // Menentukan multiplier dinamis berdasarkan pilihan 7, 15, atau 30 hari
+    const instantMultiplier = instantDays === 30 ? 2.5 : instantDays === 15 ? 1.5 : 1.0;
+
     if (lockCalculationMode === 'manual') {
-      setLiveScore(`${amount.toLocaleString('en-US')} ZQI Share`);
+      const weightedScore = amount * instantMultiplier;
+      setLiveScore(`${weightedScore.toLocaleString('en-US')} ZQI Share`);
       if (amount > 0) {
-        setEstimatedRewardText(`Estimated Accumulation: +${(amount * 0.05).toFixed(2)} USDC`);
+        // Nilai estimasi reward otomatis dikalikan bobot hari
+        const calculatedReward = (amount * 0.05 * instantMultiplier).toFixed(2);
+        setEstimatedRewardText(`Estimated Accumulation: +${calculatedReward} USDC`);
       } else {
         setEstimatedRewardText('');
       }
@@ -772,7 +787,7 @@ function App() {
         setEstimatedRewardText('');
       }
     }
-  }, [lockAmount, lockCalculationMode, chosenMultiplier, isTokenLocked]);
+  }, [lockAmount, lockCalculationMode, chosenMultiplier, instantDays, isTokenLocked]);
 
   const handleLockToken = async () => {
     const amount = parseFloat(lockAmount) || 0;
@@ -808,7 +823,8 @@ function App() {
         setLockCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(timerInterval);
-            const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
+            const currentInstantMult = instantDays === 30 ? 2.5 : instantDays === 15 ? 1.5 : 1.0;
+            const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : currentInstantMult;
             const rewardAmount = ((amount * 0.05) * finalMultiplier).toFixed(2);
             localStorage.setItem('zoniq_staking_session', JSON.stringify({ isLocked: true, amount, multiplier: finalMultiplier, mode: lockCalculationMode, earnedDisplay: `${rewardAmount} USDC` }));
             
@@ -828,13 +844,20 @@ function App() {
     }
   };
 
+  // GANTI DENGAN KODE INI
   const claimZqiReward = () => {
     if (!rewardClaimable) {
       triggerBanner("⚠️ Smart Contract Refusal: Epoch locked! Cannot execute yield withdrawal yet.", "error");
       return;
     }
+
+    // Ambil nominal angka dari reward yang tampil di UI
+    const rewardValue = parseFloat(earnedUsdcDisplay) || 0;
     
-    triggerBanner(`🎉 Claim Successful! ${earnedUsdcDisplay} has been transferred to your wallet.`, "success");
+    triggerBanner(`🎉 Claim Successful! +${rewardValue.toFixed(4)} USDC has been transferred to your wallet.`, "success");
+    
+    // Tambahkan reward langsung ke saldo USDC dompet
+    setUsdcBalance(prev => prev + rewardValue);
     
     setEarnedUsdcDisplay("0.00 USDC");
     setRewardClaimable(false);
@@ -1206,17 +1229,28 @@ function App() {
               flexDirection: 'column',
               gap: '4px'
             }}>
-              {/* Ringkasan Saldo SOL */}
+              {/* Ringkasan Saldo SOL & USDC */}
               <div style={{
                 padding: '8px 10px',
                 background: 'rgba(255, 255, 255, 0.03)',
                 borderRadius: '6px',
                 border: '1px solid #1f2937',
-                marginBottom: '4px'
+                marginBottom: '4px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px'
               }}>
-                <div style={{ fontSize: '0.68rem', color: '#9ca3af' }}>SOL Balance</div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#10b981' }}>
-                  {solBalance !== null ? `${solBalance} SOL` : 'Loading...'}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>SOL Balance</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 'bold', color: '#10b981' }}>
+                    {solBalance !== null ? `${solBalance} SOL` : 'Loading...'}
+                  </span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>USDC Balance</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 'bold', color: '#38bdf8' }}>
+                    {usdcBalance.toFixed(2)} USDC
+                  </span>
                 </div>
               </div>
               {/* Salin Alamat */}
@@ -1546,25 +1580,29 @@ function App() {
                     Select Lock Duration:
                   </label>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                    {[7, 15, 30].map((days) => (
+                    {[
+                      { days: 7, label: "7 Days (1.0x)" },
+                      { days: 15, label: "15 Days (1.5x)" },
+                      { days: 30, label: "30 Days (2.5x)" }
+                    ].map((item) => (
                       <button
-                        key={days}
+                        key={item.days}
                         type="button"
                         disabled={isTokenLocked}
-                        onClick={() => setInstantDays(days)}
+                        onClick={() => setInstantDays(item.days)}
                         style={{
                           padding: '7px 0',
                           borderRadius: '6px',
                           fontSize: '0.82rem',
                           fontWeight: '600',
                           cursor: isTokenLocked ? 'not-allowed' : 'pointer',
-                          border: instantDays === days ? '1px solid #38bdf8' : '1px solid #1e293b',
-                          background: instantDays === days ? 'rgba(56, 189, 248, 0.15)' : '#0b0f19',
-                          color: instantDays === days ? '#38bdf8' : '#64748b',
+                          border: instantDays === item.days ? '1px solid #38bdf8' : '1px solid #1e293b',
+                          background: instantDays === item.days ? 'rgba(56, 189, 248, 0.15)' : '#0b0f19',
+                          color: instantDays === item.days ? '#38bdf8' : '#64748b',
                           transition: 'all 0.2s ease'
                         }}
                       >
-                        {days} Days (1x)
+                        {item.label}
                       </button>
                     ))}
                   </div>
