@@ -1782,7 +1782,7 @@ function App() {
           </div>
         </div>
 
-      {/* FOOTER */}
+      {/* ================= FOOTER DAPP LENGKAP ================= */}
       <footer className="dapp-footer" style={{ 
         borderTop: '1px solid #1f2937', 
         padding: '24px 5%', 
@@ -1793,7 +1793,7 @@ function App() {
         alignItems: 'center', 
         color: '#94a3b8', 
         fontSize: '0.88rem',
-        gap: '16px',
+        gap: '20px',
         textAlign: 'center'
       }}>
         <style>{`
@@ -1803,112 +1803,204 @@ function App() {
               text-align: left !important;
             }
           }
+          /* Hilangkan tombol pitch di dalam footer khusus layar HP agar tidak dobel dengan dock */
+          @media (max-width: 768px) {
+            .dapp-footer {
+              padding-bottom: 90px !important;
+            }
+            .footer-pitch-btn {
+              display: none !important;
+            }
+          }
         `}</style>
-        <p style={{ margin: 0, lineHeight: '1.5', maxWidth: '100%' }}>
-          © 2026 ZoniqFi Protocol. All Rights Reserved. Modular Solana DeFi & Real Yield Infrastructure.
-        </p>
-        <div className="footer-links-row" style={{ 
-          display: 'flex', 
-          gap: '20px', 
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexWrap: 'wrap'
-        }}>
-          <button
-            type="button"
-            onClick={() => setIsGuideOpen(true)}
-            style={{
-              background: 'rgba(56, 189, 248, 0.1)',
-              border: '1px solid rgba(56, 189, 248, 0.3)',
-              color: '#38bdf8',
-              borderRadius: '6px',
-              padding: '4px 10px',
-              fontSize: '0.78rem',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            📖 Protocol Guide [EN/ID]
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowPitchModal(true)}
-            style={{
-              background: 'rgba(59, 130, 246, 0.15)',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
-              color: '#60a5fa',
-              borderRadius: '6px',
-              padding: '4px 10px',
-              fontSize: '0.78rem',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px'
-            }}
-          >
-            📊 Pitch Deck
-          </button>
 
-          <a 
-            href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
-          >
-            $ZQI Explorer 🔍
+        {/* KOLOM KIRI: COPYRIGHT & DAFTAR LINK LENGKAP */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <p style={{ margin: 0, lineHeight: '1.5', maxWidth: '100%' }}>
+            © 2026 ZoniqFi Protocol. All Rights Reserved. Modular Solana DeFi & Real Yield Infrastructure.
+          </p>
+
+          <div className="footer-links-row" style={{ 
+            display: 'flex', 
+            gap: '12px', 
+            justifyContent: 'center',
+            alignItems: 'center', 
+            flexWrap: 'wrap',
+            fontSize: '0.82rem'
+          }}>
+            {/* Panduan Protocol */}
+            <button
+              type="button"
+              onClick={() => setIsGuideOpen(true)}
+              style={{
+                background: 'rgba(56, 189, 248, 0.1)',
+                border: '1px solid rgba(56, 189, 248, 0.3)',
+                color: '#38bdf8',
+                borderRadius: '6px',
+                padding: '4px 10px',
+                fontSize: '0.78rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px'
+              }}
+            >
+              📖 Protocol Guide [EN/ID]
+            </button>
+
+            {/* Tombol Pitch Deck (Otomatis sembunyi di HP) */}
+            <button
+              type="button"
+              onClick={() => setShowPitchModal(true)}
+              className="footer-pitch-btn"
+              style={{
+                background: 'rgba(59, 130, 246, 0.15)',
+                border: '1px solid rgba(59, 130, 246, 0.3)',
+                color: '#60a5fa',
+                borderRadius: '6px',
+                padding: '4px 10px',
+                fontSize: '0.78rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px'
+              }}
+            >
+              📊 Pitch Deck
+            </button>
+
+            <span style={{ color: '#334155' }}>•</span>
+
+            <a 
+              href="https://github.com/provizto/zoniqfi" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#64748b', textDecoration: 'none' }}
+            >
+              GitHub
+            </a>
+
+            <span style={{ color: '#334155' }}>•</span>
+
+            <a 
+              href="https://github.com/provizto/zoniqfi-docs" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#64748b', textDecoration: 'none' }}
+            >
+              Docs
+            </a>
+
+            <span style={{ color: '#334155' }}>•</span>
+
+            <a 
+              href="https://www.zoniqfinance.com/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#34d399', textDecoration: 'none' }}
+            >
+              PayFi Gateway ↗
+            </a>
+
+            <span style={{ color: '#334155' }}>•</span>
+
+            <a 
+              href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#94a3b8', textDecoration: 'none' }}
+            >
+              $ZQI Explorer 🔍
+            </a>
+
+            <span style={{ color: '#334155' }}>•</span>
+
+            <a 
+              href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#94a3b8', textDecoration: 'none' }}
+            >
+              Smart Contract ⚙️
+            </a>
+
+            <span style={{ color: '#334155' }}>•</span>
+
+            <button 
+              onClick={() => setShowDisclaimer(true)}
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                padding: 0, 
+                color: '#64748b', 
+                fontSize: '0.82rem', 
+                cursor: 'pointer' 
+              }}
+            >
+              Legal Disclaimer
+            </button>
+          </div>
+        </div>
+
+        {/* KOLOM KANAN: IKON SOSIAL MEDIA */}
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" style={{ color: '#64748b', fontSize: '1.25rem', textDecoration: 'none' }}>
+            <i className="fab fa-telegram"></i>
           </a>
-
-          <a 
-            href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            style={{ color: '#94a3b8', textDecoration: 'none', transition: 'color 0.2s' }}
-          >
-            Smart Contract ⚙️
+          <a href="https://x.com/zoniqfi" target="_blank" rel="noopener noreferrer" style={{ color: '#64748b', fontSize: '1.25rem', textDecoration: 'none' }}>
+            <i className="fab fa-x-twitter"></i>
           </a>
-
-          <button 
-            onClick={() => setShowDisclaimer(true)}
-            style={{ 
-              background: 'none', 
-              border: 'none', 
-              padding: 0, 
-              color: '#94a3b8', 
-              fontSize: '0.88rem', 
-              cursor: 'pointer', 
-              textDecoration: 'none', 
-              transition: 'color 0.2s' 
-            }}
-          >
-            Legal Disclaimer
-          </button>
+          <a href="https://discord.gg/zoniqfi" target="_blank" rel="noopener noreferrer" style={{ color: '#64748b', fontSize: '1.25rem', textDecoration: 'none' }}>
+            <i className="fab fa-discord"></i>
+          </a>
         </div>
       </footer>
 
-        {/* MOBILE BOTTOM DOCK (MENU KHUSUS HP) */}
+      {/* ================= MOBILE BOTTOM DOCK (MENU KHUSUS HP) ================= */}
       <div className="mobile-bottom-dock">
-        <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" className="mobile-dock-item">
+        <button 
+          type="button" 
+          onClick={() => setIsGuideOpen(true)} 
+          className="mobile-dock-item"
+        >
+          <i className="fas fa-circle-question"></i>
+          <span>Guide</span>
+        </button>
+        <a 
+          href="https://t.me/zoniqfi" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="mobile-dock-item"
+        >
           <i className="fab fa-telegram-plane"></i>
           <span>Telegram</span>
         </a>
-        <a href="https://github.com/provizto/zoniqfi-docs" target="_blank" rel="noopener noreferrer" className="mobile-dock-item">
+        <a 
+          href="https://github.com/provizto/zoniqfi-docs" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="mobile-dock-item"
+        >
           <i className="fas fa-book"></i>
           <span>Docs</span>
         </a>
-        <a href="https://github.com/provizto/zoniqfi" target="_blank" rel="noopener noreferrer" className="mobile-dock-item">
-          <i className="fab fa-github"></i>
-          <span>GitHub</span>
-        </a>
-        <button type="button" onClick={() => setShowPitchModal(true)} className="mobile-dock-btn">
+        <button 
+          type="button" 
+          onClick={() => setShowPitchModal(true)} 
+          className="mobile-dock-btn"
+        >
           <i className="fas fa-chart-pie"></i>
           <span>Pitch Deck</span>
         </button>
       </div>
+
+      {/* ================= MODAL PITCH DECK & FUNDING ================= */}
+      <InvestorPitchModal 
+        isOpen={showPitchModal} 
+        onClose={() => setShowPitchModal(false)} 
+      />
 
       {/* POP-UP MODAL PITCH DECK */}
       <InvestorPitchModal 
