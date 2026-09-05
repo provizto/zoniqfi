@@ -1782,53 +1782,91 @@ function App() {
           </div>
         </div>
 
-      {/* ================= FOOTER DAPP LENGKAP ================= */}
-      <footer className="dapp-footer" style={{ 
-        borderTop: '1px solid #1f2937', 
-        padding: '24px 5%', 
-        background: '#060911', 
-        display: 'flex', 
-        flexDirection: 'column',
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        color: '#94a3b8', 
-        fontSize: '0.88rem',
-        gap: '20px',
-        textAlign: 'center'
-      }}>
-        <style>{`
-          @media (min-width: 769px) {
-            .dapp-footer {
-              flex-direction: row !important;
-              text-align: left !important;
-            }
-          }
-          /* Hilangkan tombol pitch di dalam footer khusus layar HP agar tidak dobel dengan dock */
-          @media (max-width: 768px) {
-            .dapp-footer {
-              padding-bottom: 90px !important;
-            }
-            .footer-pitch-btn {
-              display: none !important;
-            }
-          }
-        `}</style>
+      {/* ================= STYLE FOOTER FIX ================= */}
+      <style>{`
+        .dapp-footer-clean {
+          border-top: 1px solid #1f2937;
+          padding: 24px 5%;
+          background: #060911;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: #94a3b8;
+          font-size: 0.88rem;
+          gap: 24px;
+        }
 
-        {/* KOLOM KIRI: COPYRIGHT & DAFTAR LINK LENGKAP */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <p style={{ margin: 0, lineHeight: '1.5', maxWidth: '100%' }}>
+        .footer-content-left {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          text-align: left;
+        }
+
+        .footer-links-row {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          flex-wrap: wrap;
+          font-size: 0.82rem;
+        }
+
+        .footer-social-clean {
+          display: flex;
+          gap: 18px;
+          align-items: center;
+          flex-shrink: 0;
+        }
+
+        .footer-social-clean a {
+          color: #64748b;
+          font-size: 1.3rem;
+          text-decoration: none;
+          transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .footer-social-clean a:hover {
+          color: #38bdf8;
+          transform: translateY(-2px);
+        }
+
+        /* KHUSUS HP (MAX-WIDTH: 768px) */
+        @media (max-width: 768px) {
+          .dapp-footer-clean {
+            flex-direction: column !important;
+            text-align: center !important;
+            padding-bottom: 95px !important;
+            gap: 18px !important;
+          }
+
+          .footer-content-left {
+            text-align: center !important;
+            align-items: center !important;
+          }
+
+          .footer-links-row {
+            justify-content: center !important;
+          }
+
+          .footer-social-clean {
+            justify-content: center !important;
+          }
+
+          .footer-pitch-desktop {
+            display: none !important;
+          }
+        }
+      `}</style>
+
+      {/* ================= FOOTER RESMI DAPP ================= */}
+      <footer className="dapp-footer-clean">
+        {/* SISI KIRI: COPYRIGHT & LINK */}
+        <div className="footer-content-left">
+          <p style={{ margin: 0, lineHeight: '1.5' }}>
             © 2026 ZoniqFi Protocol. All Rights Reserved. Modular Solana DeFi & Real Yield Infrastructure.
           </p>
 
-          <div className="footer-links-row" style={{ 
-            display: 'flex', 
-            gap: '12px', 
-            justifyContent: 'center',
-            alignItems: 'center', 
-            flexWrap: 'wrap',
-            fontSize: '0.82rem'
-          }}>
-            {/* Panduan Protocol */}
+          <div className="footer-links-row">
             <button
               type="button"
               onClick={() => setIsGuideOpen(true)}
@@ -1849,11 +1887,10 @@ function App() {
               📖 Protocol Guide [EN/ID]
             </button>
 
-            {/* Tombol Pitch Deck (Otomatis sembunyi di HP) */}
             <button
               type="button"
               onClick={() => setShowPitchModal(true)}
-              className="footer-pitch-btn"
+              className="footer-pitch-desktop"
               style={{
                 background: 'rgba(59, 130, 246, 0.15)',
                 border: '1px solid rgba(59, 130, 246, 0.3)',
@@ -1944,15 +1981,15 @@ function App() {
           </div>
         </div>
 
-        {/* KOLOM KANAN: IKON SOSIAL MEDIA */}
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" style={{ color: '#64748b', fontSize: '1.25rem', textDecoration: 'none' }}>
+        {/* SISI KANAN: IKON SOSIAL SEJAJAR DI KANAN */}
+        <div className="footer-social-clean">
+          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" title="Telegram">
             <i className="fab fa-telegram"></i>
           </a>
-          <a href="https://x.com/zoniqfi" target="_blank" rel="noopener noreferrer" style={{ color: '#64748b', fontSize: '1.25rem', textDecoration: 'none' }}>
+          <a href="https://x.com/zoniqfi" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
             <i className="fab fa-x-twitter"></i>
           </a>
-          <a href="https://discord.gg/zoniqfi" target="_blank" rel="noopener noreferrer" style={{ color: '#64748b', fontSize: '1.25rem', textDecoration: 'none' }}>
+          <a href="https://discord.gg/zoniqfi" target="_blank" rel="noopener noreferrer" title="Discord">
             <i className="fab fa-discord"></i>
           </a>
         </div>
