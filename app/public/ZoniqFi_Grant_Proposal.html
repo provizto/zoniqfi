@@ -24,7 +24,50 @@
       line-height: 1.4;
       font-size: 9pt;
       margin: 0;
-      padding: 0;
+      padding: 20px;
+    }
+
+    /* Print Control Bar */
+    .print-bar {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .print-bar-info strong {
+      display: block;
+      color: #ffffff;
+      font-size: 9pt;
+    }
+
+    .print-bar-info span {
+      color: #94a3b8;
+      font-size: 7.5pt;
+    }
+
+    .print-btn {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 8.5pt;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .print-btn:hover {
+      background: #0369a1;
     }
 
     .page {
@@ -163,9 +206,27 @@
       display: flex;
       justify-content: space-between;
     }
+
+    @media print {
+      body {
+        padding: 0;
+      }
+      .print-bar {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Print Control Bar (Otomatis Hilang Saat Di-Print) -->
+  <div class="print-bar">
+    <div class="print-bar-info">
+      <strong>ZoniqFi Technical Grant Proposal</strong>
+      <span>Click button or press Ctrl + P to export directly to A4 PDF.</span>
+    </div>
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
 
   <!-- ==================== PAGE 1: ENGLISH ==================== -->
   <div class="page">
