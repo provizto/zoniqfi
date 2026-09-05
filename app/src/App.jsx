@@ -293,6 +293,13 @@ function App() {
   const [isSwapLoading, setIsSwapLoading] = useState(false);
   const [isLockLoading, setIsLockLoading] = useState(false);
   const [isTokenLocked, setIsTokenLocked] = useState(false);
+
+  // --- TAMBAHAN BARU UNTUK DEMO & DURASI (BAGIAN 1) ---
+  const IS_DEMO_MODE = true; // 'true' = 8 detik untuk pitching, 'false' = hari asli
+  const [instantDays, setInstantDays] = useState(7);
+  const [lockCountdown, setLockCountdown] = useState(0);
+  // ----------------------------------------------------
+
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
   const [swapsCount, setSwapsCount] = useState(45210); 
   
@@ -793,16 +800,26 @@ function App() {
       setShowRewardRow(true);
       setProtocolTVL(prev => prev + (amount * tokenPrices.ZQI)); 
 
-      // 2. Simulasi Epoch 8 detik: dividen baru terisi dan tombol claim menyala
-      setTimeout(() => {
-        const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
-        const rewardAmount = ((amount * 0.05) * finalMultiplier).toFixed(2);
-        localStorage.setItem('zoniq_staking_session', JSON.stringify({ isLocked: true, amount, multiplier: finalMultiplier, mode: lockCalculationMode, earnedDisplay: `${rewardAmount} USDC` }));
-        
-        setEarnedUsdcDisplay(`${rewardAmount} USDC`);
-        setRewardClaimable(true);
-        triggerBanner("✨ Smart Contract Update: Staking Epoch completed! Yield rewards are now claimable.", "success");
-      }, 8000); 
+      // 2. Simulasi Epoch dengan Hitung Mundur Live (Demo 8 detik vs Hari Asli)
+      const waitSeconds = IS_DEMO_MODE ? 8 : (lockCalculationMode === 'manual' ? instantDays : 30) * 86400;
+      setLockCountdown(waitSeconds);
+
+      const timerInterval = setInterval(() => {
+        setLockCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timerInterval);
+            const finalMultiplier = (lockCalculationMode === 'wizard') ? chosenMultiplier : 1;
+            const rewardAmount = ((amount * 0.05) * finalMultiplier).toFixed(2);
+            localStorage.setItem('zoniq_staking_session', JSON.stringify({ isLocked: true, amount, multiplier: finalMultiplier, mode: lockCalculationMode, earnedDisplay: `${rewardAmount} USDC` }));
+            
+            setEarnedUsdcDisplay(`${rewardAmount} USDC`);
+            setRewardClaimable(true);
+            triggerBanner("✨ Smart Contract Update: Staking Epoch completed! Yield rewards are now claimable.", "success");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000); 
 
     } catch (error) {
       triggerBanner("⚠️ Transaction bundle rejected.", "error");
@@ -1522,6 +1539,38 @@ function App() {
                 <input type="number" id="lockAmount" placeholder="0.0" value={lockAmount === '0' ? '' : lockAmount} disabled={isTokenLocked || isLockLoading} onChange={(e) => setLockAmount(e.target.value)} onBlur={() => { if (lockAmount === '') setLockAmount('0'); }} />
               </div>
 
+              {/* OPSI DURASI KHUSUS INSTANT LOCK (7, 15, 30 HARI) */}
+              {lockCalculationMode === 'manual' && (
+                <div style={{ marginBottom: '14px', marginTop: '10px' }}>
+                  <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: '6px' }}>
+                    Select Lock Duration:
+                  </label>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                    {[7, 15, 30].map((days) => (
+                      <button
+                        key={days}
+                        type="button"
+                        disabled={isTokenLocked}
+                        onClick={() => setInstantDays(days)}
+                        style={{
+                          padding: '7px 0',
+                          borderRadius: '6px',
+                          fontSize: '0.82rem',
+                          fontWeight: '600',
+                          cursor: isTokenLocked ? 'not-allowed' : 'pointer',
+                          border: instantDays === days ? '1px solid #38bdf8' : '1px solid #1e293b',
+                          background: instantDays === days ? 'rgba(56, 189, 248, 0.15)' : '#0b0f19',
+                          color: instantDays === days ? '#38bdf8' : '#64748b',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        {days} Days (1x)
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className={`wizard-section ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="wizardOptions">
                 <label className="wizard-select-label">Select Lock Duration:</label>
                 <div className="duration-btn-group">
@@ -1551,19 +1600,23 @@ function App() {
                     onClick={claimZqiReward} 
                     disabled={!rewardClaimable}
                     style={{ 
-                      opacity: rewardClaimable ? 1 : 0.7, 
-                      background: rewardClaimable ? "#22c55e" : "#334155", 
+                      opacity: 1, 
+                      background: rewardClaimable ? "#22c55e" : "rgba(234, 179, 8, 0.15)", 
                       cursor: rewardClaimable ? "pointer" : "not-allowed", 
-                      border: "none", 
+                      border: rewardClaimable ? "none" : "1px solid rgba(234, 179, 8, 0.4)", 
                       padding: "8px 14px", 
                       borderRadius: "6px", 
-                      color: rewardClaimable ? "#ffffff" : "#94a3b8", 
+                      color: rewardClaimable ? "#ffffff" : "#facc15", 
                       fontWeight: "600",
                       fontSize: "0.85rem",
-                      transition: "all 0.2s ease"
+                      transition: "all 0.3s ease"
                     }}
                   >
-                    {rewardClaimable ? "Claim Reward" : (localStorage.getItem('zoniq_staking_session')?.includes('"isClaimed":true') ? "✓ Claimed" : "🔒 Epoch Accumulating...")}
+                    {rewardClaimable 
+                      ? "Claim Reward" 
+                      : (lockCountdown > 0 
+                          ? `🔒 Epoch Accumulating (${lockCountdown}s)` 
+                          : "🔒 Epoch Accumulating...")}
                   </button>
                 </div>
               )}
