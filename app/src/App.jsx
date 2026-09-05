@@ -1817,7 +1817,15 @@ function App() {
                   Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
                 </div>
                 <div className="tier-item" style={{ color: '#94a3b8' }}>
-                  Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>{referralEarned === '$0.00' && !isConnected ? '$0.00 USDC' : referralEarned}</span>
+                  Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>
+  {(() => {
+    if (!isConnected && (referralEarned === '$0.00' || !referralEarned)) return '$0.00 USDC';
+    const num = parseFloat(String(referralEarned).replace(/[^0-9.-]+/g, ''));
+    return isNaN(num) 
+      ? referralEarned 
+      : `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`;
+  })()}
+</span>
                 </div>
               </div>
             </section>
