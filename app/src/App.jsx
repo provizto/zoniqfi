@@ -1516,7 +1516,11 @@ function App() {
         )}
 
         {/* TEMPELKAN DI SINI */}
-        {activeTab === 'payfi' && <PayFiGateway />}
+        {activeTab === 'payfi' && (
+          <div className="payfi-wrapper">
+            <PayFiGateway />
+          </div>
+        )}
 
         {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium HANYA saat di Tab Swap */}
         {distributionData && activeTab === 'swap' && (

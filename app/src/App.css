@@ -961,6 +961,17 @@ input[type="number"] {
   }
 }
 
+/* Khusus layar HP super ramping (di bawah 360px) */
+@media (max-width: 360px) {
+  .tab-text {
+    display: none !important; /* Sembunyikan teks agar tidak berdesakan */
+  }
+
+  .dapp-tab-btn {
+    padding: 6px 8px !important;
+  }
+}
+
 /* ==========================================================================
    CARD & INPUT CONTAINER MODERN POLISH
    ========================================================================== */
