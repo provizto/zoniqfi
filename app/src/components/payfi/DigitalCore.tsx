@@ -1826,11 +1826,12 @@ function MainApp() {
         }
       `}</style>
 
-      {/* 🚀 NAVBAR TERPADU (SEBARIS & CENTER) */}
+      {/* 🚀 NAVBAR TERPADU (RESPONSIF & TIDAK TERPOTONG) */}
       <div style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        flexWrap: "wrap",
         borderBottom: "1px solid #1f2937",
         paddingBottom: "14px",
         marginBottom: "20px",
@@ -1838,8 +1839,8 @@ function MainApp() {
         width: "100%",
         boxSizing: "border-box"
       }}>
-        {/* KIRI: LOGO + JUDUL */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
+        {/* KIRI: LOGO + JUDUL (FLEX: 1 AGAR FLEKSIBEL) */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: "200px" }}>
           <span style={{ fontSize: "24px", flexShrink: 0 }}>⚡</span>
           <div style={{ minWidth: 0 }}>
             <h1 style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -1853,7 +1854,7 @@ function MainApp() {
 
         {/* KANAN: TOMBOL AKSI */}
         <div style={{ display: "flex", gap: "6px", alignItems: "center", flexShrink: 0 }}>
-          <div className="nav-desktop-only" style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+          <div className="nav-desktop-only" style={{ display: "flex", gap: "6px", alignItems: "center", flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={() => setShowVerifyModal(true)}
