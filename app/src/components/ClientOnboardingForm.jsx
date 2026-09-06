@@ -11,6 +11,8 @@ const ClientOnboardingForm = () => {
     twitterLink: '', 
     customDomain: '',
     hostingPreference: 'cloudflare',
+    enablePayFi: 'yes',
+    primaryCategory: 'Digital Assets & Software',
     clientSignature: '' 
   });
 
@@ -18,14 +20,10 @@ const ClientOnboardingForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // ==========================================================================
-    // TARGET TRANSMISI DATA (FormSubmit Bypass CORS Engine)
-    // ==========================================================================
     const EMAIL_TUJUAN = "zoniqfi@gmail.com"; 
 
-    // Merakit payload data terstruktur untuk dikirimkan ke kotak masuk email
     const payload = {
-      _subject: `ZoniqFi Onboarding: ${formData.projectName || 'New White-Label Client'}`,
+      _subject: `ZoniqFi Onboarding & PayFi Request: ${formData.projectName || 'New Client'}`,
       _captcha: "false",
       "Project Name": formData.projectName,
       "Token Ticker": formData.tokenTicker,
@@ -35,6 +33,8 @@ const ClientOnboardingForm = () => {
       "Official X (Twitter) Link": formData.twitterLink || "Not Provided",
       "Target Custom Domain": formData.customDomain,
       "Hosting Preference": formData.hostingPreference === 'cloudflare' ? 'Cloudflare DNS Access' : 'Isolated Hosting Request',
+      "Enable PayFi / QRIS Gateway": formData.enablePayFi === 'yes' ? 'Yes (Integrated Commerce)' : 'No (DeFi Only)',
+      "Primary Merchant Category": formData.primaryCategory,
       "Client Signature / Handle": formData.clientSignature
     };
 
@@ -49,9 +49,8 @@ const ClientOnboardingForm = () => {
       });
 
       if (response.ok) {
-        alert("🎉 Onboarding data successfully submitted! Our team will review your parameters and contact you shortly.");
+        alert("🎉 Onboarding & PayFi data successfully submitted! Our team will review your parameters and contact you shortly.");
         
-        // Reset form state setelah transmisi sukses
         setFormData({
           projectName: '',
           tokenTicker: '',
@@ -61,6 +60,8 @@ const ClientOnboardingForm = () => {
           twitterLink: '',
           customDomain: '',
           hostingPreference: 'cloudflare',
+          enablePayFi: 'yes',
+          primaryCategory: 'Digital Assets & Software',
           clientSignature: ''
         });
       } else {
@@ -76,8 +77,8 @@ const ClientOnboardingForm = () => {
 
   return (
     <div style={{ maxWidth: '650px', margin: '40px auto', padding: '30px', background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', color: '#f3f4f6', fontFamily: 'sans-serif', textAlign: 'left' }}>
-      <h2 style={{ color: '#ffffff', borderBottom: '1px solid #1e293b', paddingBottom: '10px', margin: '0 0 20px 0' }}>⚡ ZoniqFi — Client Onboarding</h2>
-      <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '25px' }}>Please fill out this form accurately to initiate the white-label custom deployment process.</p>
+      <h2 style={{ color: '#ffffff', borderBottom: '1px solid #1e293b', paddingBottom: '10px', margin: '0 0 20px 0' }}>⚡ ZoniqFi — White-Label & PayFi Onboarding</h2>
+      <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '25px' }}>Fill out this form to initiate your custom Solana protocol deployment and merchant gateway setup.</p>
       
       <form onSubmit={handleSubmit}>
         {/* SECTION 1 */}
@@ -96,11 +97,32 @@ const ClientOnboardingForm = () => {
         </div>
 
         {/* SECTION 2 */}
-        <h4 style={{ color: '#38bdf8', margin: '25px 0 10px 0' }}>[ 2. SOLANA CONTRACT INTEGRATION ]</h4>
+        <h4 style={{ color: '#38bdf8', margin: '25px 0 10px 0' }}>[ 2. SOLANA CONTRACT & PAYFI SETUP ]</h4>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '5px' }}>Token Mint Address</label>
           <input type="text" required value={formData.mintAddress} style={{ width: '100%', padding: '10px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', color: '#fff', outline: 'none' }} onChange={e => setFormData({...formData, mintAddress: e.target.value})} />
         </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '5px' }}>Enable PayFi / QRIS Gateway?</label>
+            <select value={formData.enablePayFi} style={{ width: '100%', padding: '10px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', color: '#fff', outline: 'none', cursor: 'pointer' }} onChange={e => setFormData({...formData, enablePayFi: e.target.value})}>
+              <option value="yes">Yes (Full Merchant Commerce)</option>
+              <option value="no">No (DeFi Swap & Vault Only)</option>
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '5px' }}>Primary Industry / Vertical</label>
+            <select value={formData.primaryCategory} style={{ width: '100%', padding: '10px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', color: '#fff', outline: 'none', cursor: 'pointer' }} onChange={e => setFormData({...formData, primaryCategory: e.target.value})}>
+              <option value="Digital Assets & Software">Digital Assets & Software</option>
+              <option value="NFT & Web3 Collectibles">NFT & Web3 Collectibles</option>
+              <option value="E-Books & Education">E-Books & Education</option>
+              <option value="Fashion & Merchandise">Fashion & Merchandise</option>
+              <option value="Physical Goods / RWA">Physical Goods / RWA (UMKM)</option>
+            </select>
+          </div>
+        </div>
+
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '5px' }}>Official Telegram Group Link</label>
           <input type="url" required value={formData.telegramLink} style={{ width: '100%', padding: '10px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', color: '#fff', outline: 'none' }} onChange={e => setFormData({...formData, telegramLink: e.target.value})} />

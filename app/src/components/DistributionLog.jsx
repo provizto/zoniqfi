@@ -1,6 +1,6 @@
 import React from 'react';
 
-const defaultBreakdown = [
+const defaultSwapBreakdown = [
   { label: "Yield Optimizer Vault (40%)", amount: "0.02400 USDC", icon: "fa-vault" },
   { label: "ZQI Real Yield Pool (30%)", amount: "0.01800 USDC", icon: "fa-chart-pie" },
   { label: "Affiliate Treasury (15%)", amount: "0.00900 USDC", icon: "fa-users" },
@@ -10,26 +10,52 @@ const defaultBreakdown = [
 const DistributionLog = ({ 
   programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD", 
   swapData,
+  payfiData, // Props opsional jika menampilkan transaksi PayFi
   cluster = "devnet" 
 }) => {
+  const isPayFi = Boolean(payfiData);
+
   const formatAddress = (addr) => {
     if (!addr) return "";
     if (addr.length <= 12) return addr;
     return `${addr.slice(0, 4)}...${addr.slice(-4)}`;
   };
 
-  const isTx = Boolean(swapData?.txSignature);
-  const activeIdentifier = swapData?.txSignature || programId;
+  const activeTxSignature = isPayFi ? payfiData?.txSignature : swapData?.txSignature;
+  const isTx = Boolean(activeTxSignature);
+  const activeIdentifier = activeTxSignature || programId;
 
   const solscanUrl = isTx
-    ? `https://solscan.io/tx/${swapData.txSignature}?cluster=${cluster}`
+    ? `https://solscan.io/tx/${activeTxSignature}?cluster=${cluster}`
     : `https://solscan.io/account/${programId}?cluster=${cluster}`;
 
-  const data = {
-    fromAmount: swapData?.fromAmount || "20 USDC",
-    toAmount: swapData?.toAmount || "40.0000 ZQI",
+  // Logika PayFi Settlement Breakdown (95% Vendor Payout + 5% Protocol Fee)
+  const defaultPayFiBreakdown = [
+    { label: "Vendor Direct Settlement (95%)", amount: payfiData?.vendorPayout || "0.0475 SOL", icon: "fa-wallet" },
+    { label: "ZQI Staking Yield Pool (3%)", amount: payfiData?.stakingCut || "0.0015 SOL", icon: "fa-chart-pie" },
+    { label: "Protocol Treasury Reserve (2%)", amount: payfiData?.treasuryCut || "0.0010 SOL", icon: "fa-shield-halved" }
+  ];
+
+  const data = isPayFi ? {
+    badge: "PAYFI SETTLED",
+    badgeColor: "#fbbf24",
+    title: payfiData?.productName || "Merchant Asset Purchase",
+    pairLabel: "Merchant & Payer",
+    primaryValue: payfiData?.buyer || "Payer Wallet",
+    secondaryValue: payfiData?.vendorName || "Vendor Wallet",
+    feeLabel: "Protocol Platform Cut (5%)",
+    totalFee: payfiData?.platformFee || "0.0025 SOL",
+    breakdown: payfiData?.breakdown || defaultPayFiBreakdown
+  } : {
+    badge: "SWAP SUCCESSFUL",
+    badgeColor: "#10b981",
+    title: "Transaction Pair",
+    pairLabel: "Exchanged Tokens",
+    primaryValue: swapData?.fromAmount || "20 USDC",
+    secondaryValue: swapData?.toAmount || "40.0000 ZQI",
+    feeLabel: "Protocol Fee (0.3%)",
     totalFee: swapData?.totalFee || "0.0600 USDC",
-    breakdown: swapData?.breakdown || defaultBreakdown
+    breakdown: swapData?.breakdown || defaultSwapBreakdown
   };
 
   return (
@@ -37,7 +63,7 @@ const DistributionLog = ({
       background: 'rgba(17, 24, 39, 0.75)',
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
-      border: '1px solid rgba(20, 184, 166, 0.25)',
+      border: isPayFi ? '1px solid rgba(245, 158, 11, 0.25)' : '1px solid rgba(20, 184, 166, 0.25)',
       borderRadius: '16px',
       padding: '20px 24px',
       maxWidth: '480px',
@@ -60,20 +86,20 @@ const DistributionLog = ({
         gap: '8px' 
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="fas fa-circle-check" style={{ color: '#10b981', fontSize: '1rem' }}></i>
-          <span style={{ fontWeight: '700', color: '#10b981', letterSpacing: '0.5px', fontSize: '0.85rem' }}>
-            SWAP SUCCESSFUL
+          <i className="fas fa-circle-check" style={{ color: data.badgeColor, fontSize: '1rem' }}></i>
+          <span style={{ fontWeight: '700', color: data.badgeColor, letterSpacing: '0.5px', fontSize: '0.85rem' }}>
+            {data.badge}
           </span>
           <span style={{ 
             fontSize: '0.68rem', 
-            background: 'rgba(56, 189, 248, 0.15)', 
-            color: '#38bdf8', 
+            background: isPayFi ? 'rgba(245, 158, 11, 0.15)' : 'rgba(56, 189, 248, 0.15)', 
+            color: isPayFi ? '#fbbf24' : '#38bdf8', 
             padding: '2px 6px', 
             borderRadius: '4px', 
             fontWeight: '600', 
-            border: '1px solid rgba(56, 189, 248, 0.3)' 
+            border: isPayFi ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid rgba(56, 189, 248, 0.3)' 
           }}>
-            Tx v1
+            {isPayFi ? "PayFi v1" : "Tx v1"}
           </span>
         </div>
         
@@ -104,7 +130,7 @@ const DistributionLog = ({
         </a>
       </div>
 
-      {/* SWAP DETAILS */}
+      {/* TRANSACTION OVERVIEW */}
       <div style={{ 
         marginBottom: '18px', 
         background: 'rgba(11, 15, 25, 0.55)', 
@@ -112,11 +138,11 @@ const DistributionLog = ({
         borderRadius: '10px', 
         border: '1px solid #1f2937' 
       }}>
-        <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '6px' }}>Transaction Pair</div>
-        <div style={{ fontWeight: '600', fontSize: '1.05rem', color: '#fff', display: 'flex', alignItems: 'center' }}>
-          <span>{data.fromAmount}</span>
-          <i className="fas fa-arrow-right" style={{ fontSize: '0.85rem', margin: '0 10px', color: '#38bdf8' }}></i>
-          <span>{data.toAmount}</span>
+        <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '6px' }}>{data.pairLabel}</div>
+        <div style={{ fontWeight: '600', fontSize: '1rem', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span>{data.primaryValue}</span>
+          <i className="fas fa-arrow-right" style={{ fontSize: '0.85rem', margin: '0 8px', color: data.badgeColor }}></i>
+          <span style={{ color: isPayFi ? '#fbbf24' : '#38bdf8' }}>{data.secondaryValue}</span>
         </div>
         <div style={{ 
           display: 'flex', 
@@ -127,7 +153,7 @@ const DistributionLog = ({
           paddingTop: '8px', 
           borderTop: '1px solid rgba(31, 41, 55, 0.6)' 
         }}>
-          <span>Protocol Fee (0.3%)</span>
+          <span>{data.feeLabel}</span>
           <span style={{ fontWeight: '600', color: '#e2e8f0', fontFamily: 'monospace' }}>{data.totalFee}</span>
         </div>
       </div>
@@ -137,16 +163,16 @@ const DistributionLog = ({
         <div style={{ 
           fontSize: '0.75rem', 
           fontWeight: '700', 
-          color: '#14b8a6', 
+          color: isPayFi ? '#fbbf24' : '#14b8a6', 
           textTransform: 'uppercase', 
           letterSpacing: '0.8px', 
-          marginBottom: '10px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px'
+          marginBottom: '10px', 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '6px' 
         }}>
           <i className="fas fa-network-wired"></i>
-          <span>On-Chain Fee Distribution</span>
+          <span>{isPayFi ? "Real-Time Settlement Route" : "On-Chain Fee Distribution"}</span>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -166,13 +192,13 @@ const DistributionLog = ({
                   width: '26px', 
                   height: '26px', 
                   borderRadius: '6px', 
-                  background: 'rgba(20, 184, 166, 0.1)', 
+                  background: isPayFi ? 'rgba(245, 158, 11, 0.1)' : 'rgba(20, 184, 166, 0.1)', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  justifyContent: 'center',
-                  flexShrink: 0
+                  justifyContent: 'center', 
+                  flexShrink: 0 
                 }}>
-                  <i className={`fas ${item.icon}`} style={{ color: '#14b8a6', fontSize: '0.75rem' }}></i>
+                  <i className={`fas ${item.icon}`} style={{ color: isPayFi ? '#fbbf24' : '#14b8a6', fontSize: '0.75rem' }}></i>
                 </div>
                 <span style={{ color: '#94a3b8' }}>{item.label}</span>
               </div>

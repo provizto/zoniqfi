@@ -5,7 +5,14 @@ const CONTENT = {
     badge: "OFFICIAL ARCHITECTURE & USER MANUAL",
     title: "ZoniqFi Protocol Operational Guide",
     subtitle: "Comprehensive architectural breakdown and module interactions.",
-    tabs: { all: "All Modules", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Affiliate" },
+    tabs: { 
+      all: "All Modules", 
+      swap: "01. Swap", 
+      lock: "02. Lock", 
+      vault: "03. Vault", 
+      affiliate: "04. Affiliate",
+      payfi: "05. PayFi"
+    },
     modules: {
       swap: {
         tag: "TX V1 ATOMIC",
@@ -20,7 +27,7 @@ const CONTENT = {
       lock: {
         tag: "0% INFLATION",
         title: "02. $ZQI Lock & Real Yield",
-        desc: "Native token staking mechanism that distributes pure USDC dividends generated from platform trading volume, creating non-inflationary yield.",
+        desc: "Native token staking mechanism that distributes pure USDC dividends generated from platform trading and commerce volumes, creating non-inflationary yield.",
         highlights: [
           { label: "Lock Durations & Multipliers", val: "Flexible to long-term options: 7 Days (0.5x), 15 Days (0.75x), 30 Days (1.0x), 90 Days (1.5x), and 180 Days (2.5x weight) for dividend calculation." },
           { label: "USDC Real Yield", val: "Dividends paid directly in stable USDC, avoiding token dilution." },
@@ -51,6 +58,33 @@ const CONTENT = {
           { label: "SNS Integration", val: "Full support for Solana Name Service (.sol / .sns) domain resolution." },
           { label: "Anti-Sybil Cooldown", val: "10-second threshold per transaction prevents automated referral farming." }
         ]
+      },
+      payfi: {
+        tag: "HYBRID SETTLEMENT",
+        title: "05. PayFi Gateway & Merchant Commerce",
+        desc: "Hybrid decentralized commerce infrastructure bridging Web3 on-chain settlement and Web2 Indonesian fiat payments through dynamic QRIS.",
+        subBoxTitle: "Dual-Engine Checkout Mechanics:",
+        box1Title: "1. Web3 Solana Pay (Crypto-Native)",
+        box1Desc: "Instant peer-to-peer settlement using native SOL or SPL stablecoins. Non-custodial routing pays the vendor directly while deducting a 5% protocol fee to feed the ZoniqFi Real Yield pool.",
+        box2Title: "2. Dynamic QRIS Gateway (Fiat On-Ramp)",
+        box2Desc: "Automated QRIS barcode generation for instant payment via any Indonesian mobile banking or e-wallet (GoPay, OVO, Dana, ShopeePay, BCA, Mandiri) at dynamic live FX rates.",
+        categoriesTitle: "Supported Merchant Catalog Verticals (9 Sectors):",
+        categories: [
+          "💎 NFT & Web3 Collectibles",
+          "💻 Software & Source Code",
+          "📚 E-Book & Educational Docs",
+          "🎨 Design, UI/UX & 3D Assets",
+          "🔑 Licenses & Digital Accounts",
+          "🛠️ Digital Services & Freelance",
+          "👕 Fashion & Brand Merchandise",
+          "📱 Gadgets & Hardware Tech",
+          "📦 Physical Goods & Local MSMEs (RWA)"
+        ],
+        highlights: [
+          { label: "Non-Custodial Escrow", val: "Funds route directly to vendor payout wallets without protocol intermediary risk." },
+          { label: "Automated Vault Distribution", val: "Digital product assets (.zip/.pdf) are instantly unlocked and delivered upon confirmation." },
+          { label: "Flywheel Capital Contribution", val: "5% platform merchant fees automatically route into protocol treasury and $ZQI staking distribution." }
+        ]
       }
     },
     closeBtn: "Close Guide"
@@ -59,7 +93,14 @@ const CONTENT = {
     badge: "PANDUAN OPERASIONAL & ARSITEKTUR RESMI",
     title: "Panduan Protokol ZoniqFi",
     subtitle: "Penjelasan mendalam arsitektur modul dan mekanisme transaksi.",
-    tabs: { all: "Semua Modul", swap: "01. Swap", lock: "02. Lock", vault: "03. Vault", affiliate: "04. Afiliasi" },
+    tabs: { 
+      all: "Semua Modul", 
+      swap: "01. Swap", 
+      lock: "02. Lock", 
+      vault: "03. Vault", 
+      affiliate: "04. Afiliasi",
+      payfi: "05. PayFi"
+    },
     modules: {
       swap: {
         tag: "TX V1 ATOMIC",
@@ -74,9 +115,9 @@ const CONTENT = {
       lock: {
         tag: "0% INFLASI",
         title: "02. $ZQI Lock & Real Yield",
-        desc: "Mekanisme penguncian token asli yang membagikan dividen likuid USDC murni dari perputaran biaya trading platform tanpa emisi inflasi.",
+        desc: "Mekanisme penguncian token asli yang membagikan dividen likuid USDC murni dari perputaran trading dan transaksi komersial tanpa emisi inflasi.",
         highlights: [
-          { label: "Durasi & Pengali Kunci", val: "Pilihan fleksibel hingga jangka panjang: 7 Hari (0.5x), 15 Hari (0.75x), 30 Hari (1.0x), 90 Hari (1.5x), dan 180 Hari (2.5x bobot) untuk alokasi porsi dividen." },
+          { label: "Durasi & Pengali Kunci", val: "Pilihan fleksibel hingga jangka panjang: 7 Hari (0.5x), 15 Hari (0.75x), 30 Hari (1.0x), 90 Hari (1.5x), dan 180 Hari (2.5x bobot) untuk alokasi dividen." },
           { label: "Dividen USDC Riil", val: "Imbal hasil dibagikan dalam stablecoin USDC, menjaga nilai modal investor dari risiko volatilitas." },
           { label: "Pertahanan Deflasi", val: "Pembukaan kunci darurat sebelum jatuh tempo memicu denda penalti 10% yang dibakar (burned) permanen." }
         ]
@@ -104,6 +145,33 @@ const CONTENT = {
           { label: "Komisi Berjenjang", val: "Bronze (rabat 10% pada volume $0–$10k), Silver (18% pada volume $10k–$100k), Gold (25% pada volume >$100k)." },
           { label: "Integrasi Domain SNS", val: "Mendukung penuh pembacaan domain Solana Name Service (.sol / .sns)." },
           { label: "Cooldown Anti-Sybil", val: "Jeda 10 detik per transaksi rujukan untuk memitigasi eksploitasi bot." }
+        ]
+      },
+      payfi: {
+        tag: "SETTLEMENT HYBRID",
+        title: "05. PayFi Gateway & Perdagangan Merchant",
+        desc: "Infrastruktur perdagangan terdesentralisasi hybrid yang menghubungkan pembayaran on-chain Web3 dan transaksi fiat lokal Indonesia melalui QRIS dinamis.",
+        subBoxTitle: "Mekanisme Dual-Engine Checkout:",
+        box1Title: "1. Web3 Solana Pay (Kripto-Native)",
+        box1Desc: "Penyelesaian instan antar dompet menggunakan SOL native. Alur non-kustodial langsung meneruskan dana ke wallet vendor setelah pemotongan fee protokol 5% untuk kas Real Yield ZoniqFi.",
+        box2Title: "2. Gateway QRIS Dinamis (On-Ramp Fiat)",
+        box2Desc: "Pembuatan kode QRIS dinamis instan untuk pembayaran melalui mobile banking atau dompet digital (GoPay, OVO, Dana, ShopeePay, BCA, Mandiri) dengan perhitungan kurs real-time.",
+        categoriesTitle: "Dukungan 9 Kategori Merchant & Produk:",
+        categories: [
+          "💎 NFT & Web3 Collectibles",
+          "💻 Software & Source Code",
+          "📚 E-Book & Dokumen Edukasi",
+          "🎨 Desain, UI/UX & Aset 3D",
+          "🔑 Lisensi & Akun Digital",
+          "🛠️ Jasa & Layanan Digital",
+          "👕 Fashion & Merchandise",
+          "📱 Gadget & Hardware Tech",
+          "📦 Barang Fisik & UMKM (RWA)"
+        ],
+        highlights: [
+          { label: "Penyelesaian Non-Kustodial", val: "Dana pembayaran langsung diteruskan ke wallet vendor tanpa penahanan saldo oleh pihak ketiga." },
+          { label: "Pengiriman Digital Otomatis", val: "Tautan unduh file (.zip/.pdf) otomatis diberikan begitu konfirmasi transaksi berhasil." },
+          { label: "Kontribusi ke Flywheel", val: "Fee platform sebesar 5% otomatis disalurkan ke kas protokol dan dividen staker $ZQI." }
         ]
       }
     },
@@ -404,6 +472,64 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
             </div>
           )}
 
+          {/* 05. PAYFI GATEWAY */}
+          {(activeSection === 'all' || activeSection === 'payfi') && (
+            <div style={{ 
+              background: 'linear-gradient(180deg, rgba(245, 158, 11, 0.06) 0%, rgba(17, 24, 39, 1) 100%)', 
+              border: '1px solid rgba(245, 158, 11, 0.35)', 
+              borderRadius: '14px', 
+              padding: '18px' 
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <h3 style={{ margin: 0, color: '#fbbf24', fontSize: '1.05rem', fontWeight: '700' }}>
+                  {t.modules.payfi.title}
+                </h3>
+                <span style={{ fontSize: '0.72rem', background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>
+                  {t.modules.payfi.tag}
+                </span>
+              </div>
+              <p style={{ color: '#cbd5e1', fontSize: '0.86rem', margin: '0 0 14px 0' }}>{t.modules.payfi.desc}</p>
+
+              {/* Supported Verticals Grid */}
+              <div style={{ background: '#0b1120', border: '1px solid #1e293b', borderRadius: '10px', padding: '12px 14px', marginBottom: '14px' }}>
+                <div style={{ color: '#f59e0b', fontWeight: '700', fontSize: '0.82rem', marginBottom: '8px' }}>
+                  {t.modules.payfi.categoriesTitle}
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '6px' }}>
+                  {t.modules.payfi.categories.map((cat, idx) => (
+                    <div key={idx} style={{ fontSize: '0.8rem', color: '#e2e8f0', background: 'rgba(255,255,255,0.02)', padding: '5px 8px', borderRadius: '4px' }}>
+                      {cat}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dual-Engine Checkout Details */}
+              <div style={{ background: '#0b1120', border: '1px solid #1e293b', borderRadius: '10px', padding: '14px', marginBottom: '14px' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '0.86rem', color: '#38bdf8' }}>{t.modules.payfi.subBoxTitle}</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px' }}>
+                  <div style={{ background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)', borderRadius: '8px', padding: '12px' }}>
+                    <div style={{ color: '#38bdf8', fontWeight: '700', fontSize: '0.82rem', marginBottom: '4px' }}>{t.modules.payfi.box1Title}</div>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1' }}>{t.modules.payfi.box1Desc}</p>
+                  </div>
+                  <div style={{ background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '8px', padding: '12px' }}>
+                    <div style={{ color: '#fbbf24', fontWeight: '700', fontSize: '0.82rem', marginBottom: '4px' }}>{t.modules.payfi.box2Title}</div>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#cbd5e1' }}>{t.modules.payfi.box2Desc}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Highlights */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {t.modules.payfi.highlights.map((h, i) => (
+                  <div key={i} style={{ fontSize: '0.83rem', color: '#cbd5e1', background: 'rgba(255,255,255,0.02)', padding: '8px 12px', borderRadius: '6px' }}>
+                    <strong style={{ color: '#f8fafc' }}>{h.label}:</strong> {h.val}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
 
         {/* MODAL FOOTER */}
@@ -418,7 +544,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
           gap: '8px'
         }}>
           <span style={{ fontSize: '0.76rem', color: '#64748b' }}>
-            © 2026 ZoniqFi Protocol • Decentralized Technical Documentation
+            &copy; 2026 ZoniqFi Protocol &bull; Decentralized Technical Documentation
           </span>
           <button
             type="button"

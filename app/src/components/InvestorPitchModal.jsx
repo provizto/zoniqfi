@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
 const TABS = [
-  { id: 'modules', label: 'Core DeFi Modules' },
-  { id: 'roadmap', label: 'Roadmap & Funding Milestones' },
+  { id: 'modules', label: 'Core Modules (DeFi + PayFi)' },
+  { id: 'roadmap', label: 'Roadmap & Milestones' },
   { id: 'flywheel', label: 'Economic Flywheel' }
+];
+
+const PAYFI_CATEGORIES = [
+  { icon: "💎", name: "NFT & Web3 Collectibles" },
+  { icon: "💻", name: "Software & Source Code" },
+  { icon: "📚", name: "E-Book & Dokumen Edukasi" },
+  { icon: "🎨", name: "Desain, UI/UX & Aset 3D" },
+  { icon: "🔑", name: "Lisensi & Akun Digital" },
+  { icon: "🛠️", name: "Jasa & Layanan Digital" },
+  { icon: "👕", name: "Fashion & Merchandise" },
+  { icon: "📱", name: "Gadget & Hardware Tech" },
+  { icon: "📦", name: "Barang Fisik & UMKM (RWA)" }
 ];
 
 const InvestorPitchModal = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState('modules');
 
-  // Menangani tombol ESC & mencegah background scrolling saat modal terbuka
   useEffect(() => {
     if (!isOpen) return;
 
@@ -52,7 +63,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           background: '#0b1326',
           border: '1px solid rgba(56, 189, 248, 0.25)',
           borderRadius: '20px',
-          maxWidth: '860px',
+          maxWidth: '880px',
           width: '100%',
           maxHeight: '90vh',
           display: 'flex',
@@ -87,7 +98,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               </h2>
             </div>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>
-              Institutional Presentation & Grant Allocation Proposal
+              Hybrid Web3 DeFi + Real-World PayFi Commerce Engine (Solana Architecture)
             </p>
           </div>
           <button 
@@ -161,74 +172,123 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
 
         {/* MODAL SCROLLABLE BODY */}
         <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1, fontSize: '0.9rem', lineHeight: '1.6' }}>
-          {/* TAB 1: CORE DEFI MODULES */}
+          
+          {/* TAB 1: CORE DEFI & PAYFI MODULES */}
           {activeTab === 'modules' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              
+              {/* PayFi Spotlight Module */}
+              <div style={{ 
+                background: 'linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(17, 24, 39, 1) 100%)', 
+                border: '1px solid rgba(245, 158, 11, 0.35)', 
+                borderRadius: '12px', 
+                padding: '16px' 
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
+                  <h4 style={{ margin: 0, color: '#fbbf24', fontSize: '1.02rem', fontWeight: '800' }}>
+                    01. PayFi Gateway & Merchant Commerce (Web3 + QRIS)
+                  </h4>
+                  <span style={{ fontSize: '0.72rem', background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', padding: '2px 8px', borderRadius: '4px', fontWeight: '800' }}>
+                    HYBRID SETTLEMENT
+                  </span>
+                </div>
+                <p style={{ margin: '0 0 12px 0', color: '#cbd5e1', fontSize: '0.85rem' }}>
+                  Turnkey payment settlement engine bridging crypto-native users and fiat commerce. Seamlessly accepts Solana Native SOL while generating instant dynamic QRIS for local merchant settlements.
+                </p>
+
+                {/* 9 Category Scaffolding */}
+                <div style={{ 
+                  background: 'rgba(0, 0, 0, 0.3)', 
+                  border: '1px solid #1e293b', 
+                  borderRadius: '8px', 
+                  padding: '10px 12px',
+                  marginBottom: '12px'
+                }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Supported Merchant Categories:
+                  </span>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
+                    gap: '6px', 
+                    marginTop: '8px' 
+                  }}>
+                    {PAYFI_CATEGORIES.map((cat, i) => (
+                      <div key={i} style={{ fontSize: '0.78rem', color: '#f1f5f9', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span>{cat.icon}</span>
+                        <span>{cat.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
+                  <li><strong>Non-Custodial Vendor Payouts:</strong> Direct wallet settlement without intermediary custody or lengthy clearance delays.</li>
+                  <li><strong>Automated Platform Fee:</strong> 5% protocol cut automatically routed into the protocol treasury and staking reward pools.</li>
+                  <li><strong>Instant Digital Vault:</strong> Cloud-secured download link generation for software, e-books, and 3D models upon confirmation.</li>
+                </ul>
+              </div>
+
+              {/* Swap Engine */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#38bdf8', fontSize: '1rem', fontWeight: '700' }}>
-                    01. AMM DEX Swap Engine (Anti-MEV Atomic Swaps)
+                    02. AMM DEX Swap Engine (Anti-MEV Atomic Swaps)
                   </h4>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>TX V1 ATOMIC</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  High-velocity decentralized exchange architecture utilizing Solana Transaction v1 (4,096-byte atomic payload) integrated with Jito Block Engine private bundles.
+                  High-velocity decentralized exchange architecture utilizing Solana Transaction v1 integrated with Jito Block Engine private bundles.
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>MEV Mitigation:</strong> Private transaction bundle routing completely eliminates front-running and sandwich attacks.</li>
-                  <li><strong>Anti-Wash Trading:</strong> On-chain rate limit filters prevent wash volume manipulation.</li>
-                  <li><strong>0.3% Flat Protocol Fee Distribution:</strong> 40% to Yield Vault, 30% to $ZQI Real Yield Pool, 15% to Affiliate Treasury, and 15% to Project Operations.</li>
+                  <li><strong>MEV Mitigation:</strong> Private bundle routing eliminates sandwich attacks.</li>
+                  <li><strong>0.3% Flat Protocol Fee Distribution:</strong> 40% Yield Vault, 30% $ZQI Real Yield Pool, 15% Affiliate Treasury, 15% Protocol Operations.</li>
                 </ul>
               </div>
 
+              {/* Lock & Staking */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#c084fc', fontSize: '1rem', fontWeight: '700' }}>
-                    02. $ZQI Lock & Real Yield (Deflationary Supply Defense)
+                    03. $ZQI Lock & Real Yield (Deflationary Supply Defense)
                   </h4>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(192, 132, 252, 0.15)', color: '#c084fc', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>0% INFLATION</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  Native token supply lock mechanism mitigating secondary market selling pressure by distributing Real Yield in stable USDC dividends.
+                  Lock mechanism mitigating secondary market selling pressure by distributing Real Yield in stable USDC dividends funded by swap and PayFi checkout volumes.
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
                   <li><strong>Lock Multipliers:</strong> 30 Days (1.0x), 90 Days (1.5x), and 180 Days (2.5x weight).</li>
-                  <li><strong>Deflationary Burn Defense:</strong> Emergency early unlocks trigger a mandatory 10% penalty permanently burned on-chain.</li>
+                  <li><strong>Deflationary Burn:</strong> Mandatory 10% penalty on early unlock permanently burned on-chain.</li>
                 </ul>
               </div>
 
+              {/* Yield Optimizer Vault */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#60a5fa', fontSize: '1rem', fontWeight: '700' }}>
-                    03. Yield Optimizer Vault (Automated Compounding)
+                    04. Yield Optimizer Vault (Automated Compounding)
                   </h4>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(96, 165, 250, 0.15)', color: '#60a5fa', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>NON-CUSTODIAL</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  Automated compounding yield generation protocol tailored for USDC single-deposit liquidity.
+                  Automated compounding yield generation tailored for USDC single-deposit liquidity with baseline daily returns reaching up to 49.1% APY.
                 </p>
-                <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>Predictable Returns:</strong> Programmatic baseline daily rate of 0.11% with boosted optimizations reaching up to 49.1% APY.</li>
-                  <li><strong>Autonomous Execution:</strong> Auto-compounds yield periodically via non-custodial smart contracts without manual gas expenditure by depositors.</li>
-                </ul>
               </div>
 
+              {/* Affiliate */}
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#4ade80', fontSize: '1rem', fontWeight: '700' }}>
-                    04. Secure On-Chain Affiliate (SNS-Integrated Referral)
+                    05. Secure On-Chain Affiliate (SNS-Integrated Referral)
                   </h4>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(74, 222, 128, 0.15)', color: '#4ade80', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>ANTI-SYBIL</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  Decentralized growth infrastructure distributing transparent, automated commission rebates to merchants and referrers.
+                  Decentralized growth infrastructure distributing tiered commission rebates (10% to 25%) backed by Solana Name Service (.sol) support and 10-second anti-sybil cooldowns.
                 </p>
-                <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>Solana Name Service:</strong> Supports direct domain resolution for human-readable identities (.sns / .sol).</li>
-                  <li><strong>Tiered Rebates:</strong> Bronze (10% on $0–$10k volume), Silver (18% on $10k–$100k), and Gold (25% on &gt;$100k).</li>
-                  <li><strong>Anti-Sybil Cooldown:</strong> 1 transaction per 10-second threshold prevents manipulation.</li>
-                </ul>
               </div>
+
             </div>
           )}
 
@@ -239,12 +299,12 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT)</span>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(20, 184, 166, 0.15)', color: '#14b8a6', padding: '2px 8px', borderRadius: '4px', fontWeight: '700', border: '1px solid rgba(20, 184, 166, 0.3)' }}>
-                    Bootstrapped (MVP Live)
+                    MVP Live & PayFi Beta
                   </span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Devnet Sandbox & Multi-Wallet Architecture</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Devnet Sandbox & Multi-Category PayFi Launch</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Completion of all 4 modular contracts on Solana Devnet, Solana Wallet Standard integration (Phantom, Solflare, OKX, Backpack, Coinbase, Ledger), and SNS domain resolver.
+                  Deployment of Swap, Vault, Staking, and PayFi modules on Solana Devnet. Integration of 9 product categories, Supabase real-time database, and hybrid Solana/QRIS checkout interface.
                 </p>
               </div>
 
@@ -253,9 +313,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#3b82f6', fontWeight: '700' }}>PHASE 2 • Q4 2026</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $40,000 - $60,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Formal Audits & Anchor PDA Migration</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Vendor Merchant Portal & Gasless Settlement Relay</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Comprehensive third-party smart contract audit (OtterSec / Kudelski / Sec3), migration from demo state to on-chain Anchor Program Derived Addresses (PDA), and Dedicated RPC nodes.
+                  Comprehensive smart contract audit, automated escrow release for physical goods delivery (RWA), dedicated RPC nodes, and gasless checkout relayer for web2 consumers.
                 </p>
               </div>
 
@@ -264,9 +324,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#8b5cf6', fontWeight: '700' }}>PHASE 3 • Q1 2027</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $100,000 - $150,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Mainnet-Beta Deployment & Liquidity Seeding</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Mainnet Deployment & Liquidity Seeding</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Solana Mainnet launch, protocol-owned liquidity injection ($ZQI/SOL & $ZQI/USDC), and activation of live 0.3% fee-to-USDC yield distribution engine.
+                  Full Solana Mainnet protocol launch, protocol-owned liquidity injection ($ZQI/SOL), and direct routing of 5% PayFi merchant fees into the $ZQI token staking pool.
                 </p>
               </div>
 
@@ -275,12 +335,13 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#ec4899', fontWeight: '700' }}>PHASE 4 • Q2-Q3 2027</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $50,000 - $80,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>B2B White-Label & Regional Expansion</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>B2B White-Label & SEA Merchant Network</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Deployment of turnkey B2B white-label gateway, developer SDK releases, and institutional merchant onboarding in Singapore and Southeast Asia.
+                  Expansion of turnkey PayFi checkout plugins for Shopify/WooCommerce and institutional merchant onboarding in Singapore and Southeast Asia.
                 </p>
               </div>
 
+              {/* Capital Allocation */}
               <div style={{ background: '#070c18', border: '1px solid #1e293b', borderRadius: '12px', padding: '16px', marginTop: '6px' }}>
                 <h5 style={{ margin: '0 0 10px 0', color: '#fff', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   Capital Allocation Framework (Use of Funds)
@@ -292,16 +353,16 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   fontSize: '0.82rem' 
                 }}>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>35% Smart Contract Audits:</strong> Formal code verification & penetration testing.
+                    <strong style={{ color: '#38bdf8' }}>35% Security & Smart Audits:</strong> Formal Anchor verification & escrow testing.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding for minimal slippage.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>20% Core Engineering:</strong> Dedicated RPC cluster, Jito relayer fees & Rust logic.
+                    <strong style={{ color: '#38bdf8' }}>20% PayFi Infrastructure:</strong> Dedicated RPC cluster, gasless relayers & QRIS engines.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>15% Institutional BizDev:</strong> Singapore / SEA merchant onboarding & legal compliance.
+                    <strong style={{ color: '#38bdf8' }}>15% Merchant Onboarding:</strong> SEA merchant acquisition & regulatory compliance.
                   </div>
                 </div>
               </div>
@@ -312,24 +373,27 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           {activeTab === 'flywheel' && (
             <div style={{ background: '#070c18', border: '1px solid #1e293b', borderRadius: '12px', padding: '18px' }}>
               <h4 style={{ margin: '0 0 10px 0', color: '#10b981', fontSize: '1.05rem' }}>
-                Self-Sustaining Protocol Flywheel
+                The Hybrid DeFi + PayFi Dual-Velocity Flywheel
               </h4>
               <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 14px 0' }}>
-                ZoniqFi connects swap velocity, liquidity accumulation, and supply deflation into a continuous non-inflationary feedback loop:
+                ZoniqFi connects real-world commercial checkout volume directly into token supply compression and non-inflationary yields:
               </p>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.83rem' }}>
+                <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #f59e0b' }}>
+                  <strong>Step 1 (Real-World Commercial Velocity):</strong> Consumers purchase digital goods or physical products via Solana Pay or QRIS. Every transaction generates real fee cashflow.
+                </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
-                  <strong>Step 1 (Swap Velocity & Fee Capitalization):</strong> Users swap SOL/USDC for $ZQI. Every trade incurs a 0.3% protocol fee converted directly into non-inflationary real yield.
+                  <strong>Step 2 (DeFi Swap & Fee Capitalization):</strong> Traders swap on the AMM DEX (0.3% fee) while merchants convert revenue, continuously feeding the Real Yield dividend pool.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #c084fc' }}>
-                  <strong>Step 2 (Supply Constraint & Lock Deflation):</strong> Traders lock $ZQI to capture 30% of swap fees in USDC dividends. Emergency unlocks trigger an automated 10% token burn.
+                  <strong>Step 3 (Supply Compression & Lock Rewards):</strong> Real yield from PayFi + Swap fees is distributed directly to $ZQI lockers. Emergency unlocks trigger an automated 10% token burn.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #60a5fa' }}>
-                  <strong>Step 3 (Vault Compounding & TVL Expansion):</strong> 40% of swap fees feed the USDC Yield Vault, autonomously compounding returns and deepening protocol-owned liquidity.
+                  <strong>Step 4 (Automated Compounding & TVL Growth):</strong> Treasury reserves auto-compound within non-custodial single-asset USDC Vaults, deepening liquidity buffers.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
-                  <strong>Step 4 (Affiliate Distribution & Viral Flow):</strong> 15% of swap fees fund the tiered referral engine, driving creators and traders back into Step 1.
+                  <strong>Step 5 (Affiliate Network Viral Growth):</strong> Transparent on-chain referral fees incentivize merchants, creators, and affiliates to funnel new commerce back into Step 1.
                 </div>
               </div>
             </div>

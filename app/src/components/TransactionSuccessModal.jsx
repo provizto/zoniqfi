@@ -4,6 +4,7 @@ const TransactionSuccessModal = ({
   isOpen, 
   onClose, 
   swapDetails = null,
+  payfiDetails = null, // Detail transaksi PayFi jika berasal dari checkout barang
   programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD",
   onNavigateTab
 }) => {
@@ -26,12 +27,25 @@ const TransactionSuccessModal = ({
 
   if (!isOpen) return null;
 
-  const data = swapDetails || {
+  const isPayFi = Boolean(payfiDetails);
+
+  // Data transaksi (Swap vs PayFi)
+  const data = isPayFi ? {
+    title: "Payment Confirmed!",
+    badge: "PayFi Merchant Settlement",
+    item: payfiDetails.productName || "Digital Asset / Merchandise",
+    amountPaid: payfiDetails.amount || "0.05 SOL",
+    paymentMethod: payfiDetails.method || "Solana Pay (Web3)",
+    downloadUrl: payfiDetails.downloadUrl || null,
+    txSignature: payfiDetails.txSignature || null
+  } : (swapDetails || {
+    title: "Swap Successful!",
+    badge: "Solana Devnet Sandbox",
     fromAmount: "20 USDC",
     toAmount: "40.0000 ZQI",
     feeAmount: "0.0600 USDC",
     txSignature: null
-  };
+  });
 
   const formatShortAddress = (addr) => {
     if (!addr) return "";
@@ -43,10 +57,18 @@ const TransactionSuccessModal = ({
     ? `https://solscan.io/tx/${data.txSignature}?cluster=devnet`
     : `https://solscan.io/account/${programId}?cluster=devnet`;
 
-  const isReceivedZQI = data.toAmount && data.toAmount.includes("ZQI");
-  const isReceivedUSDC = data.toAmount && data.toAmount.includes("USDC");
+  const isReceivedZQI = !isPayFi && data.toAmount && data.toAmount.includes("ZQI");
+  const isReceivedUSDC = !isPayFi && data.toAmount && data.toAmount.includes("USDC");
 
   const handleActionClick = () => {
+    if (isPayFi) {
+      if (data.downloadUrl) {
+        window.open(data.downloadUrl, '_blank');
+      }
+      onClose?.();
+      return;
+    }
+
     if (onNavigateTab) {
       if (isReceivedZQI) {
         onNavigateTab('staking');
@@ -102,9 +124,9 @@ const TransactionSuccessModal = ({
           marginBottom: '18px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.25rem' }}>🎉</span>
-            <span style={{ fontWeight: '800', color: '#10b981', fontSize: '1rem', letterSpacing: '0.5px' }}>
-              Swap Successful!
+            <span style={{ fontSize: '1.25rem' }}>{isPayFi ? "🛍️" : "🎉"}</span>
+            <span style={{ fontWeight: '800', color: isPayFi ? '#fbbf24' : '#10b981', fontSize: '1rem', letterSpacing: '0.5px' }}>
+              {isPayFi ? data.title : "Swap Successful!"}
             </span>
           </div>
           <button 
@@ -125,20 +147,24 @@ const TransactionSuccessModal = ({
           </button>
         </div>
 
-        {/* Info Box Sandbox */}
+        {/* Info Box Sandbox / PayFi */}
         <div style={{
-          background: 'rgba(59, 130, 246, 0.08)',
-          border: '1px solid rgba(59, 130, 246, 0.2)',
+          background: isPayFi ? 'rgba(245, 158, 11, 0.08)' : 'rgba(59, 130, 246, 0.08)',
+          border: isPayFi ? '1px solid rgba(245, 158, 11, 0.25)' : '1px solid rgba(59, 130, 246, 0.2)',
           borderRadius: '8px',
           padding: '12px 14px',
           marginBottom: '16px',
           fontSize: '0.82rem',
-          color: '#93c5fd'
+          color: isPayFi ? '#fde68a' : '#93c5fd'
         }}>
-          <div style={{ fontWeight: '700', color: '#60a5fa', marginBottom: '2px' }}>
-            ⚡ Solana Devnet Sandbox
+          <div style={{ fontWeight: '700', color: isPayFi ? '#f59e0b' : '#60a5fa', marginBottom: '2px' }}>
+            ⚡ {isPayFi ? "ZoniqFi PayFi Settlement" : "Solana Devnet Sandbox"}
           </div>
-          <div>Protocol Fee settled safely into on-chain distribution pools.</div>
+          <div>
+            {isPayFi 
+              ? "Payment confirmed. Vendor payout and 5% protocol cut processed."
+              : "Protocol Fee settled safely into on-chain distribution pools."}
+          </div>
         </div>
 
         {/* Ringkasan Transaksi */}
@@ -153,20 +179,42 @@ const TransactionSuccessModal = ({
           gap: '10px',
           fontSize: '0.88rem'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
-            <span>Exchanged:</span>
-            <span style={{ color: '#ffffff', fontWeight: '700' }}>{data.fromAmount}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
-            <span>Received:</span>
-            <span style={{ color: '#38bdf8', fontWeight: '700' }}>{data.toAmount}</span>
-          </div>
-          {data.feeAmount && (
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
-              <span>Protocol Fee (0.3%):</span>
-              <span style={{ color: '#a78bfa', fontWeight: '600' }}>{data.feeAmount}</span>
-            </div>
+          {isPayFi ? (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <span>Item:</span>
+                <span style={{ color: '#ffffff', fontWeight: '700', textAlign: 'right', maxWidth: '60%' }}>
+                  {data.item}
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <span>Total Paid:</span>
+                <span style={{ color: '#38bdf8', fontWeight: '700' }}>{data.amountPaid}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <span>Method:</span>
+                <span style={{ color: '#fbbf24', fontWeight: '600' }}>{data.paymentMethod}</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <span>Exchanged:</span>
+                <span style={{ color: '#ffffff', fontWeight: '700' }}>{data.fromAmount}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                <span>Received:</span>
+                <span style={{ color: '#38bdf8', fontWeight: '700' }}>{data.toAmount}</span>
+              </div>
+              {data.feeAmount && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8' }}>
+                  <span>Protocol Fee (0.3%):</span>
+                  <span style={{ color: '#a78bfa', fontWeight: '600' }}>{data.feeAmount}</span>
+                </div>
+              )}
+            </>
           )}
+
           <div style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
@@ -182,7 +230,7 @@ const TransactionSuccessModal = ({
           </div>
         </div>
 
-        {/* Tombol Aksi Terpandu */}
+        {/* Tombol Aksi */}
         <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
           <a
             href={solscanUrl}
@@ -215,7 +263,9 @@ const TransactionSuccessModal = ({
               padding: '11px 8px',
               borderRadius: '8px',
               fontSize: '0.85rem',
-              background: isReceivedZQI 
+              background: isPayFi 
+                ? (data.downloadUrl ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #3b82f6, #1d4ed8)')
+                : isReceivedZQI 
                 ? 'linear-gradient(135deg, #10b981, #059669)' 
                 : 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
               border: 'none',
@@ -225,7 +275,9 @@ const TransactionSuccessModal = ({
               whiteSpace: 'nowrap'
             }}
           >
-            {isReceivedZQI 
+            {isPayFi 
+              ? (data.downloadUrl ? "Download File 📥" : "Done")
+              : isReceivedZQI 
               ? "Stake $ZQI (Real Yield) →" 
               : isReceivedUSDC 
               ? "Deposit to Vault →" 
