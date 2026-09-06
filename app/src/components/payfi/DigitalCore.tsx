@@ -982,7 +982,7 @@ function MainApp() {
     <div style={{ 
     color: "#f3f4f6", 
     width: "100%", 
-    maxWidth: "740px", 
+    maxWidth: "780px", 
     margin: "0 auto", 
     padding: "24px 20px", 
     fontFamily: "'Inter', -apple-system, sans-serif", 
@@ -1836,13 +1836,13 @@ function MainApp() {
         marginBottom: "20px",
         gap: "10px"
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
           <span style={{ fontSize: "22px", flexShrink: 0 }}>⚡</span>
-          <div style={{ overflow: "hidden" }}>
-            <h1 style={{ margin: 0, fontSize: "15px", fontWeight: 800, letterSpacing: "-0.02em", color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <div>
+            <h1 style={{ margin: 0, fontSize: "16px", fontWeight: 800, letterSpacing: "-0.02em", color: "#fff", whiteSpace: "nowrap" }}>
               {storeConfig.storeName}
             </h1>
-            <p style={{ margin: "1px 0 0 0", fontSize: "10px", color: "#94a3b8", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8", whiteSpace: "nowrap" }}>
               {storeConfig.storeSubtitle}
             </p>
           </div>
