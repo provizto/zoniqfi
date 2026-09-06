@@ -1600,3 +1600,61 @@ input[type="number"] {
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
+
+/* ==========================================================================
+   PENYERAGAMAN TOTAL SEMUA KOTAK TAB (SWAP, LOCK, VAULT, AFFILIATE, PAYFI)
+   ========================================================================== */
+
+/* 1. Kunci Wadah Luar Semua Tab agar Presisi di Tengah */
+.dapp-main-content,
+.dapp-content-container,
+.tab-content {
+  width: 100% !important;
+  max-width: 500px !important; /* Standar lebar emas untuk semua modul */
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+/* 2. Seragamkan Kartu / Kotak Bayangan untuk Seluruh Modul */
+.swap-card,
+.locker-card,
+.vault-card,
+.affiliate-container,
+.affiliate-card,
+.payfi-wrapper,
+.payfi-wrapper > div {
+  width: 100% !important;
+  max-width: 500px !important;
+  background: #111827 !important; /* Warna dasar seragam */
+  border: 1px solid #1f2937 !important; /* Garis tepi seragam */
+  border-radius: 20px !important; /* Lengkungan sudut seragam */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 
+              0 0 15px rgba(59, 130, 246, 0.06) !important; /* Efek glow seragam */
+  box-sizing: border-box !important;
+}
+
+/* 3. Khusus Menjinakkan PayFi agar Menuruti Lebar Kartu 500px */
+.payfi-wrapper > div {
+  padding: 16px !important;
+  min-height: auto !important;
+}
+
+/* 4. Responsif untuk Layar HP */
+@media (max-width: 640px) {
+  .dapp-main-content,
+  .dapp-content-container,
+  .tab-content,
+  .swap-card,
+  .locker-card,
+  .vault-card,
+  .affiliate-container,
+  .affiliate-card,
+  .payfi-wrapper,
+  .payfi-wrapper > div {
+    max-width: 100% !important;
+    border-radius: 16px !important;
+  }
+}

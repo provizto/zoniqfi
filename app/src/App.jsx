@@ -1400,11 +1400,12 @@ function App() {
     <span>RPC Node: Operational ({SOLANA_NETWORK})</span>
   </div>
 
-        {/* TAB NAVIGATION BAR TERPADU DENGAN SINKRONISASI FILTER PAKET */}
+        {/* TAB NAVIGATION BAR TERPADU */}
         <div className="dapp-nav-tabs-wrapper">
           <div className="dapp-nav-tabs">
             {SHOW_SWAP && (
               <button 
+                type="button"
                 className={`dapp-tab-btn ${activeTab === 'swap' ? 'active' : ''}`}
                 onClick={() => setActiveTab('swap')}
               >
@@ -1413,6 +1414,7 @@ function App() {
             )}
             {SHOW_LOCKER && (
               <button 
+                type="button"
                 className={`dapp-tab-btn ${activeTab === 'staking' ? 'active' : ''}`}
                 onClick={() => setActiveTab('staking')}
               >
@@ -1420,102 +1422,132 @@ function App() {
               </button>
             )}
             {SHOW_OPTIMIZER && (
-  <button 
-    type="button"
-    className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
-    onClick={() => setActiveTab('vault')}
-  >
-    📈 <span className="tab-text">Vault</span>
-  </button>
-)}
-{SHOW_AFFILIATE && (
-  <button 
-    type="button" 
-    className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
-    onClick={() => setActiveTab('affiliate')}
-  >
-    👥 <span className="tab-text">Affiliate</span>
-  </button>
-)}
-
-{/* TOMBOL BARU: PAYFI GATEWAY */}
-<button 
-  type="button" 
-  className={`dapp-tab-btn ${activeTab === 'payfi' ? 'active' : ''}`}
-  onClick={() => setActiveTab('payfi')}
->
-  💳 <span className="tab-text">PayFi</span>
-</button>
-
-{/* INJEKSI STYLE OTOMATIS: MENJAMIN 5 TAB PAS DI LAPTOP & HP */}
-<style>{`
-  /* KHUSUS LAPTOP: KAPSUL UTUH BULAT & BAYANGAN TIDAK KEPOTONG */
-  .dapp-nav-tabs-wrapper {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-    overflow: visible !important;
-    margin-bottom: 24px !important;
-  }
-
-  .dapp-nav-tabs {
-    display: inline-flex !important;
-    align-items: center !important;
-    width: auto !important;
-    max-width: none !important;
-    gap: 6px !important;
-    padding: 6px 14px !important;
-    border-radius: 12px !important;
-    border: 1px solid #1f2937 !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
-    box-sizing: border-box !important;
-    flex-shrink: 0 !important;
-  }
-
-  .dapp-tab-btn {
-    padding: 7px 11px !important;
-    font-size: 0.83rem !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-    gap: 5px !important;
-  }
-
-  /* KHUSUS HP (LEBAR <= 640px): BARU BOLEH SCROLL & UKURAN LEBIH RAMPING */
-  @media (max-width: 640px) {
-    .dapp-nav-tabs-wrapper {
-      overflow-x: auto !important;
-      scrollbar-width: none !important;
-      padding: 0 6px !important;
-      justify-content: flex-start !important;
-    }
-    .dapp-nav-tabs-wrapper::-webkit-scrollbar {
-      display: none !important;
-    }
-    .dapp-nav-tabs {
-      gap: 3px !important;
-      padding: 4px 8px !important;
-    }
-    .dapp-tab-btn {
-      padding: 6px 7px !important;
-      font-size: 0.72rem !important;
-      gap: 3px !important;
-    }
-    .dapp-tab-btn .tab-text {
-      font-size: 0.72rem !important;
-    }
-  }
-`}</style>
-
+              <button 
+                type="button"
+                className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
+                onClick={() => setActiveTab('vault')}
+              >
+                📈 <span className="tab-text">Vault</span>
+              </button>
+            )}
+            {SHOW_AFFILIATE && (
+              <button 
+                type="button" 
+                className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
+                onClick={() => setActiveTab('affiliate')}
+              >
+                👥 <span className="tab-text">Affiliate</span>
+              </button>
+            )}
+            <button 
+              type="button" 
+              className={`dapp-tab-btn ${activeTab === 'payfi' ? 'active' : ''}`}
+              onClick={() => setActiveTab('payfi')}
+            >
+              💳 <span className="tab-text">PayFi</span>
+            </button>
           </div>
         </div>
 
+        {/* INJEKSI STYLE OTOMATIS (PRESISI 100% LAPTOP & HP) */}
+        <style>{`
+          /* Bar Navigasi Tab Presisi Tengah */
+          .dapp-nav-tabs-wrapper {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 100% !important;
+            margin: 0 auto 24px auto !important;
+            padding: 0 10px !important;
+            box-sizing: border-box !important;
+          }
+
+          .dapp-nav-tabs {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            background: #111827 !important;
+            padding: 6px !important;
+            border-radius: 12px !important;
+            border: 1px solid #1f2937 !important;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+            box-sizing: border-box !important;
+            max-width: 100% !important;
+          }
+
+          .dapp-tab-btn {
+            background: transparent !important;
+            border: none !important;
+            color: #9ca3af !important;
+            padding: 7px 12px !important;
+            border-radius: 8px !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 5px !important;
+            white-space: nowrap !important;
+            transition: all 0.2s ease-in-out !important;
+          }
+
+          .dapp-tab-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+            color: #ffffff !important;
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4) !important;
+          }
+
+          /* Seragamkan Ukuran Kartu Isi Semua Tab */
+          .payfi-wrapper,
+          .affiliate-container,
+          .affiliate-card,
+          .swap-card,
+          .locker-card,
+          .vault-card {
+            width: 100% !important;
+            max-width: 480px !important; /* Patokan lebar seragam semua tab */
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
+          }
+
+          /* Khusus HP: Tab Rata Penuh Simetris */
+          @media (max-width: 640px) {
+            .dapp-nav-tabs-wrapper {
+              margin-bottom: 16px !important;
+              padding: 0 6px !important;
+            }
+            .dapp-nav-tabs {
+              width: 100% !important;
+              justify-content: space-between !important;
+              padding: 4px !important;
+              gap: 2px !important;
+            }
+            .dapp-tab-btn {
+              flex: 1 1 0% !important;
+              padding: 6px 4px !important;
+              font-size: 0.72rem !important;
+              gap: 3px !important;
+            }
+            .payfi-wrapper,
+            .affiliate-container,
+            .affiliate-card,
+            .swap-card,
+            .locker-card,
+            .vault-card {
+              max-width: 100% !important;
+            }
+          }
+        `}</style>
+
         {txLog && (
-          <div className="security-banner" style={{ display: 'block', background: '#111827', borderColor: '#1f2937', color: '#38bdf8', fontSize: '0.88rem', fontStyle: 'italic', whiteSpace: 'pre-line', maxWidth: activeTab === 'affiliate' ? '780px' : '480px', margin: '0 auto 20px auto' }}>
+          <div className="security-banner" style={{ display: 'block', background: '#111827', borderColor: '#1f2937', color: '#38bdf8', fontSize: '0.88rem', fontStyle: 'italic', whiteSpace: 'pre-line', maxWidth: '480px', margin: '0 auto 20px auto' }}>
             {txLog}
           </div>
         )}
 
-        {/* TEMPELKAN DI SINI */}
+        {/* KONTEN PAYFI TERPADU */}
         {activeTab === 'payfi' && (
           <div className="payfi-wrapper">
             <PayFiGateway />
