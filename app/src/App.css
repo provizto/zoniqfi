@@ -1610,7 +1610,7 @@ input[type="number"] {
 .dapp-content-container,
 .tab-content {
   width: 100% !important;
-  max-width: 500px !important; /* Standar lebar emas untuk semua modul */
+  max-width: 480px !important; /* Standar emas ZoniqFi */
   margin: 0 auto !important;
   display: flex !important;
   flex-direction: column !important;
@@ -1618,28 +1618,35 @@ input[type="number"] {
   box-sizing: border-box !important;
 }
 
-/* 2. Seragamkan Kartu / Kotak Bayangan untuk Seluruh Modul */
+/* 2. Seragamkan Kartu / Kotak Bayangan (Hanya Wadah Luar) */
 .swap-card,
 .locker-card,
 .vault-card,
+.affiliate-section,
 .affiliate-container,
 .affiliate-card,
-.payfi-wrapper,
-.payfi-wrapper > div {
+.payfi-wrapper {
   width: 100% !important;
-  max-width: 500px !important;
-  background: #111827 !important; /* Warna dasar seragam */
-  border: 1px solid #1f2937 !important; /* Garis tepi seragam */
-  border-radius: 20px !important; /* Lengkungan sudut seragam */
+  max-width: 480px !important;
+  background: #111827 !important; /* Warna dasar tunggal */
+  border: 1px solid #1f2937 !important; /* Garis batas tunggal */
+  border-radius: 20px !important;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 
-              0 0 15px rgba(59, 130, 246, 0.06) !important; /* Efek glow seragam */
+              0 0 15px rgba(59, 130, 246, 0.06) !important;
   box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
-/* 3. Khusus Menjinakkan PayFi agar Menuruti Lebar Kartu 500px */
+/* 3. Netralkan Elemen Dalam PayFi (Mencegah Efek Kotak di Dalam Kotak) */
 .payfi-wrapper > div {
-  padding: 16px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  background: transparent !important; /* Hilangkan background kedua */
+  border: none !important;            /* Hilangkan border kedua */
+  box-shadow: none !important;        /* Hilangkan bayangan kedua */
+  padding: 16px 14px !important;      /* Beri ruang lega tanpa sesak */
   min-height: auto !important;
+  box-sizing: border-box !important;
 }
 
 /* 4. Responsif untuk Layar HP */
@@ -1650,11 +1657,15 @@ input[type="number"] {
   .swap-card,
   .locker-card,
   .vault-card,
+  .affiliate-section,
   .affiliate-container,
   .affiliate-card,
-  .payfi-wrapper,
-  .payfi-wrapper > div {
+  .payfi-wrapper {
     max-width: 100% !important;
     border-radius: 16px !important;
+  }
+
+  .payfi-wrapper > div {
+    padding: 12px 8px !important;
   }
 }

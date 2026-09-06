@@ -1078,7 +1078,7 @@ function MainApp() {
   };
 
   return (
-    <div style={{ backgroundColor: "#0b0f19", color: "#f3f4f6", minHeight: "100vh", width: "100%", padding: "20px 16px 10px 16px", fontFamily: "'Inter', -apple-system, sans-serif", maxWidth: "1200px", margin: "0 auto", boxSizing: "border-box" }}>
+    <div style={{ color: "#f3f4f6", width: "100%", padding: "10px 4px", fontFamily: "'Inter', -apple-system, sans-serif", boxSizing: "border-box" }}>
       
       {/* 🔍 MODAL PUBLIC LICENSE VERIFIER */}
       {showVerifyModal && (
