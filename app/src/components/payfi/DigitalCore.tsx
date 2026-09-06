@@ -1826,59 +1826,56 @@ function MainApp() {
         }
       `}</style>
 
-      {/* 🚀 NAVBAR TERPADU (RESPONSIF & TIDAK TERPOTONG) */}
+      {/* 🚀 NAVBAR TERPUSAT & SIMETRIS */}
       <div style={{
         display: "flex",
-        justifyContent: "space-between",
+        flexDirection: "column",
         alignItems: "center",
-        flexWrap: "wrap",
+        justifyContent: "center",
+        textAlign: "center",
         borderBottom: "1px solid #1f2937",
-        paddingBottom: "14px",
+        paddingBottom: "16px",
         marginBottom: "20px",
         gap: "12px",
         width: "100%",
         boxSizing: "border-box"
       }}>
-        {/* KIRI: LOGO + JUDUL (FLEX: 1 AGAR FLEKSIBEL) */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: "200px" }}>
-          <span style={{ fontSize: "24px", flexShrink: 0 }}>⚡</span>
-          <div style={{ minWidth: 0 }}>
-            <h1 style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              {storeConfig.storeName}
-            </h1>
-            <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-              {storeConfig.storeSubtitle}
-            </p>
-          </div>
+        {/* LOGO & JUDUL DI TENGAH */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+          <span style={{ fontSize: "28px" }}>⚡</span>
+          <h1 style={{ margin: 0, fontSize: "17px", fontWeight: 800, color: "#fff" }}>
+            {storeConfig.storeName}
+          </h1>
+          <p style={{ margin: 0, fontSize: "11px", color: "#94a3b8" }}>
+            {storeConfig.storeSubtitle}
+          </p>
         </div>
 
-        {/* KANAN: TOMBOL AKSI */}
-        <div style={{ display: "flex", gap: "6px", alignItems: "center", flexShrink: 0 }}>
-          <div className="nav-desktop-only" style={{ display: "flex", gap: "6px", alignItems: "center", flexWrap: "wrap" }}>
-            <button
-              type="button"
-              onClick={() => setShowVerifyModal(true)}
-              style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "6px 10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "11px", whiteSpace: "nowrap" }}
-            >
-              {t.verifyBtn}
-            </button>
+        {/* DERETAN TOMBOL DI BAWAH JUDUL (TERPUSAT) */}
+        <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
+          <button
+            type="button"
+            onClick={() => setShowVerifyModal(true)}
+            style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "6px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+          >
+            {t.verifyBtn}
+          </button>
 
-            <button
-              type="button"
-              onClick={() => setShowVendorModal(true)}
-              style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontWeight: 800, fontSize: "11px", whiteSpace: "nowrap" }}
-            >
-              {vendorProfile ? `🏪 ${vendorProfile.store_name}` : t.vendorBtn}
-            </button>
+          <button
+            type="button"
+            onClick={() => setShowVendorModal(true)}
+            style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontWeight: 800, fontSize: "11px" }}
+          >
+            {vendorProfile ? `🏪 ${vendorProfile.store_name}` : t.vendorBtn}
+          </button>
 
-            <button
-              type="button"
-              onClick={() => setShowPinModal(true)}
-              style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "6px 10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "11px", whiteSpace: "nowrap" }}
-            >
-              ⚙️ Admin
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => setShowPinModal(true)}
+            style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "6px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+          >
+            ⚙️ Admin
+          </button>
         </div>
       </div>
 
