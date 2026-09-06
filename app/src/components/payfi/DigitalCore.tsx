@@ -999,13 +999,11 @@ function MainApp() {
   return (
     <div style={{
       width: "100%",
-      maxWidth: "780px",
-      margin: "0 auto",
-      background: "#0c1322",
-      border: "1px solid #1e293b",
-      borderRadius: "20px",
-      padding: isMobile ? "14px 10px" : "16px 14px",
-      boxShadow: "0 15px 35px rgba(0, 0, 0, 0.45)",
+      margin: "0",
+      padding: "0",
+      background: "transparent",
+      border: "none",
+      boxShadow: "none",
       boxSizing: "border-box",
       color: "#f3f4f6",
       fontFamily: "'Inter', -apple-system, sans-serif"
@@ -2182,19 +2180,6 @@ function MainApp() {
           </button>
         </div>
       )}
-
-      {/* FOOTER */}
-      <div style={{ 
-        borderTop: "1px solid #1f2937", 
-        paddingTop: "14px", 
-        marginTop: "20px", 
-        marginBottom: isMobile ? "72px" : "10px", 
-        textAlign: "center", 
-        fontSize: "11px", 
-        color: "#64748b" 
-      }}>
-        <p style={{ margin: 0 }}>© 2026 <strong>{storeConfig.storeName}</strong>. {t.footerText}</p>
-      </div>
 
     </div>
   );
