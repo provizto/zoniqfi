@@ -9,13 +9,13 @@ const TABS = [
 const PAYFI_CATEGORIES = [
   { icon: "💎", name: "NFT & Web3 Collectibles" },
   { icon: "💻", name: "Software & Source Code" },
-  { icon: "📚", name: "E-Book & Dokumen Edukasi" },
-  { icon: "🎨", name: "Desain, UI/UX & Aset 3D" },
-  { icon: "🔑", name: "Lisensi & Akun Digital" },
-  { icon: "🛠️", name: "Jasa & Layanan Digital" },
+  { icon: "📚", name: "E-Books & Educational Docs" },
+  { icon: "🎨", name: "Design, UI/UX & 3D Assets" },
+  { icon: "🔑", name: "Licenses & Digital Accounts" },
+  { icon: "🛠️", name: "Digital Services & Freelance" },
   { icon: "👕", name: "Fashion & Merchandise" },
-  { icon: "📱", name: "Gadget & Hardware Tech" },
-  { icon: "📦", name: "Barang Fisik & UMKM (RWA)" }
+  { icon: "📱", name: "Gadgets & Hardware Tech" },
+  { icon: "📦", name: "Physical Goods & MSMEs (RWA)" }
 ];
 
 const InvestorPitchModal = ({ isOpen, onClose }) => {

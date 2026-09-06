@@ -72,6 +72,18 @@ const DEFAULT_CONFIG: StoreConfig = {
   adminAccountHolder: "ZoniqFi Platform Admin"
 };
 
+const PAYFI_CATEGORY_OPTIONS = [
+  "💎 NFT & Web3 Collectibles",
+  "💻 Software & Source Code",
+  "📚 E-Books & Educational Docs",
+  "🎨 Design, UI/UX & 3D Assets",
+  "🔑 Licenses & Digital Accounts",
+  "🛠️ Digital Services & Freelance",
+  "👕 Fashion & Merchandise",
+  "📱 Gadgets & Hardware Tech",
+  "📦 Physical Goods & MSMEs (RWA)"
+];
+
 const TRANSLATIONS = {
   ID: {
     connectWallet: "🔌 Hubungkan Wallet",
@@ -107,7 +119,7 @@ const TRANSLATIONS = {
     method3CardPlaceholder: "Nomor Kartu (16 Digit)",
     method3BtnPay: "💳 Bayar Kartu Kredit (Stripe)",
     vendorBtn: "🚀 Portal Vendor",
-    vendorModalTitle: "🏪 Portal Vendor & Kreator Digital",
+    vendorModalTitle: "🏪 Vendor & Merchant Portal",
     adminBtn: "⚙️ Pengaturan Global (Admin)",
     adminPinTitle: "Akses Panel Pengaturan Toko",
     adminPinSub: "Masukkan 6-Digit PIN Keamanan Admin",
@@ -173,7 +185,7 @@ const TRANSLATIONS = {
     method3CardPlaceholder: "Card Number (16 Digits)",
     method3BtnPay: "💳 Pay with Credit Card (Stripe)",
     vendorBtn: "🚀 Vendor Portal",
-    vendorModalTitle: "🏪 Digital Creator & Vendor Portal",
+    vendorModalTitle: "🏪 Vendor & Merchant Portal",
     adminBtn: "⚙️ Global Settings (Admin)",
     adminPinTitle: "Store Admin Panel Access",
     adminPinSub: "Enter 6-Digit Admin Security PIN",
@@ -210,11 +222,6 @@ const TRANSLATIONS = {
 const ITEMS_PER_PAGE = 6;
 
 function MainApp() {
-  // 👉 Tambahkan 2 baris ini untuk mematikan warning secara instan:
-  // @ts-ignore
-  // void _currentContractAddress;
-  // @ts-ignore
-  // void _downloadQris;
   const [lang, setLang] = useState<"ID" | "EN">(() => {
     if (typeof window !== "undefined" && navigator.language) {
       return navigator.language.toLowerCase().startsWith("id") ? "ID" : "EN";
@@ -233,7 +240,6 @@ function MainApp() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Store Platform Configuration
   const [storeConfig, setStoreConfig] = useState<StoreConfig>(() => {
     const saved = localStorage.getItem("zoniq_store_config");
     if (saved) {
@@ -246,11 +252,9 @@ function MainApp() {
     return DEFAULT_CONFIG;
   });
 
-  // Cloud Products List (Supabase)
   const [products, setProducts] = useState<StoreProduct[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState<boolean>(true);
 
-  // Vendor Portal States
   const [showVendorModal, setShowVendorModal] = useState<boolean>(false);
   const [vendorActiveTab, setVendorActiveTab] = useState<"STATS" | "UPLOAD" | "PRODUCTS">("STATS");
   const [vendorProfile, setVendorProfile] = useState<VendorProfile | null>(null);
@@ -259,11 +263,9 @@ function MainApp() {
   const [vendorBank, setVendorBank] = useState<string>("");
   const [vendorAccNumber, setVendorAccNumber] = useState<string>("");
   
-  // State Edit Rekening & Profil Vendor
   const [isEditingVendorProfile, setIsEditingVendorProfile] = useState<boolean>(false);
   const [isUpdatingVendorProfile, setIsUpdatingVendorProfile] = useState<boolean>(false);
 
-  // Vendor Edit Product States
   const [editingProduct, setEditingProduct] = useState<StoreProduct | null>(null);
   const [editName, setEditName] = useState<string>("");
   const [editDesc, setEditDesc] = useState<string>("");
@@ -271,14 +273,12 @@ function MainApp() {
   const [editBadge, setEditBadge] = useState<string>("");
   const [isUpdatingProduct, setIsUpdatingProduct] = useState<boolean>(false);
 
-  // Vendor Sales Stats State
   const [vendorStats, setVendorStats] = useState<{ totalOrders: number; grossEth: number; netEth: number }>({
     totalOrders: 0,
     grossEth: 0,
     netEth: 0
   });
 
-  // Admin Modal States & 3 Tabs
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [adminActiveTab, setAdminActiveTab] = useState<"SETTINGS" | "PAYOUTS" | "ORDERS">("SETTINGS");
   const [adminPayouts, setAdminPayouts] = useState<AdminVendorPayoutItem[]>([]);
@@ -288,48 +288,42 @@ function MainApp() {
   const [inputPin, setInputPin] = useState<string>("");
   const [tempConfig, setTempConfig] = useState<StoreConfig>(storeConfig);
 
-  // Form Upload Produk Vendor
   const [newProductName, setNewProductName] = useState<string>("");
   const [newProductDesc, setNewProductDesc] = useState<string>("");
   const [newProductPrice, setNewProductPrice] = useState<string>("0.003");
-  const [newProductBadge, setNewProductBadge] = useState<string>("💎 NFT & Web3 Collectibles");
+  const [newProductBadge, setNewProductBadge] = useState<string>(PAYFI_CATEGORY_OPTIONS[0]);
   const [newProductDeliverable, setNewProductDeliverable] = useState<string>("");
   const [productFile, setProductFile] = useState<File | null>(null);
   const [isSubmittingProduct, setIsSubmittingProduct] = useState<boolean>(false);
 
-  // Filter & Pagination States
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedBadge, setSelectedBadge] = useState<string>("ALL");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  // Public License Verifier States
   const [showVerifyModal, setShowVerifyModal] = useState<boolean>(false);
   const [verifyQuery, setVerifyQuery] = useState<string>("");
   const [isSearchingLicense, setIsSearchingLicense] = useState<boolean>(false);
   const [verifiedResult, setVerifiedResult] = useState<any>(null);
   const [verifyError, setVerifyError] = useState<string>("");
 
-  // Checkout States
   const [selectedProduct, setSelectedProduct] = useState<StoreProduct | null>(null);
   const [showCheckoutModal, setShowCheckoutModal] = useState<boolean>(false);
   const [customerEmail, setCustomerEmail] = useState<string>("");
   const [deliverySuccess, setDeliverySuccess] = useState<SuccessDeliveryData | null>(null);
 
-  // Fungsi pengecekan email wajib diisi
   const validateCustomerEmail = () => {
     if (!customerEmail || !customerEmail.trim()) {
-      alert("⚠️ Harap masukkan alamat email terlebih dahulu!");
+      alert("⚠️ Please enter a valid delivery email address first!");
       return false;
     }
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(customerEmail.trim())) {
-      alert("⚠️ Format email tidak valid (contoh: nama@domain.com)!");
+      alert("⚠️ Invalid email format (example: user@domain.com)!");
       return false;
     }
     return true;
   };
 
-  // Gateways States
   const [fiatPaymentStatus, setFiatPaymentStatus] = useState<string>("IDLE");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [showQrisModal, setShowQrisModal] = useState<boolean>(false);
@@ -339,9 +333,8 @@ function MainApp() {
   const [mockCardExpiry, setMockCardExpiry] = useState<string>("");
   const [mockCardCvc, setMockCardCvc] = useState<string>("");
 
-  // SOLANA HOOKS
   const { connection } = useConnection();
-  const { publicKey, connected: isConnected, disconnect, sendTransaction } = useWallet();
+  const { publicKey, connected: isConnected, sendTransaction } = useWallet();
   const { setVisible: setWalletModalVisible } = useWalletModal();
 
   const [isTxPending, setIsTxPending] = useState<boolean>(false);
@@ -353,14 +346,12 @@ function MainApp() {
   const address = publicKey ? publicKey.toBase58() : "";
   const walletAddressStr = address;
 
-  // 1. Auto-format Nomor Kartu
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "").slice(0, 16);
     const parts = raw.match(/.{1,4}/g);
     setMockCardNumber(parts ? parts.join(" ") : raw);
   };
 
-  // 2. Auto-format Bulan/Tahun
   const handleCardExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
     if (raw.length >= 3) {
@@ -370,20 +361,17 @@ function MainApp() {
     }
   };
 
-  // 3. Format CVC
   const handleCardCvcChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "").slice(0, 3);
     setMockCardCvc(raw);
   };
 
-  const _currentContractAddress = (import.meta as any).env.VITE_CONTRACT_ADDRESS || "SolanaProgramIdDevnet";
   const fallbackQrisUrl = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=ZoniqfiMerchantSettlement";
 
   const activeEthPrice = selectedProduct?.priceEth || "0.005";
   const calculatedIdrPrice = Math.round(Number(activeEthPrice) * (Number(storeConfig?.rateIdr) || 54000000));
   const calculatedUsdPrice = (Number(activeEthPrice) * (Number(storeConfig?.rateUsd) || 3500)).toFixed(2);
 
-  // 0. AMBIL PENGATURAN TOKO DARI SUPABASE CLOUD
   const fetchStoreConfigFromSupabase = async () => {
     try {
       const { data } = await supabase
@@ -400,7 +388,6 @@ function MainApp() {
     }
   };
   
-  // 1. FETCH PRODUK DARI SUPABASE
   const fetchProductsFromSupabase = async () => {
     try {
       setIsLoadingProducts(true);
@@ -428,7 +415,6 @@ function MainApp() {
         }));
         setProducts(mapped);
       } else {
-        // Jika database kosong, kosongkan tampilan etalase
         setProducts([]);
       }
     } catch (err) {
@@ -438,7 +424,6 @@ function MainApp() {
     }
   };
 
-  // 2. CEK PROFIL VENDOR & FETCH STATISTIK OMSET
   const checkVendorProfile = async () => {
     if (!address) {
       setVendorProfile(null);
@@ -480,7 +465,6 @@ function MainApp() {
     }
   };
 
-  // 3. FETCH DATA REKONSILIASI PAYOUT VENDOR (ADMIN)
   const fetchAdminPayoutData = async () => {
     try {
       const { data: vendorsList } = await supabase.from("vendors").select("*");
@@ -521,7 +505,6 @@ function MainApp() {
     }
   };
 
-  // 4. FETCH DAFTAR RIWAYAT TRANSAKSI (KHUSUS ADMIN)
   const fetchAdminOrders = async () => {
     try {
       const { data, error } = await supabase
@@ -538,7 +521,6 @@ function MainApp() {
     }
   };
 
-  // 5. CATAT TRANSAKSI KE DATABASE
   const recordOrderToSupabase = async (payload: {
     sku?: string;
     productId: number;
@@ -578,7 +560,6 @@ function MainApp() {
     }
   };
 
-  // 6. PUBLIC LICENSE VERIFIER SEARCH
   const handleSearchLicense = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!verifyQuery.trim()) return;
@@ -597,24 +578,23 @@ function MainApp() {
         .limit(1);
 
       if (error || !data || data.length === 0) {
-        setVerifyError("❌ Lisensi tidak ditemukan di ledger database.");
+        setVerifyError("❌ License not found in ledger database.");
       } else {
         setVerifiedResult(data[0]);
       }
     } catch {
-      setVerifyError("Terjadi kesalahan saat memverifikasi.");
+      setVerifyError("Verification failed due to an error.");
     } finally {
       setIsSearchingLicense(false);
     }
   };
 
-  // 7. EDIT PRODUK VENDOR
   const handleOpenEditProduct = (prod: StoreProduct) => {
     setEditingProduct(prod);
     setEditName(prod.name);
     setEditDesc(prod.desc);
     setEditPrice(prod.priceEth);
-    setEditBadge(prod.badge || "General");
+    setEditBadge(prod.badge || PAYFI_CATEGORY_OPTIONS[0]);
   };
 
   const handleSaveEditProduct = async (e: React.FormEvent) => {
@@ -634,11 +614,11 @@ function MainApp() {
         .match({ sku: editingProduct.sku || `SKU-0${editingProduct.id}`, vendor_wallet: String(address).toLowerCase() });
 
       if (error) {
-        alert("Gagal memperbarui produk: " + error.message);
+        alert("Failed to update product: " + error.message);
         return;
       }
 
-      alert("✅ Produk berhasil diperbarui!");
+      alert("✅ Product updated successfully!");
       setEditingProduct(null);
       fetchProductsFromSupabase();
     } catch (err: any) {
@@ -648,10 +628,9 @@ function MainApp() {
     }
   };
 
-  // 8. HAPUS PRODUK VENDOR
   const handleDeleteProduct = async (prod: StoreProduct) => {
     if (!address) return;
-    const confirmDelete = window.confirm(`Apakah Anda yakin ingin menghapus "${prod.name}" dari etalase?`);
+    const confirmDelete = window.confirm(`Are you sure you want to remove "${prod.name}" from storefront?`);
     if (!confirmDelete) return;
 
     try {
@@ -661,18 +640,17 @@ function MainApp() {
         .match({ sku: prod.sku || `SKU-0${prod.id}`, vendor_wallet: String(address).toLowerCase() });
 
       if (error) {
-        alert("Gagal menghapus produk: " + error.message);
+        alert("Failed to delete product: " + error.message);
         return;
       }
 
-      alert("🗑️ Produk berhasil dihapus dari etalase!");
+      alert("🗑️ Product removed from storefront!");
       fetchProductsFromSupabase();
     } catch (err: any) {
       alert("Error: " + err.message);
     }
   };
 
-  // 9. UPDATE PROFIL / REKENING BANK VENDOR
   const handleUpdateVendorProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!address) return;
@@ -697,13 +675,13 @@ function MainApp() {
         .single();
 
       if (error) {
-        alert("Gagal menyimpan profil: " + error.message);
+        alert("Failed to save vendor profile: " + error.message);
         return;
       }
 
       setVendorProfile(data);
       setIsEditingVendorProfile(false);
-      alert("✅ Rekening & Profil Vendor berhasil diperbarui!");
+      alert("✅ Vendor Profile & Payout Account updated!");
       fetchAdminPayoutData();
     } catch (err: any) {
       alert("Error: " + err.message);
@@ -767,43 +745,22 @@ function MainApp() {
   };
 
   const handleOpenProduct = (prod: StoreProduct) => {
-    // Ambil badge atau kategori secara aman tanpa komplain TypeScript
     const anyProd = prod as any;
     const cat = (anyProd.badge || anyProd.category || "").toLowerCase();
-    const isPhysical = cat.includes("fashion") || cat.includes("gadget") || cat.includes("fisik");
+    const isPhysical = cat.includes("fashion") || cat.includes("gadget") || cat.includes("physical") || cat.includes("fisik");
 
     if (isPhysical) {
       const adminWa = "6285960601973";
-      const message = `Halo, saya berminat pesan barang fisik:%0A- *Produk*: ${prod.name}%0A- *Harga*: ${prod.priceEth} SOL%0A- *Kategori*: ${anyProd.badge || anyProd.category || "-"}%0A%0AMohon info ketersediaan stok dan estimasi ongkos kirim.`;
+      const message = `Hello, I'd like to order this physical item:%0A- *Product*: ${prod.name}%0A- *Price*: ${prod.priceEth} SOL%0A- *Category*: ${anyProd.badge || anyProd.category || "-"}%0A%0APlease inform me regarding stock and shipping rates.`;
       
       window.open(`https://wa.me/${adminWa}?text=${message}`, "_blank");
       return;
     }
 
-    // Jika produk digital/NFT, buka modal checkout biasa
     setSelectedProduct(prod);
     setShowCheckoutModal(true);
   };
 
-  const _downloadQris = async () => {
-    const targetUrl = storeConfig.customQrImage || fallbackQrisUrl;
-    try {
-      const response = await fetch(targetUrl);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = `QRIS-Order-SKU0${selectedProduct?.id || 1}.jpg`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch {
-      window.open(targetUrl, "_blank");
-    }
-  };
-
-  // PEMBELIAN ON-CHAIN SOLANA
   const handleDirectBuy = async (_id: number, priceEth: string) => {
     if (!isConnected || !publicKey) {
       setWalletModalVisible(true);
@@ -878,7 +835,7 @@ function MainApp() {
       setIsConfirming(false);
       setTxError(err);
       console.warn("Direct buy error:", err);
-      alert("⚠️ Transaksi gagal: " + (err?.message || "Periksa koneksi & saldo SOL Devnet!"));
+      alert("⚠️ Transaction failed: " + (err?.message || "Check connection & Devnet SOL balance!"));
     }
   };
 
@@ -923,7 +880,7 @@ function MainApp() {
   const handleVerifyMockOtpSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (mockOtpInput.trim().length < 4) {
-      alert("❌ Masukkan minimal 4 digit kode OTP!");
+      alert("❌ Please enter at least 4 digits OTP!");
       return;
     }
     setShowOtpModal(false);
@@ -933,7 +890,7 @@ function MainApp() {
   const handleVendorUploadProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!address || !vendorProfile) {
-      alert("Anda harus mendaftar sebagai vendor terlebih dahulu!");
+      alert("Please register as a vendor first!");
       return;
     }
 
@@ -951,7 +908,7 @@ function MainApp() {
           .upload(filePath, productFile);
 
         if (uploadErr) {
-          alert("Gagal mengunggah berkas: " + uploadErr.message);
+          alert("Failed to upload file: " + uploadErr.message);
           setIsSubmittingProduct(false);
           return;
         }
@@ -976,17 +933,17 @@ function MainApp() {
           title: newProductName,
           description: newProductDesc,
           price_eth: Number(newProductPrice) || 0.001,
-          category: newProductBadge || "General",
+          category: newProductBadge || PAYFI_CATEGORY_OPTIONS[0],
           download_url: deliverablesList[0] || "https://zoniqfinance.com"
         }
       ]);
 
       if (error) {
-        alert("Gagal mengunggah produk: " + error.message);
+        alert("Failed to upload product: " + error.message);
         return;
       }
 
-      alert("✅ Produk dan berkas digital berhasil dipublikasikan ke etalase!");
+      alert("✅ Product & digital files successfully published to storefront!");
       setNewProductName("");
       setNewProductDesc("");
       setNewProductDeliverable("");
@@ -1010,7 +967,7 @@ function MainApp() {
       fetchAdminOrders();
       setIsEditModalOpen(true);
     } else {
-      alert("❌ PIN Salah! Akses Ditolak.");
+      alert("❌ Invalid PIN! Access Denied.");
     }
   };
 
@@ -1042,7 +999,7 @@ function MainApp() {
       setStoreConfig(tempConfig);
       localStorage.setItem("zoniq_store_config", JSON.stringify(tempConfig));
       setIsEditModalOpen(false);
-      alert("✅ Pengaturan platform & QRIS berhasil disimpan ke Cloud!");
+      alert("✅ Platform settings & QRIS saved to Cloud!");
     } catch (err: any) {
       alert("Error: " + err.message);
     }
@@ -1087,7 +1044,7 @@ function MainApp() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: "17px", fontWeight: 800, color: "#38bdf8" }}>🔍 Public License Verifier</h3>
-                <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>Cek validitas lisensi digital & bukti kepemilikan resmi</p>
+                <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>Verify digital license validity & on-chain proof of ownership</p>
               </div>
               <button type="button" onClick={() => { setShowVerifyModal(false); setVerifiedResult(null); setVerifyError(""); }} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "20px", cursor: "pointer" }}>✕</button>
             </div>
@@ -1095,14 +1052,14 @@ function MainApp() {
             <form onSubmit={handleSearchLicense} style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
               <input
                 type="text"
-                placeholder="Masukkan Tx Hash / Email / SKU..."
+                placeholder="Enter Tx Hash / Email / SKU..."
                 value={verifyQuery}
                 onChange={(e) => setVerifyQuery(e.target.value)}
                 style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "12px", boxSizing: "border-box" }}
                 required
               />
               <button type="submit" disabled={isSearchingLicense} style={{ background: "#2563eb", color: "#fff", border: "none", padding: "10px 16px", borderRadius: "8px", fontWeight: 700, fontSize: "12px", cursor: "pointer" }}>
-                {isSearchingLicense ? "Memeriksa..." : "Verifikasi"}
+                {isSearchingLicense ? "Verifying..." : "Verify"}
               </button>
             </form>
 
@@ -1116,22 +1073,22 @@ function MainApp() {
               <div style={{ background: "#062319", border: "2px solid #10b981", borderRadius: "12px", padding: "16px", fontSize: "11px", color: "#cbd5e1" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "10px" }}>
                   <span style={{ fontSize: "16px" }}>✅</span>
-                  <strong style={{ color: "#34d399", fontSize: "13px" }}>LISENSI RESMI & TERVERIFIKASI</strong>
+                  <strong style={{ color: "#34d399", fontSize: "13px" }}>OFFICIAL VERIFIED LICENSE</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                  <span style={{ color: "#94a3b8" }}>SKU Produk:</span>
+                  <span style={{ color: "#94a3b8" }}>Product SKU:</span>
                   <strong style={{ color: "#fff" }}>{verifiedResult.sku}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                  <span style={{ color: "#94a3b8" }}>Pemilik Lisensi:</span>
+                  <span style={{ color: "#94a3b8" }}>Licensee:</span>
                   <strong style={{ color: "#38bdf8" }}>{verifiedResult.customer_email || "Verified Holder"}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                  <span style={{ color: "#94a3b8" }}>Metode Bayar:</span>
+                  <span style={{ color: "#94a3b8" }}>Payment Gateway:</span>
                   <strong style={{ color: "#60a5fa" }}>{verifiedResult.payment_method}</strong>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                  <span style={{ color: "#94a3b8" }}>Waktu Terbit:</span>
+                  <span style={{ color: "#94a3b8" }}>Timestamp:</span>
                   <strong>{new Date(verifiedResult.created_at).toLocaleString()}</strong>
                 </div>
                 <div style={{ borderTop: "1px solid #065f46", paddingTop: "6px", marginTop: "6px", wordBreak: "break-all" }}>
@@ -1149,24 +1106,24 @@ function MainApp() {
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999999, padding: "16px" }}>
           <div style={{ backgroundColor: "#111827", border: "1px solid #1f2937", borderRadius: "18px", padding: "24px", width: "100%", maxWidth: "500px", color: "#fff" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", borderBottom: "1px solid #1f2937", paddingBottom: "10px" }}>
-              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#38bdf8" }}>✏️ Edit Produk: {editingProduct.sku || `SKU-0${editingProduct.id}`}</h3>
+              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#38bdf8" }}>✏️ Edit Product: {editingProduct.sku || `SKU-0${editingProduct.id}`}</h3>
               <button type="button" onClick={() => setEditingProduct(null)} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "18px", cursor: "pointer" }}>✕</button>
             </div>
 
             <form onSubmit={handleSaveEditProduct} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <div>
-                <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Nama Produk / Judul:</label>
+                <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Product Title:</label>
                 <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                 <div>
-                  <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Harga (SOL):</label>
+                  <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Price (SOL):</label>
                   <input type="text" value={editPrice} onChange={(e) => setEditPrice(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                 </div>
                 <div>
                   <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
-                    Kategori / Badge:
+                    Category / Badge:
                   </label>
                   <select
                     value={editBadge}
@@ -1184,28 +1141,24 @@ function MainApp() {
                     }}
                     required
                   >
-                    <option value="💎 NFT & Web3 Collectibles" style={{ background: "#0b0f19", color: "#fff" }}>💎 NFT & Web3 Collectibles</option>
-                    <option value="💻 Software & Source Code" style={{ background: "#0b0f19", color: "#fff" }}>💻 Software & Source Code</option>
-                    <option value="📚 E-Book & Dokumen Edukasi" style={{ background: "#0b0f19", color: "#fff" }}>📚 E-Book & Dokumen Edukasi</option>
-                    <option value="🎨 Desain, UI/UX & Aset 3D" style={{ background: "#0b0f19", color: "#fff" }}>🎨 Desain, UI/UX & Aset 3D</option>
-                    <option value="🔑 Lisensi & Akun Digital" style={{ background: "#0b0f19", color: "#fff" }}>🔑 Lisensi & Akun Digital</option>
-                    <option value="🛠️ Jasa & Layanan Digital" style={{ background: "#0b0f19", color: "#fff" }}>🛠️ Jasa & Layanan Digital</option>
-                    <option value="👕 Fashion & Merchandise" style={{ background: "#0b0f19", color: "#fff" }}>👕 Fashion & Merchandise</option>
-                    <option value="📱 Gadget & Hardware Tech" style={{ background: "#0b0f19", color: "#fff" }}>📱 Gadget & Hardware Tech</option>
-                    <option value="📦 Barang Fisik & UMKM" style={{ background: "#0b0f19", color: "#fff" }}>📦 Barang Fisik & UMKM</option>
+                    {PAYFI_CATEGORY_OPTIONS.map((cat, idx) => (
+                      <option key={idx} value={cat} style={{ background: "#0b0f19", color: "#fff" }}>
+                        {cat}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
 
               <div>
-                <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Deskripsi:</label>
+                <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Description:</label>
                 <textarea rows={3} value={editDesc} onChange={(e) => setEditDesc(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "12px", resize: "none", boxSizing: "border-box" }} required />
               </div>
 
               <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
-                <button type="button" onClick={() => setEditingProduct(null)} style={{ width: "35%", background: "#374151", color: "#cbd5e1", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 600, fontSize: "12px" }}>Batal</button>
+                <button type="button" onClick={() => setEditingProduct(null)} style={{ width: "35%", background: "#374151", color: "#cbd5e1", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 600, fontSize: "12px" }}>Cancel</button>
                 <button type="submit" disabled={isUpdatingProduct} style={{ width: "65%", background: "#10b981", color: "#ffffff", border: "none", padding: "10px", borderRadius: "6px", cursor: isUpdatingProduct ? "not-allowed" : "pointer", fontWeight: 800, fontSize: "12px" }}>
-                  {isUpdatingProduct ? "Menyimpan..." : "💾 Simpan Perubahan"}
+                  {isUpdatingProduct ? "Saving..." : "💾 Save Changes"}
                 </button>
               </div>
             </form>
@@ -1221,42 +1174,42 @@ function MainApp() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", borderBottom: "1px solid #1f2937", paddingBottom: "12px" }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: "17px", fontWeight: 800, color: "#fff" }}>{t.vendorModalTitle}</h3>
-                <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>Kelola etalase, pantau omset & penarikan komisi</p>
+                <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>Manage storefront, monitor revenue, and configure payout accounts</p>
               </div>
               <button type="button" onClick={() => setShowVendorModal(false)} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "20px", cursor: "pointer" }}>✕</button>
             </div>
 
             {!isConnected ? (
               <div style={{ textAlign: "center", padding: "30px 10px" }}>
-                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "16px" }}>Hubungkan wallet Web3 Solana Anda untuk membuka toko vendor.</p>
+                <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "16px" }}>Connect your Solana Web3 wallet to manage or launch your storefront.</p>
                 <button type="button" onClick={() => { setShowVendorModal(false); setWalletModalVisible(true); }} style={{ background: "#2563eb", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>{t.connectWallet}</button>
               </div>
             ) : !vendorProfile ? (
               /* FORM PENDAFTARAN VENDOR BARU (AWAL) */
               <form onSubmit={handleUpdateVendorProfile} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 <div style={{ background: "#0f172a", border: "1px solid #1e293b", padding: "12px", borderRadius: "10px", fontSize: "11px", color: "#94a3b8" }}>
-                  Wallet Aktif: <strong style={{ color: "#38bdf8" }}>{walletAddressStr}</strong>
+                  Active Wallet: <strong style={{ color: "#38bdf8" }}>{walletAddressStr}</strong>
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Nama Toko / Brand:</label>
-                  <input type="text" placeholder="Contoh: Provizto Labs" value={vendorStoreName} onChange={(e) => setVendorStoreName(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
+                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Store / Brand Name:</label>
+                  <input type="text" placeholder="e.g. Provizto Digital Labs" value={vendorStoreName} onChange={(e) => setVendorStoreName(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Email Notifikasi Penjualan:</label>
-                  <input type="email" placeholder="kreator@domain.com" value={vendorEmail} onChange={(e) => setVendorEmail(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
+                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Notification Email:</label>
+                  <input type="email" placeholder="vendor@domain.com" value={vendorEmail} onChange={(e) => setVendorEmail(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                   <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Bank / E-Wallet Payout (IDR):</label>
-                    <input type="text" placeholder="BCA / Mandiri / DANA / GoPay" value={vendorBank} onChange={(e) => setVendorBank(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Payout Bank / E-Wallet (IDR):</label>
+                    <input type="text" placeholder="BCA / Mandiri / GoPay / DANA" value={vendorBank} onChange={(e) => setVendorBank(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                   </div>
                   <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Nomor Rekening Payout:</label>
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Payout Account Number:</label>
                     <input type="text" placeholder="1234567890" value={vendorAccNumber} onChange={(e) => setVendorAccNumber(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                   </div>
                 </div>
                 <button type="submit" disabled={isUpdatingVendorProfile} style={{ width: "100%", background: "#10b981", color: "#fff", border: "none", padding: "12px", borderRadius: "8px", fontWeight: 800, fontSize: "13px", cursor: isUpdatingVendorProfile ? "not-allowed" : "pointer", marginTop: "8px" }}>
-                  {isUpdatingVendorProfile ? "Mendaftarkan..." : "🚀 Buka Toko & Aktifkan Profil Vendor"}
+                  {isUpdatingVendorProfile ? "Registering..." : "🚀 Launch Store & Activate Vendor Profile"}
                 </button>
               </form>
             ) : (
@@ -1266,18 +1219,18 @@ function MainApp() {
                     <span style={{ fontSize: "13px", fontWeight: 800, color: "#34d399" }}>🏪 {vendorProfile.store_name}</span>
                     <span style={{ display: "block", fontSize: "10px", color: "#94a3b8" }}>{walletAddressStr.slice(0, 6)}...{walletAddressStr.slice(-4)}</span>
                   </div>
-                  <span style={{ fontSize: "10px", background: "rgba(16, 185, 129, 0.2)", color: "#34d399", padding: "4px 8px", borderRadius: "6px", fontWeight: 700 }}>Verified Vendor</span>
+                  <span style={{ fontSize: "10px", background: "rgba(16, 185, 129, 0.2)", color: "#34d399", padding: "4px 8px", borderRadius: "6px", fontWeight: 700 }}>Verified Merchant</span>
                 </div>
 
                 <div style={{ display: "flex", gap: "6px", marginBottom: "16px", background: "#0b0f19", padding: "4px", borderRadius: "8px", border: "1px solid #1e293b" }}>
                   <button type="button" onClick={() => setVendorActiveTab("STATS")} style={{ flex: 1, padding: "8px", borderRadius: "6px", border: "none", background: vendorActiveTab === "STATS" ? "#2563eb" : "transparent", color: vendorActiveTab === "STATS" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
-                    📊 Omset & Komisi
+                    📊 Revenue & Payout
                   </button>
                   <button type="button" onClick={() => setVendorActiveTab("UPLOAD")} style={{ flex: 1, padding: "8px", borderRadius: "6px", border: "none", background: vendorActiveTab === "UPLOAD" ? "#2563eb" : "transparent", color: vendorActiveTab === "UPLOAD" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
-                    ➕ Unggah Produk
+                    ➕ Add Product
                   </button>
                   <button type="button" onClick={() => setVendorActiveTab("PRODUCTS")} style={{ flex: 1, padding: "8px", borderRadius: "6px", border: "none", background: vendorActiveTab === "PRODUCTS" ? "#2563eb" : "transparent", color: vendorActiveTab === "PRODUCTS" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
-                    📦 Produk Saya ({myVendorProducts.length})
+                    📦 My Inventory ({myVendorProducts.length})
                   </button>
                 </div>
 
@@ -1286,37 +1239,36 @@ function MainApp() {
                   <div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "14px" }}>
                       <div style={{ background: "#0b1329", border: "1px solid #1e3a8a", padding: "14px", borderRadius: "10px" }}>
-                        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Total Pesanan Terjual</span>
-                        <h4 style={{ margin: "6px 0 0 0", fontSize: "20px", fontWeight: 800, color: "#60a5fa" }}>{vendorStats.totalOrders} Order</h4>
+                        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Completed Orders</span>
+                        <h4 style={{ margin: "6px 0 0 0", fontSize: "20px", fontWeight: 800, color: "#60a5fa" }}>{vendorStats.totalOrders} Orders</h4>
                       </div>
                       <div style={{ background: "#062319", border: "1px solid #065f46", padding: "14px", borderRadius: "10px" }}>
-                        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Pendapatan Bersih (95%)</span>
+                        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Net Earnings (95%)</span>
                         <h4 style={{ margin: "6px 0 0 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{vendorStats.netEth.toFixed(4)} SOL</h4>
                         <span style={{ fontSize: "10px", color: "#6ee7b7" }}>≈ Rp {Math.round(vendorStats.netEth * (storeConfig.rateIdr || 54000000)).toLocaleString("id-ID")}</span>
                       </div>
                     </div>
 
-                    {/* KOTAK INFORMASI / EDIT REKENING VENDOR */}
                     <div style={{ background: "#0f172a", border: "1px solid #1e293b", padding: "14px", borderRadius: "10px", fontSize: "11px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                        <span style={{ fontWeight: 700, color: "#38bdf8" }}>💳 Rekening Pembayaran Payout Vendor:</span>
+                        <span style={{ fontWeight: 700, color: "#38bdf8" }}>💳 Merchant Payout Bank & E-Wallet:</span>
                         <button
                           type="button"
                           onClick={() => setIsEditingVendorProfile(!isEditingVendorProfile)}
                           style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "4px 8px", borderRadius: "6px", fontSize: "10px", cursor: "pointer", fontWeight: 700 }}
                         >
-                          {isEditingVendorProfile ? "Batal Edit" : "✏️ Ganti / Edit Rekening"}
+                          {isEditingVendorProfile ? "Cancel" : "✏️ Edit Account"}
                         </button>
                       </div>
 
                       {isEditingVendorProfile ? (
                         <form onSubmit={handleUpdateVendorProfile} style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "10px" }}>
                           <div>
-                            <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Nama Toko / Brand:</label>
+                            <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Store Name:</label>
                             <input type="text" value={vendorStoreName} onChange={(e) => setVendorStoreName(e.target.value)} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
                           </div>
                           <div>
-                            <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Email Notifikasi:</label>
+                            <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Notification Email:</label>
                             <input type="email" value={vendorEmail} onChange={(e) => setVendorEmail(e.target.value)} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
                           </div>
                           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
@@ -1325,26 +1277,26 @@ function MainApp() {
                               <input type="text" placeholder="BCA / DANA / GoPay" value={vendorBank} onChange={(e) => setVendorBank(e.target.value)} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
                             </div>
                             <div>
-                              <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Nomor Rekening:</label>
+                              <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Account Number:</label>
                               <input type="text" placeholder="1234567890" value={vendorAccNumber} onChange={(e) => setVendorAccNumber(e.target.value)} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
                             </div>
                           </div>
                           <button type="submit" disabled={isUpdatingVendorProfile} style={{ width: "100%", background: "#10b981", color: "#fff", border: "none", padding: "8px", borderRadius: "6px", fontWeight: 700, fontSize: "11px", cursor: isUpdatingVendorProfile ? "not-allowed" : "pointer", marginTop: "4px" }}>
-                            {isUpdatingVendorProfile ? "Menyimpan..." : "💾 Simpan Perubahan Rekening"}
+                            {isUpdatingVendorProfile ? "Saving..." : "💾 Save Account Changes"}
                           </button>
                         </form>
                       ) : (
                         <div>
                           <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginBottom: "4px" }}>
                             <span>Bank / E-Wallet:</span>
-                            <strong style={{ color: "#fff" }}>{vendorProfile.payout_bank_name || "Belum diatur"}</strong>
+                            <strong style={{ color: "#fff" }}>{vendorProfile.payout_bank_name || "Not configured"}</strong>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginBottom: "4px" }}>
-                            <span>Nomor Rekening:</span>
-                            <strong style={{ color: "#34d399" }}>{vendorProfile.payout_account_number || "Belum diatur"}</strong>
+                            <span>Account Number:</span>
+                            <strong style={{ color: "#34d399" }}>{vendorProfile.payout_account_number || "Not configured"}</strong>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1" }}>
-                            <span>Email Notifikasi:</span>
+                            <span>Contact Email:</span>
                             <strong style={{ color: "#38bdf8" }}>{vendorProfile.contact_email || "-"}</strong>
                           </div>
                         </div>
@@ -1358,18 +1310,18 @@ function MainApp() {
                   <form onSubmit={handleVendorUploadProduct} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "8px" }}>
                       <div>
-                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Nama Produk / Lisensi:</label>
-                        <input type="text" placeholder="e.g. DeFi Staking Master Template" value={newProductName} onChange={(e) => setNewProductName(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
+                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Product Title / License Name:</label>
+                        <input type="text" placeholder="e.g. Solana PayFi Full Source Code" value={newProductName} onChange={(e) => setNewProductName(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
                       </div>
                       <div>
-                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Harga (SOL):</label>
+                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Price (SOL):</label>
                         <input type="text" placeholder="0.003" value={newProductPrice} onChange={(e) => setNewProductPrice(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
                       </div>
                     </div>
 
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "8px" }}>
                       <div>
-                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Kategori / Badge:</label>
+                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Category / Badge:</label>
                         <select
                           value={newProductBadge}
                           onChange={(e) => setNewProductBadge(e.target.value)}
@@ -1386,41 +1338,37 @@ function MainApp() {
                           }}
                           required
                         >
-                          <option value="💎 NFT & Web3 Collectibles" style={{ background: "#0b0f19", color: "#fff" }}>💎 NFT & Web3 Collectibles</option>
-                          <option value="💻 Software & Source Code" style={{ background: "#0b0f19", color: "#fff" }}>💻 Software & Source Code</option>
-                          <option value="📚 E-Book & Dokumen Edukasi" style={{ background: "#0b0f19", color: "#fff" }}>📚 E-Book & Dokumen Edukasi</option>
-                          <option value="🎨 Desain, UI/UX & Aset 3D" style={{ background: "#0b0f19", color: "#fff" }}>🎨 Desain, UI/UX & Aset 3D</option>
-                          <option value="🔑 Lisensi & Akun Digital" style={{ background: "#0b0f19", color: "#fff" }}>🔑 Lisensi & Akun Digital</option>
-                          <option value="🛠️ Jasa & Layanan Digital" style={{ background: "#0b0f19", color: "#fff" }}>🛠️ Jasa & Layanan Digital</option>
-                          <option value="👕 Fashion & Merchandise" style={{ background: "#0b0f19", color: "#fff" }}>👕 Fashion & Merchandise</option>
-                          <option value="📱 Gadget & Hardware Tech" style={{ background: "#0b0f19", color: "#fff" }}>📱 Gadget & Hardware Tech</option>
-                          <option value="📦 Barang Fisik & UMKM" style={{ background: "#0b0f19", color: "#fff" }}>📦 Barang Fisik & UMKM</option>
+                          {PAYFI_CATEGORY_OPTIONS.map((cat, idx) => (
+                            <option key={idx} value={cat} style={{ background: "#0b0f19", color: "#fff" }}>
+                              {cat}
+                            </option>
+                          ))}
                         </select>
                       </div>
                       <div>
-                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Deliverables / Link Tambahan:</label>
-                        <input type="text" placeholder="GitHub Access, Video Guide, dsb" value={newProductDeliverable} onChange={(e) => setNewProductDeliverable(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} />
+                        <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>External Access Link (Optional):</label>
+                        <input type="text" placeholder="GitHub access repo, video course, etc." value={newProductDeliverable} onChange={(e) => setNewProductDeliverable(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} />
                       </div>
                     </div>
 
                     <div style={{ background: "#0f172a", padding: "10px", borderRadius: "8px", border: "1px dashed #38bdf8" }}>
                       <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#38bdf8", marginBottom: "4px" }}>
-                        📁 Unggah File Berkas Digital (.ZIP / .PDF / .RAR):
+                        📁 Upload Master Asset File (.ZIP / .PDF / .RAR):
                       </label>
                       <input 
                         type="file" 
-                        onChange={(e) => setProductFile(e.target.files?.[0] || null)}
+                        onChange={(e) => setProductFile(e.target.files?.[0] || null)} 
                         style={{ width: "100%", fontSize: "10px", color: "#94a3b8" }} 
                       />
                     </div>
 
                     <div>
-                      <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Deskripsi Lengkap:</label>
-                      <textarea rows={3} placeholder="Jelaskan fitur dan lisensi produk digital Anda..." value={newProductDesc} onChange={(e) => setNewProductDesc(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", resize: "none", boxSizing: "border-box" }} required />
+                      <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Detailed Description:</label>
+                      <textarea rows={3} placeholder="Explain license terms, deliverables, and features..." value={newProductDesc} onChange={(e) => setNewProductDesc(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", resize: "none", boxSizing: "border-box" }} required />
                     </div>
 
                     <button type="submit" disabled={isSubmittingProduct} style={{ width: "100%", background: "#2563eb", color: "#fff", border: "none", padding: "11px", borderRadius: "8px", fontWeight: 800, fontSize: "12px", cursor: isSubmittingProduct ? "not-allowed" : "pointer" }}>
-                      {isSubmittingProduct ? "Mengunggah Berkas ke Cloud..." : "🚀 Terbitkan Produk & Berkas ke Marketplace"}
+                      {isSubmittingProduct ? "Uploading to Cloud..." : "🚀 Publish Product to Storefront"}
                     </button>
                   </form>
                 )}
@@ -1429,7 +1377,7 @@ function MainApp() {
                 {vendorActiveTab === "PRODUCTS" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "300px", overflowY: "auto" }}>
                     {myVendorProducts.length === 0 ? (
-                      <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>Anda belum mengunggah produk apa pun.</p>
+                      <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>You haven't uploaded any products yet.</p>
                     ) : (
                       myVendorProducts.map((p) => (
                         <div key={p.id} style={{ background: "#0b0f19", border: "1px solid #1e293b", padding: "12px", borderRadius: "10px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
@@ -1454,7 +1402,7 @@ function MainApp() {
                               onClick={() => handleDeleteProduct(p)}
                               style={{ background: "rgba(239, 68, 68, 0.15)", color: "#f87171", border: "1px solid rgba(239, 68, 68, 0.3)", padding: "5px 10px", borderRadius: "6px", fontSize: "11px", cursor: "pointer", fontWeight: 700 }}
                             >
-                              🗑️ Hapus
+                              🗑️ Delete
                             </button>
                           </div>
                         </div>
@@ -1495,7 +1443,7 @@ function MainApp() {
         </div>
       )}
 
-      {/* 🛠️ MODAL EDIT ADMIN DENGAN 3 TAB */}
+      {/* 🛠️ MODAL EDIT ADMIN */}
       {isEditModalOpen && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999998 }}>
           <div style={{ backgroundColor: "#111827", padding: "26px", borderRadius: "18px", width: "95%", maxWidth: "760px", maxHeight: "90vh", overflowY: "auto", textAlign: "left", border: "1px solid #1f2937", color: "#f3f4f6" }}>
@@ -1508,7 +1456,6 @@ function MainApp() {
               <button type="button" onClick={() => setIsEditModalOpen(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#9ca3af" }}>✕</button>
             </div>
 
-            {/* 3 Admin Tabs */}
             <div style={{ display: "flex", gap: "6px", marginBottom: "16px", background: "#0b0f19", padding: "4px", borderRadius: "8px", border: "1px solid #1e293b", flexWrap: "wrap" }}>
               <button type="button" onClick={() => setAdminActiveTab("SETTINGS")} style={{ flex: 1, minWidth: "120px", padding: "8px", borderRadius: "6px", border: "none", background: adminActiveTab === "SETTINGS" ? "#2563eb" : "transparent", color: adminActiveTab === "SETTINGS" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
                 ⚙️ Setelan Toko & FX
@@ -1521,7 +1468,6 @@ function MainApp() {
               </button>
             </div>
 
-            {/* TAB 1: PENGATURAN TOKO & REKENING ADMIN */}
             {adminActiveTab === "SETTINGS" && (
               <form onSubmit={handleSaveStoreConfig} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
@@ -1535,7 +1481,6 @@ function MainApp() {
                   </div>
                 </div>
 
-                {/* 💳 FORM REKENING RESMI ADMIN */}
                 <div style={{ background: "#0b1728", padding: "14px", borderRadius: "10px", border: "1px solid #1e3a8a" }}>
                   <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase" }}>
                     🏦 Rekening Resmi Admin (Penerima Laba 5% Platform & Penampung Dana)
@@ -1595,7 +1540,6 @@ function MainApp() {
               </form>
             )}
 
-            {/* TAB 2: REKONSILIASI & PAYOUT VENDOR */}
             {adminActiveTab === "PAYOUTS" && (
               <div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "16px" }}>
@@ -1646,7 +1590,7 @@ function MainApp() {
                               type="button"
                               onClick={() => {
                                 navigator.clipboard.writeText(v.payout_account_number || "");
-                                alert(`Nomor rekening vendor (${v.payout_account_number}) berhasil disalin untuk transfer m-Banking!`);
+                                alert(`Nomor rekening vendor (${v.payout_account_number}) berhasil disalin!`);
                               }}
                               style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "3px 8px", borderRadius: "4px", fontSize: "10px", cursor: "pointer", fontWeight: 600 }}
                             >
@@ -1661,7 +1605,6 @@ function MainApp() {
               </div>
             )}
 
-            {/* TAB 3: RIWAYAT PESANAN */}
             {adminActiveTab === "ORDERS" && (
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
@@ -1700,22 +1643,22 @@ function MainApp() {
 
                         <div style={{ borderTop: "1px solid #1e293b", paddingTop: "6px", marginTop: "6px", wordBreak: "break-all", fontSize: "10px", color: "#64748b" }}>
                           Tx Signature:
-<code
-  style={{
-    display: "block",
-    background: "#090d16",
-    color: "#94a3b8",
-    border: "1px solid #1e293b",
-    borderRadius: "8px",
-    padding: "8px 12px",
-    marginTop: "6px",
-    fontFamily: "monospace",
-    fontSize: "12px",
-    wordBreak: "break-all"
-  }}
->
-  {ord.tx_hash || "On-chain Verified"}
-</code>
+                          <code
+                            style={{
+                              display: "block",
+                              background: "#090d16",
+                              color: "#94a3b8",
+                              border: "1px solid #1e293b",
+                              borderRadius: "8px",
+                              padding: "8px 12px",
+                              marginTop: "6px",
+                              fontFamily: "monospace",
+                              fontSize: "12px",
+                              wordBreak: "break-all"
+                            }}
+                          >
+                            {ord.tx_hash || "On-chain Verified"}
+                          </code>
                         </div>
                       </div>
                     ))
@@ -1738,7 +1681,7 @@ function MainApp() {
 
             <div style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: "12px", padding: "14px", textAlign: "left", fontSize: "11px", marginBottom: "16px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                <span style={{ color: "#94a3b8" }}>Produk:</span>
+                <span style={{ color: "#94a3b8" }}>Product:</span>
                 <strong style={{ color: "#fff" }}>{deliverySuccess.product.name}</strong>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
@@ -1750,7 +1693,7 @@ function MainApp() {
                 <strong style={{ color: "#60a5fa" }}>{deliverySuccess.method}</strong>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-                <span style={{ color: "#94a3b8" }}>Penerima / Email:</span>
+                <span style={{ color: "#94a3b8" }}>Recipient / Email:</span>
                 <strong style={{ color: "#cbd5e1" }}>{deliverySuccess.buyer}</strong>
               </div>
               <div style={{ borderTop: "1px solid #1e293b", paddingTop: "6px", marginTop: "6px", wordBreak: "break-all" }}>
@@ -1772,7 +1715,7 @@ function MainApp() {
               onClick={() => setDeliverySuccess(null)}
               style={{ width: "100%", background: "#1e293b", color: "#94a3b8", padding: "10px", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: 600, fontSize: "12px" }}
             >
-              Tutup
+              Close
             </button>
           </div>
         </div>
@@ -1790,11 +1733,11 @@ function MainApp() {
                 </span>
                 <h3 style={{ margin: "8px 0 3px 0", fontSize: "18px", fontWeight: 800, color: "#fff" }}>{selectedProduct.name}</h3>
                 <p style={{ margin: 0, fontSize: "12px", color: "#94a3b8", lineHeight: "1.6", whiteSpace: "pre-line" }}>
-  {selectedProduct.desc}
-</p>
+                  {selectedProduct.desc}
+                </p>
                 {selectedProduct.vendor_wallet && (
                   <span style={{ fontSize: "10px", color: "#34d399", marginTop: "4px", display: "inline-block" }}>
-                    🏬 Kreator: {selectedProduct.vendor_wallet.slice(0, 8)}...{selectedProduct.vendor_wallet.slice(-6)}
+                    🏬 Creator: {selectedProduct.vendor_wallet.slice(0, 8)}...{selectedProduct.vendor_wallet.slice(-6)}
                   </span>
                 )}
               </div>
@@ -1816,11 +1759,11 @@ function MainApp() {
 
             {selectedProduct.deliverables && (
               <div style={{ background: "#0b0f19", border: "1px solid #1e293b", borderRadius: "10px", padding: "10px 14px", marginBottom: "16px" }}>
-                <span style={{ fontSize: "10px", color: "#38bdf8", fontWeight: 800, textTransform: "uppercase" }}>Termasuk dalam Lisensi:</span>
+                <span style={{ fontSize: "10px", color: "#38bdf8", fontWeight: 800, textTransform: "uppercase" }}>Included Deliverables:</span>
                 <ul style={{ margin: "6px 0 0 0", paddingLeft: "16px", fontSize: "11px", color: "#cbd5e1", lineHeight: "1.5" }}>
                   {selectedProduct.deliverables.map((item, idx) => {
                     const isUrl = item.startsWith("http://") || item.startsWith("https://");
-                    const label = isUrl ? "📁 Berkas Master Digital (Akses instan setelah checkout)" : item;
+                    const label = isUrl ? "📁 Master Digital Asset Access (Delivered upon confirmation)" : item;
                     return <li key={idx}>{label}</li>;
                   })}
                 </ul>
@@ -1878,11 +1821,10 @@ function MainApp() {
                 </div>
                 <p style={{ margin: "0 0 8px 0", fontSize: "11px", color: "#fdba74" }}>{t.method3Desc}</p>
                 
-                {/* Form Isian Kartu Presisi */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "10px" }}>
                   <input
                     type="text"
-                    placeholder="Nomor Kartu (16 Digit)"
+                    placeholder="Card Number (16 Digits)"
                     maxLength={19}
                     value={mockCardNumber}
                     onChange={handleCardNumberChange}
@@ -1922,7 +1864,7 @@ function MainApp() {
                     />
                     <input
                       type="password"
-                      placeholder="CVC (3 Digit)"
+                      placeholder="CVC (3 Digits)"
                       maxLength={3}
                       value={mockCardCvc}
                       onChange={handleCardCvcChange}
@@ -1944,47 +1886,47 @@ function MainApp() {
                 </div>
 
                 <button
-  type="button"
-  onClick={() => {
-    if (!validateCustomerEmail()) return;
+                  type="button"
+                  onClick={() => {
+                    if (!validateCustomerEmail()) return;
 
-    const rawNumber = mockCardNumber.replace(/\s+/g, "");
-    if (!rawNumber || !mockCardExpiry || !mockCardCvc) {
-      alert("⚠️ Harap lengkapi semua kolom kartu kredit terlebih dahulu!");
-      return;
-    }
-    if (rawNumber.length < 15) {
-      alert("⚠️ Nomor kartu minimal 15 atau 16 digit!");
-      return;
-    }
-    if (mockCardExpiry.trim().length < 5) {
-      alert("⚠️ Masa berlaku kartu tidak valid! Gunakan format MM / YY (contoh: 08/28)");
-      return;
-    }
-    if (mockCardCvc.trim().length < 3) {
-      alert("⚠️ Kode CVC harus 3 digit!");
-      return;
-    }
+                    const rawNumber = mockCardNumber.replace(/\s+/g, "");
+                    if (!rawNumber || !mockCardExpiry || !mockCardCvc) {
+                      alert("⚠️ Please fill out all credit card details!");
+                      return;
+                    }
+                    if (rawNumber.length < 15) {
+                      alert("⚠️ Card number must be 15 or 16 digits!");
+                      return;
+                    }
+                    if (mockCardExpiry.trim().length < 5) {
+                      alert("⚠️ Invalid expiry date! Use MM / YY format (e.g. 08/28)");
+                      return;
+                    }
+                    if (mockCardCvc.trim().length < 3) {
+                      alert("⚠️ CVC code must be 3 digits!");
+                      return;
+                    }
 
-    setSelectedCurrency("USD");
-    setShowOtpModal(true);
-  }}
-  disabled={fiatPaymentStatus === "PROCESSING"}
-  style={{
-    width: "100%",
-    background: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? "#7c2d12" : "#ea580c",
-    color: "white",
-    border: "none",
-    padding: "10px",
-    borderRadius: "8px",
-    cursor: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? "not-allowed" : "pointer",
-    fontWeight: 700,
-    fontSize: "12px",
-    opacity: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? 0.7 : 1
-  }}
->
-  {t.method3BtnPay}
-</button>
+                    setSelectedCurrency("USD");
+                    setShowOtpModal(true);
+                  }}
+                  disabled={fiatPaymentStatus === "PROCESSING"}
+                  style={{
+                    width: "100%",
+                    background: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? "#7c2d12" : "#ea580c",
+                    color: "white",
+                    border: "none",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    cursor: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? "not-allowed" : "pointer",
+                    fontWeight: 700,
+                    fontSize: "12px",
+                    opacity: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? 0.7 : 1
+                  }}
+                >
+                  {t.method3BtnPay}
+                </button>
               </div>
             </div>
           </div>
@@ -2005,7 +1947,7 @@ function MainApp() {
               </div>
               <input 
                 type="text" 
-                placeholder="Kode OTP (e.g. 123456)" 
+                placeholder="OTP Code (e.g. 123456)" 
                 maxLength={6} 
                 value={mockOtpInput} 
                 onChange={(e) => setMockOtpInput(e.target.value.replace(/\D/g, ""))} 
@@ -2035,7 +1977,6 @@ function MainApp() {
               Rp {calculatedIdrPrice.toLocaleString("id-ID")}
             </h4>
 
-            {/* Kontainer Barcode QRIS Lebih Lebar & Jelas */}
             <div style={{ background: "#ffffff", padding: "14px", borderRadius: "14px", display: "inline-flex", justifyContent: "center", alignItems: "center", width: "100%", maxWidth: "340px", boxSizing: "border-box", margin: "0 auto 14px auto" }}>
               <img
                 src={storeConfig.customQrImage || fallbackQrisUrl}
@@ -2045,7 +1986,7 @@ function MainApp() {
             </div>
 
             <p style={{ margin: "0 0 16px 0", fontSize: "11px", color: "#94a3b8", lineHeight: "1.4" }}>
-              Buka BCA, Mandiri, GoPay, OVO, DANA atau Livin' lalu scan QR code di atas.
+              Scan through BCA, Mandiri, GoPay, OVO, DANA, or ShopeePay to complete purchase.
             </p>
 
             <button
@@ -2053,7 +1994,7 @@ function MainApp() {
               onClick={executeOnChainRelayMint}
               style={{ width: "100%", background: "#10b981", color: "#fff", border: "none", padding: "12px", borderRadius: "8px", fontWeight: 800, fontSize: "13px", cursor: "pointer", marginBottom: "8px" }}
             >
-              ✅ Saya Sudah Bayar
+              ✅ I Have Completed Payment
             </button>
 
             <button
@@ -2061,7 +2002,7 @@ function MainApp() {
               onClick={() => setShowQrisModal(false)}
               style={{ width: "100%", background: "#1f2937", color: "#cbd5e1", border: "none", padding: "10px", borderRadius: "8px", fontWeight: 600, fontSize: "12px", cursor: "pointer" }}
             >
-              Batal
+              Cancel
             </button>
           </div>
         </div>
@@ -2089,7 +2030,6 @@ function MainApp() {
         marginBottom: "20px",
         gap: "10px"
       }}>
-        {/* Brand & Subtitle */}
         <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
           <span style={{ fontSize: "22px", flexShrink: 0 }}>⚡</span>
           <div style={{ overflow: "hidden" }}>
@@ -2102,9 +2042,7 @@ function MainApp() {
           </div>
         </div>
 
-        {/* Kontrol Kanan */}
         <div style={{ display: "flex", gap: "6px", alignItems: "center", flexShrink: 0 }}>
-          {/* Tombol Verifikasi, Toko, dan Admin (HANYA DI PC) */}
           <div className="nav-desktop-only" style={{ display: "flex", gap: "6px", alignItems: "center" }}>
             <button
               type="button"
@@ -2131,7 +2069,6 @@ function MainApp() {
             </button>
           </div>
 
-          {/* Pengalih Bahasa */}
           <div style={{ display: "flex", background: "#111827", padding: "2px", borderRadius: "6px", border: "1px solid #1f2937" }}>
             <button type="button" onClick={() => setLang("ID")} style={{ background: lang === "ID" ? "#2563eb" : "transparent", color: lang === "ID" ? "#fff" : "#94a3b8", border: "none", padding: "3px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}>ID</button>
             <button type="button" onClick={() => setLang("EN")} style={{ background: lang === "EN" ? "#2563eb" : "transparent", color: lang === "EN" ? "#fff" : "#94a3b8", border: "none", padding: "3px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}>EN</button>
@@ -2145,7 +2082,7 @@ function MainApp() {
           <h4 style={{ marginTop: 0, marginBottom: "6px", fontWeight: 700, fontSize: "12px", textTransform: "uppercase", color: "#94a3b8" }}>{t.monitorHeading}</h4>
           {fiatPaymentStatus === "PROCESSING" && <p style={{ color: "#38bdf8", margin: 0, fontSize: "13px", fontWeight: 500 }}>{t.monitorProcessing}</p>}
           {isTxPending && <p style={{ color: "#fbbf24", margin: 0, fontSize: "13px", fontWeight: 500 }}>{t.monitorSigning}</p>}
-          {isConfirming && <p style={{ color: "#60a5fa", margin: 0, fontSize: "13px", fontWeight: 500 }}>⏳ Transaksi dikirim ke Solana Devnet. Menunggu konfirmasi slot block...</p>}
+          {isConfirming && <p style={{ color: "#60a5fa", margin: 0, fontSize: "13px", fontWeight: 500 }}>⏳ Transaction transmitted to Solana Devnet. Awaiting block confirmation...</p>}
           {txHash && <p style={{ color: "#34d399", margin: 0, fontSize: "13px", fontWeight: 600, wordBreak: "break-all" }}>{t.monitorSuccess} <code>{txHash}</code></p>}
           {txError && <p style={{ color: "#f87171", margin: 0, fontSize: "13px", fontWeight: 500 }}>❌ Solana Transaction Error: {txError.message ? txError.message.split("\n")[0] : String(txError)}</p>}
         </div>
@@ -2201,7 +2138,7 @@ function MainApp() {
             </p>
           </div>
           <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700 }}>
-            {isLoadingProducts ? "Memuat..." : `${filteredProducts.length} Produk Aktif`}
+            {isLoadingProducts ? "Loading..." : `${filteredProducts.length} Active Items`}
           </span>
         </div>
 
@@ -2235,7 +2172,6 @@ function MainApp() {
                   onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
                   onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1f2937")}
                 >
-                  {/* Kolom Kiri: Detail & Cuplikan Deskripsi */}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px", flexWrap: "wrap" }}>
                       <span style={{ background: "rgba(59, 130, 246, 0.15)", color: "#60a5fa", padding: "2px 6px", borderRadius: "4px", fontSize: "10px", fontWeight: 800, border: "1px solid rgba(59, 130, 246, 0.3)" }}>
@@ -2257,7 +2193,6 @@ function MainApp() {
                       {prod.name}
                     </h3>
                     
-                    {/* Cuplikan Deskripsi 2 Baris (Klik kartu/tombol untuk baca full di popup) */}
                     <p style={{ 
                       margin: 0, 
                       fontSize: "12px", 
@@ -2272,7 +2207,6 @@ function MainApp() {
                     </p>
                   </div>
 
-                  {/* Kolom Kanan: Harga & Tombol */}
                   <div style={{ textAlign: "right", flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
                     <div>
                       <div style={{ fontSize: "16px", fontWeight: 800, color: "#38bdf8" }}>
@@ -2282,7 +2216,7 @@ function MainApp() {
                         Rp {idrVal.toLocaleString("id-ID")}
                       </div>
                       <div style={{ fontSize: "10px", color: "#fb923c" }}>
-                        {lang === "ID" ? `≈ $${usdVal} USD` : `≈ $${usdVal} USD`}
+                        ≈ ${usdVal} USD
                       </div>
                     </div>
 
@@ -2339,7 +2273,7 @@ function MainApp() {
         )}
       </div>
 
-      {/* 📱 DOCK BAWAH HANYA MUNCUL DI HP */}
+      {/* 📱 DOCK MOBILE */}
       {isMobile && (
         <div style={{
           position: "fixed",
@@ -2357,7 +2291,6 @@ function MainApp() {
           padding: "0 10px",
           boxSizing: "border-box"
         }}>
-          {/* 1. Etalase / Katalog */}
           <button
             type="button"
             onClick={() => {
@@ -2367,30 +2300,27 @@ function MainApp() {
             style={{ background: "none", border: "none", color: "#cbd5e1", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", cursor: "pointer", fontSize: "10px", fontWeight: 600 }}
           >
             <span style={{ fontSize: "18px" }}>🛍️</span>
-            <span>Etalase</span>
+            <span>Storefront</span>
           </button>
 
-          {/* 2. Cek Lisensi */}
           <button
             type="button"
             onClick={() => setShowVerifyModal(true)}
             style={{ background: "none", border: "none", color: "#cbd5e1", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", cursor: "pointer", fontSize: "10px", fontWeight: 600 }}
           >
             <span style={{ fontSize: "18px" }}>🔍</span>
-            <span>Verifikasi</span>
+            <span>Verify</span>
           </button>
 
-          {/* 3. Portal Vendor */}
           <button
             type="button"
             onClick={() => setShowVendorModal(true)}
             style={{ background: "none", border: "none", color: vendorProfile ? "#34d399" : "#60a5fa", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}
           >
             <span style={{ fontSize: "18px" }}>🏪</span>
-            <span>{vendorProfile ? "Toko Saya" : "Vendor"}</span>
+            <span>{vendorProfile ? "My Store" : "Vendor"}</span>
           </button>
 
-          {/* 4. Global Settings (Admin) */}
           <button
             type="button"
             onClick={() => setShowPinModal(true)}
