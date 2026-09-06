@@ -982,9 +982,13 @@ function MainApp() {
     <div style={{ 
       color: "#f3f4f6", 
       width: "100%", 
-      maxWidth: "100%", 
+      maxWidth: "780px", 
       margin: "0 auto", 
-      padding: "10px 0", 
+      padding: isMobile ? "16px 12px" : "20px 18px", 
+      background: "#0c1322",
+      border: "1px solid #1e293b",
+      borderRadius: "20px",
+      boxShadow: "0 15px 35px rgba(0, 0, 0, 0.45)",
       fontFamily: "'Inter', -apple-system, sans-serif", 
       boxSizing: "border-box" 
     }}>
@@ -1826,7 +1830,7 @@ function MainApp() {
         }
       `}</style>
 
-      {/* 🚀 NAVBAR TERPUSAT & SIMETRIS */}
+      {/* 🚀 NAVBAR KOMPAK & PRESISI */}
       <div style={{
         display: "flex",
         flexDirection: "column",
@@ -1834,29 +1838,32 @@ function MainApp() {
         justifyContent: "center",
         textAlign: "center",
         borderBottom: "1px solid #1f2937",
-        paddingBottom: "16px",
-        marginBottom: "20px",
-        gap: "12px",
+        paddingTop: "2px",
+        paddingBottom: "12px",
+        marginBottom: "16px",
+        gap: "6px",
         width: "100%",
         boxSizing: "border-box"
       }}>
-        {/* LOGO & JUDUL DI TENGAH */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
-          <span style={{ fontSize: "28px" }}>⚡</span>
-          <h1 style={{ margin: 0, fontSize: "17px", fontWeight: 800, color: "#fff" }}>
+        {/* LOGO PETIR SEJAJAR DENGAN JUDUL */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+          <span style={{ fontSize: "18px", lineHeight: 1 }}>⚡</span>
+          <h1 style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#fff", lineHeight: 1.2 }}>
             {storeConfig.storeName}
           </h1>
-          <p style={{ margin: 0, fontSize: "11px", color: "#94a3b8" }}>
-            {storeConfig.storeSubtitle}
-          </p>
         </div>
 
-        {/* DERETAN TOMBOL DI BAWAH JUDUL (TERPUSAT) */}
+        {/* SUBJUDUL RAPAT */}
+        <p style={{ margin: 0, fontSize: "11px", color: "#94a3b8", lineHeight: 1.2 }}>
+          {storeConfig.storeSubtitle}
+        </p>
+
+        {/* DERETAN TOMBOL NAIK KE ATAS */}
         <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
           <button
             type="button"
             onClick={() => setShowVerifyModal(true)}
-            style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "6px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+            style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
           >
             {t.verifyBtn}
           </button>
@@ -1864,7 +1871,7 @@ function MainApp() {
           <button
             type="button"
             onClick={() => setShowVendorModal(true)}
-            style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontWeight: 800, fontSize: "11px" }}
+            style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "5px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 800, fontSize: "11px" }}
           >
             {vendorProfile ? `🏪 ${vendorProfile.store_name}` : t.vendorBtn}
           </button>
@@ -1872,7 +1879,7 @@ function MainApp() {
           <button
             type="button"
             onClick={() => setShowPinModal(true)}
-            style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "6px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+            style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
           >
             ⚙️ Admin
           </button>
@@ -1950,7 +1957,19 @@ function MainApp() {
             {t.noProductsFound}
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div 
+            className="payfi-product-scrollbox"
+            style={{ 
+              display: "flex", 
+              flexDirection: "column", 
+              gap: "10px",
+              maxHeight: isMobile ? "380px" : "480px",
+              overflowY: "auto",
+              paddingRight: "4px",
+              boxSizing: "border-box",
+              width: "100%"
+            }}
+          >
             {paginatedProducts.map((prod) => {
               const idrVal = Math.round(Number(prod.priceEth) * (storeConfig.rateIdr || 54000000));
               const usdVal = (Number(prod.priceEth) * (storeConfig.rateUsd || 3500)).toFixed(2);
@@ -1960,20 +1979,27 @@ function MainApp() {
                   key={prod.id} 
                   onClick={() => handleOpenProduct(prod)}
                   style={{ 
-                    background: "#111827", 
-                    border: "1px solid #1f2937", 
-                    borderRadius: "14px", 
-                    padding: "16px 20px", 
+                    background: "#070c18", 
+                    border: "1px solid #1a263d", 
+                    borderRadius: "12px", 
+                    padding: isMobile ? "12px 14px" : "14px 18px", 
                     display: "flex", 
                     justifyContent: "space-between", 
                     alignItems: "center", 
-                    gap: "16px",
+                    gap: "12px",
                     cursor: "pointer",
                     transition: "all 0.2s ease",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
+                    boxSizing: "border-box",
+                    width: "100%"
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#38bdf8")}
-                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1f2937")}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "#38bdf8";
+                    e.currentTarget.style.background = "#091224";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "#1a263d";
+                    e.currentTarget.style.background = "#070c18";
+                  }}
                 >
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px", flexWrap: "wrap" }}>
