@@ -980,14 +980,14 @@ function MainApp() {
 
   return (
     <div style={{ 
-    color: "#f3f4f6", 
-    width: "100%", 
-    maxWidth: "780px", 
-    margin: "0 auto", 
-    padding: "24px 20px", 
-    fontFamily: "'Inter', -apple-system, sans-serif", 
-    boxSizing: "border-box" 
-  }}>
+      color: "#f3f4f6", 
+      width: "100%", 
+      maxWidth: "100%", 
+      margin: "0 auto", 
+      padding: "10px 0", 
+      fontFamily: "'Inter', -apple-system, sans-serif", 
+      boxSizing: "border-box" 
+    }}>
      
       {/* 🔍 MODAL PUBLIC LICENSE VERIFIER */}
       {showVerifyModal && (
@@ -1831,12 +1831,15 @@ function MainApp() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        flexWrap: "wrap",
         borderBottom: "1px solid #1f2937",
         paddingBottom: "14px",
         marginBottom: "20px",
-        gap: "10px"
+        gap: "12px",
+        width: "100%",
+        boxSizing: "border-box"
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: "220px" }}>
           <span style={{ fontSize: "22px", flexShrink: 0 }}>⚡</span>
           <div>
             <h1 style={{ margin: 0, fontSize: "16px", fontWeight: 800, letterSpacing: "-0.02em", color: "#fff", whiteSpace: "nowrap" }}>
@@ -1848,12 +1851,12 @@ function MainApp() {
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "6px", alignItems: "center", flexShrink: 0 }}>
-          <div className="nav-desktop-only" style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+          <div className="nav-desktop-only" style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={() => setShowVerifyModal(true)}
-              style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "6px 10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+              style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "6px 10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "11px", whiteSpace: "nowrap" }}
             >
               {t.verifyBtn}
             </button>
@@ -1861,7 +1864,7 @@ function MainApp() {
             <button
               type="button"
               onClick={() => setShowVendorModal(true)}
-              style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontWeight: 800, fontSize: "11px" }}
+              style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontWeight: 800, fontSize: "11px", whiteSpace: "nowrap" }}
             >
               {vendorProfile ? `🏪 ${vendorProfile.store_name}` : t.vendorBtn}
             </button>
@@ -1869,7 +1872,7 @@ function MainApp() {
             <button
               type="button"
               onClick={() => setShowPinModal(true)}
-              style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "6px 10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+              style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "6px 10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "11px", whiteSpace: "nowrap" }}
             >
               ⚙️ Admin
             </button>
