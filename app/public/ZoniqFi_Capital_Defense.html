@@ -273,7 +273,7 @@
   <div class="doc-header">
     <div>
       <h1 class="brand-title">ZoniqFi Protocol</h1>
-      <p class="brand-sub">Capital Allocation Breakdown & Milestone Execution Defense</p>
+      <p class="brand-sub">Capital Allocation Breakdown, PayFi Integration & Milestone Execution Defense</p>
     </div>
     <div class="doc-badge">
       <div class="badge-status">CONFIDENTIAL • INVESTOR ANNEX</div>
@@ -286,14 +286,14 @@
   <div class="exec-summary">
     <h3>Funding Strategy & Capital Philosophy</h3>
     <p style="margin: 0; color: var(--secondary); font-size: 12px;">
-      ZoniqFi adopts a <strong>tranche-based, milestone-gated</strong> capital structure. Unlike speculative projects seeking large upfront equity dilution, our funding strictly matches verifiable development phases. Up to <strong>45% of total capital</strong> is injected into balance-sheet assets (Protocol-Owned Liquidity) rather than spent on operational cash burn.
+      ZoniqFi adopts a <strong>tranche-based, milestone-gated</strong> capital structure. Unlike speculative projects seeking large upfront equity dilution, our funding strictly matches verifiable engineering releases across DeFi and PayFi. Up to <strong>45% of total capital</strong> is injected into balance-sheet assets (Protocol-Owned Liquidity) rather than spent on operational cash burn.
     </p>
 
     <div class="exec-grid">
       <div class="exec-card">
         <div class="exec-label">Phase 2 (Q4 2026)</div>
         <div class="exec-val">$40,000 – $60,000</div>
-        <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Security Audits & Squads Multisig</div>
+        <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Security Audits, PayFi Relayers & Squads</div>
       </div>
       <div class="exec-card">
         <div class="exec-label">Phase 3 (Q1 2027)</div>
@@ -303,7 +303,7 @@
       <div class="exec-card">
         <div class="exec-label">Phase 4 (Q2-Q3 2027)</div>
         <div class="exec-val">$50,000 – $80,000</div>
-        <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">B2B SDK & Regional Expansion</div>
+        <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">PayFi Merchant SDK & Regional Expansion</div>
       </div>
     </div>
   </div>
@@ -311,7 +311,7 @@
   <!-- PHASE 2 TABLE -->
   <div class="avoid-break">
     <h2>
-      <span>Phase 2 • Q4 2026: Formal Audits & Anchor PDA Migration</span>
+      <span>Phase 2 • Q4 2026: Formal Audits & PayFi Relayer Infrastructure</span>
       <span class="target-tag">Target: $40,000 – $60,000</span>
     </h2>
     <table>
@@ -324,24 +324,24 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Tier-1 Security Audit</strong></td>
-          <td class="cost">$32,000 – $42,000</td>
-          <td>Engaging top-tier Solana auditors (<strong>OtterSec</strong>, <strong>Sec3</strong>, or <strong>Kudelski</strong>). Auditing all 4 core modules (Swap, Lock, Vault, Affiliate) with focus on PDA seed safety, checked math, and penalty burn integrity.</td>
+          <td><strong>Full-Suite Security Audit</strong></td>
+          <td class="cost">$32,000 – $40,000</td>
+          <td>Engaging top-tier Solana auditors (<strong>OtterSec</strong>, <strong>Sec3</strong>, or <strong>Kudelski</strong>). Auditing all 5 core modules (<strong>Swap, Lock, Vault, Affiliate, and PayFi Digital Core</strong>) with focus on PDA seed safety, gasless license minting logic, checked math, and penalty burn integrity.</td>
+        </tr>
+        <tr>
+          <td><strong>PayFi Relayer & Gasless Infrastructure</strong></td>
+          <td class="cost">$4,000 – $6,000</td>
+          <td>Setup of high-availability serverless relayer nodes (AWS Lambda/Cloudflare Workers) to handle automated on-chain NFT licensing for fiat/QRIS settlements without user-side gas friction.</td>
         </tr>
         <tr>
           <td><strong>Enterprise RPC Infrastructure</strong></td>
-          <td class="cost">$4,000 – $6,000</td>
-          <td>6-month prepaid commitment for dedicated enterprise nodes (<strong>Helius Enterprise</strong> or <strong>Triton One</strong>) ensuring rate-limit immunity and 99.99% operational uptime.</td>
+          <td class="cost">$3,000 – $5,000</td>
+          <td>6-month prepaid commitment for dedicated enterprise nodes (<strong>Helius Enterprise</strong> or <strong>Triton One</strong>) ensuring high-throughput broadcast reliability for both DEX trades and PayFi checkout transactions.</td>
         </tr>
         <tr>
-          <td><strong>Squads Multisig Governance</strong></td>
-          <td class="cost">$2,000 – $4,000</td>
-          <td>Deployment of Squads v4 multisig vault (3-of-5 threshold) transferring Program Upgrade Authority and treasury keys away from individual developers.</td>
-        </tr>
-        <tr>
-          <td><strong>Immunefi Bug Bounty Reserve</strong></td>
-          <td class="cost">$2,000 – $8,000</td>
-          <td>Seed escrow pool on Immunefi to incentivize external white-hat researchers to stress-test Devnet contracts before live capital onboarding.</td>
+          <td><strong>Squads Multisig & Escrow Reserve</strong></td>
+          <td class="cost">$1,000 – $9,000</td>
+          <td>Deployment of Squads v4 multisig vault (3-of-5 threshold) for Program Upgrade Authority and treasury key management, combined with an Immunefi bug bounty seed reserve.</td>
         </tr>
       </tbody>
     </table>
@@ -364,23 +364,23 @@
       <tbody>
         <tr>
           <td><strong>Protocol-Owned Liquidity (POL)</strong></td>
-          <td class="cost">$75,000 – $110,000</td>
-          <td><strong>Balance Sheet Asset (Not Cash Burn):</strong> Injected into paired AMM pools (<strong>$ZQI/USDC</strong> & <strong>$ZQI/SOL</strong> on Raydium/Meteora). Establishes initial market depth, prevents slippage, and accrues ongoing LP swap fees to treasury.</td>
+          <td class="cost">$75,000 – $105,000</td>
+          <td><strong>Balance Sheet Asset (Not Cash Burn):</strong> Injected into paired AMM pools (<strong>$ZQI/USDC</strong> & <strong>$ZQI/SOL</strong> on Raydium/Meteora). Establishes deep market backing, stabilizes PayFi checkout pricing rails, and accrues ongoing LP swap fees to the treasury.</td>
         </tr>
         <tr>
-          <td><strong>Mainnet Deployment & Rent</strong></td>
-          <td class="cost">$5,000 – $10,000</td>
-          <td>Solana account rent-exemption for high-throughput state PDAs, locked vaults, and on-chain affiliate referral registry records.</td>
+          <td><strong>PayFi Settlement Float & Account Rent</strong></td>
+          <td class="cost">$8,000 – $15,000</td>
+          <td>Solana account rent-exemption for high-throughput product state PDAs, merchant registry vaults, and fiat settlement settlement-clearing float.</td>
         </tr>
         <tr>
           <td><strong>Jito MEV-Protection Setup</strong></td>
           <td class="cost">$5,000 – $10,000</td>
-          <td>Direct integration with Jito Block Engine validator bundles and initial tip pool to guarantee sandwich-free swap execution for protocol users.</td>
+          <td>Direct integration with Jito Block Engine validator bundles and initial tip pool to guarantee sandwich-free swap execution for protocol users and merchant payments.</td>
         </tr>
         <tr>
-          <td><strong>Fair Launch & Developer Outreach</strong></td>
-          <td class="cost">$15,000 – $20,000</td>
-          <td>Targeted developer hackathon sponsorships, technical documentation distribution, and initial community trading volume incentives.</td>
+          <td><strong>Launch Outreach & Merchant Acquisition</strong></td>
+          <td class="cost">$12,000 – $20,000</td>
+          <td>Targeted developer hackathon sponsorships, digital asset creator onboarding grants, and launch liquidity incentives.</td>
         </tr>
       </tbody>
     </table>
@@ -392,7 +392,7 @@
   <!-- PHASE 4 TABLE -->
   <div class="avoid-break">
     <h2>
-      <span>Phase 4 • Q2–Q3 2027: B2B White-Label & Regional Expansion</span>
+      <span>Phase 4 • Q2–Q3 2027: PayFi Merchant SDK & Regional Expansion</span>
       <span class="target-tag">Target: $50,000 – $80,000</span>
     </h2>
     <table>
@@ -405,19 +405,19 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>B2B SDK & Gateway Engine</strong></td>
+          <td><strong>B2B PayFi SDK & Gateway Engine</strong></td>
           <td class="cost">$25,000 – $35,000</td>
-          <td>Development of high-level TypeScript/Rust SDKs and REST/WebSocket API endpoints enabling external fintechs and OTC desks to embed ZoniqFi liquidity directly.</td>
+          <td>Development of modular TypeScript/Rust SDKs and REST/WebSocket API endpoints allowing external SaaS, e-commerce stores, and digital publishers to embed ZoniqFi PayFi checkout natively.</td>
         </tr>
         <tr>
           <td><strong>Institutional BD (SEA & SG)</strong></td>
           <td class="cost">$15,000 – $25,000</td>
-          <td>Onboarding regional institutional merchants, corporate integrations, and payment gateway partnerships across Singapore and Southeast Asia hubs.</td>
+          <td>Onboarding regional institutional merchants, enterprise digital creators, and local payment gateway providers across Singapore and Southeast Asia hubs.</td>
         </tr>
         <tr>
           <td><strong>Legal Opinion & Compliance</strong></td>
           <td class="cost">$10,000 – $20,000</td>
-          <td>Formal legal structuring, utility token classification memorandum, and multi-jurisdictional compliance maintenance in recognized crypto jurisdictions.</td>
+          <td>Formal legal structuring, utility token classification memorandum, digital asset sales tax advisory, and multi-jurisdictional compliance maintenance in recognized crypto hubs.</td>
         </tr>
       </tbody>
     </table>
@@ -433,28 +433,35 @@
     <div class="qa-box">
       <div class="qa-question">Q1: Why does Phase 3 represent over 50% of the aggregate raise?</div>
       <div class="qa-answer">
-        <strong>Defense:</strong> Phase 3 funds are predominantly <strong>Capital Expenditure (CapEx) rather than operational burn</strong>. Up to 75% of Phase 3 is deployed directly into Protocol-Owned Liquidity (paired in USDC and SOL). This capital never leaves the protocol balance sheet; it stabilizes the token's market floor, generates recurring LP swap revenue for the treasury, and provides verifiable asset backing for early backers.
+        <strong>Defense:</strong> Phase 3 funds are predominantly <strong>Capital Expenditure (CapEx) rather than operational burn</strong>. Up to 75% of Phase 3 is deployed directly into Protocol-Owned Liquidity (paired in USDC and SOL). This capital never leaves the protocol balance sheet; it stabilizes the token's market floor, supports low-slippage PayFi fiat conversions, and generates recurring LP swap revenue for the treasury.
       </div>
     </div>
 
     <div class="qa-box">
-      <div class="qa-question">Q2: Why raise a lean $190k–$290k instead of a typical $1.5M+ pre-seed round?</div>
+      <div class="qa-question">Q2: What strategic moat does the PayFi Digital Gateway add compared to pure DEX competitors?</div>
       <div class="qa-answer">
-        <strong>Defense:</strong> All 4 modular contracts (Swap, Lock, Vault, Affiliate) are already functional on Solana Devnet. Because our core R&D phase is largely complete, we do not require excessive runway. Raising lean capital tied strictly to verifiable milestones eliminates premature equity/token dilution, guaranteeing maximum valuation upside for early investors when scaling into Mainnet metrics.
+        <strong>Defense:</strong> Standalone AMMs are completely dependent on market volatility and speculative trading volume. ZoniqFi's PayFi engine connects Solana on-chain liquidity directly to real-world consumer commerce (digital products, software licenses, creator goods). By capturing transaction fees from real commerce paid in both SOL and fiat (QRIS), the protocol generates non-speculative, counter-cyclical revenue regardless of macro market cycles.
       </div>
     </div>
 
     <div class="qa-box">
-      <div class="qa-question">Q3: How is key mismanagement or "rug-pull" risk mitigated post-funding?</div>
+      <div class="qa-question">Q3: Why raise a lean $190k–$290k instead of a typical $1.5M+ pre-seed round?</div>
       <div class="qa-answer">
-        <strong>Defense:</strong> In Phase 2, all single-key deployer authority is permanently revoked. Program Upgrade Authority and treasury PDAs are transferred to a <strong>3-of-5 Squads v4 Multisig</strong> composed of core developers, investor representatives (Oryon), and independent security advisors. No transaction or upgrade can execute unilaterally.
+        <strong>Defense:</strong> All 5 modular contracts (Swap, Lock, Vault, Affiliate, PayFi) are already operational on Solana Devnet. Because our core R&D phase is largely complete, we do not require excessive runway. Raising lean capital tied strictly to verifiable milestones eliminates premature equity/token dilution, guaranteeing maximum valuation upside for early investors when scaling into Mainnet metrics.
       </div>
     </div>
 
     <div class="qa-box">
-      <div class="qa-question">Q4: How does the protocol sustain runway after Phase 4 without continuous fundraising?</div>
+      <div class="qa-question">Q4: How is key mismanagement or "rug-pull" risk mitigated post-funding?</div>
       <div class="qa-answer">
-        <strong>Defense:</strong> ZoniqFi features a self-sustaining cash flow flywheel. Every DEX trade incurs a 0.3% flat fee, with <strong>15% automatically routed to the Operational Treasury PDA</strong> in real-time. At a baseline daily volume of $2M–$3M, the protocol generates sufficient monthly operating revenue in USDC to cover high-speed RPCs and engineering overhead without minting inflationary tokens.
+        <strong>Defense:</strong> In Phase 2, all single-key deployer authority is permanently revoked. Program Upgrade Authority and treasury PDAs are transferred to a <strong>3-of-5 Squads v4 Multisig</strong> composed of core developers, investor representatives, and independent security advisors. No protocol update, fee change, or liquidity withdrawal can execute unilaterally.
+      </div>
+    </div>
+
+    <div class="qa-box">
+      <div class="qa-question">Q5: How does the protocol sustain runway after Phase 4 without continuous fundraising?</div>
+      <div class="qa-answer">
+        <strong>Defense:</strong> ZoniqFi operates a dual cash-flow engine. In addition to the 0.3% flat DEX swap fee (with 15% routed to treasury), the PayFi engine captures commercial platform fees from digital merchant sales. This dual-stream model yields sustainable USDC and SOL cash flows to fund RPCs, smart contract maintenance, and engineering growth organically.
       </div>
     </div>
   </div>

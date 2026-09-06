@@ -224,7 +224,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
 
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
                   <li><strong>Non-Custodial Vendor Payouts:</strong> Direct wallet settlement without intermediary custody or lengthy clearance delays.</li>
-                  <li><strong>Automated Platform Fee:</strong> 5% protocol cut automatically routed into the protocol treasury and staking reward pools.</li>
+                  <li><strong>Automated Platform Fee:</strong> Protocol fee cut automatically routed into the protocol treasury and staking reward pools.</li>
                   <li><strong>Instant Digital Vault:</strong> Cloud-secured download link generation for software, e-books, and 3D models upon confirmation.</li>
                 </ul>
               </div>
@@ -313,9 +313,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#3b82f6', fontWeight: '700' }}>PHASE 2 • Q4 2026</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $40,000 - $60,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Vendor Merchant Portal & Gasless Settlement Relay</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Audits, Squads v4 Multisig & Gasless Relayers</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Comprehensive smart contract audit, automated escrow release for physical goods delivery (RWA), dedicated RPC nodes, and gasless checkout relayer for web2 consumers.
+                  Comprehensive 5-module smart contract audit (OtterSec/Sec3), Squads v4 (3-of-5) governance handover, dedicated enterprise RPC cluster, and gasless relayer infrastructure for fiat checkouts.
                 </p>
               </div>
 
@@ -324,9 +324,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#8b5cf6', fontWeight: '700' }}>PHASE 3 • Q1 2027</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $100,000 - $150,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Mainnet Deployment & Liquidity Seeding</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Mainnet Deployment & POL Liquidity Seeding</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Full Solana Mainnet protocol launch, protocol-owned liquidity injection ($ZQI/SOL), and direct routing of 5% PayFi merchant fees into the $ZQI token staking pool.
+                  Full Solana Mainnet launch, protocol-owned liquidity (POL) injection for $ZQI/USDC & $ZQI/SOL pools to support stable PayFi rails, and live USDC yield dividend engine activation.
                 </p>
               </div>
 
@@ -335,9 +335,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#ec4899', fontWeight: '700' }}>PHASE 4 • Q2-Q3 2027</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $50,000 - $80,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>B2B White-Label & SEA Merchant Network</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>B2B PayFi SDK & SEA Merchant Network</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Expansion of turnkey PayFi checkout plugins for Shopify/WooCommerce and institutional merchant onboarding in Singapore and Southeast Asia.
+                  Turnkey PayFi TypeScript/Rust SDK and REST APIs for enterprise e-commerce (Shopify/WooCommerce), with regional merchant onboarding across Singapore and Southeast Asia.
                 </p>
               </div>
 
@@ -353,16 +353,16 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   fontSize: '0.82rem' 
                 }}>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>35% Security & Smart Audits:</strong> Formal Anchor verification & escrow testing.
+                    <strong style={{ color: '#38bdf8' }}>35% Security & Smart Audits:</strong> Formal Anchor verification & escrow testing across all 5 modules.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding for minimal slippage.
+                    <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding ($ZQI/USDC & SOL) for tight spreads.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>20% PayFi Infrastructure:</strong> Dedicated RPC cluster, gasless relayers & QRIS engines.
+                    <strong style={{ color: '#38bdf8' }}>20% PayFi Infrastructure:</strong> Dedicated RPC cluster, gasless relayers & QRIS rate engines.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>15% Merchant Onboarding:</strong> SEA merchant acquisition & regulatory compliance.
+                    <strong style={{ color: '#38bdf8' }}>15% Merchant Onboarding:</strong> SEA creator partnerships & regulatory compliance framework.
                   </div>
                 </div>
               </div>

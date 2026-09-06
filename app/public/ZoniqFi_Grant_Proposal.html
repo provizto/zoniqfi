@@ -8,7 +8,7 @@
 
     @page {
       size: A4 portrait;
-      margin: 14mm 14mm;
+      margin: 12mm 14mm;
     }
 
     * {
@@ -20,20 +20,18 @@
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: #0f172a;
-      background: #f8fafc; /* Latar luar lembut agar lembar kertas terlihat elegan */
-      line-height: 1.45;
-      font-size: 8.8pt;
+      background: #f8fafc;
+      line-height: 1.4;
+      font-size: 8.5pt;
       margin: 0;
-      padding: 30px 16px;
+      padding: 24px 16px;
     }
 
-    /* Container pembatas agar tidak melebar di monitor */
     .document-wrapper {
       max-width: 800px;
       margin: 0 auto;
     }
 
-    /* Print Control Bar */
     .print-bar {
       background: #0f172a;
       color: #ffffff;
@@ -42,7 +40,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
     }
 
@@ -76,10 +74,9 @@
       background: #0369a1;
     }
 
-    /* Lembar Dokumen (Tampilan Kertas A4 di Layar) */
     .page {
       background: #ffffff;
-      padding: 32px 36px;
+      padding: 28px 34px;
       border-radius: 8px;
       border: 1px solid #e2e8f0;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
@@ -89,7 +86,7 @@
       width: 100%;
       border-bottom: 2px solid #0284c7;
       padding-bottom: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .title {
@@ -101,7 +98,7 @@
     }
 
     .subtitle {
-      font-size: 8.2pt;
+      font-size: 8pt;
       color: #0369a1;
       font-weight: 700;
       text-transform: uppercase;
@@ -122,29 +119,29 @@
     }
 
     h2 {
-      font-size: 9.5pt;
+      font-size: 9pt;
       font-weight: 800;
       color: #0f172a;
       border-left: 3.5px solid #0284c7;
       padding-left: 8px;
-      margin: 12px 0 6px 0;
+      margin: 10px 0 5px 0;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     p {
-      margin: 0 0 6px 0;
+      margin: 0 0 5px 0;
       color: #334155;
     }
 
     ul {
-      margin: 3px 0 6px 16px;
+      margin: 2px 0 5px 16px;
       padding: 0;
       color: #334155;
     }
 
     li {
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     strong {
@@ -157,10 +154,10 @@
       border-radius: 6px;
       padding: 8px 10px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 7pt;
-      line-height: 1.3;
+      font-size: 6.8pt;
+      line-height: 1.25;
       color: #1e293b;
-      margin: 6px 0 10px 0;
+      margin: 5px 0 8px 0;
       white-space: pre;
       overflow-x: auto;
     }
@@ -168,8 +165,8 @@
     table.data-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 6px 0 10px 0;
-      font-size: 8pt;
+      margin: 5px 0 8px 0;
+      font-size: 7.8pt;
     }
 
     table.data-table th {
@@ -177,12 +174,12 @@
       color: #0f172a;
       font-weight: 700;
       text-align: left;
-      padding: 6px 8px;
+      padding: 5px 7px;
       border: 1px solid #cbd5e1;
     }
 
     table.data-table td {
-      padding: 6px 8px;
+      padding: 5px 7px;
       border: 1px solid #e2e8f0;
       color: #334155;
     }
@@ -193,7 +190,7 @@
 
     .mono {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 7.5pt;
+      font-size: 7.2pt;
       color: #0369a1;
       font-weight: 600;
       text-decoration: none;
@@ -206,14 +203,13 @@
     .footer {
       border-top: 1px solid #e2e8f0;
       padding-top: 6px;
-      margin-top: 12px;
-      font-size: 7.2pt;
+      margin-top: 10px;
+      font-size: 7pt;
       color: #64748b;
       display: flex;
       justify-content: space-between;
     }
 
-    /* Penyesuaian Saat Dicetak atau Disimpan ke PDF */
     @media print {
       body {
         background: #ffffff !important;
@@ -240,7 +236,7 @@
 
   <div class="document-wrapper">
 
-    <!-- Print Control Bar (Otomatis Hilang Saat Di-Print) -->
+    <!-- Print Control Bar -->
     <div class="print-bar">
       <div class="print-bar-info">
         <strong>ZoniqFi Technical Grant Proposal</strong>
@@ -249,13 +245,13 @@
       <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
     </div>
 
-    <!-- Lembar Proposal Ramping -->
+    <!-- Lembar Proposal -->
     <div class="page">
       <table class="header-table" style="border:none;">
         <tr>
           <td>
             <div class="title">ZONIQFI ($ZQI)</div>
-            <div class="subtitle">Solana Transaction v1 Suite & Real Yield Infrastructure</div>
+            <div class="subtitle">Solana Transaction v1 Suite, PayFi Commerce & Real Yield Infrastructure</div>
           </td>
           <td style="text-align: right; vertical-align: top;">
             <span class="badge">Colosseum & Superteam Grant Ready</span>
@@ -265,14 +261,15 @@
 
       <h2>1. Executive Summary</h2>
       <p>
-        <strong>ZONIQFI</strong> is a turnkey, modular DeFi infrastructure protocol on Solana. It utilizes native <strong>Solana Transaction v1 architecture (4,096-byte atomic payload)</strong> to execute multi-tier swaps with deep MEV mitigation via Jito Block Engine, automated yield vaults, deflationary supply defense, and decentralized on-chain referrals integrated with <strong>Solana Name Service (SNS)</strong> standards.
+        <strong>ZONIQFI</strong> is a turnkey, modular DeFi & PayFi infrastructure protocol on Solana. It leverages native <strong>Solana Transaction v1 architecture (4,096-byte atomic payload)</strong> to orchestrate MEV-shielded liquidity swaps via Jito Block Engine, automated yield vaults, deflationary supply defense, anti-sybil decentralized referrals, and a hybrid <strong>PayFi Digital Gateway</strong> enabling on-chain digital asset licensing settled through both crypto-native wallets and local fiat rails (QRIS).
       </p>
 
       <h2>2. Problem Statement & Market Inefficiencies</h2>
       <ul>
         <li><strong>Pervasive MEV Exploitation:</strong> Arbitrage and sandwich bots in public mempools extract substantial value from retail traders.</li>
+        <li><strong>Web3-to-Real-World Commerce Barrier:</strong> Digital creators and merchants struggle to bridge on-chain licensing with real-world payment settlement (fiat rails & gasless checkout).</li>
         <li><strong>Inflationary Farm Vulnerabilities:</strong> Traditional AMMs rely on hyper-inflationary token emissions, causing liquidity drain during market downturns.</li>
-        <li><strong>Sybil Exploitation in Referral Programs:</strong> Conventional growth programs suffer from bot wash-trading, self-referral bypasses, and multi-wallet spamming.</li>
+        <li><strong>Sybil Exploitation in Growth Programs:</strong> Conventional incentive programs suffer from bot wash-trading, self-referral bypasses, and multi-wallet spamming.</li>
       </ul>
 
       <h2>3. Core Technical Architecture (Atomic Transaction Pipeline)</h2>
@@ -283,23 +280,24 @@
 │   ├── Anti-Wash Trading Cooldown Enforcement (Max 1 tx / 10s per wallet PDA)
 │   └── SNS Identity Resolver & Anti Self-Referral Validation (.sns & .sol)
 │
-├── 2. Liquidity & Dynamic Settlement Core
+├── 2. Liquidity, PayFi Commerce & Settlement Engine
 │   ├── Dynamic SPL Token Swap Routing (Jupiter v2 Price Engine API)
-│   └── 0.3% Flat Protocol Fee Assessment (Settled Atomically in USDC)
+│   ├── PayFi Hybrid Settlement Gateway (Direct Web3 SOL + Instant Fiat QRIS)
+│   └── On-Chain Digital License Verification & Automated Access Delivery
 │
 └── 3. Atomic Multi-Tier Fee Settlement
     ├── 40% ➔ Yield Optimizer Vault (Auto-compounding APY up to 49.1%)
     ├── 30% ➔ ZQI Real Yield Pool (USDC Staking Dividends)
     ├── 15% ➔ Anti-Sybil Affiliate Treasury (Tiered Community Rewards)
-    └── 15% ➔ Project Treasury Operations (RPC & Infrastructure Maintenance)</div>
+    └── 15% ➔ Protocol Treasury & PayFi Merchant Operations</div>
 
       <h2>4. Protocol Specifications & On-Chain Verification</h2>
       <table class="data-table">
         <thead>
           <tr>
-            <th style="width: 25%;">Component</th>
+            <th style="width: 24%;">Component</th>
             <th style="width: 48%;">Technical Implementation</th>
-            <th style="width: 27%;">Current On-Chain Status</th>
+            <th style="width: 28%;">Current On-Chain Status</th>
           </tr>
         </thead>
         <tbody>
@@ -316,6 +314,11 @@
               </a>
             </td>
             <td>Executable (BPF Upgradeable)</td>
+          </tr>
+          <tr>
+            <td><strong>PayFi Digital Gateway</strong></td>
+            <td>Dual Web3 (SOL) & QRIS Fiat settlement with instant NFT license minting</td>
+            <td>Live functional prototype</td>
           </tr>
           <tr>
             <td><strong>Price Feed Engine</strong></td>
@@ -342,9 +345,9 @@
 
       <h2>5. Milestone Roadmap & Grant Utilization</h2>
       <ul>
-        <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Execute local fuzz testing and high-frequency sandwich attack simulations using LiteSVM to optimize compute unit (CU) consumption across atomic v1 instructions.</li>
-        <li><strong>Milestone 2 — Smart Contract Audit:</strong> Submit repository for formal third-party audit, validating the 10% deflationary burn logic and atomic 4-way fee splitting vaults.</li>
-        <li><strong>Milestone 3 — Mainnet Beta & SNS SDK Integration:</strong> Deploy production contracts to Solana Mainnet with native wallet adapter resolution for .sns identities.</li>
+        <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Execute local fuzz testing and sandwich attack simulations using LiteSVM to optimize compute unit (CU) consumption across atomic v1 instructions and merchant payment hooks.</li>
+        <li><strong>Milestone 2 — PayFi Merchant Settlement & Gasless Relay:</strong> Finalize automated on-chain NFT license minting for fiat buyers via serverless relayer and multi-vendor payout reconciliation.</li>
+        <li><strong>Milestone 3 — Security Audit & Mainnet Launch:</strong> Complete comprehensive smart contract audit for the 4-way fee split vaults and launch production deployment with native SNS SDK integration.</li>
       </ul>
 
       <div class="footer">
