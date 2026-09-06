@@ -1826,12 +1826,11 @@ function MainApp() {
         }
       `}</style>
 
-      {/* 🚀 NAVBAR */}
+      {/* 🚀 NAVBAR TERPADU (SEBARIS & CENTER) */}
       <div style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        flexWrap: "wrap",
         borderBottom: "1px solid #1f2937",
         paddingBottom: "14px",
         marginBottom: "20px",
@@ -1839,20 +1838,22 @@ function MainApp() {
         width: "100%",
         boxSizing: "border-box"
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: "220px" }}>
-          <span style={{ fontSize: "22px", flexShrink: 0 }}>⚡</span>
-          <div>
-            <h1 style={{ margin: 0, fontSize: "16px", fontWeight: 800, letterSpacing: "-0.02em", color: "#fff", whiteSpace: "nowrap" }}>
+        {/* KIRI: LOGO + JUDUL */}
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
+          <span style={{ fontSize: "24px", flexShrink: 0 }}>⚡</span>
+          <div style={{ minWidth: 0 }}>
+            <h1 style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {storeConfig.storeName}
             </h1>
-            <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8", whiteSpace: "nowrap" }}>
+            <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
               {storeConfig.storeSubtitle}
             </p>
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
-          <div className="nav-desktop-only" style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+        {/* KANAN: TOMBOL AKSI */}
+        <div style={{ display: "flex", gap: "6px", alignItems: "center", flexShrink: 0 }}>
+          <div className="nav-desktop-only" style={{ display: "flex", gap: "6px", alignItems: "center" }}>
             <button
               type="button"
               onClick={() => setShowVerifyModal(true)}
