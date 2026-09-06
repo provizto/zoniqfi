@@ -113,11 +113,6 @@ const TRANSLATIONS = {
     method2Title: "QRIS & e-Wallet Indonesia",
     method2Desc: "Bayar instan via BCA, Mandiri, GoPay, OVO, DANA. Lisensi NFT dicetak otomatis.",
     method2BtnPay: "📱 Buka Barcode QRIS",
-    method3Tag: "METODE 3: GLOBAL CARD",
-    method3Title: "Kartu Kredit / Debit Internasional",
-    method3Desc: "Visa, Mastercard, JCB dengan enkripsi 256-bit dan autentikasi 3D Secure.",
-    method3CardPlaceholder: "Nomor Kartu (16 Digit)",
-    method3BtnPay: "💳 Bayar Kartu Kredit (Stripe)",
     vendorBtn: "🚀 Portal Vendor",
     vendorModalTitle: "🏪 Vendor & Merchant Portal",
     adminBtn: "⚙️ Pengaturan Global (Admin)",
@@ -138,9 +133,6 @@ const TRANSLATIONS = {
     resetDefault: "Reset Default",
     saveStore: "💾 Simpan Perubahan Platform",
     qrisDownload: "💾 Download QR Code",
-    otpTitle: "3D Secure Verification",
-    otpDesc: "Masukkan kode OTP simulasi transaksi kartu kredit Anda.",
-    otpSubmit: "Verifikasi & Bayar",
     cancel: "Batal",
     monitorHeading: "⚡ Monitor Broadcast Sistem:",
     monitorProcessing: "⏳ Menunggu konfirmasi pembayaran...",
@@ -179,11 +171,6 @@ const TRANSLATIONS = {
     method2Title: "QRIS & Indonesian e-Wallet",
     method2Desc: "Instant payment via BCA, Mandiri, GoPay, OVO, DANA. NFT minted via gasless relay.",
     method2BtnPay: "📱 Open QRIS Barcode",
-    method3Tag: "METHOD 3: GLOBAL CARD",
-    method3Title: "International Credit / Debit Card",
-    method3Desc: "Visa, Mastercard, JCB with 256-bit SSL encryption and 3D Secure authentication.",
-    method3CardPlaceholder: "Card Number (16 Digits)",
-    method3BtnPay: "💳 Pay with Credit Card (Stripe)",
     vendorBtn: "🚀 Vendor Portal",
     vendorModalTitle: "🏪 Vendor & Merchant Portal",
     adminBtn: "⚙️ Global Settings (Admin)",
@@ -204,9 +191,6 @@ const TRANSLATIONS = {
     resetDefault: "Reset Default",
     saveStore: "💾 Save Platform Settings",
     qrisDownload: "💾 Download QR Code",
-    otpTitle: "3D Secure Verification",
-    otpDesc: "Enter simulation OTP code for your credit card transaction.",
-    otpSubmit: "Verify & Pay",
     cancel: "Cancel",
     monitorHeading: "⚡ System Broadcast Monitor:",
     monitorProcessing: "⏳ Awaiting settlement confirmation...",
@@ -327,11 +311,6 @@ function MainApp() {
   const [fiatPaymentStatus, setFiatPaymentStatus] = useState<string>("IDLE");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [showQrisModal, setShowQrisModal] = useState<boolean>(false);
-  const [showOtpModal, setShowOtpModal] = useState<boolean>(false);
-  const [mockOtpInput, setMockOtpInput] = useState<string>("");
-  const [mockCardNumber, setMockCardNumber] = useState<string>("");
-  const [mockCardExpiry, setMockCardExpiry] = useState<string>("");
-  const [mockCardCvc, setMockCardCvc] = useState<string>("");
 
   const { connection } = useConnection();
   const { publicKey, connected: isConnected, sendTransaction } = useWallet();
@@ -345,26 +324,6 @@ function MainApp() {
 
   const address = publicKey ? publicKey.toBase58() : "";
   const walletAddressStr = address;
-
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/\D/g, "").slice(0, 16);
-    const parts = raw.match(/.{1,4}/g);
-    setMockCardNumber(parts ? parts.join(" ") : raw);
-  };
-
-  const handleCardExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
-    if (raw.length >= 3) {
-      setMockCardExpiry(`${raw.slice(0, 2)} / ${raw.slice(2, 4)}`);
-    } else {
-      setMockCardExpiry(raw);
-    }
-  };
-
-  const handleCardCvcChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/\D/g, "").slice(0, 3);
-    setMockCardCvc(raw);
-  };
 
   const fallbackQrisUrl = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=ZoniqfiMerchantSettlement";
 
@@ -849,9 +808,9 @@ function MainApp() {
     setTimeout(async () => {
       setFiatPaymentStatus("SUCCESS");
       const mockRelayTx = Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
-      const displayHolder = customerEmail ? customerEmail : selectedCurrency === "USD" ? "Verified Card Buyer" : "QRIS Verified Buyer";
+      const displayHolder = customerEmail || "QRIS Verified Buyer";
       const relayTokenId = `#RELAY-SOL-0${activeId}`;
-      const methodStr = selectedCurrency === "USD" ? "USD Card (Stripe)" : "IDR QRIS Instant";
+      const methodStr = "IDR QRIS Instant";
 
       if (selectedProduct) {
         setDeliverySuccess({
@@ -868,23 +827,13 @@ function MainApp() {
           vendorWallet: selectedProduct.vendor_wallet,
           buyerEmail: customerEmail || undefined,
           priceEth: selectedProduct.priceEth,
-          amountPaidFiat: selectedCurrency === "USD" ? Number(calculatedUsdPrice) : calculatedIdrPrice,
+          amountPaidFiat: calculatedIdrPrice,
           paymentMethod: methodStr,
           txHash: mockRelayTx,
           nftTokenId: relayTokenId
         });
       }
     }, 1200);
-  };
-
-  const handleVerifyMockOtpSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (mockOtpInput.trim().length < 4) {
-      alert("❌ Please enter at least 4 digits OTP!");
-      return;
-    }
-    setShowOtpModal(false);
-    executeOnChainRelayMint();
   };
 
   const handleVendorUploadProduct = async (e: React.FormEvent) => {
@@ -1812,153 +1761,7 @@ function MainApp() {
                   {t.method2BtnPay}
                 </button>
               </div>
-
-              {/* 3. Kartu Kredit */}
-              <div style={{ border: "1px solid #9a3412", background: "#251206", borderRadius: "12px", padding: "14px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-                  <span style={{ fontSize: "12px", fontWeight: 800, color: "#fb923c" }}>💳 {t.method3Title}</span>
-                  <span style={{ fontSize: "14px", fontWeight: 800, color: "#fdba74" }}>${calculatedUsdPrice} USD</span>
-                </div>
-                <p style={{ margin: "0 0 8px 0", fontSize: "11px", color: "#fdba74" }}>{t.method3Desc}</p>
-                
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "10px" }}>
-                  <input
-                    type="text"
-                    placeholder="Card Number (16 Digits)"
-                    maxLength={19}
-                    value={mockCardNumber}
-                    onChange={handleCardNumberChange}
-                    style={{
-                      width: "100%",
-                      padding: "9px 12px",
-                      borderRadius: "6px",
-                      border: "1px solid #7c2d12",
-                      background: "#0f172a",
-                      color: "#fff",
-                      fontSize: "12px",
-                      boxSizing: "border-box",
-                      outline: "none",
-                      letterSpacing: "0.05em"
-                    }}
-                  />
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                    <input
-                      type="text"
-                      placeholder="MM / YY"
-                      maxLength={7}
-                      value={mockCardExpiry}
-                      onChange={handleCardExpiryChange}
-                      style={{
-                        width: "100%",
-                        padding: "9px 12px",
-                        borderRadius: "6px",
-                        border: "1px solid #7c2d12",
-                        background: "#0f172a",
-                        color: "#fff",
-                        fontSize: "12px",
-                        boxSizing: "border-box",
-                        outline: "none",
-                        textAlign: "center"
-                      }}
-                    />
-                    <input
-                      type="password"
-                      placeholder="CVC (3 Digits)"
-                      maxLength={3}
-                      value={mockCardCvc}
-                      onChange={handleCardCvcChange}
-                      style={{
-                        width: "100%",
-                        padding: "9px 12px",
-                        borderRadius: "6px",
-                        border: "1px solid #7c2d12",
-                        background: "#0f172a",
-                        color: "#fff",
-                        fontSize: "12px",
-                        boxSizing: "border-box",
-                        outline: "none",
-                        textAlign: "center",
-                        letterSpacing: "0.2em"
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (!validateCustomerEmail()) return;
-
-                    const rawNumber = mockCardNumber.replace(/\s+/g, "");
-                    if (!rawNumber || !mockCardExpiry || !mockCardCvc) {
-                      alert("⚠️ Please fill out all credit card details!");
-                      return;
-                    }
-                    if (rawNumber.length < 15) {
-                      alert("⚠️ Card number must be 15 or 16 digits!");
-                      return;
-                    }
-                    if (mockCardExpiry.trim().length < 5) {
-                      alert("⚠️ Invalid expiry date! Use MM / YY format (e.g. 08/28)");
-                      return;
-                    }
-                    if (mockCardCvc.trim().length < 3) {
-                      alert("⚠️ CVC code must be 3 digits!");
-                      return;
-                    }
-
-                    setSelectedCurrency("USD");
-                    setShowOtpModal(true);
-                  }}
-                  disabled={fiatPaymentStatus === "PROCESSING"}
-                  style={{
-                    width: "100%",
-                    background: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? "#7c2d12" : "#ea580c",
-                    color: "white",
-                    border: "none",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    cursor: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? "not-allowed" : "pointer",
-                    fontWeight: 700,
-                    fontSize: "12px",
-                    opacity: (!mockCardNumber || !mockCardExpiry || !mockCardCvc) ? 0.7 : 1
-                  }}
-                >
-                  {t.method3BtnPay}
-                </button>
-              </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* 🔐 MODAL OTP */}
-      {showOtpModal && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(6px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999998 }}>
-          <div style={{ backgroundColor: "#111827", padding: "26px", borderRadius: "16px", width: "90%", maxWidth: "360px", textAlign: "center", border: "1px solid #1f2937", color: "#fff" }}>
-            <div style={{ fontSize: "24px", marginBottom: "6px" }}>🔒</div>
-            <h3 style={{ margin: "0 0 4px 0", fontSize: "15px", fontWeight: 800 }}>{t.otpTitle}</h3>
-            <p style={{ margin: "0 0 16px 0", fontSize: "11px", color: "#94a3b8" }}>{t.otpDesc}</p>
-            <form onSubmit={handleVerifyMockOtpSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div style={{ background: "#1f2937", padding: "10px", borderRadius: "8px", border: "1px solid #374151", textAlign: "left", fontSize: "11px", color: "#cbd5e1" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}><span>Item:</span> <strong>{selectedProduct?.name}</strong></div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}><span>Amount:</span> <strong style={{ color: "#38bdf8" }}>${calculatedUsdPrice} USD</strong></div>
-              </div>
-              <input 
-                type="text" 
-                placeholder="OTP Code (e.g. 123456)" 
-                maxLength={6} 
-                value={mockOtpInput} 
-                onChange={(e) => setMockOtpInput(e.target.value.replace(/\D/g, ""))} 
-                style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #374151", background: "#0f172a", color: "#fff", textAlign: "center", fontSize: "16px", fontWeight: 700, letterSpacing: "0.2em", boxSizing: "border-box" }} 
-                required 
-              />
-              <div style={{ display: "flex", gap: "8px" }}>
-                <button type="button" onClick={() => { setShowOtpModal(false); setMockOtpInput(""); }} style={{ width: "35%", background: "#374151", color: "#cbd5e1", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 600, fontSize: "12px" }}>{t.cancel}</button>
-                <button type="submit" style={{ width: "65%", background: "#2563eb", color: "#ffffff", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "12px" }}>{t.otpSubmit}</button>
-              </div>
-            </form>
           </div>
         </div>
       )}
