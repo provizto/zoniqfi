@@ -999,11 +999,12 @@ function MainApp() {
   return (
     <div style={{
       width: "100%",
-      margin: "0",
-      padding: "0",
-      background: "transparent",
-      border: "none",
-      boxShadow: "none",
+      maxWidth: "100%",
+      margin: "0 auto",
+      backgroundColor: "#111827",
+      border: "1px solid #1f2937",
+      borderRadius: "12px",
+      padding: isMobile ? "16px 12px" : "30px",
       boxSizing: "border-box",
       color: "#f3f4f6",
       fontFamily: "'Inter', -apple-system, sans-serif"
@@ -1919,7 +1920,18 @@ function MainApp() {
       )}
 
       {/* 🔍 SEARCH & CATEGORY BAR */}
-      <div style={{ background: "#070c18", border: "1px solid #1a263d", borderRadius: "14px", padding: "12px 14px", marginBottom: "16px", display: "flex", flexDirection: "column", gap: "10px", width: "100%", boxSizing: "border-box" }}>
+      <div style={{ 
+        backgroundColor: "#0b0f19", 
+        border: "1px solid #1f2937", 
+        borderRadius: "8px", 
+        padding: "16px", 
+        marginBottom: "25px", 
+        display: "flex", 
+        flexDirection: "column", 
+        gap: "12px", 
+        width: "100%", 
+        boxSizing: "border-box" 
+      }}>  
         <div style={{ position: "relative" }}>
           <input
             type="text"
