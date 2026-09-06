@@ -1180,21 +1180,6 @@ function App() {
             }}></span>
             Devnet
           </div>
-
-          <button 
-            onClick={() => setView('landing')} 
-            style={{ 
-              background: 'transparent', 
-              border: '1px solid #374151', 
-              color: '#9ca3af', 
-              cursor: 'pointer', 
-              padding: '6px 10px', 
-              borderRadius: '6px', 
-              fontSize: '0.75rem', 
-              fontWeight: '600' 
-            }}>
-            Home
-          </button>
           
           <button 
             id="walletBtn" 
