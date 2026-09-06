@@ -1828,7 +1828,7 @@ function App() {
 
           {/* MODUL 4: AFFILIATE / REFERRAL */}
           {SHOW_AFFILIATE && activeTab === 'affiliate' && (
-            <section className="affiliate-section" style={{ background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '30px', margin: '0 auto', color: '#94a3b8' }}>
+            <section className="affiliate-section" style={{ maxWidth: '480px', width: '100%', boxSizing: 'border-box', background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '20px', margin: '0 auto', color: '#94a3b8' }}>
               <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                 <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
@@ -1888,7 +1888,7 @@ function App() {
 
               <div className="tier-table-wrapper" style={{ marginBottom: '24px' }}>
                 <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', marginBottom: '16px' }}>Ecosystem Tier Structures:</p>
-                <div className="responsive-table-overflow">
+                <div className="responsive-table-overflow" style={{ overflowX: 'auto', width: '100%' }}>
                   <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
                     <thead>
                       <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>
