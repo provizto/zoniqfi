@@ -997,18 +997,16 @@ function MainApp() {
   };
 
   return (
-    <div style={{
-      width: "100%",
-      maxWidth: "100%",
-      margin: "0 auto",
-      backgroundColor: "#111827",
-      border: "1px solid #1f2937",
-      borderRadius: "12px",
-      padding: isMobile ? "16px 12px" : "30px",
-      boxSizing: "border-box",
-      color: "#f3f4f6",
-      fontFamily: "'Inter', -apple-system, sans-serif"
-    }}>
+  <div style={{
+    width: "100%",
+    maxWidth: "100%",
+    margin: "0 auto",
+    backgroundColor: "#111827",
+    border: "1px solid #1f2937",
+    borderRadius: "12px",
+    padding: isMobile ? "16px 12px" : "30px",
+    boxSizing: "border-box"
+  }}>
       
       {/* 🔍 MODAL PUBLIC LICENSE VERIFIER */}
       {showVerifyModal && (
