@@ -1004,7 +1004,7 @@ function MainApp() {
       background: "#0c1322",
       border: "1px solid #1e293b",
       borderRadius: "20px",
-      padding: isMobile ? "16px 12px" : "22px 20px",
+      padding: isMobile ? "14px 10px" : "16px 14px",
       boxShadow: "0 15px 35px rgba(0, 0, 0, 0.45)",
       boxSizing: "border-box",
       color: "#f3f4f6",
@@ -1921,7 +1921,7 @@ function MainApp() {
       )}
 
       {/* 🔍 SEARCH & CATEGORY BAR */}
-      <div style={{ background: "#111827", border: "1px solid #1f2937", borderRadius: "16px", padding: "16px", marginBottom: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+      <div style={{ background: "#070c18", border: "1px solid #1a263d", borderRadius: "14px", padding: "12px 14px", marginBottom: "16px", display: "flex", flexDirection: "column", gap: "10px", width: "100%", boxSizing: "border-box" }}>
         <div style={{ position: "relative" }}>
           <input
             type="text"
