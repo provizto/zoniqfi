@@ -206,13 +206,8 @@ const TRANSLATIONS = {
 const ITEMS_PER_PAGE = 6;
 
 function MainApp() {
-  const [lang, setLang] = useState<"ID" | "EN">(() => {
-    if (typeof window !== "undefined" && navigator.language) {
-      return navigator.language.toLowerCase().startsWith("id") ? "ID" : "EN";
-    }
-    return "EN";
-  });
-  const t = TRANSLATIONS[lang];
+  const lang = "EN" as const;
+  const t = TRANSLATIONS.EN;
 
   const [isMobile, setIsMobile] = useState<boolean>(() => 
     typeof window !== "undefined" ? window.innerWidth < 768 : false
@@ -1870,11 +1865,6 @@ function MainApp() {
             >
               ⚙️ Admin
             </button>
-          </div>
-
-          <div style={{ display: "flex", background: "#111827", padding: "2px", borderRadius: "6px", border: "1px solid #1f2937" }}>
-            <button type="button" onClick={() => setLang("ID")} style={{ background: lang === "ID" ? "#2563eb" : "transparent", color: lang === "ID" ? "#fff" : "#94a3b8", border: "none", padding: "3px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}>ID</button>
-            <button type="button" onClick={() => setLang("EN")} style={{ background: lang === "EN" ? "#2563eb" : "transparent", color: lang === "EN" ? "#fff" : "#94a3b8", border: "none", padding: "3px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}>EN</button>
           </div>
         </div>
       </div>
