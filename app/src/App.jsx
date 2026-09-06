@@ -166,24 +166,6 @@ function App() {
     return 'swap';
   });
 
-  // ==========================================
-  // TAMBAHAN: FUNGSI DEEPLINK DOMPET MOBILE
-  // ==========================================
-  const isMobileDevice = () => {
-    return typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  };
-
-  const handleOpenMobileWallet = (walletType) => {
-    const currentUrl = encodeURIComponent(window.location.href);
-    const refUrl = encodeURIComponent(window.location.origin);
-
-    if (walletType === 'solflare') {
-      window.location.href = `https://solflare.com/ul/v1/browse/${currentUrl}?ref=${refUrl}`;
-    } else if (walletType === 'phantom') {
-      window.location.href = `https://phantom.app/ul/browse/${currentUrl}?ref=${refUrl}`;
-    }
-  };
-
   // State Modal Legal Disclaimer
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
@@ -1175,52 +1157,60 @@ function App() {
         </div>
 
         {/* KANAN: TOMBOL RINGKAS */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
-          {/* BADGE NETWORK */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            background: 'rgba(16, 185, 129, 0.1)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
-            padding: '5px 9px',
-            borderRadius: '6px',
-            fontSize: '0.72rem',
-            fontWeight: '600',
-            color: '#34d399'
-          }}>
-            <span style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: '#10b981',
-              boxShadow: '0 0 6px #10b981'
-            }}></span>
-            Devnet
-          </div>
-          
-          <button 
-            id="walletBtn" 
-            onClick={() => {
-              if (!isConnected) {
-                openWalletModal();
-              } else {
-                setShowWalletMenu((prev) => !prev);
-              }
-            }} 
-            style={{ 
-              padding: '6px 12px', 
-              borderRadius: '6px', 
-              fontWeight: 'bold', 
-              border: 'none', 
-              color: '#fff', 
-              cursor: 'pointer', 
-              fontSize: '0.75rem',
-              background: isConnected ? "#10b981" : "linear-gradient(135deg, #8b5cf6, #3b82f6)",
-              whiteSpace: 'nowrap'
-            }}>
-            {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
-          </button>
+<div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
+  {/* BADGE NETWORK */}
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '5px',
+    background: 'rgba(16, 185, 129, 0.1)',
+    border: '1px solid rgba(16, 185, 129, 0.25)',
+    padding: '0 12px',
+    height: '36px',
+    borderRadius: '6px',
+    fontSize: '0.72rem',
+    fontWeight: '600',
+    color: '#34d399',
+    boxSizing: 'border-box'
+  }}>
+    <span style={{
+      width: '6px',
+      height: '6px',
+      borderRadius: '50%',
+      background: '#10b981',
+      boxShadow: '0 0 6px #10b981'
+    }}></span>
+    Devnet
+  </div>
+  
+  <button 
+    id="walletBtn" 
+    onClick={() => {
+      if (!isConnected) {
+        openWalletModal();
+      } else {
+        setShowWalletMenu((prev) => !prev);
+      }
+    }} 
+    style={{ 
+      padding: '0 14px', 
+      height: '36px',
+      borderRadius: '6px', 
+      fontWeight: 'bold', 
+      border: 'none', 
+      color: '#fff', 
+      cursor: 'pointer', 
+      fontSize: '0.75rem',
+      background: isConnected ? "#10b981" : "linear-gradient(135deg, #8b5cf6, #3b82f6)",
+      whiteSpace: 'nowrap',
+      boxSizing: 'border-box',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+    {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
+  </button> 
 
           {/* DROPDOWN MENU SAAT TERKONEKSI */}
           {isConnected && showWalletMenu && (
@@ -1341,51 +1331,6 @@ function App() {
           )}
         </div>
       </header>
-
-      {/* 👇 TAMBAHKAN TOMBOL PINTAS HP DI SINI (DI BAWAH HEADER) 👇 */}
-      {isMobileDevice() && !connected && (
-        <div style={{
-          display: 'flex',
-          gap: '8px',
-          justifyContent: 'center',
-          padding: '10px',
-          background: '#0b0f19',
-          borderBottom: '1px solid #1f2937'
-        }}>
-          <button
-            type="button"
-            onClick={() => handleOpenMobileWallet('solflare')}
-            style={{
-              background: '#1e293b',
-              border: '1px solid #f97316',
-              color: '#f97316',
-              padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '11px',
-              fontWeight: '700',
-              cursor: 'pointer'
-            }}
-          >
-            🔥 Buka di Solflare App
-          </button>
-          <button
-            type="button"
-            onClick={() => handleOpenMobileWallet('phantom')}
-            style={{
-              background: '#1e293b',
-              border: '1px solid #a855f7',
-              color: '#a855f7',
-              padding: '6px 12px',
-              borderRadius: '8px',
-              fontSize: '11px',
-              fontWeight: '700',
-              cursor: 'pointer'
-            }}
-          >
-            👻 Buka di Phantom App
-          </button>
-        </div>
-      )}
 
       {/* TOP TOKENOMICS MARQUEE BANNER */}
       <div style={{
