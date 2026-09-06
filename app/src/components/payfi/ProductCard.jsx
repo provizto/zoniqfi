@@ -1,57 +1,23 @@
-import { useReadContract, useAccount } from "wagmi";
-import { formatEther } from "viem";
-import type { Product } from "./products";
-
-interface ProductCardProps {
-  product: Product;
-  contractAddress: `0x${string}` | undefined;
-  abi: any;
-  currencySymbol?: string;
-  onBuy: (id: number, priceEth: string) => void;
-  onOpenWalletModal: () => void;
-  isTxPending: boolean;
-}
-
 export function ProductCard({
   product,
-  contractAddress,
-  abi,
-  currencySymbol = "ETH",
+  currencySymbol = "SOL",
   onBuy,
   onOpenWalletModal,
-  isTxPending
-}: ProductCardProps) {
-  const { isConnected } = useAccount();
+  isTxPending,
+  isConnected
+}) {
+  if (!product) return null;
 
-  const { data: blockchainPrice } = useReadContract({
-    address: contractAddress,
-    abi: abi || [],
-    functionName: "productPrices",
-    args: [BigInt(product.id)],
-    query: { enabled: !!abi && !!contractAddress }
-  });
-
-  let finalPriceEth = product.defaultPriceEth || "0.005";
-  if (blockchainPrice !== undefined && blockchainPrice !== null) {
-    try {
-      const priceBigInt = BigInt(blockchainPrice.toString());
-      if (priceBigInt > 0n) {
-        finalPriceEth = formatEther(priceBigInt);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  const finalPrice = product.priceEth || product.defaultPriceEth || "0.005";
+  const productSku = product.sku || `SKU-0${product.id}`;
 
   const handleClick = () => {
-    if (!isConnected) {
+    if (!isConnected && onOpenWalletModal) {
       onOpenWalletModal();
-    } else {
-      onBuy(product.id, finalPriceEth);
+    } else if (onBuy) {
+      onBuy(product.id, finalPrice);
     }
   };
-
-  const productSku = (product as any).sku || `SKU-0${product.id}`;
 
   return (
     <div
@@ -77,7 +43,7 @@ export function ProductCard({
         e.currentTarget.style.transform = "translateY(0)";
       }}
     >
-      {/* Top Header: Badge & Status */}
+      {/* Top Header: SKU & Status */}
       <div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
           <span
@@ -112,7 +78,7 @@ export function ProductCard({
           }}
           title={product.name}
         >
-          {product.name || "ZoniqFi Hybrid Core"}
+          {product.name || "ZoniqFi Digital Asset"}
         </h3>
 
         {/* Description */}
@@ -124,12 +90,12 @@ export function ProductCard({
             lineHeight: "1.4",
             display: "-webkit-box",
             WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical" as any,
+            WebkitBoxOrient: "vertical",
             overflow: "hidden",
             minHeight: "30px"
           }}
         >
-          {product.description}
+          {product.desc || product.description || ""}
         </p>
       </div>
 
@@ -140,7 +106,7 @@ export function ProductCard({
             Harga On-Chain
           </span>
           <span style={{ fontSize: "16px", fontWeight: 800, color: "#38bdf8" }}>
-            {finalPriceEth} {currencySymbol}
+            {finalPrice} {currencySymbol}
           </span>
         </div>
 

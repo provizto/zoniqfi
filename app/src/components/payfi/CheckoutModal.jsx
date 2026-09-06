@@ -1,14 +1,4 @@
 import { useState } from "react";
-import type { Product } from "./products";
-
-interface CheckoutModalProps {
-  product: Product;
-  onClose: () => void;
-  onCryptoPay: (id: number, priceEth: string) => void;
-  onFiatPay: (product: Product) => void;
-  isTxPending: boolean;
-  currencySymbol?: string;
-}
 
 export function CheckoutModal({
   product,
@@ -16,11 +6,15 @@ export function CheckoutModal({
   onCryptoPay,
   onFiatPay,
   isTxPending,
-  currencySymbol = "ETH"
-}: CheckoutModalProps) {
-  const [method, setMethod] = useState<"crypto" | "fiat">("crypto");
+  currencySymbol = "SOL"
+}) {
+  const [method, setMethod] = useState("crypto");
+
+  if (!product) return null;
 
   const badgeText = product.badge || `SKU-0${product.id}`;
+  const displayPrice = product.priceEth || product.defaultPriceEth || "0.001";
+  const displayDesc = product.desc || product.description || "";
 
   return (
     <div
@@ -88,9 +82,11 @@ export function CheckoutModal({
           <h3 style={{ fontSize: "17px", fontWeight: 800, margin: "8px 0 4px 0", color: "#ffffff" }}>
             {product.name}
           </h3>
-          <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0, lineHeight: "1.4" }}>
-            {product.description}
-          </p>
+          {displayDesc ? (
+            <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0, lineHeight: "1.4" }}>
+              {displayDesc}
+            </p>
+          ) : null}
         </div>
 
         {/* Deliverables Checklist */}
@@ -115,7 +111,7 @@ export function CheckoutModal({
           </div>
         )}
 
-        {/* Tab Pemilihan Jalur Pembayaran */}
+        {/* Tab Jalur Bayar */}
         <div
           style={{
             display: "grid",
@@ -163,21 +159,21 @@ export function CheckoutModal({
           </button>
         </div>
 
-        {/* Konten Jalur Web3 */}
+        {/* Jalur Web3 */}
         {method === "crypto" && (
           <div>
             <div style={{ textAlign: "center", margin: "12px 0 16px 0" }}>
               <div style={{ fontSize: "22px", fontWeight: 800, color: "#38bdf8" }}>
-                {product.defaultPriceEth} {currencySymbol}
+                {displayPrice} {currencySymbol}
               </div>
               <div style={{ fontSize: "11px", color: "#64748b", marginTop: "2px" }}>
-                Direct Smart Contract Settlement on Sepolia
+                Direct Solana Devnet Settlement
               </div>
             </div>
             <button
               type="button"
               disabled={isTxPending}
-              onClick={() => onCryptoPay(product.id, product.defaultPriceEth)}
+              onClick={() => onCryptoPay(product.id, displayPrice)}
               style={{
                 width: "100%",
                 padding: "12px",
@@ -191,12 +187,12 @@ export function CheckoutModal({
                 boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)"
               }}
             >
-              {isTxPending ? "⏳ Memproses di MetaMask..." : "⚡ Konfirmasi Pembelian Web3"}
+              {isTxPending ? "⏳ Memproses Transaksi..." : "⚡ Konfirmasi Pembelian Web3"}
             </button>
           </div>
         )}
 
-        {/* Konten Jalur Fiat */}
+        {/* Jalur Fiat */}
         {method === "fiat" && (
           <div>
             <div style={{ textAlign: "center", margin: "12px 0 16px 0" }}>
@@ -223,7 +219,7 @@ export function CheckoutModal({
                 boxShadow: "0 4px 14px rgba(16, 185, 129, 0.3)"
               }}
             >
-              💳 Buka Popup QRIS / Bank Transfer
+              💳 Buka Barcode QRIS
             </button>
           </div>
         )}
