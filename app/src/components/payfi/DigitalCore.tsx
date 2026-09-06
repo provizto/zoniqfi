@@ -2136,40 +2136,6 @@ function MainApp() {
             <button type="button" onClick={() => setLang("ID")} style={{ background: lang === "ID" ? "#2563eb" : "transparent", color: lang === "ID" ? "#fff" : "#94a3b8", border: "none", padding: "3px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}>ID</button>
             <button type="button" onClick={() => setLang("EN")} style={{ background: lang === "EN" ? "#2563eb" : "transparent", color: lang === "EN" ? "#fff" : "#94a3b8", border: "none", padding: "3px 6px", borderRadius: "4px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}>EN</button>
           </div>
-
-          {/* Connect Wallet */}
-          {isConnected && address ? (
-            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-              <span style={{ fontSize: "10px", background: "#1e293b", color: "#38bdf8", padding: "5px 8px", borderRadius: "20px", fontWeight: 700, border: "1px solid #334155" }}>
-                {`${address.slice(0, 4)}...${address.slice(-4)}`}
-              </span>
-              <button
-                type="button"
-                onClick={() => disconnect()}
-                title="Disconnect"
-                style={{ background: "#ef4444", color: "white", border: "none", padding: "5px 8px", borderRadius: "6px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}
-              >
-                ✕
-              </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setWalletModalVisible(true)}
-              style={{
-                background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
-                color: "white",
-                border: "none",
-                padding: "6px 12px",
-                borderRadius: "6px",
-                cursor: "pointer",
-                fontWeight: 700,
-                fontSize: "11px"
-              }}
-            >
-              {t.connectWallet}
-            </button>
-          )}
         </div>
       </div>
 
