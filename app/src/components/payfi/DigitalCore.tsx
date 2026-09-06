@@ -1880,31 +1880,34 @@ function MainApp() {
           {storeConfig.storeSubtitle}
         </p>
 
-        <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
-          <button
-            type="button"
-            onClick={() => setShowVerifyModal(true)}
-            style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
-          >
-            {t.verifyBtn}
-          </button>
+        {/* Hanya tampil di layar Desktop / Tablet; disembunyikan otomatis di HP */}
+        {!isMobile && (
+          <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
+            <button
+              type="button"
+              onClick={() => setShowVerifyModal(true)}
+              style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+            >
+              {t.verifyBtn}
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setShowVendorModal(true)}
-            style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "5px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 800, fontSize: "11px" }}
-          >
-            {vendorProfile ? `🏪 ${vendorProfile.store_name}` : t.vendorBtn}
-          </button>
+            <button
+              type="button"
+              onClick={() => setShowVendorModal(true)}
+              style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "5px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 800, fontSize: "11px" }}
+            >
+              {vendorProfile ? `🏪 ${vendorProfile.store_name}` : t.vendorBtn}
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setShowPinModal(true)}
-            style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
-          >
-            ⚙️ Admin
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={() => setShowPinModal(true)}
+              style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
+            >
+              ⚙️ Admin
+            </button>
+          </div>
+        )}
       </div>
 
       {/* MONITOR BROADCAST SISTEM */}
