@@ -9,6 +9,7 @@ import './App.css';
 import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR IMPORT: Disamakan dengan folder komponen lainnya agar tidak crash build
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
+import PayFiGateway from './components/PayFiGateway';
 
 // Hook Resmi Solana Wallet Adapter
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
@@ -1429,13 +1430,82 @@ function App() {
 )}
 {SHOW_AFFILIATE && (
   <button 
-    type="button"
+    type="button" 
     className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
     onClick={() => setActiveTab('affiliate')}
   >
     👥 <span className="tab-text">Affiliate</span>
   </button>
-            )}
+)}
+
+{/* TOMBOL BARU: PAYFI GATEWAY */}
+<button 
+  type="button" 
+  className={`dapp-tab-btn ${activeTab === 'payfi' ? 'active' : ''}`}
+  onClick={() => setActiveTab('payfi')}
+>
+  💳 <span className="tab-text">PayFi</span>
+</button>
+
+{/* INJEKSI STYLE OTOMATIS: MENJAMIN 5 TAB PAS DI LAPTOP & HP */}
+<style>{`
+  /* KHUSUS LAPTOP: KAPSUL UTUH BULAT & BAYANGAN TIDAK KEPOTONG */
+  .dapp-nav-tabs-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    overflow: visible !important;
+    margin-bottom: 24px !important;
+  }
+
+  .dapp-nav-tabs {
+    display: inline-flex !important;
+    align-items: center !important;
+    width: auto !important;
+    max-width: none !important;
+    gap: 6px !important;
+    padding: 6px 14px !important;
+    border-radius: 12px !important;
+    border: 1px solid #1f2937 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dapp-tab-btn {
+    padding: 7px 11px !important;
+    font-size: 0.83rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    gap: 5px !important;
+  }
+
+  /* KHUSUS HP (LEBAR <= 640px): BARU BOLEH SCROLL & UKURAN LEBIH RAMPING */
+  @media (max-width: 640px) {
+    .dapp-nav-tabs-wrapper {
+      overflow-x: auto !important;
+      scrollbar-width: none !important;
+      padding: 0 6px !important;
+      justify-content: flex-start !important;
+    }
+    .dapp-nav-tabs-wrapper::-webkit-scrollbar {
+      display: none !important;
+    }
+    .dapp-nav-tabs {
+      gap: 3px !important;
+      padding: 4px 8px !important;
+    }
+    .dapp-tab-btn {
+      padding: 6px 7px !important;
+      font-size: 0.72rem !important;
+      gap: 3px !important;
+    }
+    .dapp-tab-btn .tab-text {
+      font-size: 0.72rem !important;
+    }
+  }
+`}</style>
+
           </div>
         </div>
 
@@ -1444,6 +1514,9 @@ function App() {
             {txLog}
           </div>
         )}
+
+        {/* TEMPELKAN DI SINI */}
+        {activeTab === 'payfi' && <PayFiGateway />}
 
         {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium HANYA saat di Tab Swap */}
         {distributionData && activeTab === 'swap' && (
