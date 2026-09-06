@@ -1041,7 +1041,7 @@ function App() {
           display: flex !important;
           justify-content: center !important;
           margin: 15px auto 25px auto !important;
-          max-width: 480px !important;
+          max-width: 780px !important;
           width: 100% !important;
         }
         .dapp-nav-tabs {
@@ -1080,7 +1080,7 @@ function App() {
           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
         }
         .dapp-single-frame-container {
-          max-width: 480px !important;
+          max-width: 780px !important;
           margin: 0 auto !important;
           width: 100% !important;
         }

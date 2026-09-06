@@ -979,8 +979,16 @@ function MainApp() {
   };
 
   return (
-    <div style={{ color: "#f3f4f6", width: "100%", padding: "10px 4px", fontFamily: "'Inter', -apple-system, sans-serif", boxSizing: "border-box" }}>
-      
+    <div style={{ 
+    color: "#f3f4f6", 
+    width: "100%", 
+    maxWidth: "740px", 
+    margin: "0 auto", 
+    padding: "24px 20px", 
+    fontFamily: "'Inter', -apple-system, sans-serif", 
+    boxSizing: "border-box" 
+  }}>
+     
       {/* 🔍 MODAL PUBLIC LICENSE VERIFIER */}
       {showVerifyModal && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999999, padding: "16px" }}>
