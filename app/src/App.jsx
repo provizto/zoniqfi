@@ -166,6 +166,24 @@ function App() {
     return 'swap';
   });
 
+  // ==========================================
+  // TAMBAHAN: FUNGSI DEEPLINK DOMPET MOBILE
+  // ==========================================
+  const isMobileDevice = () => {
+    return typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  };
+
+  const handleOpenMobileWallet = (walletType) => {
+    const currentUrl = encodeURIComponent(window.location.href);
+    const refUrl = encodeURIComponent(window.location.origin);
+
+    if (walletType === 'solflare') {
+      window.location.href = `https://solflare.com/ul/v1/browse/${currentUrl}?ref=${refUrl}`;
+    } else if (walletType === 'phantom') {
+      window.location.href = `https://phantom.app/ul/browse/${currentUrl}?ref=${refUrl}`;
+    }
+  };
+
   // State Modal Legal Disclaimer
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
@@ -1323,6 +1341,51 @@ function App() {
           )}
         </div>
       </header>
+
+      {/* 👇 TAMBAHKAN TOMBOL PINTAS HP DI SINI (DI BAWAH HEADER) 👇 */}
+      {isMobileDevice() && !connected && (
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          justifyContent: 'center',
+          padding: '10px',
+          background: '#0b0f19',
+          borderBottom: '1px solid #1f2937'
+        }}>
+          <button
+            type="button"
+            onClick={() => handleOpenMobileWallet('solflare')}
+            style={{
+              background: '#1e293b',
+              border: '1px solid #f97316',
+              color: '#f97316',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              fontSize: '11px',
+              fontWeight: '700',
+              cursor: 'pointer'
+            }}
+          >
+            🔥 Buka di Solflare App
+          </button>
+          <button
+            type="button"
+            onClick={() => handleOpenMobileWallet('phantom')}
+            style={{
+              background: '#1e293b',
+              border: '1px solid #a855f7',
+              color: '#a855f7',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              fontSize: '11px',
+              fontWeight: '700',
+              cursor: 'pointer'
+            }}
+          >
+            👻 Buka di Phantom App
+          </button>
+        </div>
+      )}
 
       {/* TOP TOKENOMICS MARQUEE BANNER */}
       <div style={{
