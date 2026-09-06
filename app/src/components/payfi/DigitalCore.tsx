@@ -206,7 +206,6 @@ const TRANSLATIONS = {
 const ITEMS_PER_PAGE = 6;
 
 function MainApp() {
-  const lang = "EN" as const;
   const t = TRANSLATIONS.EN;
 
   const [isMobile, setIsMobile] = useState<boolean>(() => 
@@ -304,7 +303,7 @@ function MainApp() {
   };
 
   const [fiatPaymentStatus, setFiatPaymentStatus] = useState<string>("IDLE");
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [, setSelectedCurrency] = useState<string>("USD");
   const [showQrisModal, setShowQrisModal] = useState<boolean>(false);
 
   const { connection } = useConnection();
@@ -369,7 +368,26 @@ function MainApp() {
         }));
         setProducts(mapped);
       } else {
-        setProducts([]);
+        setProducts([
+          {
+            id: 1,
+            sku: "SKU-01",
+            name: "Solana PayFi Full Source Code",
+            desc: "Complete enterprise architecture for Web3 and Fiat hybrid commerce gateway.",
+            priceEth: "0.005",
+            badge: "💻 Software & Source Code",
+            deliverables: ["https://github.com/provizto/zoniqfi"]
+          },
+          {
+            id: 2,
+            sku: "SKU-02",
+            name: "Enterprise Multi-Vendor License Key",
+            desc: "Lifetime commercial license with automated on-chain settlement hooks.",
+            priceEth: "0.003",
+            badge: "🔑 Licenses & Digital Accounts",
+            deliverables: ["https://zoniqfinance.com"]
+          }
+        ]);
       }
     } catch (err) {
       console.warn("Could not connect to Supabase:", err);
@@ -979,20 +997,20 @@ function MainApp() {
   };
 
   return (
-    <div style={{ 
-      color: "#f3f4f6", 
-      width: "100%", 
-      maxWidth: "780px", 
-      margin: "0 auto", 
-      padding: isMobile ? "16px 12px" : "20px 18px", 
+    <div style={{
+      width: "100%",
+      maxWidth: "780px",
+      margin: "0 auto",
       background: "#0c1322",
       border: "1px solid #1e293b",
       borderRadius: "20px",
+      padding: isMobile ? "16px 12px" : "22px 20px",
       boxShadow: "0 15px 35px rgba(0, 0, 0, 0.45)",
-      fontFamily: "'Inter', -apple-system, sans-serif", 
-      boxSizing: "border-box" 
+      boxSizing: "border-box",
+      color: "#f3f4f6",
+      fontFamily: "'Inter', -apple-system, sans-serif"
     }}>
-     
+      
       {/* 🔍 MODAL PUBLIC LICENSE VERIFIER */}
       {showVerifyModal && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999999, padding: "16px" }}>
@@ -1078,9 +1096,7 @@ function MainApp() {
                   <input type="text" value={editPrice} onChange={(e) => setEditPrice(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>
-                    Category / Badge:
-                  </label>
+                  <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>Category / Badge:</label>
                   <select
                     value={editBadge}
                     onChange={(e) => setEditBadge(e.target.value)}
@@ -1141,7 +1157,6 @@ function MainApp() {
                 <button type="button" onClick={() => { setShowVendorModal(false); setWalletModalVisible(true); }} style={{ background: "#2563eb", color: "#fff", border: "none", padding: "10px 20px", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>{t.connectWallet}</button>
               </div>
             ) : !vendorProfile ? (
-              /* FORM PENDAFTARAN VENDOR BARU (AWAL) */
               <form onSubmit={handleUpdateVendorProfile} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 <div style={{ background: "#0f172a", border: "1px solid #1e293b", padding: "12px", borderRadius: "10px", fontSize: "11px", color: "#94a3b8" }}>
                   Active Wallet: <strong style={{ color: "#38bdf8" }}>{walletAddressStr}</strong>
@@ -1190,7 +1205,6 @@ function MainApp() {
                   </button>
                 </div>
 
-                {/* TAB 1: OMSET & INFORMASI/EDIT REKENING VENDOR */}
                 {vendorActiveTab === "STATS" && (
                   <div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "14px" }}>
@@ -1261,7 +1275,6 @@ function MainApp() {
                   </div>
                 )}
 
-                {/* TAB 2: UPLOAD PRODUK */}
                 {vendorActiveTab === "UPLOAD" && (
                   <form onSubmit={handleVendorUploadProduct} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "8px" }}>
@@ -1329,7 +1342,6 @@ function MainApp() {
                   </form>
                 )}
 
-                {/* TAB 3: PRODUK SAYA */}
                 {vendorActiveTab === "PRODUCTS" && (
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "300px", overflowY: "auto" }}>
                     {myVendorProducts.length === 0 ? (
@@ -1727,7 +1739,6 @@ function MainApp() {
             )}
 
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {/* 1. Web3 Direct */}
               <div style={{ border: "1px solid #1e3a8a", background: "#0b1329", borderRadius: "12px", padding: "14px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
                   <span style={{ fontSize: "12px", fontWeight: 800, color: "#60a5fa" }}>⚡ {t.method1Title}</span>
@@ -1748,7 +1759,6 @@ function MainApp() {
                 </button>
               </div>
 
-              {/* 2. QRIS Standar */}
               <div style={{ border: "1px solid #065f46", background: "#062319", borderRadius: "12px", padding: "14px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
                   <span style={{ fontSize: "12px", fontWeight: 800, color: "#34d399" }}>📱 {t.method2Title}</span>
@@ -1818,7 +1828,7 @@ function MainApp() {
         </div>
       )}
 
-      {/* 🎨 CSS RESPONSIF HEADER & DOCK */}
+      {/* 🎨 CSS RESPONSIF HEADER & DOCK & SCROLLBAR */}
       <style>{`
         .nav-desktop-only { display: inline-flex !important; }
         .nav-mobile-dock { display: flex !important; }
@@ -1827,6 +1837,21 @@ function MainApp() {
         }
         @media (min-width: 769px) {
           .nav-mobile-dock { display: none !important; }
+        }
+
+        .payfi-product-scrollbox::-webkit-scrollbar {
+          width: 5px;
+        }
+        .payfi-product-scrollbox::-webkit-scrollbar-track {
+          background: #070c18;
+          border-radius: 4px;
+        }
+        .payfi-product-scrollbox::-webkit-scrollbar-thumb {
+          background: #1e293b;
+          border-radius: 4px;
+        }
+        .payfi-product-scrollbox::-webkit-scrollbar-thumb:hover {
+          background: #38bdf8;
         }
       `}</style>
 
@@ -1845,7 +1870,6 @@ function MainApp() {
         width: "100%",
         boxSizing: "border-box"
       }}>
-        {/* LOGO PETIR SEJAJAR DENGAN JUDUL */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
           <span style={{ fontSize: "18px", lineHeight: 1 }}>⚡</span>
           <h1 style={{ margin: 0, fontSize: "15px", fontWeight: 800, color: "#fff", lineHeight: 1.2 }}>
@@ -1853,12 +1877,10 @@ function MainApp() {
           </h1>
         </div>
 
-        {/* SUBJUDUL RAPAT */}
         <p style={{ margin: 0, fontSize: "11px", color: "#94a3b8", lineHeight: 1.2 }}>
           {storeConfig.storeSubtitle}
         </p>
 
-        {/* DERETAN TOMBOL NAIK KE ATAS */}
         <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
           <button
             type="button"
