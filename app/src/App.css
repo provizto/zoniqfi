@@ -1564,3 +1564,28 @@ input[type="number"] {
     transform: scale(0.97);
   }
 }
+
+/* ==========================================================================
+   PENYELARASAN KOTAK CARD MODUL PAYFI
+   ========================================================================== */
+.payfi-container,
+.payfi-store-container,
+.payfi-wrapper {
+  max-width: 480px !important; /* Menyamakan lebar kartu Swap */
+  width: 100% !important;
+  margin: 0 auto 32px auto !important;
+  background: #111827 !important; /* Warna dasar gelap kartu Swap */
+  border: 1px solid #1f2937 !important; /* Warna garis tepi kartu */
+  border-radius: 24px !important; /* Lengkungan sudut presisi */
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 
+              0 0 20px rgba(59, 130, 246, 0.08) !important; /* Efek glow/bayangan */
+  padding: 20px !important;
+  box-sizing: border-box !important;
+}
+
+/* Pastikan elemen di dalam modul PayFi tidak tembus batas lengkungan */
+.payfi-container > *,
+.payfi-store-container > * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
