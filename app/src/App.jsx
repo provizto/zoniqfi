@@ -1553,13 +1553,6 @@ function App() {
           </div>
         )}
 
-        {/* KONTEN PAYFI TERPADU */}
-        {activeTab === 'payfi' && (
-          <div className="payfi-wrapper">
-            <PayFiGateway />
-          </div>
-        )}
-
         {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium HANYA saat di Tab Swap */}
         {distributionData && activeTab === 'swap' && (
           <div style={{ maxWidth: '480px', margin: '0 auto 20px auto', width: '100%' }}>
@@ -1941,13 +1934,20 @@ function App() {
   })()}
 </span>
                 </div>
-              </div>
-            </section>
-          )}
+            </div>
+          </section>
+        )}
 
-        </div>
-      <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
-    </main>
+        {/* MODUL 5: PAYFI */}
+        {activeTab === 'payfi' && (
+          <div className="payfi-wrapper">
+            <PayFiGateway />
+          </div>
+        )}
+
+      </div>
+    <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+  </main>
 
       {/* HORIZONTAL PROTOCOL PIPELINE (EN) */}
         <div className="protocol-pipeline">
