@@ -1037,35 +1037,36 @@ function App() {
           padding: 20px 15px !important;
           box-sizing: border-box !important;
         }
+        /* Navigasi tab dikunci kembali ke 480px agar padat & rapi */
         .dapp-nav-tabs-wrapper {
           display: flex !important;
           justify-content: center !important;
           margin: 15px auto 25px auto !important;
-          max-width: 780px !important;
+          max-width: 520px !important;
           width: 100% !important;
         }
         .dapp-nav-tabs {
           display: flex !important;
           background: #0d1322 !important;
           border: 1px solid #1e293b !important;
-          padding: 6px !important;
+          padding: 5px !important;
           border-radius: 14px !important;
           width: 100% !important;
-          gap: 6px !important;
+          gap: 4px !important;
         }
         .dapp-tab-btn {
           flex: 1 !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
-          gap: 6px !important;
-          padding: 10px 12px !important;
+          gap: 5px !important;
+          padding: 9px 8px !important;
           border-radius: 10px !important;
           border: none !important;
           background: transparent !important;
           color: #94a3b8 !important;
           font-weight: 700 !important;
-          font-size: 0.88rem !important;
+          font-size: 0.82rem !important;
           cursor: pointer !important;
           transition: all 0.2s ease !important;
           white-space: nowrap !important;
@@ -1079,11 +1080,13 @@ function App() {
           color: #ffffff !important;
           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
         }
+        /* Swap, Lock, Vault tetap rapat & proporsional di 480px */
         .dapp-single-frame-container {
-          max-width: 780px !important;
+          max-width: 480px !important;
           margin: 0 auto !important;
           width: 100% !important;
         }
+        /* Khusus tab Affiliate & PayFi otomatis melebar lega ke 780px */
         .dapp-single-frame-container.wide-frame {
           max-width: 780px !important;
         }
@@ -1093,10 +1096,13 @@ function App() {
           margin: 0 auto !important;
         }
         @media (max-width: 640px) {
+          .dapp-nav-tabs-wrapper {
+            max-width: 100% !important;
+          }
           .dapp-tab-btn {
-            font-size: 0.78rem !important;
-            padding: 8px 4px !important;
-            gap: 4px !important;
+            font-size: 0.74rem !important;
+            padding: 8px 3px !important;
+            gap: 3px !important;
           }
         }
       `}</style>
@@ -1562,8 +1568,7 @@ function App() {
         )}
 
         {/* SINGLE-FRAME CONTAINER CENTERED */}
-        <div className={`dapp-single-frame-container ${activeTab === 'affiliate' ? 'wide-frame' : ''}`}>
-          
+        <div className={`dapp-single-frame-container ${activeTab === 'affiliate' || activeTab === 'payfi' ? 'wide-frame' : ''}`}>
           {/* MODUL 1: SWAP */}
           {SHOW_SWAP && activeTab === 'swap' && (
             <div className="product-card swap-card">
