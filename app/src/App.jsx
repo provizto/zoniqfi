@@ -2143,17 +2143,6 @@ function App() {
             <span style={{ color: '#334155' }}>•</span>
 
             <a 
-              href="https://www.zoniqfinance.com/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ color: '#34d399', textDecoration: 'none' }}
-            >
-              PayFi Gateway ↗
-            </a>
-
-            <span style={{ color: '#334155' }}>•</span>
-
-            <a 
               href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
               target="_blank" 
               rel="noopener noreferrer" 
