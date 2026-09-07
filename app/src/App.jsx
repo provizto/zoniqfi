@@ -15,6 +15,17 @@ import PayFiGateway from './components/PayFiGateway';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 
+// Import Web3 primitives untuk transfer Solana & pool terpusat
+import { PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
+
+// Protocol Treasury Addresses (Solana Devnet)
+const PROTOCOL_POOLS = {
+  VAULT: "BvmRYWTbkCwNqVUEeD7qgVqzM9rXh9egrDiWDBcsofny",
+  LOCKER: "H8XSVM7UDZbk5eFhzWMLU5WPKZwNLBo85wGbrfPDX6Gw",
+  AFFILIATE: "FU6cLtPS4eUBy92xa96Fb7pdaFv8A93LdEpT7MyHi7uh",
+  OPERATIONS: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4",
+};
+
 // ==========================================================================
 // KECERDASAN DETEKSI PAKET VIA LINK UTAMA (ANTI-GAGAL)
 // ==========================================================================
@@ -58,7 +69,7 @@ function App() {
   const [view, setView] = useState(() => {
   return localStorage.getItem('zoniq_current_view') || 'dapp';
 });
-  const { publicKey, connected, disconnect } = useWallet();
+  const { publicKey, connected, disconnect, sendTransaction } = useWallet();
   const { setVisible } = useWalletModal();
 
   const [showWalletMenu, setShowWalletMenu] = useState(false);
@@ -131,7 +142,7 @@ function App() {
       setMyWalletAddress('');
     }
   }, [connected, publicKey]);
-
+  
   // Saldo SOL Otomatis
   const { connection } = useConnection();
   const [solBalance, setSolBalance] = useState(null);
@@ -626,9 +637,76 @@ function App() {
     setTxLog(`Routing private transaction bundle on Solana Devnet via Jito Engine (MEV Protection)...`);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2500));
-      
+      setIsSwapLoading(true);
+
+      if (!publicKey) {
+        alert("Silakan hubungkan dompet Solflare Anda terlebih dahulu!");
+        return;
+      }
+
+      // 1. Ambil nilai fee 0.3%
       const currentFee = parseFloat(swapFee) || 0;
+      const totalFeeLamports = Math.floor(currentFee * LAMPORTS_PER_SOL);
+
+      if (totalFeeLamports <= 0) {
+        alert("Nominal swap terlalu kecil untuk kalkulasi fee!");
+        return;
+      }
+
+      // 2. Bagi ke 4 pool (Vault 40%, Locker 30%, Affiliate 15%, Ops 15%)
+      const vaultLamports = Math.floor(totalFeeLamports * 0.40);
+      const lockerLamports = Math.floor(totalFeeLamports * 0.30);
+      const affiliateLamports = Math.floor(totalFeeLamports * 0.15);
+      const opsLamports = totalFeeLamports - (vaultLamports + lockerLamports + affiliateLamports);
+
+      // 3. Susun transaksi transfer Solana Devnet
+      const transaction = new Transaction();
+
+      // Pool 1: Vault (40%)
+      transaction.add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(PROTOCOL_POOLS.VAULT),
+          lamports: vaultLamports,
+        })
+      );
+
+      // Pool 2: Locker (30%)
+      transaction.add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(PROTOCOL_POOLS.LOCKER),
+          lamports: lockerLamports,
+        })
+      );
+
+      // Pool 3: Affiliate (15%)
+      transaction.add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(PROTOCOL_POOLS.AFFILIATE),
+          lamports: affiliateLamports,
+        })
+      );
+
+      // Pool 4: Project Ops (15%)
+      transaction.add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(PROTOCOL_POOLS.OPERATIONS),
+          lamports: opsLamports,
+        })
+      );
+
+      // Ambil blockhash terbaru & kirim ke Solflare
+      const { blockhash } = await connection.getLatestBlockhash();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = publicKey;
+
+      const signature = await sendTransaction(transaction, connection);
+      await connection.confirmTransaction(signature, 'confirmed');
+
+      // 4. Perhitungan tampilan & state UI
       const vaultShareNum = currentFee * 0.40;
       const poolShareNum = currentFee * 0.30;
       const affiliateShareNum = currentFee * 0.15;
@@ -640,7 +718,7 @@ function App() {
       const projectTreasuryShare = opsShareNum.toFixed(5);
 
       setSwapsCount(prev => prev + 1);
-      setTxLog(''); 
+      setTxLog(signature); 
 
       // 1. DATA RINGKASAN DISTRIBUSI ON-CHAIN
       setDistributionData({
@@ -658,7 +736,7 @@ function App() {
       // Otomatis bersihkan kartu log setelah 15 detik
       setTimeout(() => {
         setDistributionData(null);
-      }, 15000);
+      }, 20000);
 
       // 2. REAKTIF KE MODUL VAULT: Naikkan TVL Protokol
       setProtocolTVL(prev => prev + Math.round(vaultShareNum * 100) / 100);
