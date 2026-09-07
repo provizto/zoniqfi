@@ -3,6 +3,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
 import { supabase } from "./supabaseClient";
+import { sendRelayTransaction } from "./solanaRelayer";
 
 export interface StoreProduct {
   id: number;
@@ -905,7 +906,7 @@ function MainApp() {
 
     setTimeout(async () => {
       setFiatPaymentStatus("SUCCESS");
-      const mockRelayTx = Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
+      const mockRelayTx = await sendRelayTransaction(Number(selectedProduct?.priceEth || 0.015));
       const displayHolder = customerEmail || "QRIS Verified Buyer";
       const relayTokenId = `#RELAY-SOL-0${activeId}`;
       const methodStr = "IDR QRIS Instant";
