@@ -10,9 +10,9 @@ export const APP_METADATA = {
 
 // ALAMAT WALLET FEE DISTRIBUTION (Sesuaikan dengan public key pool dApp Anda)
 export const PROTOCOL_POOLS = {
-  VAULT: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS",            // Yield Optimizer Vault (40%)
-  LOCKER: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS",          // ZQI Real Yield Pool (30%)
-  AFFILIATE: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS",    // Affiliate Treasury (15%)
+  VAULT: "BvmRYWTbkCwNqVUEeD7qgVqzM9rXh9egrDiWDBcsofny",            // Yield Optimizer Vault (40%)
+  LOCKER: "H8XSVM7UDZbk5eFhzWMLU5WPKZwNLBo85wGbrfPDX6Gw",          // ZQI Real Yield Pool (30%)
+  AFFILIATE: "FU6cLtPS4eUBy92xa96Fb7pdaFv8A93LdEpT7MyHi7uh",    // Affiliate Treasury (15%)
   OPERATIONS: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS", // Project Treasury Operations (15%)
 };
 
