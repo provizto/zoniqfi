@@ -1084,12 +1084,13 @@ function MainApp() {
   return (
   <div style={{
     width: "100%",
-    maxWidth: "420px",
+    maxWidth: "100%",
     margin: "0 auto",
-    backgroundColor: "#111827",
-    border: "1px solid #1f2937",
-    borderRadius: "12px",
-    padding: isMobile ? "16px 12px" : "20px",
+    backgroundColor: "transparent",
+    border: "none",
+    boxShadow: "none",
+    borderRadius: "0px",
+    padding: isMobile ? "12px 0px" : "16px 4px",
     boxSizing: "border-box",
     color: "#f3f4f6",
     fontFamily: "'Inter', -apple-system, sans-serif"
