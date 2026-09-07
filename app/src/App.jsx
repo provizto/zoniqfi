@@ -1619,37 +1619,6 @@ function App() {
           }
         `}</style>
 
-        {txLog && (
-          <div className="security-banner" style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'space-between', 
-            gap: '8px',
-            background: '#111827', 
-            borderColor: '#1f2937', 
-            fontSize: '0.85rem', 
-            maxWidth: '480px', 
-            margin: '0 auto 20px auto',
-            padding: '10px 14px',
-            borderRadius: '8px'
-          }}>
-            <span style={{ color: '#94a3b8', fontStyle: 'normal' }}>Transaction:</span>
-            <a 
-              href={`https://explorer.solana.com/tx/${txLog}?cluster=devnet`} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{ 
-                color: '#38bdf8', 
-                fontFamily: 'monospace', 
-                fontWeight: '600', 
-                textDecoration: 'none' 
-              }}
-            >
-              {txLog.length > 24 ? `${txLog.slice(0, 8)}...${txLog.slice(-8)} ↗` : txLog}
-            </a>
-          </div>
-        )}
-
         {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium HANYA saat di Tab Swap */}
         {distributionData && activeTab === 'swap' && (
           <div style={{ maxWidth: '480px', margin: '0 auto 20px auto', width: '100%' }}>

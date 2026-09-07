@@ -1749,10 +1749,33 @@ function MainApp() {
                 <span style={{ color: "#94a3b8" }}>Recipient / Email:</span>
                 <strong style={{ color: "#cbd5e1" }}>{deliverySuccess.buyer}</strong>
               </div>
-              <div style={{ borderTop: "1px solid #1e293b", paddingTop: "6px", marginTop: "6px", wordBreak: "break-all" }}>
-                <span style={{ color: "#64748b" }}>Tx Signature: </span>
-                <code style={{ color: "#34d399" }}>{deliverySuccess.txHash}</code>
-              </div>
+              <div style={{ borderTop: "1px solid #1e293b", paddingTop: "8px", marginTop: "8px" }}>
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <span style={{ color: "#64748b", fontSize: "12px" }}>Tx Signature:</span>
+    <a
+      href={`https://explorer.solana.com/tx/${deliverySuccess.txHash}?cluster=devnet`}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        color: "#38bdf8",
+        fontSize: "12px",
+        textDecoration: "none",
+        fontWeight: "bold",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "4px"
+      }}
+    >
+      <code>
+        {deliverySuccess.txHash
+          ? `${deliverySuccess.txHash.slice(0, 8)}...${deliverySuccess.txHash.slice(-8)}`
+          : ""}
+      </code>
+      <span>↗</span>
+    </a>
+  </div>
+</div>
+
               {/* ON-CHAIN FEE DISTRIBUTION BREAKDOWN */}
 <div style={{ marginTop: "12px", borderTop: "1px dashed #1e293b", paddingTop: "10px" }}>
   <div style={{ fontSize: "10px", color: "#38bdf8", fontWeight: 800, textTransform: "uppercase", marginBottom: "8px", display: "flex", alignItems: "center", gap: "5px" }}>
