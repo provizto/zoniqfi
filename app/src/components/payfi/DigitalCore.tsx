@@ -59,6 +59,25 @@ interface AdminVendorPayoutItem {
   platform_fee_eth: number;
 }
 
+// -------------------------------------------------------------
+// KONFIGURASI FEE DISTRIBUTION PAYFI (Identik dengan SWAP)
+// -------------------------------------------------------------
+const PROTOCOL_POOLS = {
+  VAULT: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS",       // Yield Optimizer Vault (40%)
+  LOCKER: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS",      // ZQI Real Yield Pool (30%)
+  AFFILIATE: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS",   // Affiliate Treasury (15%)
+  OPERATIONS: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS",  // Project Treasury Operations (15%)
+};
+
+const PAYFI_FEE_CONFIG = {
+  SPLIT_RATIOS: {
+    VAULT: 0.40,
+    LOCKER: 0.30,
+    AFFILIATE: 0.15,
+    OPERATIONS: 0.15,
+  }
+};
+
 const DEFAULT_CONFIG: StoreConfig = {
   storeName: "Zoniqfi Marketplace",
   storeSubtitle: "Official Hybrid Web3 & Digital License Gateway",
@@ -735,6 +754,7 @@ function MainApp() {
 
   const handleDirectBuy = async (_id: number, priceEth: string) => {
     if (!isConnected || !publicKey) {
+      setShowCheckoutModal(false);
       setWalletModalVisible(true);
       return;
     }
@@ -744,26 +764,91 @@ function MainApp() {
       setTxError(null);
       setTxHash("");
 
-      const lamports = Math.round(Number(priceEth) * LAMPORTS_PER_SOL);
+      // 1. Total Lamports Pembelian
+      const totalLamports = Math.round(Number(priceEth) * LAMPORTS_PER_SOL);
+      if (totalLamports <= 0) {
+        throw new Error("Nominal harga tidak valid.");
+      }
+
+      // 2. Pembagian: 95% Vendor & 5% Fee Protokol
+      const vendorLamports = Math.floor(totalLamports * 0.95);
+      const protocolFeeLamports = totalLamports - vendorLamports;
+
+      // 3. Pemecahan Fee Protokol 5% (Rasio Identik dengan SWAP)
+      const vaultShare = Math.floor(protocolFeeLamports * PAYFI_FEE_CONFIG.SPLIT_RATIOS.VAULT);         // 40%
+      const lockerShare = Math.floor(protocolFeeLamports * PAYFI_FEE_CONFIG.SPLIT_RATIOS.LOCKER);       // 30%
+      const affiliateShare = Math.floor(protocolFeeLamports * PAYFI_FEE_CONFIG.SPLIT_RATIOS.AFFILIATE); // 15%
+      const opsShare = protocolFeeLamports - (vaultShare + lockerShare + affiliateShare);               // 15% sisa bulat
+
+      // 4. Tentukan Wallet Penerima Vendor
       let recipientPubkey: PublicKey;
       try {
         if (selectedProduct?.vendor_wallet && selectedProduct.vendor_wallet.length >= 32) {
           recipientPubkey = new PublicKey(selectedProduct.vendor_wallet);
         } else {
-          recipientPubkey = publicKey;
+          recipientPubkey = new PublicKey(PROTOCOL_POOLS.OPERATIONS); // fallback jika vendor belum isi wallet
         }
       } catch {
-        recipientPubkey = publicKey;
+        recipientPubkey = new PublicKey(PROTOCOL_POOLS.OPERATIONS);
       }
 
-      const transaction = new Transaction().add(
+      // 5. Susun Multi-Instruction On-Chain dalam 1 Transaksi Atomic
+      const transaction = new Transaction();
+
+      // (A) Transfer Utama ke Vendor (95%)
+      transaction.add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: recipientPubkey,
-          lamports: lamports > 0 ? lamports : 1000,
+          lamports: vendorLamports,
         })
       );
 
+      // (B) 40% dari Fee ke Yield Optimizer Vault
+      if (vaultShare > 0) {
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: new PublicKey(PROTOCOL_POOLS.VAULT),
+            lamports: vaultShare,
+          })
+        );
+      }
+
+      // (C) 30% dari Fee ke ZQI Real Yield Pool / Locker
+      if (lockerShare > 0) {
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: new PublicKey(PROTOCOL_POOLS.LOCKER),
+            lamports: lockerShare,
+          })
+        );
+      }
+
+      // (D) 15% dari Fee ke Affiliate Treasury
+      if (affiliateShare > 0) {
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: new PublicKey(PROTOCOL_POOLS.AFFILIATE),
+            lamports: affiliateShare,
+          })
+        );
+      }
+
+      // (E) 15% dari Fee ke Project Treasury Operations
+      if (opsShare > 0) {
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: new PublicKey(PROTOCOL_POOLS.OPERATIONS),
+            lamports: opsShare,
+          })
+        );
+      }
+
+      // 6. Broadcast ke Jaringan Solana Devnet
       const signature = await sendTransaction(transaction, connection);
       setIsTxPending(false);
       setIsConfirming(true);
@@ -1667,6 +1752,42 @@ function MainApp() {
                 <span style={{ color: "#64748b" }}>Tx Signature: </span>
                 <code style={{ color: "#34d399" }}>{deliverySuccess.txHash}</code>
               </div>
+              {/* ON-CHAIN FEE DISTRIBUTION BREAKDOWN */}
+<div style={{ marginTop: "12px", borderTop: "1px dashed #1e293b", paddingTop: "10px" }}>
+  <div style={{ fontSize: "10px", color: "#38bdf8", fontWeight: 800, textTransform: "uppercase", marginBottom: "8px", display: "flex", alignItems: "center", gap: "5px" }}>
+    <span>🔗</span> ON-CHAIN FEE DISTRIBUTION (5%)
+  </div>
+
+  <div style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "10px" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", background: "#0b0f19", padding: "6px 8px", borderRadius: "6px" }}>
+      <span style={{ color: "#94a3b8" }}>🏦 Yield Optimizer Vault (40%)</span>
+      <strong style={{ color: "#34d399" }}>
+        {(Number(deliverySuccess.product.priceEth) * 0.05 * 0.40).toFixed(5)} SOL
+      </strong>
+    </div>
+
+    <div style={{ display: "flex", justifyContent: "space-between", background: "#0b0f19", padding: "6px 8px", borderRadius: "6px" }}>
+      <span style={{ color: "#94a3b8" }}>📈 ZQI Real Yield Pool (30%)</span>
+      <strong style={{ color: "#34d399" }}>
+        {(Number(deliverySuccess.product.priceEth) * 0.05 * 0.30).toFixed(5)} SOL
+      </strong>
+    </div>
+
+    <div style={{ display: "flex", justifyContent: "space-between", background: "#0b0f19", padding: "6px 8px", borderRadius: "6px" }}>
+      <span style={{ color: "#94a3b8" }}>👥 Affiliate Treasury (15%)</span>
+      <strong style={{ color: "#34d399" }}>
+        {(Number(deliverySuccess.product.priceEth) * 0.05 * 0.15).toFixed(5)} SOL
+      </strong>
+    </div>
+
+    <div style={{ display: "flex", justifyContent: "space-between", background: "#0b0f19", padding: "6px 8px", borderRadius: "6px" }}>
+      <span style={{ color: "#94a3b8" }}>💻 Project Treasury Operations (15%)</span>
+      <strong style={{ color: "#34d399" }}>
+        {(Number(deliverySuccess.product.priceEth) * 0.05 * 0.15).toFixed(5)} SOL
+      </strong>
+    </div>
+  </div>
+</div>
             </div>
 
             <button
@@ -1747,10 +1868,14 @@ function MainApp() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (!validateCustomerEmail()) return;
-                    if (!isConnected) setWalletModalVisible(true);
-                    else handleDirectBuy(selectedProduct.id, activeEthPrice);
-                  }}
+  if (!validateCustomerEmail()) return;
+  if (!isConnected) {
+    setShowCheckoutModal(false);
+    setWalletModalVisible(true);
+  } else {
+    handleDirectBuy(selectedProduct.id, activeEthPrice);
+  }
+}}
                   disabled={isTxPending || isConfirming}
                   style={{ width: "100%", background: (isTxPending || isConfirming) ? "#334155" : isConnected ? "linear-gradient(135deg, #2563eb, #3b82f6)" : "#1e293b", color: "white", border: "none", padding: "10px", borderRadius: "8px", cursor: (isTxPending || isConfirming) ? "not-allowed" : "pointer", fontWeight: 700, fontSize: "12px" }}
                 >
