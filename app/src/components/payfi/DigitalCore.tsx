@@ -66,7 +66,7 @@ const PROTOCOL_POOLS = {
   VAULT: "BvmRYWTbkCwNqVUEeD7qgVqzM9rXh9egrDiWDBcsofny",       // Yield Optimizer Vault (40%)
   LOCKER: "H8XSVM7UDZbk5eFhzWMLU5WPKZwNLBo85wGbrfPDX6Gw",     // ZQI Real Yield Pool (30%)
   AFFILIATE: "FU6cLtPS4eUBy92xa96Fb7pdaFv8A93LdEpT7MyHi7uh",  // Affiliate Treasury (15%)
-  OPERATIONS: "9bvD1899yYZCf2MKeuds59EXAGgVBwuFkrCS1Cgo3AhS", // Project Treasury Operations (15%)
+  OPERATIONS: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4", // Project Treasury Operations (15%)
 };
 
 const PAYFI_FEE_CONFIG = {
