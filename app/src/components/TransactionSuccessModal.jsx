@@ -53,7 +53,7 @@ const TransactionSuccessModal = ({
   };
 
   const isTx = Boolean(data.txSignature);
-  const solscanUrl = isTx 
+  const explorerUrl = isTx 
     ? `https://solscan.io/tx/${data.txSignature}?cluster=devnet`
     : `https://solscan.io/account/${programId}?cluster=devnet`;
 
@@ -233,7 +233,7 @@ const TransactionSuccessModal = ({
         {/* Tombol Aksi */}
         <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
           <a
-            href={solscanUrl}
+            href={explorerUrl}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -253,7 +253,7 @@ const TransactionSuccessModal = ({
               gap: '6px'
             }}
           >
-            {isTx ? 'View Tx ↗' : 'Program ↗'}
+            {isTx ? 'View on Explorer ↗' : 'Program ↗'}
           </a>
           <button
             type="button"
