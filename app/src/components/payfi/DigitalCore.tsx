@@ -2060,13 +2060,12 @@ function MainApp() {
       </div>
 
       {/* MONITOR BROADCAST SISTEM */}
-      {(isTxPending || isConfirming || txHash || txError || connectError || fiatPaymentStatus === "PROCESSING") && (
+      {(isTxPending || isConfirming || txError || connectError || fiatPaymentStatus === "PROCESSING") && (
         <div style={{ background: "#111827", padding: "14px", borderRadius: "10px", marginBottom: "20px", border: "1px solid #1f2937" }}>
           <h4 style={{ marginTop: 0, marginBottom: "6px", fontWeight: 700, fontSize: "12px", textTransform: "uppercase", color: "#94a3b8" }}>{t.monitorHeading}</h4>
           {fiatPaymentStatus === "PROCESSING" && <p style={{ color: "#38bdf8", margin: 0, fontSize: "13px", fontWeight: 500 }}>{t.monitorProcessing}</p>}
           {isTxPending && <p style={{ color: "#fbbf24", margin: 0, fontSize: "13px", fontWeight: 500 }}>{t.monitorSigning}</p>}
           {isConfirming && <p style={{ color: "#60a5fa", margin: 0, fontSize: "13px", fontWeight: 500 }}>⏳ Transaction transmitted to Solana Devnet. Awaiting block confirmation...</p>}
-          {txHash && <p style={{ color: "#34d399", margin: 0, fontSize: "13px", fontWeight: 600, wordBreak: "break-all" }}>{t.monitorSuccess} <code>{txHash}</code></p>}
           {txError && <p style={{ color: "#f87171", margin: 0, fontSize: "13px", fontWeight: 500 }}>❌ Solana Transaction Error: {txError.message ? txError.message.split("\n")[0] : String(txError)}</p>}
         </div>
       )}
