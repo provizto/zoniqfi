@@ -3,7 +3,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import DigitalCore from './payfi/DigitalCore';
 import '@solana/wallet-adapter-react-ui/styles.css';
 
-// Kotak Penangkap Error agar layar web TIDAK blank hitam
+// Circuit breaker / Error Boundary to prevent blank application screens
 class PayFiErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,7 @@ class PayFiErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("PayFi Error Info:", error, errorInfo);
+    console.error("PayFi Runtime Error:", error, errorInfo);
   }
 
   render() {
@@ -32,10 +32,10 @@ class PayFiErrorBoundary extends Component {
           textAlign: 'center'
         }}>
           <h3 style={{ color: '#ef4444', margin: '0 0 12px 0' }}>
-            ⚠️ Ada 1 Bagian yang Perlu Disesuaikan
+            ⚠️ Runtime Component Notice
           </h3>
           <p style={{ color: '#94a3b8', fontSize: '14px', margin: '0 0 16px 0' }}>
-            Pesan kendala dari sistem:
+            The PayFi engine encountered a client-side execution issue:
           </p>
           <div style={{
             background: '#020617',
@@ -63,7 +63,6 @@ export default function PayFiGateway() {
     <PayFiErrorBoundary>
       <WalletModalProvider>
         <div className="payfi-integrated-wrapper" style={{ width: '100%', minHeight: '80vh' }}>
-          {/* Style otomatis agar semua kotak code/nomor rekening/hash jadi tema gelap */}
           <style>{`
             .payfi-integrated-wrapper code {
               background: #090d16 !important;

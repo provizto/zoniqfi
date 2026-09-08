@@ -7,10 +7,17 @@ const defaultSwapBreakdown = [
   { label: "Project Treasury Operations (15%)", amount: "0.00900 USDC", icon: "fa-server" },
 ];
 
+const defaultPayFiBreakdown = [
+  { label: "Yield Optimizer Vault (40%)", amount: "0.00100 SOL", icon: "fa-vault" },
+  { label: "ZQI Real Yield Pool (30%)", amount: "0.00075 SOL", icon: "fa-chart-pie" },
+  { label: "Affiliate Treasury (15%)", amount: "0.000375 SOL", icon: "fa-users" },
+  { label: "Project Treasury Operations (15%)", amount: "0.000375 SOL", icon: "fa-server" },
+];
+
 const DistributionLog = ({ 
   programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD", 
   swapData,
-  payfiData, // Props opsional jika menampilkan transaksi PayFi
+  payfiData,
   cluster = "devnet" 
 }) => {
   const isPayFi = Boolean(payfiData);
@@ -29,22 +36,15 @@ const DistributionLog = ({
     ? `https://solscan.io/tx/${activeTxSignature}?cluster=${cluster}`
     : `https://solscan.io/account/${programId}?cluster=${cluster}`;
 
-  // Logika PayFi Settlement Breakdown (95% Vendor Payout + 5% Protocol Fee)
-  const defaultPayFiBreakdown = [
-    { label: "Vendor Direct Settlement (95%)", amount: payfiData?.vendorPayout || "0.0475 SOL", icon: "fa-wallet" },
-    { label: "ZQI Staking Yield Pool (3%)", amount: payfiData?.stakingCut || "0.0015 SOL", icon: "fa-chart-pie" },
-    { label: "Protocol Treasury Reserve (2%)", amount: payfiData?.treasuryCut || "0.0010 SOL", icon: "fa-shield-halved" }
-  ];
-
   const data = isPayFi ? {
-    badge: "PAYFI SETTLED",
+    badge: "PAYFI GAS SPLIT RELAYED",
     badgeColor: "#fbbf24",
-    title: payfiData?.productName || "Merchant Asset Purchase",
-    pairLabel: "Merchant & Payer",
-    primaryValue: payfiData?.buyer || "Payer Wallet",
-    secondaryValue: payfiData?.vendorName || "Vendor Wallet",
-    feeLabel: "Protocol Platform Cut (5%)",
-    totalFee: payfiData?.platformFee || "0.0025 SOL",
+    title: payfiData?.productName || "Digital Asset License",
+    pairLabel: "Direct QRIS Payout & Gas Tank Debit",
+    primaryValue: "100% Fiat to Merchant",
+    secondaryValue: payfiData?.vendorName || "Active Vendor",
+    feeLabel: "5% On-Chain Protocol Split (from Gas Tank)",
+    totalFee: payfiData?.platformFee || "0.00250 SOL",
     breakdown: payfiData?.breakdown || defaultPayFiBreakdown
   } : {
     badge: "SWAP SUCCESSFUL",
@@ -99,7 +99,7 @@ const DistributionLog = ({
             fontWeight: '600', 
             border: isPayFi ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid rgba(56, 189, 248, 0.3)' 
           }}>
-            {isPayFi ? "PayFi v1" : "Tx v1"}
+            {isPayFi ? "PayFi Relayer" : "Tx v1"}
           </span>
         </div>
         
@@ -139,7 +139,7 @@ const DistributionLog = ({
         border: '1px solid #1f2937' 
       }}>
         <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '6px' }}>{data.pairLabel}</div>
-        <div style={{ fontWeight: '600', fontSize: '1rem', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ fontWeight: '600', fontSize: '0.95rem', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span>{data.primaryValue}</span>
           <i className="fas fa-arrow-right" style={{ fontSize: '0.85rem', margin: '0 8px', color: data.badgeColor }}></i>
           <span style={{ color: isPayFi ? '#fbbf24' : '#38bdf8' }}>{data.secondaryValue}</span>
@@ -172,7 +172,7 @@ const DistributionLog = ({
           gap: '6px' 
         }}>
           <i className="fas fa-network-wired"></i>
-          <span>{isPayFi ? "Real-Time Settlement Route" : "On-Chain Fee Distribution"}</span>
+          <span>{isPayFi ? "On-Chain 4-Vault Split Route" : "On-Chain Fee Distribution"}</span>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

@@ -186,14 +186,14 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#fbbf24', fontSize: '1.02rem', fontWeight: '800' }}>
-                    01. PayFi Gateway & Merchant Commerce (Web3 + QRIS)
+                    01. PayFi Gateway & Merchant Commerce (Direct QRIS + Prepaid Gas Tank)
                   </h4>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', padding: '2px 8px', borderRadius: '4px', fontWeight: '800' }}>
-                    HYBRID SETTLEMENT
+                    LIVE RELAY TESTED
                   </span>
                 </div>
                 <p style={{ margin: '0 0 12px 0', color: '#cbd5e1', fontSize: '0.85rem' }}>
-                  Turnkey payment settlement engine bridging crypto-native users and fiat commerce. Seamlessly accepts Solana Native SOL while generating instant dynamic QRIS for local merchant settlements.
+                  Non-custodial PayFi rails bridging fiat retail with Solana. Merchants receive 100% fiat payouts directly via personal QRIS, while a Solana-native Prepaid Gas Tank debits protocol fees automatically.
                 </p>
 
                 {/* 9 Category Scaffolding */}
@@ -223,9 +223,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>Non-Custodial Vendor Payouts:</strong> Direct wallet settlement without intermediary custody or lengthy clearance delays.</li>
-                  <li><strong>Automated Platform Fee:</strong> Protocol fee cut automatically routed into the protocol treasury and staking reward pools.</li>
-                  <li><strong>Instant Digital Vault:</strong> Cloud-secured download link generation for software, e-books, and 3D models upon confirmation.</li>
+                  <li><strong>Zero-Custody Direct Settlement:</strong> 100% of customer fiat (QRIS) settles directly to the merchant's bank/e-wallet without platform escrow delay.</li>
+                  <li><strong>Automated Solana Fee Split:</strong> 5% protocol fee is debited from merchant's SOL gas reserve and split on-chain: 40% Yield Vault, 30% Real Yield Pool, 15% Affiliate, 15% Ops.</li>
+                  <li><strong>Hard Gas Guardrail:</strong> Built-in execution circuit breaker rejects checkouts instantly if the vendor's SOL gas reserve drops below the required fee threshold.</li>
                 </ul>
               </div>
 
@@ -238,11 +238,11 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.72rem', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>TX V1 ATOMIC</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  High-velocity decentralized exchange architecture utilizing Solana Transaction v1 integrated with Jito Block Engine private bundles.
+                  High-velocity decentralized exchange utilizing Solana Transaction v1 with sub-400ms finality. Features Jito Block Engine bundle integration for strict anti-front-running protection.
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>MEV Mitigation:</strong> Private bundle routing eliminates sandwich attacks.</li>
-                  <li><strong>0.3% Flat Protocol Fee Distribution:</strong> 40% Yield Vault, 30% $ZQI Real Yield Pool, 15% Affiliate Treasury, 15% Protocol Operations.</li>
+                  <li><strong>MEV Mitigation:</strong> Eliminates sandwich attacks and front-running across all devnet/mainnet swaps.</li>
+                  <li><strong>Vendor Refill Bridge (Upcoming):</strong> 1-Click Swap embedded in vendor portals to let merchants convert stablecoins directly to SOL gas fuel.</li>
                 </ul>
               </div>
 
@@ -252,14 +252,14 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <h4 style={{ margin: 0, color: '#c084fc', fontSize: '1rem', fontWeight: '700' }}>
                     03. $ZQI Lock & Real Yield (Deflationary Supply Defense)
                   </h4>
-                  <span style={{ fontSize: '0.72rem', background: 'rgba(192, 132, 252, 0.15)', color: '#c084fc', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>0% INFLATION</span>
+                  <span style={{ fontSize: '0.72rem', background: 'rgba(192, 132, 252, 0.15)', color: '#c084fc', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>DEMO EPOCH READY</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  Lock mechanism mitigating secondary market selling pressure by distributing Real Yield in stable USDC dividends funded by swap and PayFi checkout volumes.
+                  Lock mechanism mitigating secondary market selling pressure by distributing Real Yield in stable USDC dividends, designed to capture fees from both AMM swaps and PayFi merchant volume.
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>Lock Multipliers:</strong> 30 Days (1.0x), 90 Days (1.5x), and 180 Days (2.5x weight).</li>
-                  <li><strong>Deflationary Burn:</strong> Mandatory 10% penalty on early unlock permanently burned on-chain.</li>
+                  <li><strong>Lock Multipliers:</strong> 7 Days (0.5x), 15 Days (0.75x), and 30 Days (1.0x share weight).</li>
+                  <li><strong>Deflationary Burn:</strong> Mandatory 10% penalty on emergency unlock designed for permanent on-chain token burn.</li>
                 </ul>
               </div>
 
@@ -272,7 +272,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.72rem', background: 'rgba(96, 165, 250, 0.15)', color: '#60a5fa', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>NON-CUSTODIAL</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  Automated compounding yield generation tailored for USDC single-deposit liquidity with baseline daily returns reaching up to 49.1% APY.
+                  Automated compounding yield generation tailored for USDC single-deposit liquidity with baseline projected daily returns reaching up to 49.1% APY.
                 </p>
               </div>
 
@@ -285,7 +285,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.72rem', background: 'rgba(74, 222, 128, 0.15)', color: '#4ade80', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>ANTI-SYBIL</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  Decentralized growth infrastructure distributing tiered commission rebates (10% to 25%) backed by Solana Name Service (.sol) support and 10-second anti-sybil cooldowns.
+                  Decentralized growth infrastructure distributing tiered commission rebates (10% to 25%) backed by Solana Name Service (.sol) support and automated anti-sybil cooldowns.
                 </p>
               </div>
 
@@ -297,14 +297,14 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
               <div style={{ borderLeft: '3px solid #14b8a6', paddingLeft: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-                  <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT)</span>
+                  <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT STAGE)</span>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(20, 184, 166, 0.15)', color: '#14b8a6', padding: '2px 8px', borderRadius: '4px', fontWeight: '700', border: '1px solid rgba(20, 184, 166, 0.3)' }}>
-                    MVP Live & PayFi Beta
+                    Tested on Devnet
                   </span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Devnet Sandbox & Multi-Category PayFi Launch</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>PayFi Engine & Multi-Module Core Deployment</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Deployment of Swap, Vault, Staking, and PayFi modules on Solana Devnet. Integration of 9 product categories, Supabase real-time database, and hybrid Solana/QRIS checkout interface.
+                  Validation of Direct QRIS payouts, Solana Prepaid Gas Tank, automated 4-way protocol fee relayer, and guardrails. AMM Swap, Vault, and Staking interfaces fully operational in devnet sandbox.
                 </p>
               </div>
 
@@ -313,9 +313,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#3b82f6', fontWeight: '700' }}>PHASE 2 • Q4 2026</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $40,000 - $60,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Audits, Squads v4 Multisig & Gasless Relayers</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Anchor Smart Contract Routing & 1-Click Refill</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Comprehensive 5-module smart contract audit (OtterSec/Sec3), Squads v4 (3-of-5) governance handover, dedicated enterprise RPC cluster, and gasless relayer infrastructure for fiat checkouts.
+                  Deploying Solana Anchor contracts to programmatically route PayFi treasury splits directly into dApp Staking pools. Integrating 1-Click AMM Swap inside merchant portals for automated gas refills and Squads v4 multisig governance.
                 </p>
               </div>
 
@@ -324,9 +324,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#8b5cf6', fontWeight: '700' }}>PHASE 3 • Q1 2027</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $100,000 - $150,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Mainnet Deployment & POL Liquidity Seeding</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Mainnet Deployment & Protocol-Owned Liquidity (POL)</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Full Solana Mainnet launch, protocol-owned liquidity (POL) injection for $ZQI/USDC & $ZQI/SOL pools to support stable PayFi rails, and live USDC yield dividend engine activation.
+                  Formal smart contract audit completion (OtterSec/Sec3), full Solana Mainnet release, initial POL seeding for $ZQI pairs, and activation of on-chain real yield distribution.
                 </p>
               </div>
 
@@ -335,9 +335,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#ec4899', fontWeight: '700' }}>PHASE 4 • Q2-Q3 2027</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $50,000 - $80,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>B2B PayFi SDK & SEA Merchant Network</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Enterprise PayFi SDK & SEA Merchant Expansion</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Turnkey PayFi TypeScript/Rust SDK and REST APIs for enterprise e-commerce (Shopify/WooCommerce), with regional merchant onboarding across Singapore and Southeast Asia.
+                  Turnkey PayFi TypeScript/Rust SDK for e-commerce platforms (Shopify/WooCommerce), expanding merchant onboarding across Indonesia, Singapore, and Southeast Asia.
                 </p>
               </div>
 
@@ -353,16 +353,16 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   fontSize: '0.82rem' 
                 }}>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>35% Security & Smart Audits:</strong> Formal Anchor verification & escrow testing across all 5 modules.
+                    <strong style={{ color: '#38bdf8' }}>35% Security & Smart Audits:</strong> Anchor program verification & multi-vault stress testing.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding ($ZQI/USDC & SOL) for tight spreads.
+                    <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding ($ZQI/USDC & SOL) for low slippage.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>20% PayFi Infrastructure:</strong> Dedicated RPC cluster, gasless relayers & QRIS rate engines.
+                    <strong style={{ color: '#38bdf8' }}>20% PayFi Relayer Cluster:</strong> Enterprise RPC infrastructure & automated gas balance relayers.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>15% Merchant Onboarding:</strong> SEA creator partnerships & regulatory compliance framework.
+                    <strong style={{ color: '#38bdf8' }}>15% Merchant Onboarding:</strong> SEA creator partnerships & regional compliance execution.
                   </div>
                 </div>
               </div>
@@ -373,27 +373,27 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           {activeTab === 'flywheel' && (
             <div style={{ background: '#070c18', border: '1px solid #1e293b', borderRadius: '12px', padding: '18px' }}>
               <h4 style={{ margin: '0 0 10px 0', color: '#10b981', fontSize: '1.05rem' }}>
-                The Hybrid DeFi + PayFi Dual-Velocity Flywheel
+                The Sustainable PayFi + DeFi Ecosystem Flywheel
               </h4>
               <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 14px 0' }}>
-                ZoniqFi connects real-world commercial checkout volume directly into token supply compression and non-inflationary yields:
+                How real-world retail commerce fuels organic on-chain liquidity and yield without token inflation:
               </p>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.83rem' }}>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #f59e0b' }}>
-                  <strong>Step 1 (Real-World Commercial Velocity):</strong> Consumers purchase digital goods or physical products via Solana Pay or QRIS. Every transaction generates real fee cashflow.
+                  <strong>Step 1 (Zero-Friction Fiat Checkout):</strong> Shoppers pay via Direct QRIS without requiring Web3 wallets. The merchant receives 100% fiat immediately into their bank account.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
-                  <strong>Step 2 (DeFi Swap & Fee Capitalization):</strong> Traders swap on the AMM DEX (0.3% fee) while merchants convert revenue, continuously feeding the Real Yield dividend pool.
+                  <strong>Step 2 (Automated Prepaid Gas Debit):</strong> The protocol debits a 5% fee from the merchant's SOL Gas Tank, enforced by an on-chain guardrail that halts checkouts if reserves hit zero.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #c084fc' }}>
-                  <strong>Step 3 (Supply Compression & Lock Rewards):</strong> Real yield from PayFi + Swap fees is distributed directly to $ZQI lockers. Emergency unlocks trigger an automated 10% token burn.
+                  <strong>Step 3 (Multi-Vault Solana Relay):</strong> Every checkout atomikally routes SOL across 4 protocol wallets: Yield Vault (40%), Staking Pool (30%), Affiliates (15%), and Protocol Ops (15%).
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #60a5fa' }}>
-                  <strong>Step 4 (Automated Compounding & TVL Growth):</strong> Treasury reserves auto-compound within non-custodial single-asset USDC Vaults, deepening liquidity buffers.
+                  <strong>Step 4 (Closed-Loop DEX Refill & Yield):</strong> Merchants replenish gas reserves via the integrated AMM Swap, generating organic DEX trading volume and funding $ZQI real yield lockers.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
-                  <strong>Step 5 (Affiliate Network Viral Growth):</strong> Transparent on-chain referral fees incentivize merchants, creators, and affiliates to funnel new commerce back into Step 1.
+                  <strong>Step 5 (Self-Sustaining Expansion):</strong> Real protocol cashflow continually rewards token lockers and affiliate partners, scaling merchant adoption without inflationary emissions.
                 </div>
               </div>
             </div>

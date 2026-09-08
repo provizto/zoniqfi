@@ -4,7 +4,7 @@ const TransactionSuccessModal = ({
   isOpen, 
   onClose, 
   swapDetails = null,
-  payfiDetails = null, // Detail transaksi PayFi jika berasal dari checkout barang
+  payfiDetails = null,
   programId = "HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD",
   onNavigateTab
 }) => {
@@ -31,11 +31,11 @@ const TransactionSuccessModal = ({
 
   // Data transaksi (Swap vs PayFi)
   const data = isPayFi ? {
-    title: "Payment Confirmed!",
-    badge: "PayFi Merchant Settlement",
-    item: payfiDetails.productName || "Digital Asset / Merchandise",
-    amountPaid: payfiDetails.amount || "0.05 SOL",
-    paymentMethod: payfiDetails.method || "Solana Pay (Web3)",
+    title: "Order & License Confirmed!",
+    badge: "PayFi Direct Settlement",
+    item: payfiDetails.productName || "Digital Asset License",
+    amountPaid: payfiDetails.amount || "Rp 50.000 (0.0025 SOL Fee)",
+    paymentMethod: payfiDetails.method || "IDR QRIS Instant (Direct)",
     downloadUrl: payfiDetails.downloadUrl || null,
     txSignature: payfiDetails.txSignature || null
   } : (swapDetails || {
@@ -63,7 +63,8 @@ const TransactionSuccessModal = ({
   const handleActionClick = () => {
     if (isPayFi) {
       if (data.downloadUrl) {
-        window.open(data.downloadUrl, '_blank');
+        // Aman dari reverse-tabnabbing
+        window.open(data.downloadUrl, '_blank', 'noopener,noreferrer');
       }
       onClose?.();
       return;
@@ -158,12 +159,12 @@ const TransactionSuccessModal = ({
           color: isPayFi ? '#fde68a' : '#93c5fd'
         }}>
           <div style={{ fontWeight: '700', color: isPayFi ? '#f59e0b' : '#60a5fa', marginBottom: '2px' }}>
-            ⚡ {isPayFi ? "ZoniqFi PayFi Settlement" : "Solana Devnet Sandbox"}
+            ⚡ {isPayFi ? "PayFi Engine & Gas Split Relayed" : "Solana Devnet Sandbox"}
           </div>
           <div>
             {isPayFi 
-              ? "Payment confirmed. Vendor payout and 5% protocol cut processed."
-              : "Protocol Fee settled safely into on-chain distribution pools."}
+              ? "100% fiat settled directly to vendor. 5% protocol fee debited from SOL Gas Tank & split on-chain."
+              : "Swap completed atomikally with private bundle routing. Fee routed to distribution pools."}
           </div>
         </div>
 
@@ -223,7 +224,7 @@ const TransactionSuccessModal = ({
             paddingTop: '8px',
             fontSize: '0.8rem'
           }}>
-            <span>Program ID:</span>
+            <span>Relay Program:</span>
             <span style={{ fontFamily: 'monospace', color: '#cbd5e1' }}>
               {formatShortAddress(programId)}
             </span>

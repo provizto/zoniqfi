@@ -261,35 +261,35 @@
 
       <h2>1. Executive Summary</h2>
       <p>
-        <strong>ZONIQFI</strong> is a turnkey, modular DeFi & PayFi infrastructure protocol on Solana. It leverages native <strong>Solana Transaction v1 architecture (4,096-byte atomic payload)</strong> to orchestrate MEV-shielded liquidity swaps via Jito Block Engine, automated yield vaults, deflationary supply defense, anti-sybil decentralized referrals, and a hybrid <strong>PayFi Digital Gateway</strong> enabling on-chain digital asset licensing settled through both crypto-native wallets and local fiat rails (QRIS).
+        <strong>ZONIQFI</strong> is a modular DeFi & PayFi infrastructure protocol on Solana. It bridges real-world retail commerce with high-velocity on-chain settlement. Utilizing <strong>Solana Transaction v1 architecture (4,096-byte atomic payload)</strong>, the protocol combines MEV-protected liquidity swaps via Jito Block Engine, automated yield vaults, and a non-custodial <strong>PayFi Gateway</strong>. Merchants receive 100% fiat payouts directly via personal QRIS, while an automated on-chain <strong>Prepaid SOL Gas Tank</strong> debits and splits protocol fees across four on-chain vaults with hard guardrail protections.
       </p>
 
       <h2>2. Problem Statement & Market Inefficiencies</h2>
       <ul>
+        <li><strong>Onboarding & Gas Friction for Merchants:</strong> Web2 merchants in emerging markets cannot navigate complex token swaps, crypto volatility, or gas management simply to accept payments.</li>
         <li><strong>Pervasive MEV Exploitation:</strong> Arbitrage and sandwich bots in public mempools extract substantial value from retail traders.</li>
-        <li><strong>Web3-to-Real-World Commerce Barrier:</strong> Digital creators and merchants struggle to bridge on-chain licensing with real-world payment settlement (fiat rails & gasless checkout).</li>
-        <li><strong>Inflationary Farm Vulnerabilities:</strong> Traditional AMMs rely on hyper-inflationary token emissions, causing liquidity drain during market downturns.</li>
-        <li><strong>Sybil Exploitation in Growth Programs:</strong> Conventional incentive programs suffer from bot wash-trading, self-referral bypasses, and multi-wallet spamming.</li>
+        <li><strong>Custodial Intermediary Risk:</strong> Centralized payment gateways charge heavy fees (2–4%) and impose multi-day settlement delays on merchant revenue.</li>
+        <li><strong>Inflationary Farm Vulnerabilities:</strong> Traditional AMMs rely on hyper-inflationary token emissions rather than real-world commercial fee cashflow.</li>
       </ul>
 
       <h2>3. Core Technical Architecture (Atomic Transaction Pipeline)</h2>
-      <div class="ascii-box">[ Solana Transaction v1 Pipeline (4,096-Byte Atomic Engine) ]
+      <div class="ascii-box">[ Solana Transaction v1 & PayFi Pipeline (4,096-Byte Engine) ]
 │
 ├── 1. Security & Pre-Execution Validation
 │   ├── Jito Engine Private Bundle Routing (Sandwich Attack Prevention)
 │   ├── Anti-Wash Trading Cooldown Enforcement (Max 1 tx / 10s per wallet PDA)
 │   └── SNS Identity Resolver & Anti Self-Referral Validation (.sns & .sol)
 │
-├── 2. Liquidity, PayFi Commerce & Settlement Engine
-│   ├── Dynamic SPL Token Swap Routing (Jupiter v2 Price Engine API)
-│   ├── PayFi Hybrid Settlement Gateway (Direct Web3 SOL + Instant Fiat QRIS)
-│   └── On-Chain Digital License Verification & Automated Access Delivery
+├── 2. PayFi Commerce & Hybrid Settlement Engine
+│   ├── Direct QRIS Checkout (100% Instant Fiat Settlement to Merchant Account)
+│   ├── Merchant Prepaid Gas Tank Check & Execution Guardrail (Halt on 0 SOL)
+│   └── Multi-Vault Atomic Fee Relayer (sendRelayTransaction on Solana Devnet)
 │
-└── 3. Atomic Multi-Tier Fee Settlement
-    ├── 40% ➔ Yield Optimizer Vault (Auto-compounding APY up to 49.1%)
+└── 3. Protocol Fee Distribution Route (5% Platform Cut)
+    ├── 40% ➔ Yield Optimizer Vault (Auto-compounding APY)
     ├── 30% ➔ ZQI Real Yield Pool (USDC Staking Dividends)
     ├── 15% ➔ Anti-Sybil Affiliate Treasury (Tiered Community Rewards)
-    └── 15% ➔ Protocol Treasury & PayFi Merchant Operations</div>
+    └── 15% ➔ Protocol Operations & Relayer Treasury</div>
 
       <h2>4. Protocol Specifications & On-Chain Verification</h2>
       <table class="data-table">
@@ -316,38 +316,38 @@
             <td>Executable (BPF Upgradeable)</td>
           </tr>
           <tr>
-            <td><strong>PayFi Digital Gateway</strong></td>
-            <td>Dual Web3 (SOL) & QRIS Fiat settlement with instant NFT license minting</td>
-            <td>Live functional prototype</td>
+            <td><strong>PayFi Settlement Rails</strong></td>
+            <td>Direct QRIS 100% fiat payout + Prepaid SOL Gas Tank debit (5%) with guardrail</td>
+            <td>Live Devnet Tested</td>
           </tr>
           <tr>
-            <td><strong>Price Feed Engine</strong></td>
-            <td>Jupiter Price Engine v2 Integration</td>
-            <td>Live dynamic feed matching</td>
+            <td><strong>On-Chain Fee Relayer</strong></td>
+            <td>Atomic 4-way split to dedicated protocol vault addresses via Solana transactions</td>
+            <td>Operational & Verified</td>
           </tr>
           <tr>
-            <td><strong>Yield Mechanism</strong></td>
-            <td>100% Real Yield (USDC fee distribution)</td>
-            <td>Active on-chain settlement</td>
+            <td><strong>DEX Swap Engine</strong></td>
+            <td>Anti-MEV private bundle execution with 0.3% protocol fee route</td>
+            <td>Functional Devnet Core</td>
           </tr>
           <tr>
-            <td><strong>Supply Defense</strong></td>
-            <td>Multiplier Staking (0.5x - 2.5x) + 10% Burn Penalty</td>
-            <td>Deflationary Early Unlock</td>
+            <td><strong>Yield & Staking Engine</strong></td>
+            <td>Epoch-based Real Yield distribution funded by PayFi & DEX volume</td>
+            <td>Interactive Sandbox Demo</td>
           </tr>
           <tr>
             <td><strong>Web3 Identity</strong></td>
-            <td>SNS Resolution (.sol & .sns) + Self-Referral Rejection</td>
-            <td>Real-time domain resolution</td>
+            <td>Solana Name Service (.sol & .sns) resolution with anti-sybil checks</td>
+            <td>Real-time RPC Lookup</td>
           </tr>
         </tbody>
       </table>
 
       <h2>5. Milestone Roadmap & Grant Utilization</h2>
       <ul>
-        <li><strong>Milestone 1 — Stress Testing via LiteSVM:</strong> Execute local fuzz testing and sandwich attack simulations using LiteSVM to optimize compute unit (CU) consumption across atomic v1 instructions and merchant payment hooks.</li>
-        <li><strong>Milestone 2 — PayFi Merchant Settlement & Gasless Relay:</strong> Finalize automated on-chain NFT license minting for fiat buyers via serverless relayer and multi-vendor payout reconciliation.</li>
-        <li><strong>Milestone 3 — Security Audit & Mainnet Launch:</strong> Complete comprehensive smart contract audit for the 4-way fee split vaults and launch production deployment with native SNS SDK integration.</li>
+        <li><strong>Milestone 1 — PayFi Engine Validation (Current):</strong> Successfully tested Direct QRIS checkout, merchant Prepaid Gas Tank debit, hard guardrail execution circuit-breakers, and 4-way Solana fee relayers on Devnet.</li>
+        <li><strong>Milestone 2 — Anchor Programmatic Routing & 1-Click Gas Refill:</strong> Develop custom Anchor programs to route incoming PayFi fee splits directly into the dApp staking vault contracts, and embed a 1-Click Swap module into the merchant dashboard for automated gas replenishment.</li>
+        <li><strong>Milestone 3 — Security Audits & Mainnet Deployment:</strong> Complete formal smart contract audits (OtterSec/Sec3), integrate Squads v4 multisig protocol control, seed protocol-owned liquidity (POL), and launch production PayFi rails for Southeast Asian merchants.</li>
       </ul>
 
       <div class="footer">

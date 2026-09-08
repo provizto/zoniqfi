@@ -49,7 +49,7 @@ const ComplianceModal = ({ isOpen = true, onClose, onAccept }) => {
       <div style={{
         backgroundColor: '#0b1326',
         border: '1px solid rgba(56, 189, 248, 0.25)',
-        maxWidth: '560px',
+        maxWidth: '580px',
         width: '100%',
         borderRadius: '16px',
         padding: '24px',
@@ -75,16 +75,16 @@ const ComplianceModal = ({ isOpen = true, onClose, onAccept }) => {
             <span style={{ fontSize: '1.2rem', color: '#14F195' }}>🛡️</span>
             <h2 style={{
               margin: 0,
-              fontSize: '1.1rem',
+              fontSize: '1.05rem',
               fontWeight: '800',
               color: '#14F195',
               letterSpacing: '0.04em'
             }}>
-              ZONIQFI | TERMS & REGULATORY COMPLIANCE
+              ZONIQFI | ACCELERATOR EVALUATION & TERMS
             </h2>
           </div>
           <span style={{
-            fontSize: '0.7rem',
+            fontSize: '0.68rem',
             background: 'rgba(20, 241, 149, 0.15)',
             color: '#14F195',
             padding: '2px 8px',
@@ -92,7 +92,7 @@ const ComplianceModal = ({ isOpen = true, onClose, onAccept }) => {
             fontWeight: '700',
             border: '1px solid rgba(20, 241, 149, 0.3)'
           }}>
-            PayFi v1.0
+            Colosseum Sprint Devnet
           </span>
         </div>
         
@@ -104,14 +104,14 @@ const ComplianceModal = ({ isOpen = true, onClose, onAccept }) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
-          maxHeight: '300px',
+          maxHeight: '320px',
           overflowY: 'auto',
           paddingRight: '8px',
           scrollbarWidth: 'thin',
           scrollbarColor: '#334155 #0b1326'
         }}>
           <p style={{ margin: 0, color: '#e2e8f0' }}>
-            By clicking <strong>"I Agree & Enter App"</strong>, you explicitly acknowledge that you are accessing the official infrastructure sandbox for the <strong>ZoniqFi PayFi & DeFi Protocol</strong>.
+            By clicking <strong>"I Agree & Enter App"</strong>, you acknowledge that you are accessing an active prototype deployed for the <strong>Colosseum Solana Accelerator</strong> track.
           </p>
           
           <div style={{
@@ -122,38 +122,38 @@ const ComplianceModal = ({ isOpen = true, onClose, onAccept }) => {
             fontSize: '0.78rem'
           }}>
             <p style={{ color: '#fbbf24', fontWeight: 'bold', margin: '0 0 4px 0' }}>
-              ⚠️ SOLANA DEVNET & HYBRID SETTLEMENT NOTICE:
+              ⚠️ ACCELERATOR SANDBOX & HYBRID SETTLEMENT NOTICE:
             </p>
             <p style={{ margin: 0, color: '#fde68a' }}>
-              DeFi transactions and on-chain program validations run under simulated Solana Devnet parameters. PayFi merchant checkouts integrate decentralized escrow and dynamic QRIS payment endpoints without middleman custody.
+              Smart contracts and on-chain fee splitting run in a verified test environment on Solana Devnet. Merchant retail rails integrate direct, non-custodial fiat QRIS endpoints paired with an automated on-chain Prepaid SOL Gas Tank.
             </p>
           </div>
 
           <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '8px', padding: '10px 12px' }}>
             <strong style={{ color: '#38bdf8', fontSize: '0.8rem' }}>1. Non-Custodial Architecture:</strong>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.76rem', color: '#cbd5e1' }}>
-              ZoniqFi never holds or has custody of your private cryptographic keys. All transactions (Swaps, Locks, and PayFi Checkouts) are signed locally by your client wallet (Phantom, Solflare, OKX, etc.).
+              ZoniqFi never takes custody of user cryptographic private keys. All on-chain actions (DEX Swaps, Vault Deposits, and Gas Tank funding) are signed locally by your client wallet (Phantom, Solflare, etc.).
             </p>
           </div>
 
           <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '8px', padding: '10px 12px' }}>
-            <strong style={{ color: '#fbbf24', fontSize: '0.8rem' }}>2. PayFi Merchant Gateway & Escrow Terms:</strong>
+            <strong style={{ color: '#fbbf24', fontSize: '0.8rem' }}>2. PayFi Direct Settlement & Gas Tank Policy:</strong>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.76rem', color: '#cbd5e1' }}>
-              Payments for goods and digital assets route 95% directly to the designated vendor payout wallet while 5% protocol cut is allocated to platform reserves and Real Yield token pools. Physical goods shipping and RWA fulfillment remain the sole responsibility of individual registered merchants.
+              100% of customer fiat (QRIS) settles directly to the merchant's personal bank/e-wallet account without intermediary platform escrow. The platform's 5% protocol fee is debited from the vendor's SOL gas reserve and split on-chain. Automated guardrails halt checkouts if vendor reserves are depleted.
             </p>
           </div>
 
           <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '8px', padding: '10px 12px' }}>
             <strong style={{ color: '#c084fc', fontSize: '0.8rem' }}>3. Anti-MEV & Anti-Sybil Defense:</strong>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.76rem', color: '#cbd5e1' }}>
-              AMM swaps utilize Jito Block Engine private bundle routing to prevent front-running and sandwich attacks. Referral links and SNS domains enforce an on-chain 10-second cooldown to eliminate automated bot farming.
+              Swap infrastructure utilizes Jito Block Engine bundle concepts to mitigate MEV and front-running risks. On-chain affiliate links and SNS domain resolutions enforce automated rate limits to prevent bot abuse.
             </p>
           </div>
           
           <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '8px', padding: '10px 12px' }}>
-            <strong style={{ color: '#4ade80', fontSize: '0.8rem' }}>4. Jurisdictional & Compliance Restrictions:</strong>
+            <strong style={{ color: '#4ade80', fontSize: '0.8rem' }}>4. Experimental Prototype & Jurisdiction Disclaimer:</strong>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.76rem', color: '#cbd5e1' }}>
-              Access to this protocol is strictly restricted for residents or citizens of prohibited jurisdictions subject to international sanctions (including US, IR, KP). Automated edge geoblocking is continuously enforced.
+              This platform represents experimental software built for hackathon and venture acceleration demonstration. It does not constitute financial, investment, or banking services. Access is restricted for persons subject to international sanctions or prohibited local jurisdictions.
             </p>
           </div>
         </div>
