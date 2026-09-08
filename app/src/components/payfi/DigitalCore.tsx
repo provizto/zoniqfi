@@ -15,6 +15,7 @@ export interface StoreProduct {
   badge?: string;
   deliverables?: string[];
   vendor_wallet?: string;
+  qris_url?: string;
 }
 
 export interface VendorProfile {
@@ -25,6 +26,7 @@ export interface VendorProfile {
   bio?: string;
   payout_bank_name?: string;
   payout_account_number?: string;
+  gas_balance?: number;
 }
 
 export interface StoreConfig {
@@ -54,6 +56,7 @@ interface AdminVendorPayoutItem {
   contact_email?: string;
   payout_bank_name?: string;
   payout_account_number?: string;
+  gas_balance?: number;
   total_orders: number;
   gross_sales_eth: number;
   net_vendor_earnings_eth: number;
@@ -260,6 +263,8 @@ function MainApp() {
   const [vendorEmail, setVendorEmail] = useState<string>("");
   const [vendorBank, setVendorBank] = useState<string>("");
   const [vendorAccNumber, setVendorAccNumber] = useState<string>("");
+  const [topUpAmount, setTopUpAmount] = useState<string>("0.05");
+  const [isToppingUpGas, setIsToppingUpGas] = useState<boolean>(false);
   
   const [isEditingVendorProfile, setIsEditingVendorProfile] = useState<boolean>(false);
   const [isUpdatingVendorProfile, setIsUpdatingVendorProfile] = useState<boolean>(false);
@@ -270,6 +275,9 @@ function MainApp() {
   const [editPrice, setEditPrice] = useState<string>("");
   const [editBadge, setEditBadge] = useState<string>("");
   const [isUpdatingProduct, setIsUpdatingProduct] = useState<boolean>(false);
+  const [editProductFile, setEditProductFile] = useState<File | null>(null);
+  const [editVendorQrisFile, setEditVendorQrisFile] = useState<File | null>(null);
+  const [editExternalLink, setEditExternalLink] = useState<string>("");
 
   const [vendorStats, setVendorStats] = useState<{ totalOrders: number; grossEth: number; netEth: number }>({
     totalOrders: 0,
@@ -292,6 +300,7 @@ function MainApp() {
   const [newProductBadge, setNewProductBadge] = useState<string>(PAYFI_CATEGORY_OPTIONS[0]);
   const [newProductDeliverable, setNewProductDeliverable] = useState<string>("");
   const [productFile, setProductFile] = useState<File | null>(null);
+  const [vendorQrisFile, setVendorQrisFile] = useState<File | null>(null);
   const [isSubmittingProduct, setIsSubmittingProduct] = useState<boolean>(false);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -384,7 +393,8 @@ function MainApp() {
           priceEth: String(item.price_eth || "0.001"),
           badge: item.category || item.badge || "General",
           deliverables: item.download_url ? [item.download_url] : (item.deliverables || ["Direct Download Access"]),
-          vendor_wallet: item.vendor_wallet || undefined
+          vendor_wallet: item.vendor_wallet || undefined,
+          qris_url: item.qris_url || undefined
         }));
         setProducts(mapped);
       } else {
@@ -430,7 +440,10 @@ function MainApp() {
         .maybeSingle();
 
       if (data) {
-        setVendorProfile(data);
+        setVendorProfile({
+          ...data,
+          gas_balance: Number(data.gas_balance) || 0
+        });
         setVendorStoreName(data.store_name);
         setVendorEmail(data.contact_email || "");
         setVendorBank(data.payout_bank_name || "");
@@ -480,6 +493,7 @@ function MainApp() {
             wallet_address: v.wallet_address,
             store_name: v.store_name,
             contact_email: v.contact_email,
+            gas_balance: Number(v.gas_balance) || 0,
             payout_bank_name: v.payout_bank_name,
             payout_account_number: v.payout_account_number,
             total_orders: totalOrd,
@@ -494,6 +508,81 @@ function MainApp() {
       }
     } catch (err) {
       console.warn("Failed to fetch admin payouts:", err);
+    }
+  };
+
+  // HANDLE TOP UP GAS
+  const handleTopUpGas = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!address) {
+      alert("Please connect your wallet first!");
+      return;
+    }
+
+    const amountNum = Number(topUpAmount);
+    if (!amountNum || amountNum <= 0) {
+      alert("Please enter a valid SOL amount to deposit.");
+      return;
+    }
+
+    try {
+      setIsToppingUpGas(true);
+
+      // Gunakan alamat public key Solana yang valid (Base58)
+      const targetPlatformWallet = 
+        (storeConfig as any).ops_wallet || 
+        "B5NUG78tHhK82m9kC1eR9V5hWk2w2H3yR7K9m8N7b6V5";
+
+      const solana = (window as any).solana;
+      if (!solana?.isPhantom && !solana?.publicKey) {
+        alert("Solana wallet extension (Phantom) not detected!");
+        return;
+      }
+
+      const { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } = await import("@solana/web3.js");
+      const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+
+      const fromPubkey = new PublicKey(String(address));
+      const toPubkey = new PublicKey(targetPlatformWallet);
+
+      const lamports = Math.round(amountNum * LAMPORTS_PER_SOL);
+
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey,
+          toPubkey,
+          lamports,
+        })
+      );
+
+      const { blockhash } = await connection.getLatestBlockhash("confirmed");
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = fromPubkey;
+
+      const signedTx = await solana.signAndSendTransaction(transaction);
+      await connection.confirmTransaction(signedTx.signature, "confirmed");
+
+      const walletStr = String(address).toLowerCase();
+      const newGasTotal = (Number(vendorProfile?.gas_balance) || 0) + amountNum;
+
+      const { error: updateErr } = await supabase
+        .from("vendors")
+        .update({ gas_balance: newGasTotal })
+        .eq("wallet_address", walletStr);
+
+      if (updateErr) {
+        alert("Transaction broadcasted, but database sync failed: " + updateErr.message);
+        return;
+      }
+
+      alert(`✅ Deposit successful! Added ${amountNum} SOL to your Gas Tank.`);
+      setVendorProfile((prev) => prev ? { ...prev, gas_balance: newGasTotal } : null);
+      setTopUpAmount("0.05");
+    } catch (err: any) {
+      console.error(err);
+      alert("Deposit failed: " + (err.message || "User rejected or insufficient balance"));
+    } finally {
+      setIsToppingUpGas(false);
     }
   };
 
@@ -526,6 +615,7 @@ function MainApp() {
     nftTokenId: string;
   }) => {
     try {
+      // 1. Simpan data transaksi ke tabel orders
       const { error } = await supabase.from("orders").insert([
         {
           sku: payload.sku || `SKU-0${payload.productId}`,
@@ -544,6 +634,36 @@ function MainApp() {
         console.error("❌ Gagal simpan ke Supabase orders:", error);
       }
 
+      // 2. Potong saldo gas vendor sebesar 5% protocol fee
+      if (payload.vendorWallet) {
+        const vWallet = String(payload.vendorWallet).toLowerCase();
+        const priceNum = Number(payload.priceEth) || 0;
+        const fee5Percent = priceNum * 0.05;
+
+        // Ambil saldo gas terkini vendor dari database
+        const { data: vData } = await supabase
+          .from("vendors")
+          .select("gas_balance")
+          .eq("wallet_address", vWallet)
+          .maybeSingle();
+
+        if (vData) {
+          const currentBal = Number(vData.gas_balance) || 0;
+          const updatedBal = Math.max(0, currentBal - fee5Percent);
+
+          await supabase
+            .from("vendors")
+            .update({ gas_balance: updatedBal })
+            .eq("wallet_address", vWallet);
+
+          // Update state profil jika vendor yang sedang aktif login adalah pemilik toko
+          if (address && String(address).toLowerCase() === vWallet) {
+            setVendorProfile((prev) => prev ? { ...prev, gas_balance: updatedBal } : null);
+          }
+        }
+      }
+
+      // 3. Sinkronkan ulang data profil, laporan admin, dan daftar order
       checkVendorProfile();
       fetchAdminPayoutData();
       fetchAdminOrders();
@@ -587,6 +707,9 @@ function MainApp() {
     setEditDesc(prod.desc);
     setEditPrice(prod.priceEth);
     setEditBadge(prod.badge || PAYFI_CATEGORY_OPTIONS[0]);
+    setEditExternalLink(prod.deliverables?.[0] || "");
+    setEditProductFile(null);
+    setEditVendorQrisFile(null);
   };
 
   const handleSaveEditProduct = async (e: React.FormEvent) => {
@@ -595,14 +718,63 @@ function MainApp() {
 
     try {
       setIsUpdatingProduct(true);
+
+      const updatePayload: any = {
+        title: editName,
+        description: editDesc,
+        price_eth: Number(editPrice) || 0.001,
+        category: editBadge,
+      };
+
+      // 1. Simpan Link Eksternal jika diisi
+      if (editExternalLink.trim()) {
+        updatePayload.download_url = editExternalLink.trim();
+      }
+
+      // 2. Upload Master Asset File baru jika vendor memilih file
+      if (editProductFile) {
+        const fileExt = editProductFile.name.split(".").pop();
+        const cleanFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+        const filePath = `vendor-files/${cleanFileName}`;
+
+        const { error: uploadErr } = await supabase.storage
+          .from("digital-assets")
+          .upload(filePath, editProductFile);
+
+        if (!uploadErr) {
+          const { data: signedData } = await supabase.storage
+            .from("digital-assets")
+            .createSignedUrl(filePath, 60 * 60 * 24 * 365);
+          if (signedData?.signedUrl) {
+            updatePayload.download_url = signedData.signedUrl;
+          }
+        }
+      }
+
+      // 3. Upload QRIS Toko baru jika vendor memilih file gambar
+      if (editVendorQrisFile) {
+        const qrisExt = editVendorQrisFile.name.split(".").pop();
+        const cleanQrisName = `qris-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${qrisExt}`;
+        const qrisPath = `vendor-qris/${cleanQrisName}`;
+
+        const { error: qrisErr } = await supabase.storage
+          .from("digital-assets")
+          .upload(qrisPath, editVendorQrisFile);
+
+        if (!qrisErr) {
+          const { data: qrisSigned } = await supabase.storage
+            .from("digital-assets")
+            .createSignedUrl(qrisPath, 60 * 60 * 24 * 365 * 5);
+          if (qrisSigned?.signedUrl) {
+            updatePayload.qris_url = qrisSigned.signedUrl;
+          }
+        }
+      }
+
+      // 4. Update data ke tabel products Supabase
       const { error } = await supabase
         .from("products")
-        .update({
-          title: editName,
-          description: editDesc,
-          price_eth: Number(editPrice) || 0.001,
-          category: editBadge
-        })
+        .update(updatePayload)
         .match({ sku: editingProduct.sku || `SKU-0${editingProduct.id}`, vendor_wallet: String(address).toLowerCase() });
 
       if (error) {
@@ -651,18 +823,16 @@ function MainApp() {
       setIsUpdatingVendorProfile(true);
       const walletStr = String(address).toLowerCase();
 
+      // Gunakan update berdasarkan wallet_address agar gas_balance tetap aman
       const { data, error } = await supabase
         .from("vendors")
-        .upsert(
-          {
-            wallet_address: walletStr,
-            store_name: vendorStoreName,
-            contact_email: vendorEmail,
-            payout_bank_name: vendorBank,
-            payout_account_number: vendorAccNumber
-          },
-          { onConflict: "wallet_address" }
-        )
+        .update({
+          store_name: vendorStoreName,
+          contact_email: vendorEmail,
+          payout_bank_name: "QRIS Direct",
+          payout_account_number: "QRIS Active"
+        })
+        .eq("wallet_address", walletStr)
         .select()
         .single();
 
@@ -673,7 +843,7 @@ function MainApp() {
 
       setVendorProfile(data);
       setIsEditingVendorProfile(false);
-      alert("✅ Vendor Profile & Payout Account updated!");
+      alert("✅ Profil merchant berhasil diperbarui!");
       fetchAdminPayoutData();
     } catch (err: any) {
       alert("Error: " + err.message);
@@ -897,7 +1067,32 @@ function MainApp() {
     }
   };
 
-  const executeOnChainRelayMint = () => {
+  const executeOnChainRelayMint = async () => {
+    if (!selectedProduct) return;
+
+    const vendorWallet = selectedProduct.vendor_wallet ? String(selectedProduct.vendor_wallet).toLowerCase() : null;
+    const requiredGasFee = Number(selectedProduct.priceEth || 0.015) * 0.05; // 5% Platform Fee
+
+    // 1. Guardrail: Cek Saldo Gas Tank Vendor di Supabase
+    if (vendorWallet) {
+      try {
+        const { data: vendorData, error: vendorErr } = await supabase
+          .from("vendors")
+          .select("gas_balance")
+          .eq("wallet_address", vendorWallet)
+          .maybeSingle();
+
+        const currentGas = Number(vendorData?.gas_balance) || 0;
+
+        if (vendorErr || currentGas < requiredGasFee) {
+          alert(`⚠️ Transaksi QRIS ditolak!\n\nMerchant Gas Tank tidak mencukupi untuk memproses protokol fee 5% (${requiredGasFee.toFixed(4)} SOL).\n\nSaldo gas vendor saat ini: ${currentGas.toFixed(4)} SOL. Minta vendor untuk melakukan Top Up Gas.`);
+          return;
+        }
+      } catch (err) {
+        console.error("Gagal memeriksa gas vendor:", err);
+      }
+    }
+
     setShowQrisModal(false);
     setShowCheckoutModal(false);
     setFiatPaymentStatus("PROCESSING");
@@ -920,6 +1115,7 @@ function MainApp() {
           method: methodStr
         });
 
+        // 2. Rekam transaksi ke orders
         await recordOrderToSupabase({
           sku: `SKU-0${selectedProduct.id}`,
           productId: selectedProduct.id,
@@ -931,6 +1127,27 @@ function MainApp() {
           txHash: mockRelayTx,
           nftTokenId: relayTokenId
         });
+
+        // 3. Potong Gas Tank Vendor sebesar 5%
+        if (vendorWallet) {
+          try {
+            const { data: vData } = await supabase
+              .from("vendors")
+              .select("gas_balance")
+              .eq("wallet_address", vendorWallet)
+              .single();
+
+            if (vData) {
+              const updatedGas = Math.max(0, (Number(vData.gas_balance) || 0) - requiredGasFee);
+              await supabase
+                .from("vendors")
+                .update({ gas_balance: updatedGas })
+                .eq("wallet_address", vendorWallet);
+            }
+          } catch (gasErr) {
+            console.error("Gagal memotong gas fee:", gasErr);
+          }
+        }
       }
     }, 1200);
   };
@@ -946,6 +1163,7 @@ function MainApp() {
       setIsSubmittingProduct(true);
       let finalDownloadUrl = newProductDeliverable;
 
+      // 1. Upload File Produk Digital (Jika ada file)
       if (productFile) {
         const fileExt = productFile.name.split(".").pop();
         const cleanFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
@@ -968,12 +1186,34 @@ function MainApp() {
         finalDownloadUrl = signedData?.signedUrl || filePath;
       }
 
+      // 2. Upload Gambar QRIS Vendor (Jika ada file)
+      let uploadedQrisUrl = "";
+      if (vendorQrisFile) {
+        const qrisExt = vendorQrisFile.name.split(".").pop();
+        const cleanQrisName = `qris-${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${qrisExt}`;
+        const qrisPath = `vendor-qris/${cleanQrisName}`;
+
+        const { error: qrisErr } = await supabase.storage
+          .from("digital-assets")
+          .upload(qrisPath, vendorQrisFile);
+
+        if (qrisErr) {
+          console.error("Failed to upload QRIS image:", qrisErr.message);
+        } else {
+          const { data: qrisSigned } = await supabase.storage
+            .from("digital-assets")
+            .createSignedUrl(qrisPath, 60 * 60 * 24 * 365 * 5); // Berlaku 5 tahun
+          uploadedQrisUrl = qrisSigned?.signedUrl || "";
+        }
+      }
+
       const deliverablesList = finalDownloadUrl
         ? finalDownloadUrl.split(",").map((s) => s.trim())
         : ["Full Digital Package Access"];
 
       const nextSku = `SKU-0${products.length + 1}`;
 
+      // 3. Simpan Ke Tabel Products Beserta qris_url
       const { error } = await supabase.from("products").insert([
         {
           sku: nextSku,
@@ -982,7 +1222,8 @@ function MainApp() {
           description: newProductDesc,
           price_eth: Number(newProductPrice) || 0.001,
           category: newProductBadge || PAYFI_CATEGORY_OPTIONS[0],
-          download_url: deliverablesList[0] || "https://zoniqfinance.com"
+          download_url: deliverablesList[0] || "https://zoniqfi.com",
+          qris_url: uploadedQrisUrl || null
         }
       ]);
 
@@ -991,11 +1232,12 @@ function MainApp() {
         return;
       }
 
-      alert("✅ Product & digital files successfully published to storefront!");
+      alert("✅ Product & QRIS successfully published to storefront!");
       setNewProductName("");
       setNewProductDesc("");
       setNewProductDeliverable("");
       setProductFile(null);
+      setVendorQrisFile(null);
       fetchProductsFromSupabase();
       setVendorActiveTab("PRODUCTS");
     } catch (err: any) {
@@ -1164,7 +1406,7 @@ function MainApp() {
       {/* ✏️ MODAL EDIT PRODUK VENDOR */}
       {editingProduct && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999999, padding: "16px" }}>
-          <div style={{ backgroundColor: "#111827", border: "1px solid #1f2937", borderRadius: "18px", padding: "24px", width: "100%", maxWidth: "500px", color: "#fff" }}>
+          <div style={{ backgroundColor: "#111827", border: "1px solid #1f2937", borderRadius: "18px", padding: "24px", width: "100%", maxWidth: "500px", color: "#fff", maxHeight: "90vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", borderBottom: "1px solid #1f2937", paddingBottom: "10px" }}>
               <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#38bdf8" }}>✏️ Edit Product: {editingProduct.sku || `SKU-0${editingProduct.id}`}</h3>
               <button type="button" onClick={() => setEditingProduct(null)} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "18px", cursor: "pointer" }}>✕</button>
@@ -1206,6 +1448,49 @@ function MainApp() {
                     ))}
                   </select>
                 </div>
+              </div>
+
+              {/* 🔗 External Access Link */}
+              <div>
+                <label style={{ display: "block", fontSize: "11px", color: "#94a3b8", marginBottom: "4px" }}>External Access Link (Optional):</label>
+                <input 
+                  type="text" 
+                  placeholder="https://github.com/... or cloud link" 
+                  value={editExternalLink} 
+                  onChange={(e) => setEditExternalLink(e.target.value)} 
+                  style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} 
+                />
+              </div>
+
+              {/* 📁 Upload Asset File Baru */}
+              <div style={{ background: "#0f172a", padding: "10px", borderRadius: "8px", border: "1px dashed #38bdf8" }}>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#38bdf8", marginBottom: "4px" }}>
+                  📁 Ganti Master Asset (.ZIP / .PDF / .RAR) - Opsional:
+                </label>
+                <input 
+                  type="file" 
+                  onChange={(e) => setEditProductFile(e.target.files?.[0] || null)} 
+                  style={{ width: "100%", fontSize: "10px", color: "#94a3b8" }} 
+                />
+                <span style={{ display: "block", fontSize: "9px", color: "#64748b", marginTop: "3px" }}>
+                  *Biarkan kosong jika tidak ingin mengubah file aset yang sudah ada.
+                </span>
+              </div>
+
+              {/* 💳 Upload QRIS Baru */}
+              <div style={{ background: "#0f172a", padding: "10px", borderRadius: "8px", border: "1px dashed #10b981" }}>
+                <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#10b981", marginBottom: "4px" }}>
+                  💳 Ganti Barcode QRIS Toko - Opsional:
+                </label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={(e) => setEditVendorQrisFile(e.target.files?.[0] || null)} 
+                  style={{ width: "100%", fontSize: "10px", color: "#94a3b8" }} 
+                />
+                <span style={{ display: "block", fontSize: "9px", color: "#64748b", marginTop: "3px" }}>
+                  *Biarkan kosong jika tetap menggunakan QRIS toko saat ini.
+                </span>
               </div>
 
               <div>
@@ -1256,14 +1541,23 @@ function MainApp() {
                   <input type="email" placeholder="vendor@domain.com" value={vendorEmail} onChange={(e) => setVendorEmail(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Payout Bank / E-Wallet (IDR):</label>
-                    <input type="text" placeholder="BCA / Mandiri / GoPay / DANA" value={vendorBank} onChange={(e) => setVendorBank(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Payout Account Number:</label>
-                    <input type="text" placeholder="1234567890" value={vendorAccNumber} onChange={(e) => setVendorAccNumber(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
-                  </div>
+                  <div style={{
+  background: "#090d16",
+  border: "1px dashed #334155",
+  borderRadius: "8px",
+  padding: "12px",
+  margin: "12px 0 8px 0",
+  fontSize: "11px",
+  color: "#94a3b8"
+}}>
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+    <strong style={{ color: "#38bdf8" }}>📱 Direct QRIS Settlement Engine</strong>
+    <span style={{ fontSize: "9px", color: "#34d399", fontWeight: 700 }}>100% FIAT DIRECT</span>
+  </div>
+  <p style={{ margin: 0, lineHeight: 1.4 }}>
+    Pembayaran fiat pembeli langsung masuk 100% ke QRIS toko Anda. Fee platform 5% dipotong otomatis dari cadangan <strong>Prepaid SOL Gas</strong> toko tanpa perantara transfer bank.
+  </p>
+</div>
                 </div>
                 <button type="submit" disabled={isUpdatingVendorProfile} style={{ width: "100%", background: "#10b981", color: "#fff", border: "none", padding: "12px", borderRadius: "8px", fontWeight: 800, fontSize: "13px", cursor: isUpdatingVendorProfile ? "not-allowed" : "pointer", marginTop: "8px" }}>
                   {isUpdatingVendorProfile ? "Registering..." : "🚀 Launch Store & Activate Vendor Profile"}
@@ -1292,28 +1586,108 @@ function MainApp() {
                 </div>
 
                 {vendorActiveTab === "STATS" && (
-                  <div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "14px" }}>
-                      <div style={{ background: "#0b1329", border: "1px solid #1e3a8a", padding: "14px", borderRadius: "10px" }}>
-                        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Completed Orders</span>
-                        <h4 style={{ margin: "6px 0 0 0", fontSize: "20px", fontWeight: 800, color: "#60a5fa" }}>{vendorStats.totalOrders} Orders</h4>
-                      </div>
-                      <div style={{ background: "#062319", border: "1px solid #065f46", padding: "14px", borderRadius: "10px" }}>
-                        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Net Earnings (95%)</span>
-                        <h4 style={{ margin: "6px 0 0 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{vendorStats.netEth.toFixed(4)} SOL</h4>
-                        <span style={{ fontSize: "10px", color: "#6ee7b7" }}>≈ Rp {Math.round(vendorStats.netEth * (storeConfig.rateIdr || 54000000)).toLocaleString("id-ID")}</span>
-                      </div>
-                    </div>
+  <div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "14px" }}>
+      <div style={{ background: "#0b1329", border: "1px solid #1e3a8a", padding: "14px", borderRadius: "10px" }}>
+        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Completed Orders</span>
+        <h4 style={{ margin: "6px 0 0 0", fontSize: "20px", fontWeight: 800, color: "#60a5fa" }}>{vendorStats.totalOrders} Orders</h4>
+      </div>
+      <div style={{ background: "#062319", border: "1px solid #065f46", padding: "14px", borderRadius: "10px" }}>
+        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Net Earnings (95%)</span>
+        <h4 style={{ margin: "6px 0 0 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{vendorStats.netEth.toFixed(4)} SOL</h4>
+        <span style={{ fontSize: "10px", color: "#6ee7b7" }}>≈ Rp {Math.round(vendorStats.netEth * (storeConfig.rateIdr || 54000000)).toLocaleString("id-ID")}</span>
+      </div>
+    </div>
 
+    {/* === PREPAID GAS TANK (PAYFI FUEL) WIDGET === */}
+    <div style={{
+      background: "linear-gradient(145deg, #141029 0%, #1e113a 100%)",
+      border: "1px solid #7c3aed",
+      borderRadius: "12px",
+      padding: "16px",
+      marginBottom: "16px"
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+        <div>
+          <span style={{ fontSize: "11px", color: "#c4b5fd", textTransform: "uppercase", fontWeight: 800, letterSpacing: "0.5px" }}>
+            ⛽ Prepaid Gas Tank (Protocol Fee Reserve)
+          </span>
+          <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>
+            Saldo ini otomatis dipotong 5% tiap ada pesanan QRIS untuk mendanai 4 pool on-chain Solana.
+          </p>
+        </div>
+        <span style={{
+          fontSize: "11px",
+          fontWeight: 700,
+          padding: "4px 8px",
+          borderRadius: "6px",
+          background: (vendorProfile?.gas_balance || 0) > 0.005 ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)",
+          color: (vendorProfile?.gas_balance || 0) > 0.005 ? "#34d399" : "#f87171",
+          border: `1px solid ${(vendorProfile?.gas_balance || 0) > 0.005 ? "#059669" : "#dc2626"}`
+        }}>
+          {(vendorProfile?.gas_balance || 0) > 0.005 ? "● Fuel Ready" : "▲ Low Fuel"}
+        </span>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "baseline", gap: "8px", margin: "12px 0" }}>
+        <span style={{ fontSize: "28px", fontWeight: 900, color: "#a78bfa" }}>
+          {(vendorProfile?.gas_balance || 0).toFixed(4)}
+        </span>
+        <span style={{ fontSize: "14px", fontWeight: 700, color: "#ddd6fe" }}>SOL</span>
+      </div>
+
+      <form onSubmit={handleTopUpGas} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <input
+          type="number"
+          step="0.01"
+          min="0.01"
+          value={topUpAmount}
+          onChange={(e) => setTopUpAmount(e.target.value)}
+          placeholder="0.05"
+          disabled={isToppingUpGas}
+          style={{
+            flex: 1,
+            background: "#090617",
+            border: "1px solid #6d28d9",
+            color: "#fff",
+            padding: "8px 12px",
+            borderRadius: "8px",
+            fontSize: "13px",
+            outline: "none"
+          }}
+        />
+        <button
+          type="submit"
+          disabled={isToppingUpGas}
+          style={{
+            background: isToppingUpGas ? "#4c1d95" : "#7c3aed",
+            color: "#fff",
+            border: "none",
+            borderRadius: "8px",
+            padding: "8px 16px",
+            fontSize: "13px",
+            fontWeight: 700,
+            cursor: isToppingUpGas ? "not-allowed" : "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px"
+          }}
+        >
+          {isToppingUpGas ? "Depositing..." : "+ Top Up Fuel"}
+        </button>
+      </form>
+    </div>
                     <div style={{ background: "#0f172a", border: "1px solid #1e293b", padding: "14px", borderRadius: "10px", fontSize: "11px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                        <span style={{ fontWeight: 700, color: "#38bdf8" }}>💳 Merchant Payout Bank & E-Wallet:</span>
+                        <span style={{ fontWeight: 700, color: "#38bdf8", display: "flex", alignItems: "center", gap: "6px" }}>
+                          📱 QRIS Settlement & Merchant Identity
+                        </span>
                         <button
                           type="button"
                           onClick={() => setIsEditingVendorProfile(!isEditingVendorProfile)}
                           style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "4px 8px", borderRadius: "6px", fontSize: "10px", cursor: "pointer", fontWeight: 700 }}
                         >
-                          {isEditingVendorProfile ? "Cancel" : "✏️ Edit Account"}
+                          {isEditingVendorProfile ? "Cancel" : "✏️ Edit Info"}
                         </button>
                       </div>
 
@@ -1327,33 +1701,39 @@ function MainApp() {
                             <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Notification Email:</label>
                             <input type="email" value={vendorEmail} onChange={(e) => setVendorEmail(e.target.value)} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
                           </div>
-                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                            <div>
-                              <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Bank / E-Wallet:</label>
-                              <input type="text" placeholder="BCA / DANA / GoPay" value={vendorBank} onChange={(e) => setVendorBank(e.target.value)} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                            </div>
-                            <div>
-                              <label style={{ display: "block", fontSize: "10px", color: "#94a3b8", marginBottom: "2px" }}>Account Number:</label>
-                              <input type="text" placeholder="1234567890" value={vendorAccNumber} onChange={(e) => setVendorAccNumber(e.target.value)} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                            </div>
-                          </div>
                           <button type="submit" disabled={isUpdatingVendorProfile} style={{ width: "100%", background: "#10b981", color: "#fff", border: "none", padding: "8px", borderRadius: "6px", fontWeight: 700, fontSize: "11px", cursor: isUpdatingVendorProfile ? "not-allowed" : "pointer", marginTop: "4px" }}>
-                            {isUpdatingVendorProfile ? "Saving..." : "💾 Save Account Changes"}
+                            {isUpdatingVendorProfile ? "Saving..." : "💾 Save Changes"}
                           </button>
                         </form>
                       ) : (
-                        <div>
-                          <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginBottom: "4px" }}>
-                            <span>Bank / E-Wallet:</span>
-                            <strong style={{ color: "#fff" }}>{vendorProfile.payout_bank_name || "Not configured"}</strong>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "12px", alignItems: "center" }}>
+                          <div>
+                            <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginBottom: "4px" }}>
+                              <span>Store Name:</span>
+                              <strong style={{ color: "#fff" }}>{vendorProfile?.store_name || "Merchant"}</strong>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginBottom: "4px" }}>
+                              <span>Contact Email:</span>
+                              <strong style={{ color: "#38bdf8" }}>{vendorProfile?.contact_email || "-"}</strong>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1" }}>
+                              <span>Fiat Payout:</span>
+                              <strong style={{ color: "#34d399" }}>Direct to Personal QRIS (100%)</strong>
+                            </div>
                           </div>
-                          <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginBottom: "4px" }}>
-                            <span>Account Number:</span>
-                            <strong style={{ color: "#34d399" }}>{vendorProfile.payout_account_number || "Not configured"}</strong>
-                          </div>
-                          <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1" }}>
-                            <span>Contact Email:</span>
-                            <strong style={{ color: "#38bdf8" }}>{vendorProfile.contact_email || "-"}</strong>
+                          <div style={{
+                            width: "52px",
+                            height: "52px",
+                            borderRadius: "8px",
+                            background: "#020617",
+                            border: "1px dashed #334155",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center"
+                          }}>
+                            <span style={{ fontSize: "16px" }}>📲</span>
+                            <span style={{ fontSize: "8px", color: "#38bdf8", fontWeight: 700 }}>QRIS ON</span>
                           </div>
                         </div>
                       )}
@@ -1406,6 +1786,7 @@ function MainApp() {
                       </div>
                     </div>
 
+                    {/* Input Upload Asset */}
                     <div style={{ background: "#0f172a", padding: "10px", borderRadius: "8px", border: "1px dashed #38bdf8" }}>
                       <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#38bdf8", marginBottom: "4px" }}>
                         📁 Upload Master Asset File (.ZIP / .PDF / .RAR):
@@ -1417,7 +1798,23 @@ function MainApp() {
                       />
                     </div>
 
-                    <div>
+                    {/* Input Upload QRIS Toko Vendor */}
+                    <div style={{ background: "#0f172a", padding: "10px", borderRadius: "8px", border: "1px dashed #10b981", marginTop: "10px" }}>
+                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#10b981", marginBottom: "4px" }}>
+                        💳 Upload QRIS Toko Sendiri (Opsional):
+                      </label>
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={(e) => setVendorQrisFile(e.target.files?.[0] || null)} 
+                        style={{ width: "100%", fontSize: "10px", color: "#94a3b8" }} 
+                      />
+                      <span style={{ display: "block", fontSize: "9px", color: "#64748b", marginTop: "4px" }}>
+                        *Jika dikosongkan, pembayaran otomatis dialihkan ke QRIS cadangan platform.
+                      </span>
+                    </div>
+
+                    <div style={{ marginTop: "10px" }}>
                       <label style={{ display: "block", fontSize: "10px", color: "#cbd5e1", marginBottom: "3px" }}>Detailed Description:</label>
                       <textarea rows={3} placeholder="Explain license terms, deliverables, and features..." value={newProductDesc} onChange={(e) => setNewProductDesc(e.target.value)} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#0b0f19", color: "#fff", fontSize: "11px", resize: "none", boxSizing: "border-box" }} required />
                     </div>
@@ -1595,69 +1992,88 @@ function MainApp() {
             )}
 
             {adminActiveTab === "PAYOUTS" && (
-              <div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "16px" }}>
-                  <div style={{ background: "#062319", border: "1px solid #065f46", padding: "14px", borderRadius: "10px" }}>
-                    <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Total Laba Bersih Platform (5%)</span>
-                    <h4 style={{ margin: "4px 0 0 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{adminTotalPlatformFee.toFixed(4)} SOL</h4>
-                    <span style={{ fontSize: "11px", color: "#6ee7b7", display: "block", marginTop: "2px" }}>
-                      ≈ Rp {Math.round(adminTotalPlatformFee * (storeConfig.rateIdr || 54000000)).toLocaleString("id-ID")}
-                    </span>
-                  </div>
+  <div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "16px" }}>
+      <div style={{ background: "#062319", border: "1px solid #065f46", padding: "14px", borderRadius: "10px" }}>
+        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Total Laba Bersih Platform (5%)</span>
+        <h4 style={{ margin: "4px 0 0 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{adminTotalPlatformFee.toFixed(4)} SOL</h4>
+        <span style={{ fontSize: "11px", color: "#6ee7b7", display: "block", marginTop: "2px" }}>
+          ≈ Rp {Math.round(adminTotalPlatformFee * (storeConfig.rateIdr || 54000000)).toLocaleString("id-ID")}
+        </span>
+      </div>
 
-                  <div style={{ background: "#0b1728", border: "1px solid #1e3a8a", padding: "14px", borderRadius: "10px", fontSize: "11px" }}>
-                    <span style={{ fontSize: "10px", color: "#38bdf8", textTransform: "uppercase", fontWeight: 800, display: "block", marginBottom: "4px" }}>
-                      🏦 Rekening Penerima Keuntungan Admin:
+      <div style={{ background: "#0b1728", border: "1px solid #1e3a8a", padding: "14px", borderRadius: "10px", fontSize: "11px" }}>
+        <span style={{ fontSize: "10px", color: "#38bdf8", textTransform: "uppercase", fontWeight: 800, display: "block", marginBottom: "4px" }}>
+          ⛽ Model Settlement Platform:
+        </span>
+        <div style={{ color: "#fff", fontWeight: 700 }}>
+          Direct QRIS + Prepaid Gas Tank
+        </div>
+        <div style={{ color: "#94a3b8", fontSize: "10px", marginTop: "2px" }}>
+          Vendor menerima 100% rupiah via QRIS pribadi. Fee 5% platform otomatis ditarik dari deposit SOL vendor.
+        </div>
+      </div>
+    </div>
+
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "320px", overflowY: "auto" }}>
+      {adminPayouts.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>Belum ada vendor terdaftar.</p>
+      ) : (
+        adminPayouts.map((v, idx) => {
+          const gasBal = Number(v.gas_balance) || 0;
+          const isFuelReady = gasBal > 0.005;
+
+          return (
+            <div key={idx} style={{ background: "#0b0f19", border: "1px solid #1e293b", padding: "12px 14px", borderRadius: "10px", fontSize: "11px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <strong style={{ fontSize: "13px", color: "#fff" }}>🏪 {v.store_name}</strong>
+                    <span style={{
+                      fontSize: "9px",
+                      fontWeight: 700,
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      background: isFuelReady ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)",
+                      color: isFuelReady ? "#34d399" : "#f87171",
+                      border: `1px solid ${isFuelReady ? "#059669" : "#dc2626"}`
+                    }}>
+                      {isFuelReady ? "● Fuel Ready" : "▲ Fuel Depleted"}
                     </span>
-                    <div style={{ color: "#fff", fontWeight: 700 }}>
-                      {storeConfig.adminBankName || "BCA"} — <code style={{ color: "#38bdf8" }}>{storeConfig.adminAccountNumber || "Belum diisi"}</code>
-                    </div>
-                    <div style={{ color: "#94a3b8", fontSize: "10px", marginTop: "2px" }}>
-                      a.n. {storeConfig.adminAccountHolder || "Admin Utama"}
-                    </div>
                   </div>
+                  <span style={{ display: "block", fontSize: "10px", color: "#64748b" }}>{v.wallet_address}</span>
                 </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "320px", overflowY: "auto" }}>
-                  {adminPayouts.length === 0 ? (
-                    <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>Belum ada vendor terdaftar.</p>
-                  ) : (
-                    adminPayouts.map((v, idx) => (
-                      <div key={idx} style={{ background: "#0b0f19", border: "1px solid #1e293b", padding: "12px 14px", borderRadius: "10px", fontSize: "11px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                          <div>
-                            <strong style={{ fontSize: "13px", color: "#fff" }}>🏪 {v.store_name}</strong>
-                            <span style={{ display: "block", fontSize: "10px", color: "#64748b" }}>{v.wallet_address}</span>
-                          </div>
-                          <div style={{ textAlign: "right" }}>
-                            <span style={{ color: "#38bdf8", fontWeight: 800, fontSize: "12px" }}>{v.net_vendor_earnings_eth.toFixed(4)} SOL</span>
-                            <span style={{ display: "block", fontSize: "10px", color: "#94a3b8" }}>{v.total_orders} Pesanan Terjual</span>
-                          </div>
-                        </div>
-
-                        <div style={{ background: "#0f172a", padding: "8px 10px", borderRadius: "6px", display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "8px", border: "1px solid #1e293b" }}>
-                          <span style={{ color: "#cbd5e1" }}>
-                            Rekening Vendor: <strong>{v.payout_bank_name || "-"}</strong> — <code style={{ color: "#34d399" }}>{v.payout_account_number || "Belum diisi"}</code>
-                          </span>
-                          {v.payout_account_number && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                navigator.clipboard.writeText(v.payout_account_number || "");
-                                alert(`Nomor rekening vendor (${v.payout_account_number}) berhasil disalin!`);
-                              }}
-                              style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "3px 8px", borderRadius: "4px", fontSize: "10px", cursor: "pointer", fontWeight: 600 }}
-                            >
-                              Salin No Rek Vendor
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    ))
-                  )}
+                <div style={{ textAlign: "right" }}>
+                  <span style={{ color: "#38bdf8", fontWeight: 800, fontSize: "12px" }}>{v.net_vendor_earnings_eth.toFixed(4)} SOL</span>
+                  <span style={{ display: "block", fontSize: "10px", color: "#94a3b8" }}>{v.total_orders} Pesanan Terjual</span>
                 </div>
               </div>
-            )}
+
+              {/* Status QRIS & Gas Balance Vendor */}
+              <div style={{ background: "#0f172a", padding: "8px 10px", borderRadius: "6px", display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "8px", border: "1px solid #1e293b" }}>
+                <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+                  <span style={{ color: "#cbd5e1" }}>
+                    Metode Payout: <strong style={{ color: "#34d399" }}>📲 Direct Personal QRIS (100%)</strong>
+                  </span>
+                  <span style={{ color: "#64748b" }}>|</span>
+                  <span style={{ color: "#cbd5e1" }}>
+                    Email: <strong style={{ color: "#38bdf8" }}>{v.contact_email || "-"}</strong>
+                  </span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <span style={{ color: "#94a3b8", fontSize: "10px" }}>Saldo Gas:</span>
+                  <strong style={{ color: isFuelReady ? "#a78bfa" : "#f87171", fontWeight: 800 }}>
+                    {gasBal.toFixed(4)} SOL
+                  </strong>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      )}
+    </div>
+  </div>
+)}
 
             {adminActiveTab === "ORDERS" && (
               <div>
@@ -1948,7 +2364,7 @@ function MainApp() {
 
             <div style={{ background: "#ffffff", padding: "14px", borderRadius: "14px", display: "inline-flex", justifyContent: "center", alignItems: "center", width: "100%", maxWidth: "340px", boxSizing: "border-box", margin: "0 auto 14px auto" }}>
               <img
-                src={storeConfig.customQrImage || fallbackQrisUrl}
+                src={(selectedProduct as any)?.qris_url || storeConfig.customQrImage || fallbackQrisUrl}
                 alt="Barcode QRIS"
                 style={{ width: "100%", height: "auto", maxHeight: "380px", display: "block", objectFit: "contain" }}
               />
