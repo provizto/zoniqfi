@@ -1933,24 +1933,25 @@ function MainApp() {
                 </div>
 
                 <div style={{ background: "#0b1728", padding: "14px", borderRadius: "10px", border: "1px solid #1e3a8a" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase" }}>
-                    🏦 Rekening Resmi Admin (Penerima Laba 5% Platform & Penampung Dana)
-                  </span>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px", marginTop: "8px" }}>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>Nama Bank / E-Wallet:</label>
-                      <input type="text" placeholder="BCA / Mandiri / GoPay" value={tempConfig.adminBankName || ""} onChange={(e) => setTempConfig({ ...tempConfig, adminBankName: e.target.value })} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#111827", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>Nomor Rekening Asli:</label>
-                      <input type="text" placeholder="1234567890" value={tempConfig.adminAccountNumber || ""} onChange={(e) => setTempConfig({ ...tempConfig, adminAccountNumber: e.target.value })} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#111827", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>Atas Nama Pemilik:</label>
-                      <input type="text" placeholder="Nama Lengkap Admin" value={tempConfig.adminAccountHolder || ""} onChange={(e) => setTempConfig({ ...tempConfig, adminAccountHolder: e.target.value })} style={{ width: "100%", padding: "7px", borderRadius: "5px", border: "1px solid #374151", background: "#111827", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                    </div>
-                  </div>
-                </div>
+  <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "6px" }}>
+    🛡️ Platform Protocol Treasury (SOL Revenue Wallet)
+  </span>
+  <div style={{ marginTop: "8px" }}>
+    <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>
+      Solana Treasury Address (Penerima Fee 5% Platform):
+    </label>
+    <input 
+      type="text" 
+      placeholder="e.g. 7LLjrqrfvg6qQKee8bX8XQyT9J8NFQwtyzzj2K8rGXpB" 
+      value={(tempConfig as any)?.adminWallet || ""} 
+      onChange={(e) => setTempConfig((prev: any) => ({ ...prev, adminWallet: e.target.value }))} 
+      style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #374151", background: "#111827", color: "#38bdf8", fontFamily: "monospace", fontSize: "11px", boxSizing: "border-box" }} 
+    />
+    <span style={{ fontSize: "10px", color: "#94a3b8", marginTop: "4px", display: "block" }}>
+      Alamat dompet penampung seluruh fee 5% platform dari pemotongan cadangan Prepaid Gas vendor.
+    </span>
+  </div>
+</div>
 
                 <div style={{ background: "#0f172a", padding: "12px", borderRadius: "8px", border: "1px solid #1e293b" }}>
                   <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase" }}>{t.fxRateHeading}</span>
