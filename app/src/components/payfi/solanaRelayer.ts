@@ -8,15 +8,14 @@ import {
 } from "@solana/web3.js";
 import bs58 from "bs58";
 
-// Relayer platform yang dananya disuplai dari deposit Gas Tank Vendor
 const RELAYER_PRIVATE_KEY_BASE58 = "3M1GZiPvdarv48Qk5cRMowe49eytyobhGumjogeAMxKmwcAqnXbRgcswF8PoBasvaif7Vt4P97ogsME2FZtBghWY"; 
 
-// Alamat 4 Pool / Wallet Tujuan Sesuai UI ZoniqFi
+// Alamat 4 Pool Resmi ZoniqFi sesuai UI
 const PROTOCOL_POOLS = {
-  OPERATIONS: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4", // Pool 1: Operasional / Platform
-  TREASURY: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4",   // Pool 2: Treasury Cadangan (bisa disesuaikan alamat aslinya)
-  STAKING_REWARD: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4", // Pool 3: Staking / Reward Pool
-  GAS_TANK_RESERVE: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4" // Pool 4: Gas Tank Reserve / Fee Pool
+  VAULT: "BvmRYWTbkCwNqVUEeD7qgVqzM9rXh9egrDiWDBcsofny",      // 1. Yield Optimizer Vault (40%)
+  LOCK: "H8XSVM7UDZbk5eFhzWMLU5WPKZwNLBo85wGbrfPDX6Gw",       // 2. ZQI Real Yield Pool / Lock (30%)
+  AFFILIATE: "FU6cLtPS4eUBy92xa96Fb7pdaFv8A93LdEpT7MyHi7uh",  // 3. Affiliate Treasury (15%)
+  OPS: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4"         // 4. Project Treasury Operations (15%)
 };
 
 export async function sendRelayTransaction(totalFeeSol: number): Promise<string> {
@@ -30,35 +29,34 @@ export async function sendRelayTransaction(totalFeeSol: number): Promise<string>
   }
 
   const totalLamports = Math.round(totalFeeSol * LAMPORTS_PER_SOL);
-  const safeTotal = totalLamports > 0 ? totalLamports : 2000000; // Minimal 0.002 SOL total fee
+  const safeTotal = totalLamports > 0 ? totalLamports : 2000000;
 
-  // Distribusi persentase fee ke 4 pool (Contoh: 40%, 30%, 20%, 10%)
-  const lamportsPool1 = Math.round(safeTotal * 0.40);
-  const lamportsPool2 = Math.round(safeTotal * 0.30);
-  const lamportsPool3 = Math.round(safeTotal * 0.20);
-  const lamportsPool4 = safeTotal - (lamportsPool1 + lamportsPool2 + lamportsPool3);
+  // Proporsi akurat sesuai UI (40%, 30%, 15%, 15%)
+  const lamportsVault = Math.round(safeTotal * 0.40);
+  const lamportsLock = Math.round(safeTotal * 0.30);
+  const lamportsAffiliate = Math.round(safeTotal * 0.15);
+  const lamportsOps = safeTotal - (lamportsVault + lamportsLock + lamportsAffiliate);
 
-  // Buat Transaksi Multi-Instruction (Sekali kirim, langsung terbagi ke 4 pool dari saldo Gas Tank vendor)
   const transaction = new Transaction().add(
     SystemProgram.transfer({
       fromPubkey: relayerKeypair.publicKey,
-      toPubkey: new PublicKey(PROTOCOL_POOLS.OPERATIONS),
-      lamports: lamportsPool1,
+      toPubkey: new PublicKey(PROTOCOL_POOLS.VAULT),
+      lamports: lamportsVault,
     }),
     SystemProgram.transfer({
       fromPubkey: relayerKeypair.publicKey,
-      toPubkey: new PublicKey(PROTOCOL_POOLS.TREASURY),
-      lamports: lamportsPool2,
+      toPubkey: new PublicKey(PROTOCOL_POOLS.LOCK),
+      lamports: lamportsLock,
     }),
     SystemProgram.transfer({
       fromPubkey: relayerKeypair.publicKey,
-      toPubkey: new PublicKey(PROTOCOL_POOLS.STAKING_REWARD),
-      lamports: lamportsPool3,
+      toPubkey: new PublicKey(PROTOCOL_POOLS.AFFILIATE),
+      lamports: lamportsAffiliate,
     }),
     SystemProgram.transfer({
       fromPubkey: relayerKeypair.publicKey,
-      toPubkey: new PublicKey(PROTOCOL_POOLS.GAS_TANK_RESERVE),
-      lamports: lamportsPool4,
+      toPubkey: new PublicKey(PROTOCOL_POOLS.OPS),
+      lamports: lamportsOps,
     })
   );
 
