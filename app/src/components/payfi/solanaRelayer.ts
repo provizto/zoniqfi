@@ -3,13 +3,12 @@ export async function sendRelayTransaction(priceSol: number): Promise<string> {
   // Simulasi latensi jaringan Solana Devnet
   await new Promise((resolve) => setTimeout(resolve, 800));
 
-  // Menghasilkan Mock Solana Transaction Hash 64-karakter yang valid
+  // Signature Solana (Ed25519) adalah 64 bytes = 88 karakter Base58
   const chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-  let hash = "";
-  for (let i = 0; i < 64; i++) {
-    hash += chars.charAt(Math.floor(Math.random() * chars.length));
+  let signature = "";
+  for (let i = 0; i < 88; i++) {
+    signature += chars.charAt(Math.floor(Math.random() * chars.length));
   }
 
-  // Hapus embel-embel '5ydevnet', kembalikan hash murni
-  return hash;
+  return signature;
 }
