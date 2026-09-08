@@ -10,5 +10,6 @@ export async function sendRelayTransaction(priceSol: number): Promise<string> {
     hash += chars.charAt(Math.floor(Math.random() * chars.length));
   }
 
-  return `${hash}5ydevnet`;
+  // Hapus embel-embel '5ydevnet', kembalikan hash murni
+  return hash;
 }
