@@ -335,9 +335,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#ec4899', fontWeight: '700' }}>PHASE 4 • Q2-Q3 2027</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $50,000 - $80,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Enterprise PayFi SDK & SEA Merchant Expansion</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Enterprise PayFi SDK & SEA Expansion</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Turnkey PayFi TypeScript/Rust SDK for e-commerce platforms (Shopify/WooCommerce), expanding merchant onboarding across Indonesia, Singapore, and Southeast Asia.
+                  Modular TypeScript/Rust SDKs and no-code plugins (Shopify/WooCommerce) featuring automated webhook reconciliation, expanding instant fiat QRIS and on-chain gas settlement across Indonesia and Southeast Asia.
                 </p>
               </div>
 
