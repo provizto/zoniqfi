@@ -514,38 +514,42 @@ function MainApp() {
   // HANDLE TOP UP GAS
   const handleTopUpGas = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!address) {
-      alert("Please connect your wallet first!");
+
+    // 1. Konversi koma (,) ke titik (.) agar desimal valid
+    const cleanAmount = String(topUpAmount).replace(",", ".");
+    const amountNum = Number(cleanAmount);
+    if (!amountNum || amountNum <= 0) {
+      alert("Please enter a valid SOL amount to deposit.");
       return;
     }
 
-    const amountNum = Number(topUpAmount);
-    if (!amountNum || amountNum <= 0) {
-      alert("Please enter a valid SOL amount to deposit.");
+    const solana = (window as any).solana;
+    if (!solana?.isPhantom || !solana?.publicKey) {
+      alert("Solana wallet extension (Phantom) not detected!");
       return;
     }
 
     try {
       setIsToppingUpGas(true);
 
-      // Gunakan alamat public key Solana yang valid (Base58)
       const targetPlatformWallet = 
-        (storeConfig as any).ops_wallet || 
+        (storeConfig as any)?.ops_wallet || 
         "B5NUG78tHhK82m9kC1eR9V5hWk2w2H3yR7K9m8N7b6V5";
-
-      const solana = (window as any).solana;
-      if (!solana?.isPhantom && !solana?.publicKey) {
-        alert("Solana wallet extension (Phantom) not detected!");
-        return;
-      }
 
       const { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } = await import("@solana/web3.js");
       const connection = new Connection("https://api.devnet.solana.com", "confirmed");
 
-      const fromPubkey = new PublicKey(String(address));
+      // Gunakan public key aktif langsung dari Phantom untuk mencegah mismatch akun
+      const fromPubkey = solana.publicKey;
       const toPubkey = new PublicKey(targetPlatformWallet);
-
       const lamports = Math.round(amountNum * LAMPORTS_PER_SOL);
+
+      // 2. Validasi saldo sebelum eksekusi (Mencegah "Unexpected error")
+      const balance = await connection.getBalance(fromPubkey);
+      if (balance < lamports + 10000) {
+        alert(`Saldo tidak cukup! Dompet Anda hanya memiliki ${(balance / LAMPORTS_PER_SOL).toFixed(4)} SOL di Devnet.`);
+        return;
+      }
 
       const transaction = new Transaction().add(
         SystemProgram.transfer({
@@ -555,14 +559,26 @@ function MainApp() {
         })
       );
 
-      const { blockhash } = await connection.getLatestBlockhash("confirmed");
+      // 3. Ambil blockhash & lastValidBlockHeight
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash("confirmed");
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = fromPubkey;
 
       const signedTx = await solana.signAndSendTransaction(transaction);
-      await connection.confirmTransaction(signedTx.signature, "confirmed");
 
-      const walletStr = String(address).toLowerCase();
+      // 4. Konfirmasi transaksi modern (Solusi Error 30 Detik)
+      const confirmation = await connection.confirmTransaction({
+        signature: signedTx.signature,
+        blockhash,
+        lastValidBlockHeight,
+      }, "confirmed");
+
+      if (confirmation.value.err) {
+        throw new Error("Transaksi ditolak oleh validator Solana.");
+      }
+
+      // Update saldo ke Supabase
+      const walletStr = fromPubkey.toBase58().toLowerCase();
       const newGasTotal = (Number(vendorProfile?.gas_balance) || 0) + amountNum;
 
       const { error: updateErr } = await supabase
