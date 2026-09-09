@@ -6,18 +6,21 @@ import {
   PublicKey, 
   SystemProgram, 
   Transaction, 
+  ComputeBudgetProgram,
   LAMPORTS_PER_SOL 
 } from "@solana/web3.js";
 import bs58 from "bs58";
 
-const RELAYER_PRIVATE_KEY_BASE58 = import.meta.env.VITE_RELAYER_PRIVATE_KEY_BASE58 || "3M1GZiPvdarv48Qk5cRMowe49eytyobhGumjogeAMxKmwcAqnXbRgcswF8PoBasvaif7Vt4P97ogsME2FZtBghWY"; 
+const RELAYER_PRIVATE_KEY_BASE58 = 
+  import.meta.env.VITE_RELAYER_PRIVATE_KEY_BASE58 || 
+  "3M1GZiPvdarv48Qk5cRMowe49eytyobhGumjogeAMxKmwcAqnXbRgcswF8PoBasvaif7Vt4P97ogsME2FZtBghWY"; 
 
 // Alamat 4 Pool Resmi ZoniqFi sesuai UI
 const PROTOCOL_POOLS = {
-  VAULT: "BvmRYWTbkCwNqVUEeD7qgVqzM9rXh9egrDiWDBcsofny",      // 1. Yield Optimizer Vault (40%)
-  LOCK: "H8XSVM7UDZbk5eFhzWMLU5WPKZwNLBo85wGbrfPDX6Gw",       // 2. ZQI Real Yield Pool / Lock (30%)
-  AFFILIATE: "FU6cLtPS4eUBy92xa96Fb7pdaFv8A93LdEpT7MyHi7uh",  // 3. Affiliate Treasury (15%)
-  OPS: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4"         // 4. Project Treasury Operations (15%)
+  VAULT: "BvmRYWTbkCwNqVUEeD7qgVqzM9rXh9egrDiWDBcsofny",       // 1. Yield Optimizer Vault (40%)
+  LOCK: "H8XSVM7UDZbk5eFhzWMLU5WPKZwNLBo85wGbrfPDX6Gw",        // 2. ZQI Real Yield Pool / Lock (30%)
+  AFFILIATE: "FU6cLtPS4eUBy92xa96Fb7pdaFv8A93LdEpT7MyHi7uh",   // 3. Affiliate Treasury (15%)
+  OPS: "6PYRmzMiJvEjFS1qKHB5YwfkKyZv7e5CAbTnxtbPDLc4"          // 4. Project Treasury Operations (15%)
 };
 
 export async function sendRelayTransaction(totalFeeSol: number): Promise<string> {
@@ -30,16 +33,22 @@ export async function sendRelayTransaction(totalFeeSol: number): Promise<string>
     relayerKeypair = Keypair.generate();
   }
 
-  const totalLamports = Math.round(totalFeeSol * LAMPORTS_PER_SOL);
-  const safeTotal = totalLamports > 0 ? totalLamports : 2000000;
+  // 1. Hitung 5% protokol fee dari total harga produk
+  const actualProductPrice = totalFeeSol > 0 ? totalFeeSol : 0.015;
+  const protocolFeeSol = actualProductPrice * 0.05; // 5% dari harga produk (0.00075 SOL)
 
-  // Proporsi akurat sesuai UI (40%, 30%, 15%, 15%)
-  const lamportsVault = Math.round(safeTotal * 0.40);
-  const lamportsLock = Math.round(safeTotal * 0.30);
-  const lamportsAffiliate = Math.round(safeTotal * 0.15);
-  const lamportsOps = safeTotal - (lamportsVault + lamportsLock + lamportsAffiliate);
+  const totalLamports = Math.round(protocolFeeSol * LAMPORTS_PER_SOL);
+  const safeTotal = totalLamports > 0 ? totalLamports : 750000; // fallback 0.00075 SOL
 
+  // 2. Proporsi fee presisi (40%, 30%, 15%, 15%)
+  const lamportsVault = Math.round(safeTotal * 0.40);      // -> 0.00030 SOL
+  const lamportsLock = Math.round(safeTotal * 0.30);       // -> 0.000225 SOL
+  const lamportsAffiliate = Math.round(safeTotal * 0.15);  // -> 0.0001125 SOL
+  const lamportsOps = safeTotal - (lamportsVault + lamportsLock + lamportsAffiliate); // -> 0.0001125 SOL
+
+  // 3. Susun transaksi multi-pool + Priority Fee anti-lag
   const transaction = new Transaction().add(
+    ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 300_000 }),
     SystemProgram.transfer({
       fromPubkey: relayerKeypair.publicKey,
       toPubkey: new PublicKey(PROTOCOL_POOLS.VAULT),
@@ -78,6 +87,6 @@ export async function sendRelayTransaction(totalFeeSol: number): Promise<string>
     return signature;
   } catch (err) {
     console.warn("Multi-pool relay broadcast error:", err);
-    return "5Zg9W7bKx8m9pL1sJ6h4fD7gH2jK5L8zX9cV3bN1mQ4pW6yE8rT2yU5iO3pA7s82";
+    throw err;
   }
 }
