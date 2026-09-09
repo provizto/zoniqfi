@@ -1543,15 +1543,14 @@ function MainApp() {
                   <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#cbd5e1", marginBottom: "4px" }}>Notification Email:</label>
                   <input type="email" placeholder="vendor@domain.com" value={vendorEmail} onChange={(e) => setVendorEmail(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                  {/* GRID 2 KOLOM: BERDAMPINGAN DI LAPTOP, MENYUSUN DI HP */}
+                {/* GRID 2 KOLOM UTAMA */}
 <div style={{
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
   gap: "12px",
   width: "100%",
   boxSizing: "border-box",
-  margin: "16px 0"
+  margin: "16px 0 8px 0"
 }}>
   {/* Kolom 1: Direct QRIS */}
   <div style={{
@@ -1591,10 +1590,25 @@ function MainApp() {
     </p>
   </div>
 </div>
-                </div>
-                <button type="submit" disabled={isUpdatingVendorProfile} style={{ width: "100%", background: "#10b981", color: "#fff", border: "none", padding: "12px", borderRadius: "8px", fontWeight: 800, fontSize: "13px", cursor: isUpdatingVendorProfile ? "not-allowed" : "pointer", marginTop: "8px" }}>
-                  {isUpdatingVendorProfile ? "Registering..." : "🚀 Launch Store & Activate Vendor Profile"}
-                </button>
+
+<button 
+  type="submit" 
+  disabled={isUpdatingVendorProfile} 
+  style={{ 
+    width: "100%", 
+    background: "#10b981", 
+    color: "#fff", 
+    border: "none", 
+    padding: "12px", 
+    borderRadius: "8px", 
+    fontWeight: 800, 
+    fontSize: "13px", 
+    cursor: isUpdatingVendorProfile ? "not-allowed" : "pointer", 
+    marginTop: "8px" 
+  }}
+>
+  {isUpdatingVendorProfile ? "Registering..." : "🚀 Launch Store & Activate Vendor Profile"}
+</button>
               </form>
             ) : (
               <div>
