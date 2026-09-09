@@ -1545,21 +1545,50 @@ function MainApp() {
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                   <div style={{
-  background: "#090d16",
-  border: "1px dashed #334155",
-  borderRadius: "8px",
-  padding: "12px",
-  margin: "12px 0 8px 0",
-  fontSize: "11px",
-  color: "#94a3b8"
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+  gap: "12px",
+  width: "100%",
+  boxSizing: "border-box",
+  margin: "12px 0 16px 0"
 }}>
-  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-    <strong style={{ color: "#38bdf8" }}>📱 Direct QRIS Settlement Engine</strong>
-    <span style={{ fontSize: "9px", color: "#34d399", fontWeight: 700 }}>100% FIAT DIRECT</span>
+  {/* Kotak Kiri: Direct QRIS */}
+  <div style={{
+    background: "#090d16",
+    border: "1px dashed #334155",
+    borderRadius: "8px",
+    padding: "12px",
+    boxSizing: "border-box",
+    fontSize: "11px",
+    color: "#94a3b8"
+  }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+      <strong style={{ color: "#38bdf8" }}>📱 Direct QRIS Engine</strong>
+      <span style={{ fontSize: "9px", color: "#34d399", fontWeight: 700 }}>100% FIAT DIRECT</span>
+    </div>
+    <p style={{ margin: 0, lineHeight: 1.4 }}>
+      Pembayaran fiat pembeli langsung masuk 100% ke QRIS toko Anda tanpa perantara penahanan saldo.
+    </p>
   </div>
-  <p style={{ margin: 0, lineHeight: 1.4 }}>
-    Pembayaran fiat pembeli langsung masuk 100% ke QRIS toko Anda. Fee platform 5% dipotong otomatis dari cadangan <strong>Prepaid SOL Gas</strong> toko tanpa perantara transfer bank.
-  </p>
+
+  {/* Kotak Kanan: Prepaid Gas Reserve */}
+  <div style={{
+    background: "#090d16",
+    border: "1px dashed #334155",
+    borderRadius: "8px",
+    padding: "12px",
+    boxSizing: "border-box",
+    fontSize: "11px",
+    color: "#94a3b8"
+  }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+      <strong style={{ color: "#10b981" }}>⛽ Prepaid Gas Reserve</strong>
+      <span style={{ fontSize: "9px", color: "#38bdf8", fontWeight: 700 }}>ON-CHAIN YIELD</span>
+    </div>
+    <p style={{ margin: 0, lineHeight: 1.4 }}>
+      Fee platform 5% dipotong otomatis dari cadangan <strong>Prepaid SOL Gas</strong> toko agar lisensi SKU terbit seketika.
+    </p>
+  </div>
 </div>
                 </div>
                 <button type="submit" disabled={isUpdatingVendorProfile} style={{ width: "100%", background: "#10b981", color: "#fff", border: "none", padding: "12px", borderRadius: "8px", fontWeight: 800, fontSize: "13px", cursor: isUpdatingVendorProfile ? "not-allowed" : "pointer", marginTop: "8px" }}>
