@@ -823,18 +823,21 @@ function MainApp() {
       setIsUpdatingVendorProfile(true);
       const walletStr = String(address).toLowerCase();
 
-      // Gunakan update berdasarkan wallet_address agar gas_balance tetap aman
+      // Gunakan upsert agar otomatis membuat baris baru jika belum ada, atau update jika sudah terdaftar
       const { data, error } = await supabase
         .from("vendors")
-        .update({
-          store_name: vendorStoreName,
-          contact_email: vendorEmail,
-          payout_bank_name: "QRIS Direct",
-          payout_account_number: "QRIS Active"
-        })
-        .eq("wallet_address", walletStr)
+        .upsert(
+          {
+            wallet_address: walletStr,
+            store_name: vendorStoreName,
+            contact_email: vendorEmail,
+            payout_bank_name: "QRIS Direct",
+            payout_account_number: "QRIS Active"
+          },
+          { onConflict: "wallet_address" }
+        )
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) {
         alert("Failed to save vendor profile: " + error.message);
@@ -843,7 +846,7 @@ function MainApp() {
 
       setVendorProfile(data);
       setIsEditingVendorProfile(false);
-      alert("✅ Profil merchant berhasil diperbarui!");
+      alert("✅ Profil merchant berhasil disimpan!");
       fetchAdminPayoutData();
     } catch (err: any) {
       alert("Error: " + err.message);
