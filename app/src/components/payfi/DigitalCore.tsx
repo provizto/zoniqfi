@@ -2248,28 +2248,48 @@ function MainApp() {
               </div>
               <div style={{ borderTop: "1px solid #1e293b", paddingTop: "8px", marginTop: "8px" }}>
   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-    <span style={{ color: "#64748b", fontSize: "12px" }}>Tx Signature:</span>
-    <a
-      href={`https://explorer.solana.com/tx/${deliverySuccess.txHash}?cluster=devnet`}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        color: "#38bdf8",
-        fontSize: "12px",
-        textDecoration: "none",
-        fontWeight: "bold",
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "4px"
-      }}
-    >
-      <code>
-        {deliverySuccess.txHash
-          ? `${deliverySuccess.txHash.slice(0, 8)}...${deliverySuccess.txHash.slice(-8)}`
-          : ""}
-      </code>
-      <span>↗</span>
-    </a>
+    <span style={{ color: "#64748b", fontSize: "12px" }}>
+      {deliverySuccess?.txHash && !deliverySuccess.txHash.startsWith("QRIS-")
+        ? "Tx Signature:"
+        : "Payment Channel:"}
+    </span>
+
+    {deliverySuccess?.txHash && !deliverySuccess.txHash.startsWith("QRIS-") ? (
+      /* JALUR SOLANA NATIVE: Tampilkan link explorer */
+      <a
+        href={`https://explorer.solana.com/tx/${deliverySuccess.txHash}?cluster=devnet`}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          color: "#38bdf8",
+          fontSize: "12px",
+          textDecoration: "none",
+          fontWeight: "bold",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "4px"
+        }}
+      >
+        <code>
+          {deliverySuccess.txHash
+            ? `${deliverySuccess.txHash.slice(0, 8)}...${deliverySuccess.txHash.slice(-8)}`
+            : ""}
+        </code>
+        <span>↗</span>
+      </a>
+    ) : (
+      /* JALUR QRIS FIAT: Tampilkan badge verifikasi bersih */
+      <span
+        style={{
+          color: "#34d399",
+          fontSize: "11px",
+          fontFamily: "monospace",
+          fontWeight: "bold"
+        }}
+      >
+        Direct QRIS (Verified Fiat)
+      </span>
+    )}
   </div>
 </div>
 
