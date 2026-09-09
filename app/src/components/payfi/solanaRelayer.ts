@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { 
   Connection, 
   Keypair, 
@@ -8,7 +10,7 @@ import {
 } from "@solana/web3.js";
 import bs58 from "bs58";
 
-const RELAYER_PRIVATE_KEY_BASE58 = "3M1GZiPvdarv48Qk5cRMowe49eytyobhGumjogeAMxKmwcAqnXbRgcswF8PoBasvaif7Vt4P97ogsME2FZtBghWY"; 
+const RELAYER_PRIVATE_KEY_BASE58 = import.meta.env.VITE_RELAYER_PRIVATE_KEY_BASE58 || "3M1GZiPvdarv48Qk5cRMowe49eytyobhGumjogeAMxKmwcAqnXbRgcswF8PoBasvaif7Vt4P97ogsME2FZtBghWY"; 
 
 // Alamat 4 Pool Resmi ZoniqFi sesuai UI
 const PROTOCOL_POOLS = {
