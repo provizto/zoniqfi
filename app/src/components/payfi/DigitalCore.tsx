@@ -1544,15 +1544,16 @@ function MainApp() {
                   <input type="email" placeholder="vendor@domain.com" value={vendorEmail} onChange={(e) => setVendorEmail(e.target.value)} style={{ width: "100%", padding: "9px", borderRadius: "6px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                  <div style={{
+                  {/* GRID 2 KOLOM: BERDAMPINGAN DI LAPTOP, MENYUSUN DI HP */}
+<div style={{
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
   gap: "12px",
   width: "100%",
   boxSizing: "border-box",
-  margin: "12px 0 16px 0"
+  margin: "16px 0"
 }}>
-  {/* Kotak Kiri: Direct QRIS */}
+  {/* Kolom 1: Direct QRIS */}
   <div style={{
     background: "#090d16",
     border: "1px dashed #334155",
@@ -1564,14 +1565,14 @@ function MainApp() {
   }}>
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
       <strong style={{ color: "#38bdf8" }}>📱 Direct QRIS Engine</strong>
-      <span style={{ fontSize: "9px", color: "#34d399", fontWeight: 700 }}>100% FIAT DIRECT</span>
+      <span style={{ fontSize: "9px", color: "#34d399", fontWeight: 700 }}>100% FIAT</span>
     </div>
     <p style={{ margin: 0, lineHeight: 1.4 }}>
-      Pembayaran fiat pembeli langsung masuk 100% ke QRIS toko Anda tanpa perantara penahanan saldo.
+      Pembayaran fiat pembeli langsung masuk 100% ke QRIS toko Anda tanpa penahanan saldo.
     </p>
   </div>
 
-  {/* Kotak Kanan: Prepaid Gas Reserve */}
+  {/* Kolom 2: Prepaid Gas Reserve */}
   <div style={{
     background: "#090d16",
     border: "1px dashed #334155",
@@ -1583,10 +1584,10 @@ function MainApp() {
   }}>
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
       <strong style={{ color: "#10b981" }}>⛽ Prepaid Gas Reserve</strong>
-      <span style={{ fontSize: "9px", color: "#38bdf8", fontWeight: 700 }}>ON-CHAIN YIELD</span>
+      <span style={{ fontSize: "9px", color: "#38bdf8", fontWeight: 700 }}>YIELD</span>
     </div>
     <p style={{ margin: 0, lineHeight: 1.4 }}>
-      Fee platform 5% dipotong otomatis dari cadangan <strong>Prepaid SOL Gas</strong> toko agar lisensi SKU terbit seketika.
+      Fee platform 5% dipotong otomatis dari cadangan <strong>Prepaid SOL Gas</strong> toko agar lisensi terbit instan.
     </p>
   </div>
 </div>
