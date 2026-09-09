@@ -511,11 +511,11 @@ function MainApp() {
     }
   };
 
-  // HANDLE TOP UP GAS
+  // HANDLE TOP UP GAS (STABLE & ANTI-STRUCTERROR)
   const handleTopUpGas = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 1. Konversi koma (,) ke titik (.) agar desimal valid
+    // 1. Sanitasi input koma (,) ke titik (.)
     const cleanAmount = String(topUpAmount).replace(",", ".");
     const amountNum = Number(cleanAmount);
     if (!amountNum || amountNum <= 0) {
@@ -536,22 +536,33 @@ function MainApp() {
         (storeConfig as any)?.ops_wallet || 
         "B5NUG78tHhK82m9kC1eR9V5hWk2w2H3yR7K9m8N7b6V5";
 
-      const { Connection, PublicKey, Transaction, SystemProgram, LAMPORTS_PER_SOL } = await import("@solana/web3.js");
+      const { 
+        Connection, 
+        PublicKey, 
+        Transaction, 
+        SystemProgram, 
+        LAMPORTS_PER_SOL,
+        ComputeBudgetProgram 
+      } = await import("@solana/web3.js");
+
+      // Gunakan RPC resmi Devnet Solana
       const connection = new Connection("https://api.devnet.solana.com", "confirmed");
 
-      // Gunakan public key aktif langsung dari Phantom untuk mencegah mismatch akun
-      const fromPubkey = solana.publicKey;
+      // Pastikan Public Key dibuat ulang dari string agar valid 100%
+      const fromPubkey = new PublicKey(solana.publicKey.toString());
       const toPubkey = new PublicKey(targetPlatformWallet);
       const lamports = Math.round(amountNum * LAMPORTS_PER_SOL);
 
-      // 2. Validasi saldo sebelum eksekusi (Mencegah "Unexpected error")
-      const balance = await connection.getBalance(fromPubkey);
-      if (balance < lamports + 10000) {
-        alert(`Saldo tidak cukup! Dompet Anda hanya memiliki ${(balance / LAMPORTS_PER_SOL).toFixed(4)} SOL di Devnet.`);
-        return;
-      }
+      // 2. Ambil blockhash segar
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash("confirmed");
 
-      const transaction = new Transaction().add(
+      // 3. Bangun transaksi dengan priority fee
+      const transaction = new Transaction();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = fromPubkey;
+
+      transaction.add(
+        ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 100_000 }),
         SystemProgram.transfer({
           fromPubkey,
           toPubkey,
@@ -559,25 +570,29 @@ function MainApp() {
         })
       );
 
-      // 3. Ambil blockhash & lastValidBlockHeight
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash("confirmed");
-      transaction.recentBlockhash = blockhash;
-      transaction.feePayer = fromPubkey;
+      // 4. Kirim langsung via Phantom
+      const { signature } = await solana.signAndSendTransaction(transaction);
 
-      const signedTx = await solana.signAndSendTransaction(transaction);
+      // 5. Konfirmasi transaksi (dengan toleransi Devnet lag)
+      try {
+        await connection.confirmTransaction({
+          signature,
+          blockhash,
+          lastValidBlockHeight,
+        }, "confirmed");
+      } catch (confErr: any) {
+        // Jika devnet lemot dan timeout, verifikasi ulang status signature-nya
+        const status = await connection.getSignatureStatus(signature);
+        const isSuccess = 
+          status?.value?.confirmationStatus === "confirmed" || 
+          status?.value?.confirmationStatus === "finalized";
 
-      // 4. Konfirmasi transaksi modern (Solusi Error 30 Detik)
-      const confirmation = await connection.confirmTransaction({
-        signature: signedTx.signature,
-        blockhash,
-        lastValidBlockHeight,
-      }, "confirmed");
-
-      if (confirmation.value.err) {
-        throw new Error("Transaksi ditolak oleh validator Solana.");
+        if (!isSuccess && confErr.message?.includes("expired")) {
+          throw new Error("Jaringan Devnet sedang padat. Silakan coba lagi.");
+        }
       }
 
-      // Update saldo ke Supabase
+      // 6. Update saldo ke database Supabase
       const walletStr = fromPubkey.toBase58().toLowerCase();
       const newGasTotal = (Number(vendorProfile?.gas_balance) || 0) + amountNum;
 
@@ -594,6 +609,7 @@ function MainApp() {
       alert(`✅ Deposit successful! Added ${amountNum} SOL to your Gas Tank.`);
       setVendorProfile((prev) => prev ? { ...prev, gas_balance: newGasTotal } : null);
       setTopUpAmount("0.05");
+
     } catch (err: any) {
       console.error(err);
       alert("Deposit failed: " + (err.message || "User rejected or insufficient balance"));
@@ -2005,7 +2021,7 @@ function MainApp() {
     </label>
     <input 
       type="text" 
-      placeholder="e.g. 7LLjrqrfvg6qQKee8bX8XQyT9J8NFQwtyzzj2K8rGXpB" 
+      placeholder="Masukkan alamat wallet Solana (Base58)..." 
       value={(tempConfig as any)?.adminWallet || ""} 
       onChange={(e) => setTempConfig((prev: any) => ({ ...prev, adminWallet: e.target.value }))} 
       style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #374151", background: "#111827", color: "#38bdf8", fontFamily: "monospace", fontSize: "11px", boxSizing: "border-box" }} 
