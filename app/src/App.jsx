@@ -2015,54 +2015,6 @@ function App() {
     <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
   </main>
 
-      {/* HORIZONTAL PROTOCOL PIPELINE (EN) */}
-        <div className="protocol-pipeline">
-          <div className="pipeline-header">
-            <span className="pipeline-dot"></span>
-            <span className="pipeline-title">PROTOCOL EXECUTION FLOW</span>
-          </div>
-
-          <div className="pipeline-steps">
-            <div className="pipeline-step">
-              <span className="step-num">01</span>
-              <div className="step-info">
-                <strong>Swap</strong>
-                <p>Acquire $ZQI using SOL or USDC</p>
-              </div>
-            </div>
-
-            <span className="pipeline-arrow">→</span>
-
-            <div className="pipeline-step">
-              <span className="step-num">02</span>
-              <div className="step-info">
-                <strong>Lock</strong>
-                <p>Stake $ZQI for daily USDC Real Yield</p>
-              </div>
-            </div>
-
-            <span className="pipeline-arrow">→</span>
-
-            <div className="pipeline-step">
-              <span className="step-num">03</span>
-              <div className="step-info">
-                <strong>Vault</strong>
-                <p>Compound returns automatically</p>
-              </div>
-            </div>
-
-            <span className="pipeline-arrow">→</span>
-
-            <div className="pipeline-step">
-              <span className="step-num">04</span>
-              <div className="step-info">
-                <strong>Affiliate</strong>
-                <p>Earn on-chain referral rebates</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
       {/* ================= STYLE FOOTER FIX ================= */}
       <style>{`
         .dapp-footer-clean {
