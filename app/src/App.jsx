@@ -1371,56 +1371,88 @@ setSettlementLogs(prev => [
               </div>
             </div>
 
-            {/* 2. Visual Chart Area: PayFi Settlement & Yield Velocity */}
-            <div className="zoniq-chart-box">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {/* 2. Visual Chart Area: Pro Telemetry Grid */}
+            <div className="zoniq-chart-box" style={{ background: '#0b121f', border: '1px solid #1e293b', borderRadius: '14px', padding: '18px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              
+              {/* Header Chart dengan Filter Periode */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                 <div>
-                  <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#ffffff', fontWeight: '700' }}>
-                    PayFi Settlement & Real Yield Velocity
+                  <h4 style={{ margin: 0, fontSize: '0.92rem', color: '#ffffff', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    PayFi Settlement & Yield Velocity
+                    <span style={{ fontSize: '0.65rem', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>Live</span>
                   </h4>
-                  <p style={{ margin: '3px 0 0 0', fontSize: '0.74rem', color: '#64748b' }}>
-                    Aggregated On-Chain 5% Splits (Vault, Locker, Affiliate, Ops)
+                  <p style={{ margin: '3px 0 0 0', fontSize: '0.72rem', color: '#64748b' }}>
+                    Atomic 5% fee routing across Protocol Pools
                   </p>
                 </div>
-                <span style={{ fontSize: '0.72rem', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', padding: '3px 8px', borderRadius: '6px', fontWeight: '600' }}>
-                  Live Telemetry
-                </span>
+
+                {/* Filter Pills */}
+                <div style={{ display: 'flex', background: '#070a13', padding: '3px', borderRadius: '6px', border: '1px solid #1e293b', gap: '2px' }}>
+                  <span style={{ padding: '2px 8px', borderRadius: '4px', background: '#1e293b', color: '#38bdf8', fontSize: '0.68rem', fontWeight: '700', cursor: 'pointer' }}>7D</span>
+                  <span style={{ padding: '2px 8px', borderRadius: '4px', color: '#64748b', fontSize: '0.68rem', fontWeight: '600', cursor: 'pointer' }}>30D</span>
+                  <span style={{ padding: '2px 8px', borderRadius: '4px', color: '#64748b', fontSize: '0.68rem', fontWeight: '600', cursor: 'pointer' }}>Epoch</span>
+                </div>
               </div>
 
-              {/* Bar Visual Mockup Berbasis CSS */}
-              <div style={{ width: '100%', height: '170px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '10px', padding: '16px 14px 8px 14px', boxSizing: 'border-box', display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
-                {[
-                  { day: 'Mon', height: '42%', val: '0.12 SOL' },
-                  { day: 'Tue', height: '60%', val: '0.24 SOL' },
-                  { day: 'Wed', height: '35%', val: '0.09 SOL' },
-                  { day: 'Thu', height: '78%', val: '0.38 SOL' },
-                  { day: 'Fri', height: '52%', val: '0.21 SOL' },
-                  { day: 'Sat', height: '88%', val: '0.45 SOL' },
-                  { day: 'Sun', height: '96%', val: '0.52 SOL', highlight: true }
-                ].map((bar, index) => (
-                  <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end', gap: '6px' }}>
-                    <div 
-                      title={`${bar.day}: ${bar.val}`}
-                      style={{ 
-                        width: '100%', 
-                        height: bar.height, 
-                        background: bar.highlight ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)' : 'linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%)', 
-                        borderRadius: '4px 4px 0 0',
-                        opacity: bar.highlight ? 1 : 0.75,
-                        transition: 'height 0.3s ease'
-                      }}
-                    />
-                    <span style={{ fontSize: '0.65rem', color: bar.highlight ? '#34d399' : '#64748b', fontWeight: bar.highlight ? '700' : '500' }}>
-                      {bar.day}
-                    </span>
-                  </div>
-                ))}
+              {/* Area Grafik Berisi Skala Y-Axis & Garis Grid */}
+              <div style={{ position: 'relative', width: '100%', height: '180px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '10px', padding: '16px 12px 8px 45px', boxSizing: 'border-box' }}>
+                
+                {/* Skala Y-Axis di Sisi Kiri */}
+                <div style={{ position: 'absolute', left: '10px', top: '14px', bottom: '26px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', fontSize: '0.65rem', color: '#475569', fontFamily: 'monospace', textAlign: 'right', width: '28px' }}>
+                  <span>0.60</span>
+                  <span>0.40</span>
+                  <span>0.20</span>
+                  <span>0.00</span>
+                </div>
+
+                {/* Garis Grid Horizontal */}
+                <div style={{ position: 'absolute', left: '44px', right: '12px', top: '18px', borderTop: '1px dashed rgba(51, 65, 85, 0.4)' }}></div>
+                <div style={{ position: 'absolute', left: '44px', right: '12px', top: '68px', borderTop: '1px dashed rgba(51, 65, 85, 0.4)' }}></div>
+                <div style={{ position: 'absolute', left: '44px', right: '12px', top: '118px', borderTop: '1px dashed rgba(51, 65, 85, 0.4)' }}></div>
+                <div style={{ position: 'absolute', left: '44px', right: '12px', bottom: '28px', borderTop: '1px solid #1e293b' }}></div>
+
+                {/* Balok Grafik */}
+                <div style={{ position: 'relative', zIndex: 2, display: 'flex', height: '100%', alignItems: 'flex-end', gap: '8px' }}>
+                  {[
+                    { day: 'Mon', height: '35%', val: '0.14 SOL' },
+                    { day: 'Tue', height: '55%', val: '0.28 SOL' },
+                    { day: 'Wed', height: '40%', val: '0.18 SOL' },
+                    { day: 'Thu', height: '75%', val: '0.42 SOL' },
+                    { day: 'Fri', height: '50%', val: '0.24 SOL' },
+                    { day: 'Sat', height: '82%', val: '0.48 SOL' },
+                    { day: 'Sun', height: '94%', val: '0.56 SOL', highlight: true }
+                  ].map((bar, index) => (
+                    <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end', gap: '6px' }}>
+                      <div 
+                        title={`${bar.day}: ${bar.val}`}
+                        style={{ 
+                          width: '80%', 
+                          height: bar.height, 
+                          background: bar.highlight 
+                            ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)' 
+                            : 'linear-gradient(180deg, #38bdf8 0%, #1d4ed8 100%)', 
+                          borderRadius: '3px 3px 0 0',
+                          boxShadow: bar.highlight ? '0 0 10px rgba(16, 185, 129, 0.4)' : 'none',
+                          cursor: 'pointer',
+                          transition: 'transform 0.2s ease, filter 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.25)'; e.currentTarget.style.transform = 'scaleY(1.03)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.filter = 'none'; e.currentTarget.style.transform = 'none'; }}
+                      />
+                      <span style={{ fontSize: '0.64rem', color: bar.highlight ? '#34d399' : '#64748b', fontWeight: bar.highlight ? '700' : '500' }}>
+                        {bar.day}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: '#94a3b8', borderTop: '1px solid #1e293b', paddingTop: '10px' }}>
-                <span>Standard Protocol Fee: <strong style={{ color: '#ffffff' }}>0.30% (Swap) / 5.00% (PayFi)</strong></span>
-                <span style={{ color: '#38bdf8' }}>Atomic Multi-Pool Routing ⚡</span>
+              {/* Sub-keterangan Bawah */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.73rem', color: '#94a3b8', borderTop: '1px solid #1e293b', paddingTop: '10px' }}>
+                <span>Protocol Yield Velocity: <strong style={{ color: '#38bdf8' }}>+18.4% APY</strong></span>
+                <span style={{ color: '#10b981', fontWeight: '600' }}>Atomic Multi-Pool Routing ⚡</span>
               </div>
+
             </div>
 
             {/* 3. Live On-Chain Settlement Activity Feed */}
