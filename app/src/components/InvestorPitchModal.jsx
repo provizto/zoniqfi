@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 const TABS = [
   { id: 'modules', label: 'Core Modules (DeFi + PayFi)' },
   { id: 'roadmap', label: 'Roadmap & Milestones' },
-  { id: 'flywheel', label: 'Economic Flywheel' },
-  { id: 'verify', label: 'On-Chain Proof & Token' }
+  { id: 'flywheel', label: 'Economic Flywheel' }
 ];
 
 const PAYFI_CATEGORIES = [
@@ -154,7 +153,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '8px',
-                    fontSize: '0.82rem',
+                    fontSize: '0.84rem',
                     fontWeight: isActive ? '700' : '600',
                     color: isActive ? '#ffffff' : '#94a3b8',
                     background: isActive ? 'linear-gradient(135deg, #3b82f6, #8b5cf6)' : 'transparent',
@@ -399,74 +398,6 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
-
-          {/* TAB 4: ON-CHAIN PROOF & TOKEN VERIFICATION */}
-          {activeTab === 'verify' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ 
-                background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(168, 85, 247, 0.08))', 
-                border: '1px solid rgba(56, 189, 248, 0.3)', 
-                borderRadius: '12px', 
-                padding: '16px' 
-              }}>
-                <h4 style={{ margin: '0 0 6px 0', color: '#38bdf8', fontSize: '1rem' }}>
-                  Verified Solana Infrastructure (Devnet Sandbox)
-                </h4>
-                <p style={{ margin: '0 0 14px 0', color: '#cbd5e1', fontSize: '0.84rem' }}>
-                  ZoniqFi protocol contracts and token mints are live, deployed, and auditable on Solana Devnet.
-                </p>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {/* Token Mint Card */}
-                  <div style={{ background: '#080d1a', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                    <div>
-                      <div style={{ fontSize: '0.84rem', fontWeight: '700', color: '#f8fafc' }}>
-                        $ZQI Native Utility Token
-                      </div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b', fontFamily: 'monospace' }}>
-                        Mint: 6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz
-                      </div>
-                    </div>
-                    <a 
-                      href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      style={{ background: '#0284c7', color: '#fff', padding: '6px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '700', textDecoration: 'none' }}
-                    >
-                      View on Solscan ↗
-                    </a>
-                  </div>
-
-                  {/* Program Authority Card */}
-                  <div style={{ background: '#080d1a', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                    <div>
-                      <div style={{ fontSize: '0.84rem', fontWeight: '700', color: '#f8fafc' }}>
-                        Settlement Vault / Program Authority
-                      </div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b', fontFamily: 'monospace' }}>
-                        Address: HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD
-                      </div>
-                    </div>
-                    <a 
-                      href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      style={{ background: '#7c3aed', color: '#fff', padding: '6px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '700', textDecoration: 'none' }}
-                    >
-                      View on Solscan ↗
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Due Diligence Summary */}
-              <div style={{ background: '#070c18', border: '1px solid #1e293b', borderRadius: '12px', padding: '16px', fontSize: '0.82rem', color: '#94a3b8' }}>
-                <strong style={{ color: '#fff', display: 'block', marginBottom: '6px' }}>Investor Governance Notice:</strong>
-                All smart contract keys will be transitioned to a 3-of-5 Squads v4 Multisig upon completion of the Seed tranche, eliminating unilateral upgrade authority.
-              </div>
-            </div>
-          )}
-
         </div>
 
         {/* MODAL FOOTER */}
@@ -483,46 +414,28 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
             &copy; 2026 ZoniqFi Protocol &bull; Confidential Institutional Brief
           </span>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button
-              type="button"
-              onClick={onClose}
-              style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid #334155',
-                color: '#cbd5e1',
-                padding: '8px 16px',
-                borderRadius: '8px',
-                fontSize: '0.82rem',
-                fontWeight: '600',
-                cursor: 'pointer'
-              }}
-            >
-              Close
-            </button>
-            <a
-              href="https://t.me/zoniqfi"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                color: '#fff',
-                padding: '8px 18px',
-                borderRadius: '8px',
-                fontSize: '0.82rem',
-                fontWeight: '700',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/>
-              </svg>
-              Contact Core Lead
-            </a>
-          </div>
+          <a
+            href="https://t.me/zoniqfi"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+              color: '#fff',
+              padding: '8px 18px',
+              borderRadius: '8px',
+              fontSize: '0.82rem',
+              fontWeight: '700',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .26z"/>
+            </svg>
+            Contact Core Lead
+          </a>
         </div>
       </div>
     </div>
