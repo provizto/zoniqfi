@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import Landing from './Landing';
 import logoZoniq from './assets/image_436281.png'; 
 import ComplianceModal from './components/ComplianceModal'; 
-import ClientOnboardingForm from './components/ClientOnboardingForm'; // INTEGRASI COMPONENT FORM
+import ClientOnboardingForm from './components/ClientOnboardingForm';
 import './App.css';
-import DistributionLog from './components/DistributionLog'; // PERBAIKAN JALUR IMPORT: Disamakan dengan folder komponen lainnya agar tidak crash build
+import DistributionLog from './components/DistributionLog';
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 import PayFiGateway from './components/PayFiGateway';
@@ -31,7 +31,7 @@ const PROTOCOL_POOLS = {
 // ==========================================================================
 const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
 const activePackage = urlParams ? urlParams.get('pkg') : null;
-const currentViewParam = urlParams ? urlParams.get('view') : null; // DETEKSI PARAMETER VIEW FORM RAHASIA
+const currentViewParam = urlParams ? urlParams.get('view') : null;
 const currentDomain = typeof window !== 'undefined' ? window.location.hostname.replace('www.', '') : 'zoniqfi.com';
 
 const SHOW_SWAP = activePackage !== 'whale' && activePackage !== 'staking';
@@ -53,22 +53,22 @@ const INITIAL_PRICES = {
   USDT: 1.00, 
   USDC: 1.00, 
   WSOL: 170.00, 
-  ZQI: 0.50,
-  WIF: 2.50,     
+  ZQI: 0.50, 
+  WIF: 2.50,      
   BONK: 0.00002, 
   POPCAT: 1.10,  
-  RENDER: 7.80,
-  JitoSOL: 185.00,
-  JUP: 0.90,
-  PYTH: 0.45
+  RENDER: 7.80, 
+  JitoSOL: 185.00, 
+  JUP: 0.90, 
+  PYTH: 0.45 
 };
 
 function App() {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [showPitchModal, setShowPitchModal] = useState(false);
   const [view, setView] = useState(() => {
-  return localStorage.getItem('zoniq_current_view') || 'dapp';
-});
+    return localStorage.getItem('zoniq_current_view') || 'dapp';
+  });
   const { publicKey, connected, disconnect, sendTransaction } = useWallet();
   const { setVisible } = useWalletModal();
 
@@ -126,12 +126,10 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Simpan tampilan terakhir agar tidak reset ke landing saat F5/refresh
   useEffect(() => {
     localStorage.setItem('zoniq_current_view', view);
   }, [view]);
 
-  // Sinkronisasi otomatis Wallet Adapter resmi ke state ZoniqFi
   useEffect(() => {
     if (connected && publicKey) {
       const address = publicKey.toBase58();
@@ -168,7 +166,6 @@ function App() {
     return () => { isMounted = false; };
   }, [publicKey, connection]);
   
-  // 🔥 STATE TAB NAVIGASI ZONIQFI DENGAN DETEKSI PAKET OTOMATIS
   const [activeTab, setActiveTab] = useState(() => {
     if (SHOW_SWAP) return 'swap';
     if (SHOW_OPTIMIZER) return 'vault';
@@ -177,10 +174,7 @@ function App() {
     return 'swap';
   });
 
-  // State Modal Legal Disclaimer
   const [showDisclaimer, setShowDisclaimer] = useState(false);
-
-  // State dan Fungsi Modal Kepatuhan
   const [showCompliance, setShowCompliance] = useState(false);
 
   const handleLaunchWithCompliance = () => {
@@ -198,16 +192,12 @@ function App() {
     setView('dashboard');
   };
 
-  // 🔥 INTEGRASI STATE BARU: Menyimpan jumlah data penjualan paket dApp SaaS B2B secara terpusat
   const [activeClients, setActiveClients] = useState(48);
   const [whiteLabelsLive, setWhiteLabelsLive] = useState(19);
   const [oneOffBuyers, setOneOffBuyers] = useState(320);
   
-  // ==========================================================================
-  // HARDENED SILENT ERROR INTERCEPTOR (EMAIL FLOOD BUG RESOLVED)
-  // ==========================================================================
   useEffect(() => {
-    window.onerror = function (message, source, lineno, colno, error) {
+    window.onerror = function (message) {
       console.warn("[ZoniqFi Sandbox Guard] Suppressed on-chain network mismatch error:", message);
       return true; 
     };
@@ -216,7 +206,6 @@ function App() {
     const activePackage = urlParams ? urlParams.get('pkg') : null;
     const currentViewParam = urlParams ? urlParams.get('view') : null;
     
-    // 🛡️ TAHAP 2: SIMPAN & BACA REFERRAL LINK (ANTI-HILANG SAAT REFRESH)
     const refParam = urlParams ? urlParams.get('ref') : null;
     if (refParam) {
       localStorage.setItem('zoniq_cached_referrer', refParam);
@@ -239,7 +228,6 @@ function App() {
   const [myWalletAddress, setMyWalletAddress] = useState("");
   const [activeProviderName, setActiveProviderName] = useState("");
   
-  // 🔥 AUTO-RECONNECT: Memulihkan sesi wallet saat browser di-refresh
   useEffect(() => {
     try {
       const savedSession = localStorage.getItem('zoniq_wallet_session');
@@ -251,7 +239,6 @@ function App() {
           setIsConnected(true);
           let baseBal = address.startsWith("GNT") ? 1000000.00 : 5000.00;
 
-          // Baca sesi staking jika ada
           const savedStaking = localStorage.getItem('zoniq_staking_session');
           if (savedStaking) {
             const stData = JSON.parse(savedStaking);
@@ -260,11 +247,9 @@ function App() {
               setStakedAmount(stData.amount || 1000);
               setShowRewardRow(true);
               
-              // Gunakan nilai tersimpan (jika sudah diklaim, nilainya '0.00 USDC')
               const currentReward = stData.earnedDisplay || "0.00 USDC";
               setEarnedUsdcDisplay(currentReward);
               
-              // Tombol klaim HANYA menyala jika reward BUKAN 0.00 USDC dan belum diklaim
               const isClaimable = currentReward !== "0.00 USDC" && !stData.isClaimed;
               setRewardClaimable(isClaimable);
 
@@ -272,14 +257,12 @@ function App() {
             }
           }
 
-          // Baca sesi vault jika ada
           const savedVault = localStorage.getItem('zoniq_vault_session');
           if (savedVault) {
             const vData = JSON.parse(savedVault);
             if (vData.calcAmount) setCalcAmount(vData.calcAmount.toString());
           }
 
-          // 🛡️ TAHAP 2: BACA SESI AFFILIATE (PULIHKAN TIER & VOLUME SAAT REFRESH)
           const savedAffiliate = localStorage.getItem('zoniq_affiliate_data');
           if (savedAffiliate) {
             const aff = JSON.parse(savedAffiliate);
@@ -301,22 +284,19 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [securityBanner, setSecurityBanner] = useState({ show: false, message: "", type: "success" });
   
-  const [lastTransactionTime, setLastTransactionTime] = useState(0);
   const [isSwapLoading, setIsSwapLoading] = useState(false);
   const [isLockLoading, setIsLockLoading] = useState(false);
   const [isTokenLocked, setIsTokenLocked] = useState(false);
 
-  // --- TAMBAHAN BARU UNTUK DEMO & DURASI (BAGIAN 1) ---
-  const IS_DEMO_MODE = true; // 'true' = 8 detik untuk pitching, 'false' = hari asli
+  const IS_DEMO_MODE = true;
   const [instantDays, setInstantDays] = useState(7);
   const [lockCountdown, setLockCountdown] = useState(0);
-  // ----------------------------------------------------
 
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
   const [swapsCount, setSwapsCount] = useState(45210); 
   
   const [zqiBalance, setZqiBalance] = useState(0); 
-  const [usdcBalance, setUsdcBalance] = useState(50.00); // Saldo awal simulasi dompet USDC
+  const [usdcBalance, setUsdcBalance] = useState(50.00);
   const [stakedAmount, setStakedAmount] = useState(0);
   
   const [protocolTVL, setProtocolTVL] = useState(1248500);
@@ -338,10 +318,14 @@ function App() {
   const [swapFee, setSwapFee] = useState('0.0000');
   const [txLog, setTxLog] = useState('');
 
-  // 🔥 STATE INTEGRASI: Menyimpan data pembagian on-chain untuk komponen premium DistributionLog
-  const [distributionData, setDistributionData] = useState(null);
+  // STATE LIVE ON-CHAIN SETTLEMENT FEED (RIIL)
+const [settlementLogs, setSettlementLogs] = useState([
+  { title: "QRIS Settlement: #RELAY-SOL-02", desc: "Gas Tank Relayer ➔ 4 Pools Split", val: "0.00075 SOL (5%)", color: "#10b981" },
+  { title: "AMM Swap: USDC ➔ $ZQI", desc: "Jito MEV Protected Bundle", val: "0.00300 SOL (0.3%)", color: "#38bdf8" },
+  { title: "Yield Vault Auto-Compound", desc: "Epoch Rebalancing Executed", val: "+49.1% APY Boost", color: "#a855f7" }
+]);
 
-  // 🔥 STATE MODAL: Notifikasi Sukses Swap Web3 Premium
+  const [distributionData, setDistributionData] = useState(null);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [successModalData, setSuccessModalData] = useState(null);
 
@@ -356,7 +340,6 @@ function App() {
   const [estimatedRewardText, setEstimatedRewardText] = useState('');
   const [showRewardRow, setShowRewardRow] = useState(false);
   const [earnedUsdcDisplay, setEarnedUsdcDisplay] = useState('0.00 USDC');
-  
   const [rewardClaimable, setRewardClaimable] = useState(false);
 
   const [referrerInput, setReferrerInput] = useState('');
@@ -365,9 +348,6 @@ function App() {
   const [tierLabel, setTierLabel] = useState('Bronze (10%)');
   const [tierColor, setTierColor] = useState('#14b8a6');
 
-  // ==========================================================================
-  // LIVE PRICE HANDLER (JUPITER API INTEGRATION)
-  // ==========================================================================
   const [tokenPrices, setTokenPrices] = useState(INITIAL_PRICES);
 
   useEffect(() => {
@@ -430,151 +410,14 @@ function App() {
     }
   };
 
-  const selectWallet = async (walletType) => {
-    setIsModalOpen(false);
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const dAppUrl = window.location.href;
-
-    if (walletType === 'backpack') {
-      const backpackProvider = window.backpack?.solana || (window.solana?.isBackpack ? window.solana : null);
-      if (backpackProvider) {
-        executeConnect(backpackProvider, "Backpack");
-      } else {
-        alert("Backpack Wallet not found! Please install the Backpack extension.");
-        window.open("https://backpack.app/", "_blank");
-      }
-    } else if (walletType === 'phantom') {
-      let phantomProvider = window.phantom?.solana;
-      if (!phantomProvider && window.solana?.isPhantom) {
-        phantomProvider = window.solana;
-      }
-
-      if (phantomProvider) {
-        executeConnect(phantomProvider, "Phantom");
-      } else if (isMobile) {
-        const phantomDeepLink = `https://phantom.app/ul/browse/${encodeURIComponent(dAppUrl)}`;
-        window.open(phantomDeepLink, '_blank');
-      } else {
-        alert("Phantom Wallet not found! Please install the Phantom extension.");
-        window.open("https://phantom.app/", "_blank");
-      }
-    } else if (walletType === 'solflare') {
-      const solflareProvider = window.solflare?.solana || window.solflare;
-      if (solflareProvider && (solflareProvider.isSolflare || window.solflare?.isSolflare)) {
-        executeConnect(solflareProvider, "Solflare");
-      } else if (isMobile) {
-        const solflareDeepLink = `https://solflare.com/ul/v1/browse?url=${encodeURIComponent(dAppUrl)}`;
-        window.open(solflareDeepLink, '_blank');
-      } else {
-        alert("Solflare Wallet not found! Please install the Solflare extension.");
-        window.open("https://solflare.com/", "_blank");
-      }
-    } 
-    else if (walletType === 'okx') {
-      const okxProvider = window.okxwallet?.solana || (window.solana?.isOkxWallet ? window.solana : null) || window.okxwallet?.solanaProvider;
-      if (okxProvider) {
-        executeConnect(okxProvider, "OKX Wallet");
-      } else {
-        // Fallback demo sandbox otomatis
-        executeConnect(null, "OKX Wallet");
-      }
+  const copyLink = () => {
+    if (!isConnected) {
+      setVisible(true);
+      triggerBanner("⚠️ Please connect your wallet first!", "warning");
+      return;
     }
-    else if (walletType === 'coinbase') {
-      const cbProvider = window.coinbaseSolana || window.coinbaseWalletExtension?.solana || (window.solana?.isCoinbaseWallet ? window.solana : null);
-      if (cbProvider) {
-        executeConnect(cbProvider, "Coinbase");
-      } else {
-        // Fallback otomatis ke mode sandbox jika ekstensi belum terpasang
-        executeConnect(null, "Coinbase");
-      }
-    }
-    else if (walletType === 'ledger') {
-      triggerBanner("Connecting to Ledger Hardware device via WebHID Bridge...", "warning");
-      await new Promise(r => setTimeout(r, 1500));
-      setMyWalletAddress("LedgerSec88WhaleWalletAddressZQI");
-      setActiveProviderName("Ledger");
-      setIsConnected(true);
-      setZqiBalance(250000.00); 
-      triggerBanner("Hardware Secure Connection Established via Ledger Nano S/X!", "success");
-    }
-    else if (walletType === 'brave') {
-      const braveProvider = window.braveSolana;
-      if (braveProvider) {
-        executeConnect(braveProvider, "Brave Wallet");
-      } else {
-        executeConnect(window.solana, "Brave Wallet");
-      }
-    }
-  };
-
-  const executeConnect = async (provider, walletName) => {
-    try {
-      if (!provider) throw new Error("Provider structure is missing.");
-      
-      if (typeof provider.disconnect === 'function') {
-        try { await provider.disconnect(); } catch (e) { console.warn("Session cleared safely:", e); }
-      }
-
-      const response = await provider.connect();
-      const pubKey = response.publicKey ? response.publicKey.toString() : provider.publicKey.toString();
-      
-      setMyWalletAddress(pubKey);
-      setActiveProviderName(walletName);
-      setIsConnected(true);
-
-      // 🔥 Simpan status sesi ke localStorage
-      localStorage.setItem('zoniq_wallet_session', JSON.stringify({
-        provider: walletName,
-        address: pubKey
-      }));
-
-      if (pubKey.startsWith("GNT") || pubKey.length > 30) {
-        setZqiBalance(1000000.00); 
-        triggerBanner(`👑 VIP Grantor Wallet Detected! Core Revenue-Share Active.`, "success");
-      } else {
-        setZqiBalance(5000.00); 
-        triggerBanner(`Wallet successfully linked via ${walletName}!`, "success");
-      }
-    } catch (err) {
-      console.error(`${walletName} connection simulation debug:`, err);
-      if (err.code === 4001) {
-        triggerBanner("Connection rejected: Request denied by user.", "warning");
-      } else {
-        setMyWalletAddress("DemoFx55SolanaPubKeyWalletAddressZQI");
-        setActiveProviderName(walletName);
-        setIsConnected(true);
-        setZqiBalance(7500.00);
-        triggerBanner(`Linked via ${walletName} (Demo Sandbox Mode Activated)`, "success");
-      }
-    }
-  };
-
-  const disconnectWallet = () => {
-    // 🔥 Bersihkan sesi tersimpan
-    localStorage.removeItem('zoniq_wallet_session');
-    localStorage.removeItem('zoniq_staking_session');
-    localStorage.removeItem('zoniq_vault_session');
-    localStorage.removeItem('zoniq_affiliate_data');
-
-    setMyWalletAddress("");
-    setActiveProviderName("");
-    setZqiBalance(0);
-    setStakedAmount(0);
-    setIsConnected(false);
-    setIsTokenLocked(false);
-    setShowRewardRow(false);
-    setRewardClaimable(false);
-    setLockAmount('0');
-    setLockCalculationMode('manual');
-    setPayAmount('');
-    setReceiveAmount('0.0');
-    setSwapFee('0.0000');
-    setTxLog('');
-    setReferrerInput('');
-    setReferralVolume('$0.00');
-    setReferralEarned('$0.00'); 
-    setDistributionData(null); 
-    triggerBanner("Wallet disconnected.", "warning");
+    const generatedUrl = `https://${currentDomain}?ref=${myWalletAddress}`;
+    navigator.clipboard.writeText(generatedUrl).then(() => triggerBanner("📋 Copied Link to Clipboard!", "success"));
   };
 
   const tokens = [
@@ -591,17 +434,15 @@ function App() {
     { symbol: 'PYTH', name: 'Pyth Network', priceInUsdc: tokenPrices.PYTH }
   ];
 
-  // GANTI DENGAN KODE INI
   useEffect(() => {
     const amount = parseFloat(payAmount) || 0;
-    const calculatedFee = amount * 0.003; // Biaya protokol flat 0.3%
+    const calculatedFee = amount * 0.003; 
     setSwapFee(calculatedFee.toFixed(4));
 
     const payTokenData = tokens.find(t => t.symbol === tokenPay);
     const receiveTokenData = tokens.find(t => t.symbol === tokenReceive);
 
     if (payTokenData && receiveTokenData) {
-      // Potong fee 0.3% terlebih dahulu sebelum dieksekusi ke token tujuan
       const netAmount = Math.max(0, amount - calculatedFee);
       const totalValueInUsdc = netAmount * payTokenData.priceInUsdc;
       const rawReceive = totalValueInUsdc / receiveTokenData.priceInUsdc;
@@ -637,14 +478,11 @@ function App() {
     setTxLog(`Routing private transaction bundle on Solana Devnet via Jito Engine (MEV Protection)...`);
 
     try {
-      setIsSwapLoading(true);
-
       if (!publicKey) {
-        alert("Silakan hubungkan dompet Solflare Anda terlebih dahulu!");
+        alert("Silakan hubungkan dompet Anda terlebih dahulu!");
         return;
       }
 
-      // 1. Ambil nilai fee 0.3%
       const currentFee = parseFloat(swapFee) || 0;
       const totalFeeLamports = Math.floor(currentFee * LAMPORTS_PER_SOL);
 
@@ -653,16 +491,13 @@ function App() {
         return;
       }
 
-      // 2. Bagi ke 4 pool (Vault 40%, Locker 30%, Affiliate 15%, Ops 15%)
       const vaultLamports = Math.floor(totalFeeLamports * 0.40);
       const lockerLamports = Math.floor(totalFeeLamports * 0.30);
       const affiliateLamports = Math.floor(totalFeeLamports * 0.15);
       const opsLamports = totalFeeLamports - (vaultLamports + lockerLamports + affiliateLamports);
 
-      // 3. Susun transaksi transfer Solana Devnet
       const transaction = new Transaction();
 
-      // Pool 1: Vault (40%)
       transaction.add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
@@ -671,7 +506,6 @@ function App() {
         })
       );
 
-      // Pool 2: Locker (30%)
       transaction.add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
@@ -680,7 +514,6 @@ function App() {
         })
       );
 
-      // Pool 3: Affiliate (15%)
       transaction.add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
@@ -689,7 +522,6 @@ function App() {
         })
       );
 
-      // Pool 4: Project Ops (15%)
       transaction.add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
@@ -698,7 +530,6 @@ function App() {
         })
       );
 
-      // Ambil blockhash terbaru & kirim ke Solflare
       const { blockhash } = await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = publicKey;
@@ -706,7 +537,6 @@ function App() {
       const signature = await sendTransaction(transaction, connection);
       await connection.confirmTransaction(signature, 'confirmed');
 
-      // 4. Perhitungan tampilan & state UI
       const vaultShareNum = currentFee * 0.40;
       const poolShareNum = currentFee * 0.30;
       const affiliateShareNum = currentFee * 0.15;
@@ -718,9 +548,18 @@ function App() {
       const projectTreasuryShare = opsShareNum.toFixed(5);
 
       setSwapsCount(prev => prev + 1);
-      setTxLog(signature); 
+      setTxLog(signature);
+      // SUNTIKKAN TRANSAKSI ASLI KE LOG KIRI SECARA REAL-TIME
+setSettlementLogs(prev => [
+  {
+    title: `AMM Swap: ${amount} ${tokenPay} ➔ ${receiveAmount} ${tokenReceive}`,
+    desc: `Tx: ${signature.slice(0, 6)}...${signature.slice(-4)} (Devnet Finalized)`,
+    val: `${swapFee} ${tokenPay} (0.3%)`,
+    color: "#38bdf8"
+  },
+  ...prev.slice(0, 3) // Menjaga daftar tetap maksimal 4 baris teratas
+]);
 
-      // 1. DATA RINGKASAN DISTRIBUSI ON-CHAIN
       setDistributionData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
@@ -733,26 +572,19 @@ function App() {
         ]
       });
 
-      // Otomatis bersihkan kartu log setelah 15 detik
       setTimeout(() => {
         setDistributionData(null);
       }, 20000);
 
-      // 2. REAKTIF KE MODUL VAULT: Naikkan TVL Protokol
       setProtocolTVL(prev => prev + Math.round(vaultShareNum * 100) / 100);
 
-      // 3. REAKTIF KE MODUL LOCK ($ZQI Staking):
-      // Jika user sedang mengunci token, bagi hasil USDC (30%) langsung bertambah secara presisi
       if (isTokenLocked) {
         const currentEarned = parseFloat(earnedUsdcDisplay) || 0;
-        // Gunakan 4 desimal agar penambahan 0.0180 USDC terlihat jelas di layar
         const updatedEarned = (currentEarned + poolShareNum).toFixed(4);
         setEarnedUsdcDisplay(`${updatedEarned} USDC`);
         setRewardClaimable(true);
       }
 
-      // 4. REAKTIF KE MODUL AFFILIATE:
-      // Jika ada referrer yang diuji/aktif, volume dan komisi langsung bertambah
       if (referrerInput.trim() !== '') {
         const currentVol = parseFloat(referralVolume.replace(/[^0-9.-]+/g, "")) || 0;
         const newVol = currentVol + amount;
@@ -763,16 +595,12 @@ function App() {
         setReferralEarned(`$${newEarned.toFixed(2)} USDC`);
       }
 
-      // 5. UPDATE SALDO TOKEN USER (Dua Arah: Beli & Jual)
       if (tokenReceive === 'ZQI') {
-        // Jika menukar USDC -> ZQI, saldo ZQI bertambah
         setZqiBalance(prev => prev + parseFloat(receiveAmount));
       } else if (tokenPay === 'ZQI') {
-        // Jika menukar balik ZQI -> USDC, saldo ZQI berkurang
         setZqiBalance(prev => Math.max(0, prev - amount));
       }
 
-      // 6. POPUP SUKSES & SIMPAN KE MODAL
       setSuccessModalData({
         fromAmount: `${amount} ${tokenPay}`,
         toAmount: `${receiveAmount} ${tokenReceive}`,
@@ -781,7 +609,6 @@ function App() {
       });
       setIsSuccessModalOpen(true);
 
-      // Notifikasi alirkan 15% ke Developer Treasury
       triggerBanner(`✅ Swap Executed! 15% Ops Fee (${opsShareNum.toFixed(4)} ${tokenPay}) routed to Developer Treasury.`, "success");
 
       setPayAmount('');
@@ -844,15 +671,12 @@ function App() {
   useEffect(() => {
     if (isTokenLocked) return;
     const amount = parseFloat(lockAmount) || 0;
-
-    // Menentukan multiplier dinamis berdasarkan pilihan 7, 15, atau 30 hari
     const instantMultiplier = instantDays === 30 ? 1.0 : instantDays === 15 ? 0.75 : 0.5;
 
     if (lockCalculationMode === 'manual') {
       const weightedScore = amount * instantMultiplier;
       setLiveScore(`${weightedScore.toLocaleString('en-US')} ZQI Share`);
       if (amount > 0) {
-        // Nilai estimasi reward otomatis dikalikan bobot hari
         const calculatedReward = (amount * 0.05 * instantMultiplier).toFixed(2);
         setEstimatedRewardText(`Estimated Accumulation: +${calculatedReward} USDC`);
       } else {
@@ -890,12 +714,10 @@ function App() {
       setStakedAmount(amount); 
       setZqiBalance(prev => prev - amount); 
       
-      // 1. Saat baru dikunci, saldo hasil mulai dari 0.00 USDC
       setEarnedUsdcDisplay("0.00 USDC");
       setShowRewardRow(true);
       setProtocolTVL(prev => prev + (amount * tokenPrices.ZQI)); 
 
-      // 2. Simulasi Epoch dengan Hitung Mundur Live (Demo 8 detik vs Hari Asli)
       const waitSeconds = IS_DEMO_MODE ? 8 : (lockCalculationMode === 'manual' ? instantDays : 30) * 86400;
       setLockCountdown(waitSeconds);
 
@@ -924,25 +746,18 @@ function App() {
     }
   };
 
-  // GANTI DENGAN KODE INI
   const claimZqiReward = () => {
     if (!rewardClaimable) {
       triggerBanner("⚠️ Smart Contract Refusal: Epoch locked! Cannot execute yield withdrawal yet.", "error");
       return;
     }
 
-    // Ambil nominal angka dari reward yang tampil di UI
     const rewardValue = parseFloat(earnedUsdcDisplay) || 0;
-    
     triggerBanner(`🎉 Claim Successful! +${rewardValue.toFixed(4)} USDC has been transferred to your wallet.`, "success");
-    
-    // Tambahkan reward langsung ke saldo USDC dompet
     setUsdcBalance(prev => prev + rewardValue);
-    
     setEarnedUsdcDisplay("0.00 USDC");
     setRewardClaimable(false);
 
-    // 💾 UPDATE STORAGE AGAR STATUS KLAIM TERSIMPAN PERMANEN
     try {
       const savedStaking = localStorage.getItem('zoniq_staking_session');
       if (savedStaking) {
@@ -956,7 +771,6 @@ function App() {
     }
   };
 
-  // 1. Membuka modal konfirmasi buatan kita (bukan popup browser)
   const triggerEmergencyModal = () => {
     if (!isConnected) {
       triggerBanner("⚠️ Please connect your wallet first!", "error");
@@ -1002,16 +816,6 @@ function App() {
     }
   };
 
-  const copyLink = () => {
-    if (!isConnected) {
-      setVisible(true);
-      triggerBanner("⚠️ Please connect your wallet first!", "warning");
-      return;
-    }
-    const generatedUrl = `https://${currentDomain}?ref=${myWalletAddress}`;
-    navigator.clipboard.writeText(generatedUrl).then(() => triggerBanner("📋 Copied Link to Clipboard!", "success"));
-  };
-
   const verifyReferralOnChain = () => {
     let inputVal = referrerInput.trim();
 
@@ -1028,13 +832,11 @@ function App() {
       return;
     }
 
-    // 1. Cek apakah input berupa domain (.sol / .sns)
     const isDomain = isSNSDomain(inputVal);
 
     if (isDomain) {
       triggerBanner(`🔍 SNS Domain Resolved: ${inputVal} (Verified On-Chain)`, "success");
     } else {
-      // 2. Notifikasi untuk Public Key Solana biasa
       const shortAddr = `${inputVal.slice(0, 4)}...${inputVal.slice(-4)}`;
       triggerBanner(`✅ Referrer Address: ${shortAddr} (Verified On-Chain)`, "success");
     }
@@ -1068,7 +870,6 @@ function App() {
     const formattedEarned = `$${totalEarnedUsdc.toLocaleString('en-US', { minimumFractionDigits: 2 })} USDC`;
     setReferralEarned(formattedEarned);
 
-    // 🛡️ SIMPAN HASIL VERIFIKASI KE STORAGE (ANTI-RESET SAAT REFRESH)
     localStorage.setItem('zoniq_affiliate_data', JSON.stringify({
       referrer: inputVal,
       volume: formattedVolume,
@@ -1087,9 +888,9 @@ function App() {
       <>
         {showCompliance && (
           <ComplianceModal 
-            isOpen={showCompliance}
-            onClose={() => setShowCompliance(false)}
-            onAccept={handleAcceptCompliance}
+            isOpen={showCompliance} 
+            onClose={() => setShowCompliance(false)} 
+            onAccept={handleAcceptCompliance} 
           />
         )}
         <Landing 
@@ -1104,25 +905,46 @@ function App() {
 
   return (
     <>
-      {/* STYLE INTEGRASI TAB RESPONSIVE SINGLE-FRAME APP (PERFECT CENTER) */}
+      {/* STYLE INTEGRASI 2-COLUMN TERMINAL DASHBOARD */}
       <style>{`
         .dapp-container {
-          display: flex !important;
-          flex-direction: column !important;
-          align-items: center !important;
-          justify-content: flex-start !important;
           width: 100% !important;
-          max-width: 100% !important;
-          padding: 20px 15px !important;
+          max-width: 1240px !important;
+          margin: 0 auto !important;
+          padding: 24px 16px !important;
           box-sizing: border-box !important;
         }
-        /* Navigasi tab dikunci kembali ke 480px agar padat & rapi */
+
+        /* Responsive 2-Column Grid Layout */
+        .zoniq-terminal-grid {
+          display: grid !important;
+          grid-template-columns: 1.12fr 0.88fr !important;
+          gap: 24px !important;
+          align-items: start !important;
+          width: 100% !important;
+        }
+
+        .zoniq-terminal-left {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 18px !important;
+          width: 100% !important;
+          position: sticky !important; /* <- Tambah ini */
+          top: 20px !important;        /* <- Tambah ini */
+        }
+
+        .zoniq-terminal-right {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 16px !important;
+          width: 100% !important;
+        }
+
+        /* Navigasi Tab Sisi Kanan */
         .dapp-nav-tabs-wrapper {
           display: flex !important;
-          justify-content: center !important;
-          margin: 15px auto 25px auto !important;
-          max-width: 520px !important;
           width: 100% !important;
+          margin-bottom: 4px !important;
         }
         .dapp-nav-tabs {
           display: flex !important;
@@ -1132,6 +954,7 @@ function App() {
           border-radius: 14px !important;
           width: 100% !important;
           gap: 4px !important;
+          box-sizing: border-box !important;
         }
         .dapp-tab-btn {
           flex: 1 !important;
@@ -1159,41 +982,79 @@ function App() {
           color: #ffffff !important;
           box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3) !important;
         }
-        /* Swap, Lock, Vault tetap rapat & proporsional di 480px */
+
+        /* Single Frame & Cards */
         .dapp-single-frame-container {
-          max-width: 480px !important;
+          width: 100% !important;
           margin: 0 auto !important;
-          width: 100% !important;
         }
-        /* Khusus tab Affiliate & PayFi otomatis melebar lega ke 780px */
-        .dapp-single-frame-container.wide-frame {
-          max-width: 780px !important;
-        }
-        .dapp-single-frame-container .product-card {
+        .dapp-single-frame-container .product-card,
+        .payfi-wrapper,
+        .affiliate-section {
           width: 100% !important;
+          max-width: 100% !important;
           box-sizing: border-box !important;
-          margin: 0 auto !important;
+        }
+
+        /* Sisi Kiri: Mini KPI Cards */
+        .zoniq-stat-card {
+          background: #0b121f;
+          border: 1px solid #1e293b;
+          border-radius: 12px;
+          padding: 14px 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        /* Sisi Kiri: Visual Chart Box */
+        .zoniq-chart-box {
+          background: #0b121f;
+          border: 1px solid #1e293b;
+          border-radius: 14px;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        /* Sisi Kiri: Live Activity Feed Box */
+        .zoniq-feed-box {
+          background: #0b121f;
+          border: 1px solid #1e293b;
+          border-radius: 14px;
+          padding: 16px 18px;
+        }
+
+        /* Responsive Breakpoint: Tablet & HP menjadi 1 kolom */
+        @media (max-width: 1024px) {
+          .zoniq-terminal-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+          }
+          .zoniq-terminal-left {
+            order: 2; /* Di HP, modul eksekusi tampil duluan */
+          }
+          .zoniq-terminal-right {
+            order: 1;
+          }
         }
         @media (max-width: 640px) {
-          .dapp-nav-tabs-wrapper {
-            max-width: 100% !important;
-          }
           .dapp-tab-btn {
             font-size: 0.74rem !important;
             padding: 8px 3px !important;
-            gap: 3px !important;
+            gap: 2px !important;
           }
         }
       `}</style>
 
-      {/* 👉 TEMPATKAN MODAL DI SINI (Return Utama Dashboard) */}
       <TransactionSuccessModal 
-  isOpen={isSuccessModalOpen} 
-  onClose={() => setIsSuccessModalOpen(false)} 
-  swapDetails={successModalData}
-  programId={PROGRAM_ID}
-  onNavigateTab={(tabName) => setActiveTab(tabName)}
-/>
+        isOpen={isSuccessModalOpen} 
+        onClose={() => setIsSuccessModalOpen(false)} 
+        swapDetails={successModalData}
+        programId={PROGRAM_ID}
+        onNavigateTab={(tabName) => setActiveTab(tabName)}
+      />
 
       {securityBanner.show && (
         <div id="securityBanner" style={{
@@ -1209,7 +1070,7 @@ function App() {
         </div>
       )}
 
-      {/* HEADER UTAMA (RESPONSIF MOBILE & DESKTOP) */}
+      {/* HEADER UTAMA */}
       <header style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -1220,7 +1081,6 @@ function App() {
         width: '100%',
         boxSizing: 'border-box'
       }}>
-        {/* KIRI: LOGO + BRAND */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <img 
             src={logoZoniq} 
@@ -1235,63 +1095,60 @@ function App() {
           </span>
         </div>
 
-        {/* KANAN: TOMBOL RINGKAS */}
-<div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
-  {/* BADGE NETWORK */}
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '5px',
-    background: 'rgba(16, 185, 129, 0.1)',
-    border: '1px solid rgba(16, 185, 129, 0.25)',
-    padding: '0 12px',
-    height: '36px',
-    borderRadius: '6px',
-    fontSize: '0.72rem',
-    fontWeight: '600',
-    color: '#34d399',
-    boxSizing: 'border-box'
-  }}>
-    <span style={{
-      width: '6px',
-      height: '6px',
-      borderRadius: '50%',
-      background: '#10b981',
-      boxShadow: '0 0 6px #10b981'
-    }}></span>
-    Devnet
-  </div>
-  
-  <button 
-    id="walletBtn" 
-    onClick={() => {
-      if (!isConnected) {
-        openWalletModal();
-      } else {
-        setShowWalletMenu((prev) => !prev);
-      }
-    }} 
-    style={{ 
-      padding: '0 14px', 
-      height: '36px',
-      borderRadius: '6px', 
-      fontWeight: 'bold', 
-      border: 'none', 
-      color: '#fff', 
-      cursor: 'pointer', 
-      fontSize: '0.75rem',
-      background: isConnected ? "#10b981" : "linear-gradient(135deg, #8b5cf6, #3b82f6)",
-      whiteSpace: 'nowrap',
-      boxSizing: 'border-box',
-      display: 'inline-flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
-    {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
-  </button> 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '5px',
+            background: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            padding: '0 12px',
+            height: '36px',
+            borderRadius: '6px',
+            fontSize: '0.72rem',
+            fontWeight: '600',
+            color: '#34d399',
+            boxSizing: 'border-box'
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#10b981',
+              boxShadow: '0 0 6px #10b981'
+            }}></span>
+            Devnet
+          </div>
+          
+          <button 
+            id="walletBtn" 
+            onClick={() => {
+              if (!isConnected) {
+                openWalletModal();
+              } else {
+                setShowWalletMenu((prev) => !prev);
+              }
+            }} 
+            style={{ 
+              padding: '0 14px', 
+              height: '36px', 
+              borderRadius: '6px', 
+              fontWeight: 'bold', 
+              border: 'none', 
+              color: '#fff', 
+              cursor: 'pointer', 
+              fontSize: '0.75rem', 
+              background: isConnected ? "#10b981" : "linear-gradient(135deg, #8b5cf6, #3b82f6)", 
+              whiteSpace: 'nowrap', 
+              boxSizing: 'border-box', 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              justifyContent: 'center' 
+            }}>
+            {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
+          </button> 
 
-          {/* DROPDOWN MENU SAAT TERKONEKSI */}
           {isConnected && showWalletMenu && (
             <div style={{
               position: 'absolute',
@@ -1308,7 +1165,6 @@ function App() {
               flexDirection: 'column',
               gap: '4px'
             }}>
-              {/* Ringkasan Saldo SOL & USDC */}
               <div style={{
                 padding: '8px 10px',
                 background: 'rgba(255, 255, 255, 0.03)',
@@ -1332,7 +1188,7 @@ function App() {
                   </span>
                 </div>
               </div>
-              {/* Salin Alamat */}
+
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(myWalletAddress);
@@ -1352,13 +1208,10 @@ function App() {
                   alignItems: 'center',
                   gap: '6px'
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#1f2937')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
                 📋 {copied ? "Copied!" : "Copy Address"}
               </button>
 
-              {/* Solana Explorer / Solscan */}
               <a
                 href={`https://solscan.io/account/${myWalletAddress}?cluster=devnet`}
                 target="_blank"
@@ -1373,15 +1226,12 @@ function App() {
                   alignItems: 'center',
                   gap: '6px'
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#1f2937')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
                 🔍 Solscan
               </a>
 
               <hr style={{ border: 'none', borderTop: '1px solid #1f2937', margin: '2px 0' }} />
 
-              {/* Disconnect */}
               <button
                 onClick={() => {
                   setShowWalletMenu(false);
@@ -1401,8 +1251,6 @@ function App() {
                   alignItems: 'center',
                   gap: '6px'
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
               >
                 🚪 Disconnect
               </button>
@@ -1452,8 +1300,7 @@ function App() {
               className={`ticker-item ${item.isZqi ? 'zqi-ticker-highlight' : ''}`}
               onClick={() => {
                 if (item.isZqi) {
-                  const swapBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.toLowerCase().includes('swap'));
-                  if (swapBtn) swapBtn.click();
+                  setActiveTab('swap');
                   const dapp = document.querySelector('.dapp-container');
                   if (dapp) dapp.scrollIntoView({ behavior: 'smooth' });
                 }
@@ -1472,550 +1319,590 @@ function App() {
         </div>
       </div>
 
+      {/* ========================================================================= */}
+      {/* MAIN CONTAINER: TWO-COLUMN DASHBOARD (TERMINAL PRO)                       */}
+      {/* ========================================================================= */}
       <main className="dapp-container">
-  <div className="rpc-status-container" style={{ marginBottom: '10px', fontSize: '0.82rem', color: '#94a3b8' }}>
-    <span className="rpc-status-indicator"></span>
-    <span>RPC Node: Operational ({SOLANA_NETWORK})</span>
-  </div>
-
-        {/* TAB NAVIGATION BAR TERPADU */}
-        <div className="dapp-nav-tabs-wrapper">
-          <div className="dapp-nav-tabs">
-            {SHOW_SWAP && (
-              <button 
-                type="button"
-                className={`dapp-tab-btn ${activeTab === 'swap' ? 'active' : ''}`}
-                onClick={() => setActiveTab('swap')}
-              >
-                🔄 <span className="tab-text">Swap</span>
-              </button>
-            )}
-            {SHOW_LOCKER && (
-              <button 
-                type="button"
-                className={`dapp-tab-btn ${activeTab === 'staking' ? 'active' : ''}`}
-                onClick={() => setActiveTab('staking')}
-              >
-                🔒 <span className="tab-text">Lock</span>
-              </button>
-            )}
-            {SHOW_OPTIMIZER && (
-              <button 
-                type="button"
-                className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
-                onClick={() => setActiveTab('vault')}
-              >
-                📈 <span className="tab-text">Vault</span>
-              </button>
-            )}
-            {SHOW_AFFILIATE && (
-              <button 
-                type="button" 
-                className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
-                onClick={() => setActiveTab('affiliate')}
-              >
-                👥 <span className="tab-text">Affiliate</span>
-              </button>
-            )}
-            <button 
-              type="button" 
-              className={`dapp-tab-btn ${activeTab === 'payfi' ? 'active' : ''}`}
-              onClick={() => setActiveTab('payfi')}
-            >
-              💳 <span className="tab-text">PayFi</span>
-            </button>
-          </div>
+        
+        {/* RPC Status Indicator */}
+        <div className="rpc-status-container" style={{ marginBottom: '16px', fontSize: '0.82rem', color: '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <span className="rpc-status-indicator"></span>
+          <span>RPC Node: Operational ({SOLANA_NETWORK})</span>
         </div>
 
-        {/* INJEKSI STYLE OTOMATIS (PRESISI 100% LAPTOP & HP) */}
-        <style>{`
-          /* Bar Navigasi Tab Presisi Tengah */
-          .dapp-nav-tabs-wrapper {
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            width: 100% !important;
-            margin: 0 auto 24px auto !important;
-            padding: 0 10px !important;
-            box-sizing: border-box !important;
-          }
-
-          .dapp-nav-tabs {
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 4px !important;
-            background: #111827 !important;
-            padding: 6px !important;
-            border-radius: 12px !important;
-            border: 1px solid #1f2937 !important;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
-            box-sizing: border-box !important;
-            max-width: 100% !important;
-          }
-
-          .dapp-tab-btn {
-            background: transparent !important;
-            border: none !important;
-            color: #9ca3af !important;
-            padding: 7px 12px !important;
-            border-radius: 8px !important;
-            font-size: 0.82rem !important;
-            font-weight: 600 !important;
-            cursor: pointer !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 5px !important;
-            white-space: nowrap !important;
-            transition: all 0.2s ease-in-out !important;
-          }
-
-          .dapp-tab-btn.active {
-            background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
-            color: #ffffff !important;
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4) !important;
-          }
-
-          /* Seragamkan Ukuran Kartu Isi Semua Tab */
-          .payfi-wrapper,
-          .affiliate-container,
-          .affiliate-card,
-          .swap-card,
-          .locker-card,
-          .vault-card {
-            width: 100% !important;
-            max-width: 480px !important; /* Patokan lebar seragam semua tab */
-            margin: 0 auto !important;
-            box-sizing: border-box !important;
-          }
-
-          /* Khusus HP: Tab Rata Penuh Simetris */
-          @media (max-width: 640px) {
-            .dapp-nav-tabs-wrapper {
-              margin-bottom: 16px !important;
-              padding: 0 6px !important;
-            }
-            .dapp-nav-tabs {
-              width: 100% !important;
-              justify-content: space-between !important;
-              padding: 4px !important;
-              gap: 2px !important;
-            }
-            .dapp-tab-btn {
-              flex: 1 1 0% !important;
-              padding: 6px 4px !important;
-              font-size: 0.72rem !important;
-              gap: 3px !important;
-            }
-            .payfi-wrapper,
-            .affiliate-container,
-            .affiliate-card,
-            .swap-card,
-            .locker-card,
-            .vault-card {
-              max-width: 100% !important;
-            }
-          }
-        `}</style>
-
-        {/* AREA INTEGRASI: Menampilkan Log Distribusi Premium HANYA saat di Tab Swap */}
-        {distributionData && activeTab === 'swap' && (
-          <div style={{ maxWidth: '480px', margin: '0 auto 20px auto', width: '100%' }}>
-            <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
-          </div>
-        )}
-
-        {/* SINGLE-FRAME CONTAINER CENTERED */}
-        <div className={`dapp-single-frame-container ${activeTab === 'affiliate' || activeTab === 'payfi' ? 'wide-frame' : ''}`}>
-          {/* MODUL 1: SWAP */}
-          {SHOW_SWAP && activeTab === 'swap' && (
-            <div className="product-card swap-card">
-              <div className="card-title-row">
-                <h3>AMM DEX Swap</h3>
-                <span id="mevBadge" className="mev-secure-badge">🛡️ MEV SECURE</span>
+        {/* 2-COLUMN GRID WRAPPER */}
+        <div className="zoniq-terminal-grid">
+          
+          {/* ===================================================================== */}
+          {/* SISI KIRI: ANALYTICS, CHARTS & LIVE PAYFI SETTLEMENT FEED             */}
+          {/* ===================================================================== */}
+          <div className="zoniq-terminal-left">
+            
+            {/* 1. Bar Metrik KPI Ringkas */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+              <div className="zoniq-stat-card">
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: '600' }}>PayFi & AMM Volume</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#ffffff' }}>${protocolTVL.toLocaleString('en-US')}</span>
+                <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: '700' }}>↑ 18.4% this epoch</span>
               </div>
-              <p className="desc">Instant asset swapping with MEV protection and daily Anti-Wash Trading features.</p>
+              <div className="zoniq-stat-card">
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: '600' }}>Real Yield Dispatched</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#38bdf8' }}>42.80 SOL</span>
+                <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>30% to $ZQI Locker</span>
+              </div>
+              <div className="zoniq-stat-card">
+                <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: '600' }}>Network & Gas Tank</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#10b981' }}>99.9%</span>
+                <span style={{ fontSize: '0.68rem', color: '#38bdf8' }}>Priority Fee Active</span>
+              </div>
+            </div>
 
-              {/* FIELD INPUT: YOU PAY */}
-              <div className="swap-input-container">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <label style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: '600', margin: 0 }}>You Pay</label>
-                  {isConnected && (
-                    <div style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span>Balance: <strong style={{ color: '#ffffff' }}>{tokenPay === 'ZQI' ? zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) : (tokenPay === 'USDC' ? '5,000.00' : '10.50')} {tokenPay}</strong></span>
+            {/* 2. Visual Chart Area: PayFi Settlement & Yield Velocity */}
+            <div className="zoniq-chart-box">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#ffffff', fontWeight: '700' }}>
+                    PayFi Settlement & Real Yield Velocity
+                  </h4>
+                  <p style={{ margin: '3px 0 0 0', fontSize: '0.74rem', color: '#64748b' }}>
+                    Aggregated On-Chain 5% Splits (Vault, Locker, Affiliate, Ops)
+                  </p>
+                </div>
+                <span style={{ fontSize: '0.72rem', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', padding: '3px 8px', borderRadius: '6px', fontWeight: '600' }}>
+                  Live Telemetry
+                </span>
+              </div>
+
+              {/* Bar Visual Mockup Berbasis CSS */}
+              <div style={{ width: '100%', height: '170px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '10px', padding: '16px 14px 8px 14px', boxSizing: 'border-box', display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
+                {[
+                  { day: 'Mon', height: '42%', val: '0.12 SOL' },
+                  { day: 'Tue', height: '60%', val: '0.24 SOL' },
+                  { day: 'Wed', height: '35%', val: '0.09 SOL' },
+                  { day: 'Thu', height: '78%', val: '0.38 SOL' },
+                  { day: 'Fri', height: '52%', val: '0.21 SOL' },
+                  { day: 'Sat', height: '88%', val: '0.45 SOL' },
+                  { day: 'Sun', height: '96%', val: '0.52 SOL', highlight: true }
+                ].map((bar, index) => (
+                  <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end', gap: '6px' }}>
+                    <div 
+                      title={`${bar.day}: ${bar.val}`}
+                      style={{ 
+                        width: '100%', 
+                        height: bar.height, 
+                        background: bar.highlight ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)' : 'linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%)', 
+                        borderRadius: '4px 4px 0 0',
+                        opacity: bar.highlight ? 1 : 0.75,
+                        transition: 'height 0.3s ease'
+                      }}
+                    />
+                    <span style={{ fontSize: '0.65rem', color: bar.highlight ? '#34d399' : '#64748b', fontWeight: bar.highlight ? '700' : '500' }}>
+                      {bar.day}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: '#94a3b8', borderTop: '1px solid #1e293b', paddingTop: '10px' }}>
+                <span>Standard Protocol Fee: <strong style={{ color: '#ffffff' }}>0.30% (Swap) / 5.00% (PayFi)</strong></span>
+                <span style={{ color: '#38bdf8' }}>Atomic Multi-Pool Routing ⚡</span>
+              </div>
+            </div>
+
+            {/* 3. Live On-Chain Settlement Activity Feed */}
+            <div className="zoniq-feed-box">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <h5 style={{ margin: 0, fontSize: '0.85rem', color: '#e2e8f0', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                  Recent Atomic Settlement Routing
+                </h5>
+                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Solana Devnet</span>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem' }}>
+                {settlementLogs && settlementLogs.map((item, index) => (
+                  <div 
+                    key={index} 
+                    style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center', 
+                      background: '#070a13', 
+                      border: '1px solid #1e293b', 
+                      padding: '9px 12px', 
+                      borderRadius: '8px' 
+                    }}
+                  >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      <span style={{ color: '#ffffff', fontWeight: '600' }}>{item.title}</span>
+                      <span style={{ fontSize: '0.68rem', color: '#64748b' }}>{item.desc}</span>
+                    </div>
+                    <span style={{ color: item.color, fontWeight: '700', fontFamily: 'monospace' }}>
+                      {item.val}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* ===================================================================== */}
+          {/* SISI KANAN: 5 NAVIGATION TABS & MODUL AKTIF                            */}
+          {/* ===================================================================== */}
+          <div className="zoniq-terminal-right">
+            
+            {/* TAB NAVIGATION BAR (Swap | Lock | Vault | Affiliate | PayFi) */}
+            <div className="dapp-nav-tabs-wrapper">
+              <div className="dapp-nav-tabs">
+                {SHOW_SWAP && (
+                  <button 
+                    type="button"
+                    className={`dapp-tab-btn ${activeTab === 'swap' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('swap')}
+                  >
+                    🔄 <span className="tab-text">Swap</span>
+                  </button>
+                )}
+                {SHOW_LOCKER && (
+                  <button 
+                    type="button"
+                    className={`dapp-tab-btn ${activeTab === 'staking' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('staking')}
+                  >
+                    🔒 <span className="tab-text">Lock</span>
+                  </button>
+                )}
+                {SHOW_OPTIMIZER && (
+                  <button 
+                    type="button"
+                    className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('vault')}
+                  >
+                    📈 <span className="tab-text">Vault</span>
+                  </button>
+                )}
+                {SHOW_AFFILIATE && (
+                  <button 
+                    type="button" 
+                    className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('affiliate')}
+                  >
+                    👥 <span className="tab-text">Affiliate</span>
+                  </button>
+                )}
+                <button 
+                  type="button" 
+                  className={`dapp-tab-btn ${activeTab === 'payfi' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('payfi')}
+                >
+                  💳 <span className="tab-text">PayFi</span>
+                </button>
+              </div>
+            </div>
+
+            {/* AREA INTEGRASI: Menampilkan Log Distribusi HANYA saat di Tab Swap */}
+            {distributionData && activeTab === 'swap' && (
+              <div style={{ width: '100%', marginBottom: '16px' }}>
+                <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
+              </div>
+            )}
+
+            {/* CONTAINER KONTEN MODUL AKTIF */}
+            <div className="dapp-single-frame-container">
+              
+              {/* MODUL 1: SWAP */}
+              {SHOW_SWAP && activeTab === 'swap' && (
+                <div className="product-card swap-card">
+                  <div className="card-title-row">
+                    <h3>AMM DEX Swap</h3>
+                    <span id="mevBadge" className="mev-secure-badge">🛡️ MEV SECURE</span>
+                  </div>
+                  <p className="desc">Instant asset swapping with MEV protection and daily Anti-Wash Trading features.</p>
+
+                  <div className="swap-input-container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <label style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: '600', margin: 0 }}>You Pay</label>
+                      {isConnected && (
+                        <div style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span>Balance: <strong style={{ color: '#ffffff' }}>{tokenPay === 'ZQI' ? zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) : (tokenPay === 'USDC' ? '5,000.00' : '10.50')} {tokenPay}</strong></span>
+                          <button 
+                            type="button" 
+                            onClick={() => setPayAmount(tokenPay === 'ZQI' ? zqiBalance.toString() : (tokenPay === 'USDC' ? '5000' : '10.5'))}
+                            style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                          >
+                            MAX
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                      <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
+                      <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0b0f19', color: '#fff', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', outline: 'none', cursor: 'pointer' }}>
+                        {tokens.map(t => (
+                          <option key={t.symbol} value={t.symbol}>{t.symbol}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="swap-switch-row"><button className="btn-switch-tokens" onClick={switchTokens}>⇅</button></div>
+                  
+                  <div className="swap-input-container">
+                    <label>You Receive (Estimated)</label>
+                    <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                      <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
+                      <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '800', color: '#38bdf8', paddingRight: '6px', fontSize: '1rem' }}>{tokenReceive}</span>
+                    </div>
+                  </div>
+
+                  <div className="swap-fee-details">
+                    <div className="detail-line"><span>Trading Fee (0.3%):</span><span id="swapFeeLabel" className="fee-bold-value">{swapFee} {tokenPay}</span></div>
+                    <div className="detail-line total-divider"><span>Anti-Wash Trading Check:</span><span className="status-active-text">Active (Daily)</span></div>
+                  </div>
+
+                  <button className="btn-action" id="swapBtn" onClick={isConnected ? handleLaunchSwap : openWalletModal} disabled={isConnected && (!payAmount || parseFloat(payAmount) <= 0 || isSwapLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (payAmount && parseFloat(payAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!payAmount || parseFloat(payAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
+                    {isSwapLoading ? 'Processing Secure Swap...' : !isConnected ? 'Connect Wallet' : (!payAmount || parseFloat(payAmount) <= 0) ? 'Enter an Amount' : 'Launch Swap'}
+                  </button>
+                </div>
+              )}
+
+              {/* MODUL 2: OPTIMIZER */}
+              {SHOW_OPTIMIZER && activeTab === 'vault' && (
+                <div className="product-card">
+                  <h3>Yield Optimizer</h3>
+                  <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
+                  <div className="stat-box">Boosted APY: Up to 49.1%</div>
+                  
+                  <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', background: '#070a13', border: '1px solid #1e293b', padding: '12px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
+                    <span style={{ color: '#94a3b8' }}>Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong></span>
+                    <span style={{ color: '#94a3b8' }}>Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong></span>
+                  </div>
+                  
+                  <div className="yield-calc-embed">
+                    <h4>ZoniqFi Yield Calculator</h4>
+                    <label>Deposit Amount (USDC):</label>
+                    <input type="number" id="calcAmount" placeholder="0.0" value={calcAmount === '0' ? '' : calcAmount} disabled={isVaultLoading} onChange={(e) => setCalcAmount(e.target.value)} onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }} />
+                    <div className="projection-metrics-list">
+                      <p>Daily Rate: <strong>0.11%</strong></p>
+                      <p>Est. Profit / Day: <strong id="profitDay" className="profit-green-value">{parseFloat(projection.daily).toLocaleString('en-US')} USDC</strong></p>
+                      <p>Est. Profit / Month: <strong id="profitMonth" className="profit-green-value">{parseFloat(projection.monthly).toLocaleString('en-US')} USDC</strong></p>
+                      <p>Est. Profit / Year: <strong id="profitYear" className="profit-green-value">{parseFloat(projection.annual).toLocaleString('en-US')} USDC</strong></p>
+                    </div>
+                  </div>
+
+                  <button className="btn-action" id="yieldBtn" onClick={isConnected ? handleDepositVault : openWalletModal} disabled={isConnected && (!calcAmount || parseFloat(calcAmount) <= 0 || isVaultLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (calcAmount && parseFloat(calcAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!calcAmount || parseFloat(calcAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
+                    {isVaultLoading ? "Processing Deposit..." : !isConnected ? "Connect Wallet" : (!calcAmount || parseFloat(calcAmount) <= 0) ? "Enter an Amount" : "Open Vaults"}
+                  </button>
+                </div>
+              )}
+
+              {/* MODUL 3: LOCKER */}
+              {SHOW_LOCKER && activeTab === 'staking' && (
+                <div className="product-card">
+                  <h3>ZQI Lock & Yield</h3>
+                  <p className="desc">Lock your $ZQI tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
+
+                  <div className="calc-tabs">
+                    <button className={`tab-btn ${lockCalculationMode === 'manual' ? 'active' : ''}`} id="tabManual" onClick={() => switchLockCalculationView('manual')}>Instant Lock</button>
+                    <button className={`tab-btn ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="tabWizard" onClick={() => switchLockCalculationView('wizard')}>Boosted Lock</button>
+                  </div>
+
+                  <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      Your Balance: <strong id="zqiBalance">{zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} ZQI</strong>
+                      {isConnected && zqiBalance > 0 && !isTokenLocked && (
+                        <button 
+                          type="button" 
+                          onClick={() => setLockAmount(zqiBalance.toString())}
+                          style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                        >
+                          MAX
+                        </button>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="lock-input-group">
+                    <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $ZQI to Lock:" : "Enter Capital For Prediction:"}</label>
+                    <input type="number" id="lockAmount" placeholder="0.0" value={lockAmount === '0' ? '' : lockAmount} disabled={isTokenLocked || isLockLoading} onChange={(e) => setLockAmount(e.target.value)} onBlur={() => { if (lockAmount === '') setLockAmount('0'); }} />
+                  </div>
+
+                  {lockCalculationMode === 'manual' && (
+                    <div style={{ marginBottom: '14px', marginTop: '10px' }}>
+                      <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: '6px' }}>
+                        Select Lock Duration:
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                        {[
+                          { days: 7, label: "7 Days (0.5x)" },
+                          { days: 15, label: "15 Days (0.75x)" },
+                          { days: 30, label: "30 Days (1.0x)" }
+                        ].map((item) => (
+                          <button
+                            key={item.days}
+                            type="button"
+                            disabled={isTokenLocked}
+                            onClick={() => setInstantDays(item.days)}
+                            style={{
+                              padding: '7px 0',
+                              borderRadius: '6px',
+                              fontSize: '0.82rem',
+                              fontWeight: '600',
+                              cursor: isTokenLocked ? 'not-allowed' : 'pointer',
+                              border: instantDays === item.days ? '1px solid #38bdf8' : '1px solid #1e293b',
+                              background: instantDays === item.days ? 'rgba(56, 189, 248, 0.15)' : '#0b0f19',
+                              color: instantDays === item.days ? '#38bdf8' : '#64748b',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={`wizard-section ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="wizardOptions">
+                    <label className="wizard-select-label">Select Lock Duration:</label>
+                    <div className="duration-btn-group">
+                      <button type="button" className={`btn-duration ${chosenMultiplier === 1 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1)}>30 Days (1x)</button>
+                      <button type="button" className={`btn-duration ${chosenMultiplier === 1.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1.5)}>90 Days (1.5x)</button>
+                      <button type="button" className={`btn-duration ${chosenMultiplier === 2.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(2.5)}>180 Days (2.5x)</button>
+                    </div>
+                  </div>
+
+                  <div className="score-preview">
+                    <span>{lockCalculationMode === 'manual' ? "Base Processing Share:" : "Boosted Yield Score:"}</span>
+                    <span className="score-value" id="liveScore">{liveScore}</span>
+                  </div>
+
+                  <div className="reward-info-badge">
+                    <span className="badge-accent-line">Reward: Real USDC (Demo Sandbox Epoch)</span>
+                    {estimatedRewardText && <span id="accumulationLabel" className="badge-sub-info" style={{ display: 'block' }}>{estimatedRewardText}</span>}
+                  </div>
+
+                  {isTokenLocked && !isLockLoading && showRewardRow && (
+                    <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-10px', marginBottom: '15px', background: 'rgba(15, 23, 42, 0.6)', padding: '10px 14px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                      <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
+                        Yield Earned: <strong id="earnedUsdc" style={{ color: rewardClaimable ? '#22c55e' : '#ffffff', fontSize: '1rem', marginLeft: '4px' }}>{earnedUsdcDisplay}</strong>
+                      </span>
                       <button 
-                        type="button" 
-                        onClick={() => setPayAmount(tokenPay === 'ZQI' ? zqiBalance.toString() : (tokenPay === 'USDC' ? '5000' : '10.5'))}
-                        style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                        className="btn-claim-reward" 
+                        onClick={claimZqiReward} 
+                        disabled={!rewardClaimable}
+                        style={{ 
+                          opacity: 1, 
+                          background: rewardClaimable ? "#22c55e" : "rgba(234, 179, 8, 0.15)", 
+                          cursor: rewardClaimable ? "pointer" : "not-allowed", 
+                          border: rewardClaimable ? "none" : "1px solid rgba(234, 179, 8, 0.4)", 
+                          padding: "8px 14px", 
+                          borderRadius: "6px", 
+                          color: rewardClaimable ? "#ffffff" : "#facc15", 
+                          fontWeight: "600",
+                          fontSize: "0.85rem",
+                          transition: "all 0.3s ease"
+                        }}
                       >
-                        MAX
+                        {rewardClaimable 
+                          ? "Claim Reward" 
+                          : (lockCountdown > 0 
+                              ? `🔒 Epoch Accumulating (${lockCountdown}s)` 
+                              : "🔒 Epoch Accumulating...")}
                       </button>
                     </div>
                   )}
-                </div>
-                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                  <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
-                  <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0b0f19', color: '#fff', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', outline: 'none', cursor: 'pointer' }}>
-                    {tokens.map(t => (
-                      <option key={t.symbol} value={t.symbol}>{t.symbol}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
 
-              <div className="swap-switch-row"><button className="btn-switch-tokens" onClick={switchTokens}>⇅</button></div>
-              
-              {/* FIELD INPUT: YOU RECEIVE */}
-              <div className="swap-input-container">
-                <label>You Receive (Estimated)</label>
-                <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                  <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
-                  <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '800', color: '#38bdf8', paddingRight: '6px', fontSize: '1rem' }}>{tokenReceive}</span>
-                </div>
-              </div>
-
-              <div className="swap-fee-details">
-                <div className="detail-line"><span>Trading Fee (0.3%):</span><span id="swapFeeLabel" className="fee-bold-value">{swapFee} {tokenPay}</span></div>
-                <div className="detail-line total-divider"><span>Anti-Wash Trading Check:</span><span className="status-active-text">Active (Daily)</span></div>
-              </div>
-
-              <button className="btn-action" id="swapBtn" onClick={isConnected ? handleLaunchSwap : openWalletModal} disabled={isConnected && (!payAmount || parseFloat(payAmount) <= 0 || isSwapLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (payAmount && parseFloat(payAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!payAmount || parseFloat(payAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
-                {isSwapLoading ? 'Processing Secure Swap...' : !isConnected ? 'Connect Wallet' : (!payAmount || parseFloat(payAmount) <= 0) ? 'Enter an Amount' : 'Launch Swap'}
-              </button>
-            </div>
-          )}
-
-          {/* MODUL 2: OPTIMIZER */}
-          {SHOW_OPTIMIZER && activeTab === 'vault' && (
-            <div className="product-card">
-              <h3>Yield Optimizer</h3>
-              <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
-              <div className="stat-box">Boosted APY: Up to 49.1%</div>
-              
-              <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', background: '#070a13', border: '1px solid #1e293b', padding: '12px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
-                <span style={{ color: '#94a3b8' }}>Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong></span>
-                <span style={{ color: '#94a3b8' }}>Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong></span>
-              </div>
-              
-              <div className="yield-calc-embed">
-                <h4>ZoniqFi Yield Calculator</h4>
-                <label>Deposit Amount (USDC):</label>
-                <input type="number" id="calcAmount" placeholder="0.0" value={calcAmount === '0' ? '' : calcAmount} disabled={isVaultLoading} onChange={(e) => setCalcAmount(e.target.value)} onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }} />
-                <div className="projection-metrics-list">
-                  <p>Daily Rate: <strong>0.11%</strong></p>
-                  <p>Est. Profit / Day: <strong id="profitDay" className="profit-green-value">{parseFloat(projection.daily).toLocaleString('en-US')} USDC</strong></p>
-                  <p>Est. Profit / Month: <strong id="profitMonth" className="profit-green-value">{parseFloat(projection.monthly).toLocaleString('en-US')} USDC</strong></p>
-                  <p>Est. Profit / Year: <strong id="profitYear" className="profit-green-value">{parseFloat(projection.annual).toLocaleString('en-US')} USDC</strong></p>
-                </div>
-              </div>
-
-              <button className="btn-action" id="yieldBtn" onClick={isConnected ? handleDepositVault : openWalletModal} disabled={isConnected && (!calcAmount || parseFloat(calcAmount) <= 0 || isVaultLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (calcAmount && parseFloat(calcAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!calcAmount || parseFloat(calcAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
-                {isVaultLoading ? "Processing Deposit..." : !isConnected ? "Connect Wallet" : (!calcAmount || parseFloat(calcAmount) <= 0) ? "Enter an Amount" : "Open Vaults"}
-              </button>
-            </div>
-          )}
-
-          {/* MODUL 3: LOCKER */}
-          {SHOW_LOCKER && activeTab === 'staking' && (
-            <div className="product-card">
-              <h3>ZQI Lock & Yield</h3>
-              <p className="desc">Lock your $ZQI tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
-
-              <div className="calc-tabs">
-                <button className={`tab-btn ${lockCalculationMode === 'manual' ? 'active' : ''}`} id="tabManual" onClick={() => switchLockCalculationView('manual')}>Instant Lock</button>
-                <button className={`tab-btn ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="tabWizard" onClick={() => switchLockCalculationView('wizard')}>Boosted Lock</button>
-              </div>
-
-              <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  Your Balance: <strong id="zqiBalance">{zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} ZQI</strong>
-                  {isConnected && zqiBalance > 0 && !isTokenLocked && (
+                  {isConnected && zqiBalance <= 0 && !isTokenLocked ? (
                     <button 
-                      type="button" 
-                      onClick={() => setLockAmount(zqiBalance.toString())}
-                      style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                      type="button"
+                      className="btn-action" 
+                      onClick={() => { 
+                        setTokenReceive('ZQI'); 
+                        setActiveTab('swap'); 
+                      }} 
+                      style={{ 
+                        background: 'linear-gradient(135deg, #f59e0b, #d97706)', 
+                        color: '#ffffff', 
+                        fontWeight: '700',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 15px rgba(245, 158, 11, 0.35)',
+                        border: 'none',
+                        borderRadius: '8px',
+                        padding: '14px',
+                        width: '100%'
+                      }}
                     >
-                      MAX
+                      ⚡ Insufficient $ZQI — Swap Now →
+                    </button>
+                  ) : (
+                    <button className="btn-action" id="lockBtn" onClick={isConnected ? handleLockToken : openWalletModal} disabled={isTokenLocked || (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0 || isLockLoading))} style={{ background: isTokenLocked ? "#22c55e" : !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (lockAmount && parseFloat(lockAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: isTokenLocked ? "#ffffff" : (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: isTokenLocked ? "not-allowed" : "pointer", pointerEvents: isTokenLocked ? "none" : "auto" }}>
+                      {isLockLoading ? 'Processing Lock...' : isTokenLocked ? '✓ Token Locked' : !isConnected ? 'Connect Wallet' : (!lockAmount || parseFloat(lockAmount) <= 0) ? 'Enter an Amount' : 'Lock Token'}
                     </button>
                   )}
-                </span>
-              </div>
 
-              <div className="lock-input-group">
-                <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $ZQI to Lock:" : "Enter Capital For Prediction:"}</label>
-                <input type="number" id="lockAmount" placeholder="0.0" value={lockAmount === '0' ? '' : lockAmount} disabled={isTokenLocked || isLockLoading} onChange={(e) => setLockAmount(e.target.value)} onBlur={() => { if (lockAmount === '') setLockAmount('0'); }} />
-              </div>
+                  <button 
+                    type="button"
+                    id="emergencyUnlockBtn" 
+                    onClick={triggerEmergencyModal} 
+                    disabled={!isTokenLocked || isLockLoading} 
+                    style={{ 
+                      marginTop: "12px", 
+                      width: "100%", 
+                      padding: "12px", 
+                      borderRadius: "8px", 
+                      fontWeight: "700", 
+                      fontSize: "0.88rem",
+                      background: (isTokenLocked && !isLockLoading) ? "linear-gradient(135deg, #dc2626, #b91c1c)" : "#1e1b2e", 
+                      border: "1px solid rgba(239, 68, 68, 0.5)", 
+                      color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#f87171", 
+                      cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", 
+                      display: "flex", 
+                      alignItems: "center", 
+                      justifyContent: "center", 
+                      gap: "6px", 
+                      boxShadow: (isTokenLocked && !isLockLoading) ? "0 4px 15px rgba(220, 38, 38, 0.35)" : "none"
+                    }}
+                  >
+                    ⚠️ Emergency Early Unlock (10% Penalty)
+                  </button>
+                </div>
+              )}
 
-              {/* OPSI DURASI KHUSUS INSTANT LOCK (7, 15, 30 HARI) */}
-              {lockCalculationMode === 'manual' && (
-                <div style={{ marginBottom: '14px', marginTop: '10px' }}>
-                  <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: '6px' }}>
-                    Select Lock Duration:
-                  </label>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                    {[
-                      { days: 7, label: "7 Days (0.5x)" },
-                      { days: 15, label: "15 Days (0.75x)" },
-                      { days: 30, label: "30 Days (1.0x)" }
-                    ].map((item) => (
-                      <button
-                        key={item.days}
-                        type="button"
-                        disabled={isTokenLocked}
-                        onClick={() => setInstantDays(item.days)}
-                        style={{
-                          padding: '7px 0',
-                          borderRadius: '6px',
-                          fontSize: '0.82rem',
-                          fontWeight: '600',
-                          cursor: isTokenLocked ? 'not-allowed' : 'pointer',
-                          border: instantDays === item.days ? '1px solid #38bdf8' : '1px solid #1e293b',
-                          background: instantDays === item.days ? 'rgba(56, 189, 248, 0.15)' : '#0b0f19',
-                          color: instantDays === item.days ? '#38bdf8' : '#64748b',
-                          transition: 'all 0.2s ease'
+              {/* MODUL 4: AFFILIATE / REFERRAL */}
+              {SHOW_AFFILIATE && activeTab === 'affiliate' && (
+                <section className="affiliate-section" style={{ width: '100%', boxSizing: 'border-box', background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '20px', margin: '0 auto', color: '#94a3b8' }}>
+                  <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.3rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
+                    </h3>
+                    <span className="shield-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
+                      Anti-Sybil Active
+                    </span>
+                  </div>
+
+                  <p style={{ fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '20px', color: '#94a3b8' }}>
+                    Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>).
+                  </p>
+                        
+                  <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
+                    <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                      <input 
+                        type="text" 
+                        id="refLink" 
+                        value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
+                        readOnly 
+                        style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.85rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                      />
+                      <button 
+                        className="btn-copy" 
+                        id="copyBtn" 
+                        onClick={copyLink} 
+                        style={{ 
+                          background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#1e293b', 
+                          color: '#ffffff', cursor: 'pointer', height: '45px', padding: '0 16px', borderRadius: '8px', fontWeight: '700', border: isConnected ? 'none' : '1px solid #334155', fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '85px', boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', transition: 'all 0.3s ease'
                         }}
                       >
-                        {item.label}
+                        {isConnected ? "Copy Link" : "Connect"}
                       </button>
-                    ))}
+                    </div>
                   </div>
+
+                  <div className="test-panel" style={{ background: 'rgba(30, 41, 59, 0.3)', border: '1px solid #1e293b', borderRadius: '8px', padding: '16px', marginBottom: '20px' }}>
+                    <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '10px' }}>
+                      • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
+                    </label>
+                    <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                      <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', padding: '10px 14px', color: '#ffffff', fontSize: '0.85rem', outline: 'none' }} />
+                      <button 
+                        className="btn-test" 
+                        id="testBtn" 
+                        onClick={verifyReferralOnChain} 
+                        disabled={!isConnected} 
+                        style={{ 
+                          background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#111827', color: isConnected ? '#ffffff' : '#475569', border: isConnected ? 'none' : '1px solid #1e293b', height: '42px', padding: '0 12px', borderRadius: '6px', fontWeight: '700', cursor: isConnected ? 'pointer' : 'not-allowed', fontSize: '0.78rem', lineHeight: '1.2', textAlign: 'center', flexShrink: 0, minWidth: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', transition: 'all 0.3s ease'
+                        }}
+                      >
+                        Verify<br/>Link
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="tier-table-wrapper" style={{ marginBottom: '20px' }}>
+                    <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.9rem', fontWeight: '600', marginBottom: '12px' }}>Ecosystem Tier Structures:</p>
+                    <div className="responsive-table-overflow" style={{ overflowX: 'auto', width: '100%' }}>
+                      <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+                        <thead>
+                          <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>
+                            <th style={{ padding: '10px 14px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
+                            <th style={{ padding: '10px 14px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
+                            <th style={{ padding: '10px 14px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style={{ borderBottom: '1px solid #1e293b' }}>
+                            <td className="tier-bronze" style={{ padding: '12px 14px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
+                            <td style={{ padding: '12px 14px', color: '#64748b' }}>$0 - $10,000</td>
+                            <td style={{ padding: '12px 14px', color: '#ffffff', fontWeight: '700' }}>10%</td>
+                          </tr>
+                          <tr style={{ borderBottom: '1px solid #1e293b' }}>
+                            <td className="tier-silver" style={{ padding: '12px 14px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
+                            <td style={{ padding: '12px 14px', color: '#64748b' }}>$10,001 - $100,000</td>
+                            <td style={{ padding: '12px 14px', color: '#ffffff', fontWeight: '700' }}>18%</td>
+                          </tr>
+                          <tr>
+                            <td className="tier-gold" style={{ padding: '12px 14px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
+                            <td style={{ padding: '12px 14px', color: '#64748b' }}>&gt; $100,000</td>
+                            <td style={{ padding: '12px 14px', color: '#ffffff', fontWeight: '700' }}>25%</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="tier-stats" style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#070a13', border: '1px solid #1e293b', padding: '14px 16px', borderRadius: '8px', fontSize: '0.85rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#94a3b8' }}>Current Tier:</span>
+                      <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#94a3b8' }}>Total Referral Volume:</span>
+                      <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #1e293b', paddingTop: '8px' }}>
+                      <span style={{ color: '#94a3b8' }}>Your Earned Commissions:</span>
+                      <span style={{ color: '#22c55e', fontWeight: '800' }}>
+                        {(() => {
+                          if (!isConnected && (referralEarned === '$0.00' || !referralEarned)) return '$0.00 USDC';
+                          const num = parseFloat(String(referralEarned).replace(/[^0-9.-]+/g, ''));
+                          return isNaN(num) 
+                            ? referralEarned 
+                            : `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`;
+                        })()}
+                      </span>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* MODUL 5: PAYFI */}
+              {activeTab === 'payfi' && (
+                <div className="payfi-wrapper">
+                  <PayFiGateway />
                 </div>
               )}
 
-              <div className={`wizard-section ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="wizardOptions">
-                <label className="wizard-select-label">Select Lock Duration:</label>
-                <div className="duration-btn-group">
-                  <button type="button" className={`btn-duration ${chosenMultiplier === 1 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1)}>30 Days (1x)</button>
-                  <button type="button" className={`btn-duration ${chosenMultiplier === 1.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1.5)}>90 Days (1.5x)</button>
-                  <button type="button" className={`btn-duration ${chosenMultiplier === 2.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(2.5)}>180 Days (2.5x)</button>
-                </div>
-              </div>
-
-              <div className="score-preview">
-                <span>{lockCalculationMode === 'manual' ? "Base Processing Share:" : "Boosted Yield Score:"}</span>
-                <span className="score-value" id="liveScore">{liveScore}</span>
-              </div>
-
-              <div className="reward-info-badge">
-                <span className="badge-accent-line">Reward: Real USDC (Demo Sandbox Epoch)</span>
-                {estimatedRewardText && <span id="accumulationLabel" className="badge-sub-info" style={{ display: 'block' }}>{estimatedRewardText}</span>}
-              </div>
-
-              {isTokenLocked && !isLockLoading && showRewardRow && (
-                <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-10px', marginBottom: '15px', background: 'rgba(15, 23, 42, 0.6)', padding: '10px 14px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                  <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-                    Yield Earned: <strong id="earnedUsdc" style={{ color: rewardClaimable ? '#22c55e' : '#ffffff', fontSize: '1rem', marginLeft: '4px' }}>{earnedUsdcDisplay}</strong>
-                  </span>
-                  <button 
-                    className="btn-claim-reward" 
-                    onClick={claimZqiReward} 
-                    disabled={!rewardClaimable}
-                    style={{ 
-                      opacity: 1, 
-                      background: rewardClaimable ? "#22c55e" : "rgba(234, 179, 8, 0.15)", 
-                      cursor: rewardClaimable ? "pointer" : "not-allowed", 
-                      border: rewardClaimable ? "none" : "1px solid rgba(234, 179, 8, 0.4)", 
-                      padding: "8px 14px", 
-                      borderRadius: "6px", 
-                      color: rewardClaimable ? "#ffffff" : "#facc15", 
-                      fontWeight: "600",
-                      fontSize: "0.85rem",
-                      transition: "all 0.3s ease"
-                    }}
-                  >
-                    {rewardClaimable 
-                      ? "Claim Reward" 
-                      : (lockCountdown > 0 
-                          ? `🔒 Epoch Accumulating (${lockCountdown}s)` 
-                          : "🔒 Epoch Accumulating...")}
-                  </button>
-                </div>
-              )}
-
-              {isConnected && zqiBalance <= 0 && !isTokenLocked ? (
-                <button 
-                  type="button"
-                  className="btn-action" 
-                  onClick={() => { 
-                    setTokenReceive('ZQI'); 
-                    setActiveTab('swap'); 
-                  }} 
-                  style={{ 
-                    background: 'linear-gradient(135deg, #f59e0b, #d97706)', 
-                    color: '#ffffff', 
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 15px rgba(245, 158, 11, 0.35)',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '14px',
-                    width: '100%'
-                  }}
-                >
-                  ⚡ Insufficient $ZQI — Swap Now →
-                </button>
-              ) : (
-                <button className="btn-action" id="lockBtn" onClick={isConnected ? handleLockToken : openWalletModal} disabled={isTokenLocked || (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0 || isLockLoading))} style={{ background: isTokenLocked ? "#22c55e" : !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (lockAmount && parseFloat(lockAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: isTokenLocked ? "#ffffff" : (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: isTokenLocked ? "not-allowed" : "pointer", pointerEvents: isTokenLocked ? "none" : "auto" }}>
-                  {isLockLoading ? 'Processing Lock...' : isTokenLocked ? '✓ Token Locked' : !isConnected ? 'Connect Wallet' : (!lockAmount || parseFloat(lockAmount) <= 0) ? 'Enter an Amount' : 'Lock Token'}
-                </button>
-              )}
-
-              <button 
-  type="button"
-  id="emergencyUnlockBtn" 
-  onClick={triggerEmergencyModal} 
-  disabled={!isTokenLocked || isLockLoading} 
-  style={{ 
-    marginTop: "12px", 
-    width: "100%", 
-    padding: "12px", 
-    borderRadius: "8px", 
-    fontWeight: "700", 
-    fontSize: "0.88rem",
-    background: (isTokenLocked && !isLockLoading) ? "linear-gradient(135deg, #dc2626, #b91c1c)" : "#1e1b2e", 
-    border: "1px solid rgba(239, 68, 68, 0.5)", 
-    color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#f87171", 
-    cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", 
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "6px",
-    boxShadow: (isTokenLocked && !isLockLoading) ? "0 4px 15px rgba(220, 38, 38, 0.35)" : "none"
-  }}
->
-  ⚠️ Emergency Early Unlock (10% Penalty)
-</button>
             </div>
-          )}
-
-          {/* MODUL 4: AFFILIATE / REFERRAL */}
-          {SHOW_AFFILIATE && activeTab === 'affiliate' && (
-            <section className="affiliate-section" style={{ maxWidth: '480px', width: '100%', boxSizing: 'border-box', background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '20px', margin: '0 auto', color: '#94a3b8' }}>
-              <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
-                </h3>
-                <span className="shield-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
-                  Anti-Sybil Active
-                </span>
-              </div>
-
-              <p style={{ fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '24px', color: '#94a3b8' }}>
-                Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>) to protect on-chain data validation.
-              </p>
-                    
-              <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
-                <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-                  <input 
-                    type="text" 
-                    id="refLink" 
-                    value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
-                    readOnly 
-                    style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.9rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                  />
-                  <button 
-                    className="btn-copy" 
-                    id="copyBtn" 
-                    onClick={copyLink} 
-                    style={{ 
-                      background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#1e293b', 
-                      color: '#ffffff', cursor: 'pointer', height: '45px', padding: '0 16px', borderRadius: '8px', fontWeight: '700', border: isConnected ? 'none' : '1px solid #334155', fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '85px', boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', transition: 'all 0.3s ease'
-                    }}
-                  >
-                    {isConnected ? "Copy Link" : "Connect"}
-                  </button>
-                </div>
-              </div>
-
-              <div className="test-panel" style={{ background: 'rgba(30, 41, 59, 0.3)', border: '1px solid #1e293b', borderRadius: '8px', padding: '20px', marginBottom: '30px' }}>
-                <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '12px' }}>
-                  • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
-                </label>
-                <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-                  <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', padding: '12px 16px', color: '#ffffff', fontSize: '0.9rem', outline: 'none' }} />
-                  <button 
-                    className="btn-test" 
-                    id="testBtn" 
-                    onClick={verifyReferralOnChain} 
-                    disabled={!isConnected} 
-                    style={{ 
-                      background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#111827', color: isConnected ? '#ffffff' : '#475569', border: isConnected ? 'none' : '1px solid #1e293b', height: '45px', padding: '0 12px', borderRadius: '6px', fontWeight: '700', cursor: isConnected ? 'pointer' : 'not-allowed', fontSize: '0.8rem', lineHeight: '1.2', textAlign: 'center', flexShrink: 0, minWidth: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', transition: 'all 0.3s ease'
-                    }}
-                  >
-                    Verify<br/>Link
-                  </button>
-                </div>
-              </div>
-
-              <div className="tier-table-wrapper" style={{ marginBottom: '24px' }}>
-                <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.95rem', fontWeight: '500', marginBottom: '16px' }}>Ecosystem Tier Structures:</p>
-                <div className="responsive-table-overflow" style={{ overflowX: 'auto', width: '100%' }}>
-                  <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
-                    <thead>
-                      <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>
-                        <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
-                        <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
-                        <th style={{ padding: '12px 16px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr style={{ borderBottom: '1px solid #1e293b' }}>
-                        <td className="tier-bronze" style={{ padding: '14px 16px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
-                        <td style={{ padding: '14px 16px', color: '#64748b' }}>$0 - $10,000</td>
-                        <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>10%</td>
-                      </tr>
-                      <tr style={{ borderBottom: '1px solid #1e293b' }}>
-                        <td className="tier-silver" style={{ padding: '14px 16px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
-                        <td style={{ padding: '14px 16px', color: '#64748b' }}>$10,001 - $100,000</td>
-                        <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>18%</td>
-                      </tr>
-                      <tr>
-                        <td className="tier-gold" style={{ padding: '14px 16px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
-                        <td style={{ padding: '14px 16px', color: '#64748b' }}>&gt; $100,000</td>
-                        <td style={{ padding: '14px 16px', color: '#ffffff', fontWeight: '700' }}>25%</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="tier-stats" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#070a13', border: '1px solid #1e293b', padding: '16px 20px', borderRadius: '8px', fontSize: '0.9rem', flexWrap: 'wrap', gap: '12px' }}>
-                <div className="tier-item" style={{ color: '#94a3b8' }}>
-                  Current Tier: <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
-                </div>
-                <div className="tier-item" style={{ color: '#94a3b8' }}>
-                  Total Referral Volume: <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
-                </div>
-                <div className="tier-item" style={{ color: '#94a3b8' }}>
-                  Your Earned Commissions: <span style={{ color: '#22c55e', fontWeight: '800' }}>
-  {(() => {
-    if (!isConnected && (referralEarned === '$0.00' || !referralEarned)) return '$0.00 USDC';
-    const num = parseFloat(String(referralEarned).replace(/[^0-9.-]+/g, ''));
-    return isNaN(num) 
-      ? referralEarned 
-      : `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`;
-  })()}
-</span>
-                </div>
-            </div>
-          </section>
-        )}
-
-        {/* MODUL 5: PAYFI */}
-        {activeTab === 'payfi' && (
-          <div className="payfi-wrapper">
-            <PayFiGateway />
           </div>
-        )}
 
-      </div>
-    <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
-  </main>
+        </div>
 
-      {/* ================= STYLE FOOTER FIX ================= */}
+        <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+      </main>
+
+      {/* STYLE FOOTER */}
       <style>{`
         .dapp-footer-clean {
           border-top: 1px solid #1f2937;
@@ -2028,14 +1915,12 @@ function App() {
           font-size: 0.88rem;
           gap: 24px;
         }
-
         .footer-content-left {
           display: flex;
           flex-direction: column;
           gap: 10px;
           text-align: left;
         }
-
         .footer-links-row {
           display: flex;
           gap: 10px;
@@ -2043,27 +1928,22 @@ function App() {
           flex-wrap: wrap;
           font-size: 0.82rem;
         }
-
         .footer-social-clean {
           display: flex;
           gap: 18px;
           align-items: center;
           flex-shrink: 0;
         }
-
         .footer-social-clean a {
           color: #64748b;
           font-size: 1.3rem;
           text-decoration: none;
           transition: color 0.2s ease, transform 0.2s ease;
         }
-
         .footer-social-clean a:hover {
           color: #38bdf8;
           transform: translateY(-2px);
         }
-
-        /* KHUSUS HP (MAX-WIDTH: 768px) */
         @media (max-width: 768px) {
           .dapp-footer-clean {
             flex-direction: column !important;
@@ -2071,29 +1951,21 @@ function App() {
             padding-bottom: 95px !important;
             gap: 18px !important;
           }
-
           .footer-content-left {
             text-align: center !important;
             align-items: center !important;
           }
-
-          .footer-links-row {
+          .footer-links-row, .footer-social-clean {
             justify-content: center !important;
           }
-
-          .footer-social-clean {
-            justify-content: center !important;
-          }
-
           .footer-pitch-desktop {
             display: none !important;
           }
         }
       `}</style>
 
-      {/* ================= FOOTER RESMI DAPP ================= */}
+      {/* FOOTER RESMI DAPP */}
       <footer className="dapp-footer-clean">
-        {/* SISI KIRI: COPYRIGHT & LINK */}
         <div className="footer-content-left">
           <p style={{ margin: 0, lineHeight: '1.5' }}>
             © 2026 ZoniqFi Protocol. All Rights Reserved. Modular Solana DeFi & Real Yield Infrastructure.
@@ -2203,7 +2075,6 @@ function App() {
           </div>
         </div>
 
-        {/* SISI KANAN: IKON SOSIAL SEJAJAR DI KANAN */}
         <div className="footer-social-clean">
           <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" title="Telegram">
             <i className="fab fa-telegram"></i>
@@ -2217,7 +2088,7 @@ function App() {
         </div>
       </footer>
 
-      {/* ================= MOBILE BOTTOM DOCK (MENU KHUSUS HP) ================= */}
+      {/* MOBILE BOTTOM DOCK */}
       <div className="mobile-bottom-dock">
         <button 
           type="button" 
@@ -2255,44 +2126,22 @@ function App() {
         </button>
       </div>
 
-      {/* ================= MODAL PITCH DECK & FUNDING ================= */}
       <InvestorPitchModal 
         isOpen={showPitchModal} 
         onClose={() => setShowPitchModal(false)} 
       />
 
-      {/* POP-UP MODAL PITCH DECK */}
-      <InvestorPitchModal 
-        isOpen={showPitchModal} 
-        onClose={() => setShowPitchModal(false)} 
-      />
-
-      {/* MODAL LEGAL DISCLAIMER */}
       {showDisclaimer && (
         <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.75)',
-          backdropFilter: 'blur(6px)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 999999,
-          padding: '20px'
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(6px)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+          zIndex: 999999, padding: '20px'
         }}>
           <div style={{
-            background: '#111827',
-            border: '1px solid #1f2937',
-            borderRadius: '16px',
-            maxWidth: '480px',
-            width: '100%',
-            padding: '24px',
-            color: '#e2e8f0',
-            textAlign: 'left',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
+            background: '#111827', border: '1px solid #1f2937', borderRadius: '16px',
+            maxWidth: '480px', width: '100%', padding: '24px', color: '#e2e8f0',
+            textAlign: 'left', boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
           }}>
             <h3 style={{ margin: '0 0 12px 0', fontSize: '1.2rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
               🛡️ Protocol Disclaimer
@@ -2303,14 +2152,8 @@ function App() {
             <button 
               onClick={() => setShowDisclaimer(false)}
               style={{
-                width: '100%',
-                padding: '12px',
-                background: 'linear-gradient(90deg, #2563eb 0%, #06b6d4 100%)',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                fontWeight: '700',
-                cursor: 'pointer'
+                width: '100%', padding: '12px', background: 'linear-gradient(90deg, #2563eb 0%, #06b6d4 100%)',
+                color: '#fff', border: 'none', borderRadius: '8px', fontWeight: '700', cursor: 'pointer'
               }}
             >
               I Understand
@@ -2319,32 +2162,17 @@ function App() {
         </div>
       )}
 
-      {/* MODAL EMERGENCY EARLY UNLOCK */}
       {showEmergencyModal && (
         <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.82)',
-          backdropFilter: 'blur(8px)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 999999,
-          padding: '20px'
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0, 0, 0, 0.82)', backdropFilter: 'blur(8px)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+          zIndex: 999999, padding: '20px'
         }}>
           <div style={{
-            background: '#0d1322',
-            border: '1px solid #ef4444',
-            borderRadius: '16px',
-            maxWidth: '440px',
-            width: '100%',
-            padding: '24px',
-            color: '#e2e8f0',
-            textAlign: 'left',
-            boxShadow: '0 20px 50px rgba(239, 68, 68, 0.25)'
+            background: '#0d1322', border: '1px solid #ef4444', borderRadius: '16px',
+            maxWidth: '440px', width: '100%', padding: '24px', color: '#e2e8f0',
+            textAlign: 'left', boxShadow: '0 20px 50px rgba(239, 68, 68, 0.25)'
           }}>
             <h3 style={{ margin: '0 0 14px 0', fontSize: '1.25rem', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px' }}>
               ⚠️ Emergency Unlock Warning
@@ -2373,14 +2201,8 @@ function App() {
               <button 
                 onClick={() => setShowEmergencyModal(false)}
                 style={{
-                  flex: 1,
-                  padding: '12px',
-                  background: '#1e293b',
-                  color: '#ffffff',
-                  border: '1px solid #334155',
-                  borderRadius: '8px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
+                  flex: 1, padding: '12px', background: '#1e293b', color: '#ffffff',
+                  border: '1px solid #334155', borderRadius: '8px', fontWeight: '600', cursor: 'pointer'
                 }}
               >
                 Cancel / Keep Locked
@@ -2389,15 +2211,9 @@ function App() {
               <button 
                 onClick={executeEmergencyUnlock}
                 style={{
-                  flex: 1,
-                  padding: '12px',
-                  background: 'linear-gradient(135deg, #ef4444, #dc2626)',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)'
+                  flex: 1, padding: '12px', background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                  color: '#ffffff', border: 'none', borderRadius: '8px', fontWeight: '700',
+                  cursor: 'pointer', boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)'
                 }}
               >
                 Confirm & Burn
