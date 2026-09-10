@@ -322,7 +322,8 @@ function App() {
 const [settlementLogs, setSettlementLogs] = useState([
   { title: "QRIS Settlement: #RELAY-SOL-02", desc: "Gas Tank Relayer ➔ 4 Pools Split", val: "0.00075 SOL (5%)", color: "#10b981" },
   { title: "AMM Swap: USDC ➔ $ZQI", desc: "Jito MEV Protected Bundle", val: "0.00300 SOL (0.3%)", color: "#38bdf8" },
-  { title: "Yield Vault Auto-Compound", desc: "Epoch Rebalancing Executed", val: "+49.1% APY Boost", color: "#a855f7" }
+  { title: "Yield Vault Auto-Compound", desc: "Epoch Rebalancing Executed", val: "+49.1% APY Boost", color: "#a855f7" },
+  { title: "Liquidity Locker: #LP-LOCK", desc: "Protocol-Owned Liquidity (POL) Locked", val: "100% On-Chain Lock", color: "#f59e0b" }
 ]);
 
   const [distributionData, setDistributionData] = useState(null);
