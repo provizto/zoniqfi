@@ -2106,6 +2106,17 @@ setSettlementLogs(prev => [
 
             <span style={{ color: '#334155' }}>•</span>
 
+            <a 
+  href="https://t.me/zoniqfi_community" 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
+>
+  Community 💬
+</a>
+            
+            <span style={{ color: '#334155' }}>•</span>
+
             <button 
               onClick={() => setShowDisclaimer(true)}
               style={{ 
