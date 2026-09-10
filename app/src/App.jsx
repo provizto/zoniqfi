@@ -918,7 +918,7 @@ setSettlementLogs(prev => [
         /* Responsive 2-Column Grid Layout */
         .zoniq-terminal-grid {
           display: grid !important;
-          grid-template-columns: 1.12fr 0.88fr !important;
+          grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr) !important;
           gap: 24px !important;
           align-items: start !important;
           width: 100% !important;
@@ -929,8 +929,9 @@ setSettlementLogs(prev => [
           flex-direction: column !important;
           gap: 18px !important;
           width: 100% !important;
-          position: sticky !important; /* <- Tambah ini */
-          top: 20px !important;        /* <- Tambah ini */
+          position: sticky !important;
+          top: 20px !important;
+          min-width: 0 !important;
         }
 
         .zoniq-terminal-right {
@@ -938,6 +939,7 @@ setSettlementLogs(prev => [
           flex-direction: column !important;
           gap: 16px !important;
           width: 100% !important;
+          min-width: 0 !important;
         }
 
         /* Navigasi Tab Sisi Kanan */
@@ -1030,20 +1032,32 @@ setSettlementLogs(prev => [
         @media (max-width: 1024px) {
           .zoniq-terminal-grid {
             grid-template-columns: 1fr !important;
-            gap: 24px !important;
+            gap: 20px !important;
           }
           .zoniq-terminal-left {
-            order: 2; /* Di HP, modul eksekusi tampil duluan */
+            order: 2 !important;
+            position: static !important; /* 👈 WAJIB: Mematikan efek melayang di HP */
           }
           .zoniq-terminal-right {
-            order: 1;
+            order: 1 !important;
           }
         }
+
         @media (max-width: 640px) {
+          .dapp-container {
+            padding: 16px 12px !important;
+          }
+          .dapp-nav-tabs {
+            overflow-x: auto !important; /* Mencegah tombol tab gepeng di layar HP sempit */
+            scrollbar-width: none !important;
+          }
+          .dapp-nav-tabs::-webkit-scrollbar {
+            display: none !important;
+          }
           .dapp-tab-btn {
             font-size: 0.74rem !important;
-            padding: 8px 3px !important;
-            gap: 2px !important;
+            padding: 8px 6px !important;
+            gap: 3px !important;
           }
         }
       `}</style>
@@ -1948,8 +1962,8 @@ setSettlementLogs(prev => [
           .dapp-footer-clean {
             flex-direction: column !important;
             text-align: center !important;
-            padding-bottom: 95px !important;
-            gap: 18px !important;
+            padding: 16px 16px 65px 16px !important;
+            gap: 12px !important;
           }
           .footer-content-left {
             text-align: center !important;
