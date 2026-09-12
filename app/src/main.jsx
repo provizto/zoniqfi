@@ -18,10 +18,10 @@ import {
 } from '@solana-mobile/wallet-adapter-mobile'
 
 function Root() {
-  // Devnet Solana endpoint
   const endpoint = useMemo(() => clusterApiUrl('devnet'), []);
 
-  // Daftarkan Mobile Adapter ke daftar wallets
+  // Cukup daftarkan MWA saja di array. 
+  // Phantom, Backpack, Solflare, & MetaMask otomatis terdeteksi via Wallet Standard di desktop & mobile wallet apps.
   const wallets = useMemo(
     () => [
       new SolanaMobileWalletAdapter({
