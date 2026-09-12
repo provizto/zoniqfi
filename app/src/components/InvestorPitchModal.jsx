@@ -258,7 +258,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   Lock mechanism mitigating secondary market selling pressure by distributing Real Yield in stable USDC dividends, designed to capture fees from both AMM swaps and PayFi merchant volume.
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>Lock Multipliers:</strong> 7 Days (0.5x), 15 Days (0.75x), and 30 Days (1.0x share weight).</li>
+                  <li><strong>Lock Multipliers:</strong> 7 Days (0.5x), 15 Days (0.75x), 30 Days (1.0x), 90 Days (1.25x), and 180 Days (2.5x share weight).</li>
                   <li><strong>Deflationary Burn:</strong> Mandatory 10% penalty on emergency unlock designed for permanent on-chain token burn.</li>
                 </ul>
               </div>
