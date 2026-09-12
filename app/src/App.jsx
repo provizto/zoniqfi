@@ -1337,7 +1337,7 @@ setSettlementLogs(prev => [
                     width: '32px',
                     height: '32px',
                     borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.05)',
+                    background: '#1C1C1E',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                     display: 'flex',
                     alignItems: 'center',
@@ -1345,10 +1345,15 @@ setSettlementLogs(prev => [
                     textDecoration: 'none'
                   }}
                 >
-                  <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
-                    <rect width="128" height="128" rx="28" fill="#1C1C1E"/>
-                    <path d="M36 64L64 36L92 64L64 92L36 64Z" fill="#F39422"/>
-                    <circle cx="64" cy="64" r="14" fill="#FC6A03"/>
+                  <svg width="22" height="22" viewBox="0 0 100 100" fill="none">
+                    <path d="M15 50L50 15L85 50L50 85L15 50Z" fill="url(#solflareGrad)"/>
+                    <circle cx="50" cy="50" r="18" fill="#FC6A03"/>
+                    <defs>
+                      <linearGradient id="solflareGrad" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#F39422"/>
+                        <stop offset="1" stopColor="#FC6A03"/>
+                      </linearGradient>
+                    </defs>
                   </svg>
                 </a>
 
