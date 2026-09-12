@@ -1274,7 +1274,7 @@ setSettlementLogs(prev => [
         </div>
       </header>
 
-      {/* MOBILE WALLET MINI ICON STRIP (Horizontal & Clean) */}
+      {/* MOBILE WALLET MINI ICON STRIP (SVG Native - 100% Muncul) */}
       {!isConnected && (
         <div className="mobile-wallet-helper">
           <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: '500' }}>
@@ -1287,11 +1287,12 @@ setSettlementLogs(prev => [
               title="Phantom"
               className="wallet-icon-btn"
             >
-              <img
-                src="https://raw.githubusercontent.com/solana-labs/wallet-adapter/master/packages/wallets/phantom/icon.svg"
-                alt="Phantom"
-                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-              />
+              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                <rect width="128" height="128" rx="28" fill="#AB9FF2"/>
+                <path d="M107 62C107 85.196 88.196 104 65 104C44.78 104 28 89.284 28 70C28 49.013 46.013 31 68 31C89.987 31 107 45.32 107 62Z" fill="#534BA5"/>
+                <circle cx="53" cy="58" r="7" fill="#FFFFFF"/>
+                <circle cx="81" cy="58" r="7" fill="#FFFFFF"/>
+              </svg>
             </a>
 
             {/* Solflare */}
@@ -1300,11 +1301,11 @@ setSettlementLogs(prev => [
               title="Solflare"
               className="wallet-icon-btn"
             >
-              <img
-                src="https://raw.githubusercontent.com/solana-labs/wallet-adapter/master/packages/wallets/solflare/icon.svg"
-                alt="Solflare"
-                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-              />
+              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                <rect width="128" height="128" rx="28" fill="#1C1C1E"/>
+                <path d="M36 64L64 36L92 64L64 92L36 64Z" fill="#F39422"/>
+                <circle cx="64" cy="64" r="14" fill="#FC6A03"/>
+              </svg>
             </a>
 
             {/* Backpack */}
@@ -1313,11 +1314,11 @@ setSettlementLogs(prev => [
               title="Backpack"
               className="wallet-icon-btn"
             >
-              <img
-                src="https://raw.githubusercontent.com/solana-labs/wallet-adapter/master/packages/wallets/backpack/icon.svg"
-                alt="Backpack"
-                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-              />
+              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                <rect width="128" height="128" rx="28" fill="#E11D48"/>
+                <rect x="36" y="44" width="56" height="52" rx="10" fill="#FFFFFF"/>
+                <path d="M48 44V34C48 29.58 51.58 26 56 26H72C76.42 26 80 29.58 80 34V44" stroke="#FFFFFF" strokeWidth="8"/>
+              </svg>
             </a>
 
             {/* MetaMask */}
@@ -1326,11 +1327,12 @@ setSettlementLogs(prev => [
               title="MetaMask"
               className="wallet-icon-btn"
             >
-              <img
-                src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg"
-                alt="MetaMask"
-                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
-              />
+              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                <rect width="128" height="128" rx="28" fill="#EA580C"/>
+                <path d="M64 26L34 50L44 86L64 102L84 86L94 50L64 26Z" fill="#FFFFFF"/>
+                <circle cx="50" cy="66" r="5" fill="#1F2937"/>
+                <circle cx="78" cy="66" r="5" fill="#1F2937"/>
+              </svg>
             </a>
           </div>
         </div>
