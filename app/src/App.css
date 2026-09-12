@@ -1669,3 +1669,25 @@ input[type="number"] {
     padding: 12px 8px !important;
   }
 }
+
+/* ================================================= */
+/* MOBILE WALLET HELPER (DESKTOP HIDDEN, MOBILE SHOWN) */
+/* ================================================= */
+
+/* Default di laptop/PC: Sembunyi total */
+.mobile-wallet-helper {
+  display: none;
+}
+
+/* Khusus layar HP (lebar maksimal 768px): Tampilkan */
+@media (max-width: 768px) {
+  .mobile-wallet-helper {
+    display: block !important;
+    margin: 10px 14px;
+    padding: 10px 12px;
+    background: #0f172a;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 8px;
+    text-align: center;
+  }
+}

@@ -1274,6 +1274,89 @@ setSettlementLogs(prev => [
         </div>
       </header>
 
+      {/* MOBILE WALLET HELPER BANNER (Hanya muncul di layar HP & saat belum connect) */}
+      {!isConnected && (
+        <div className="mobile-wallet-helper">
+          <p style={{ margin: '0 0 6px 0', fontSize: '0.72rem', color: '#94a3b8' }}>
+            📱 On mobile? Open directly in your wallet app:
+          </p>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '6px'
+          }}>
+            <a
+              href="https://phantom.app/ul/browse/https%3A%2F%2Fzoniqfi.com"
+              style={{
+                padding: '6px 8px',
+                background: '#4c2889',
+                color: '#ffffff',
+                borderRadius: '6px',
+                fontSize: '0.72rem',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              Phantom
+            </a>
+            <a
+              href="https://solflare.com/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
+              style={{
+                padding: '6px 8px',
+                background: '#f39422',
+                color: '#ffffff',
+                borderRadius: '6px',
+                fontSize: '0.72rem',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              Solflare
+            </a>
+            <a
+              href="https://backpack.app/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
+              style={{
+                padding: '6px 8px',
+                background: '#e11d48',
+                color: '#ffffff',
+                borderRadius: '6px',
+                fontSize: '0.72rem',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              Backpack
+            </a>
+            <a
+              href="https://metamask.app.link/dapp/zoniqfi.com"
+              style={{
+                padding: '6px 8px',
+                background: '#ea580c',
+                color: '#ffffff',
+                borderRadius: '6px',
+                fontSize: '0.72rem',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              MetaMask
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* TOP TOKENOMICS MARQUEE BANNER */}
       <div style={{
         background: 'linear-gradient(90deg, #070e17 0%, #0c2135 50%, #070e17 100%)',
