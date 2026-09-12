@@ -29,7 +29,7 @@ const CONTENT = {
         title: "02. $ZQI Lock & Real Yield",
         desc: "Native token staking mechanism that distributes pure USDC dividends generated from platform trading and PayFi commercial volumes, creating non-inflationary yield.",
         highlights: [
-          { label: "Lock Durations & Multipliers", val: "Epoch-based lock options: 7 Days (0.5x), 15 Days (0.75x), and 30 Days (1.0x share weight) for dividend distribution." },
+          { label: "Lock Durations & Multipliers", val: "Epoch-based lock options: 7 Days (0.5x), 15 Days (0.75x), 30 Days (1.0x), 90 Days (1.25x), and 180 Days (2.5x share weight) for dividend distribution." },
           { label: "USDC Real Yield", val: "Dividends accumulate per epoch and are claimed in stable USDC, avoiding token dilution." },
           { label: "Deflationary Burn", val: "Emergency early unlocks incur a mandatory 10% penalty permanently burned on-chain." }
         ]
