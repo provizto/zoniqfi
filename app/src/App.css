@@ -1671,23 +1671,42 @@ input[type="number"] {
 }
 
 /* ================================================= */
-/* MOBILE WALLET HELPER (DESKTOP HIDDEN, MOBILE SHOWN) */
+/* MOBILE WALLET HELPER (HORIZONTAL MINI STRIP)      */
 /* ================================================= */
 
-/* Default di laptop/PC: Sembunyi total */
 .mobile-wallet-helper {
   display: none;
 }
 
-/* Khusus layar HP (lebar maksimal 768px): Tampilkan */
 @media (max-width: 768px) {
   .mobile-wallet-helper {
-    display: block !important;
-    margin: 10px 14px;
-    padding: 10px 12px;
-    background: #0f172a;
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    border-radius: 8px;
-    text-align: center;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 6px 12px;
+    margin: 4px 16px 8px 16px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+  }
+
+  .wallet-icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .wallet-icon-btn:active {
+    transform: scale(0.92);
+    background: rgba(255, 255, 255, 0.15);
   }
 }

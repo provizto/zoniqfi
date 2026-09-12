@@ -1274,84 +1274,63 @@ setSettlementLogs(prev => [
         </div>
       </header>
 
-      {/* MOBILE WALLET HELPER BANNER (Hanya muncul di layar HP & saat belum connect) */}
+      {/* MOBILE WALLET MINI ICON STRIP (Horizontal & Clean) */}
       {!isConnected && (
         <div className="mobile-wallet-helper">
-          <p style={{ margin: '0 0 6px 0', fontSize: '0.72rem', color: '#94a3b8' }}>
-            📱 On mobile? Open directly in your wallet app:
-          </p>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '6px'
-          }}>
+          <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: '500' }}>
+            Open in app:
+          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Phantom */}
             <a
               href="https://phantom.app/ul/browse/https%3A%2F%2Fzoniqfi.com"
-              style={{
-                padding: '6px 8px',
-                background: '#4c2889',
-                color: '#ffffff',
-                borderRadius: '6px',
-                fontSize: '0.72rem',
-                fontWeight: '700',
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              title="Phantom"
+              className="wallet-icon-btn"
             >
-              Phantom
+              <img
+                src="https://raw.githubusercontent.com/solana-labs/wallet-adapter/master/packages/wallets/phantom/icon.svg"
+                alt="Phantom"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+              />
             </a>
+
+            {/* Solflare */}
             <a
               href="https://solflare.com/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
-              style={{
-                padding: '6px 8px',
-                background: '#f39422',
-                color: '#ffffff',
-                borderRadius: '6px',
-                fontSize: '0.72rem',
-                fontWeight: '700',
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              title="Solflare"
+              className="wallet-icon-btn"
             >
-              Solflare
+              <img
+                src="https://raw.githubusercontent.com/solana-labs/wallet-adapter/master/packages/wallets/solflare/icon.svg"
+                alt="Solflare"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+              />
             </a>
+
+            {/* Backpack */}
             <a
               href="https://backpack.app/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
-              style={{
-                padding: '6px 8px',
-                background: '#e11d48',
-                color: '#ffffff',
-                borderRadius: '6px',
-                fontSize: '0.72rem',
-                fontWeight: '700',
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              title="Backpack"
+              className="wallet-icon-btn"
             >
-              Backpack
+              <img
+                src="https://raw.githubusercontent.com/solana-labs/wallet-adapter/master/packages/wallets/backpack/icon.svg"
+                alt="Backpack"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+              />
             </a>
+
+            {/* MetaMask */}
             <a
               href="https://metamask.app.link/dapp/zoniqfi.com"
-              style={{
-                padding: '6px 8px',
-                background: '#ea580c',
-                color: '#ffffff',
-                borderRadius: '6px',
-                fontSize: '0.72rem',
-                fontWeight: '700',
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              title="MetaMask"
+              className="wallet-icon-btn"
             >
-              MetaMask
+              <img
+                src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg"
+                alt="MetaMask"
+                style={{ width: '20px', height: '20px', objectFit: 'contain' }}
+              />
             </a>
           </div>
         </div>
