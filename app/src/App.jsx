@@ -2018,7 +2018,7 @@ setSettlementLogs(prev => [
             © 2026 ZoniqFi Protocol. All Rights Reserved. Modular Solana DeFi & Real Yield Infrastructure.
           </p>
 
-          <div className="footer-links-row">
+          <div className="footer-links-row" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
             <button
               type="button"
               onClick={() => setIsGuideOpen(true)}
@@ -2060,13 +2060,36 @@ setSettlementLogs(prev => [
               📊 Pitch Deck
             </button>
 
+            {/* TOMBOL TRANSPARANSI SQUADS MULTI-SIG TREASURY */}
+            <a
+              href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Public Multi-Sig Treasury Vault via Squads / Solscan"
+              style={{
+                background: 'rgba(16, 185, 129, 0.15)',
+                border: '1px solid rgba(16, 185, 129, 0.4)',
+                color: '#34d399',
+                borderRadius: '6px',
+                padding: '4px 10px',
+                fontSize: '0.78rem',
+                fontWeight: '700',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px'
+              }}
+            >
+              🛡️ Treasury Explorer (Squads)
+            </a>
+
             <span style={{ color: '#334155' }}>•</span>
 
             <a 
               href="https://github.com/provizto/zoniqfi" 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: '#64748b', textDecoration: 'none' }}
+              style={{ color: '#64748b', textDecoration: 'none', fontSize: '0.8rem' }}
             >
               GitHub
             </a>
@@ -2077,7 +2100,7 @@ setSettlementLogs(prev => [
               href="https://github.com/provizto/zoniqfi-docs" 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: '#64748b', textDecoration: 'none' }}
+              style={{ color: '#64748b', textDecoration: 'none', fontSize: '0.8rem' }}
             >
               Docs
             </a>
@@ -2088,7 +2111,7 @@ setSettlementLogs(prev => [
               href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: '#94a3b8', textDecoration: 'none' }}
+              style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
             >
               $ZQI Explorer 🔍
             </a>
@@ -2099,7 +2122,7 @@ setSettlementLogs(prev => [
               href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: '#94a3b8', textDecoration: 'none' }}
+              style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
             >
               Smart Contract ⚙️
             </a>
@@ -2107,13 +2130,13 @@ setSettlementLogs(prev => [
             <span style={{ color: '#334155' }}>•</span>
 
             <a 
-  href="https://t.me/zoniqfi_community" 
-  target="_blank" 
-  rel="noopener noreferrer" 
-  style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
->
-  Community 💬
-</a>
+              href="https://t.me/zoniqfi_community" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
+            >
+              Community 💬
+            </a>
             
             <span style={{ color: '#334155' }}>•</span>
 
@@ -2124,7 +2147,7 @@ setSettlementLogs(prev => [
                 border: 'none', 
                 padding: 0, 
                 color: '#64748b', 
-                fontSize: '0.82rem', 
+                fontSize: '0.8rem', 
                 cursor: 'pointer' 
               }}
             >
