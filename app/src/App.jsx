@@ -1404,7 +1404,7 @@ setSettlementLogs(prev => [
               <button
                 onClick={() => {
                   setShowMobileConnectMenu(false);
-                  openWalletModal();
+                  setVisible(true);
                 }}
                 style={{
                   marginTop: '2px',
