@@ -63,6 +63,98 @@ const INITIAL_PRICES = {
   PYTH: 0.45 
 };
 
+// ================= TEMPEL DI SINI =================
+function ZqiCandleChart() {
+  const candles = [
+    { time: '14:00', o: 0.046, h: 0.049, l: 0.045, c: 0.048, up: true },
+    { time: '14:15', o: 0.048, h: 0.052, l: 0.047, c: 0.051, up: true },
+    { time: '14:30', o: 0.051, h: 0.053, l: 0.049, c: 0.0495, up: false },
+    { time: '14:45', o: 0.0495, h: 0.051, l: 0.048, c: 0.0505, up: true },
+    { time: '15:00', o: 0.0505, h: 0.054, l: 0.050, c: 0.053, up: true },
+    { time: '15:15', o: 0.053, h: 0.055, l: 0.051, c: 0.052, up: false },
+    { time: '15:30', o: 0.052, h: 0.056, l: 0.0515, c: 0.055, up: true },
+  ];
+
+  const minP = 0.044;
+  const maxP = 0.058;
+  const getY = (val) => 180 - ((val - minP) / (maxP - minP)) * 140;
+
+  return (
+    <div style={{
+      background: '#09101d',
+      border: '1px solid #1e293b',
+      borderRadius: '12px',
+      padding: '16px',
+      marginBottom: '16px',
+      color: '#fff',
+      boxSizing: 'border-box'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', background: '#070a13', padding: '3px', borderRadius: '6px', border: '1px solid #1e293b', gap: '3px' }}>
+            <span style={{ fontSize: '0.72rem', padding: '3px 8px', borderRadius: '4px', background: '#2563eb', color: '#ffffff', fontWeight: '700' }}>
+              $ZQI/USDC
+            </span>
+            <span style={{ fontSize: '0.72rem', padding: '3px 8px', borderRadius: '4px', color: '#94a3b8' }}>
+              $ZQI/SOL
+            </span>
+          </div>
+
+          <span style={{ color: '#10b981', fontSize: '0.85rem', fontWeight: 'bold' }}>
+            $0.0500 <span style={{ fontSize: '0.75rem' }}>(+18.4%)</span>
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {['15m', '1H', '4H', '1D'].map((tf, i) => (
+            <span key={tf} style={{
+              fontSize: '0.68rem',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              background: i === 0 ? '#1e293b' : '#070a13',
+              color: i === 0 ? '#38bdf8' : '#64748b',
+              fontWeight: '600',
+              border: '1px solid #1e293b'
+            }}>{tf}</span>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ width: '100%', height: '190px', position: 'relative' }}>
+        <svg width="100%" height="190" viewBox="0 0 350 190" preserveAspectRatio="none">
+          <line x1="0" y1="40" x2="350" y2="40" stroke="#1e293b" strokeDasharray="3 3" />
+          <line x1="0" y1="90" x2="350" y2="90" stroke="#1e293b" strokeDasharray="3 3" />
+          <line x1="0" y1="140" x2="350" y2="140" stroke="#1e293b" strokeDasharray="3 3" />
+
+          {candles.map((c, idx) => {
+            const x = 25 + idx * 45;
+            const yTop = getY(c.h);
+            const yBottom = getY(c.l);
+            const yOpen = getY(c.o);
+            const yClose = getY(c.c);
+            const bodyY = Math.min(yOpen, yClose);
+            const bodyH = Math.max(Math.abs(yClose - yOpen), 3);
+            const color = c.up ? '#10b981' : '#ef4444';
+
+            return (
+              <g key={idx}>
+                <line x1={x + 9} y1={yTop} x2={x + 9} y2={yBottom} stroke={color} strokeWidth="1.5" />
+                <rect x={x} y={bodyY} width="18" height={bodyH} rx="2" fill={color} />
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#94a3b8', marginTop: '6px' }}>
+        <span>24h Vol: <strong style={{ color: '#e2e8f0' }}>$42,850 USDC</strong></span>
+        <span>Jito MEV Protected Feed ⚡</span>
+      </div>
+    </div>
+  );
+}
+// ==================================================
+
 function App() {
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [showPitchModal, setShowPitchModal] = useState(false);
@@ -1460,6 +1552,9 @@ setSettlementLogs(prev => [
             </div>
 
             {/* 2. Visual Chart Area: Pro Telemetry Grid */}
+            {activeTab === 'swap' ? (
+              <ZqiCandleChart />
+            ) : (
             <div className="zoniq-chart-box" style={{ background: '#0b121f', border: '1px solid #1e293b', borderRadius: '14px', padding: '18px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
               
               {/* Header Chart dengan Filter Periode */}
@@ -1542,6 +1637,7 @@ setSettlementLogs(prev => [
               </div>
 
             </div>
+            )}
 
             {/* 3. Live On-Chain Settlement Activity Feed */}
             <div className="zoniq-feed-box">
