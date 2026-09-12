@@ -381,7 +381,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.83rem' }}>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #f59e0b' }}>
-                  <strong>Step 1 (Zero-Friction Fiat Checkout):</strong> Shoppers pay via Direct QRIS without requiring Web3 wallets. The merchant receives 100% fiat immediately into their bank account.
+                  <strong>Step 1 (Zero-Friction Fiat Checkout):</strong> Shoppers pay via Direct QRIS without requiring Web3 wallets. Merchants receive 100% instant fiat settlement, while the 5% protocol fee is settled autonomously via their on-chain Gas Tank (resulting in a 95% net settlement structure).
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #38bdf8' }}>
                   <strong>Step 2 (Automated Prepaid Gas Debit):</strong> The protocol debits a 5% fee from the merchant's SOL Gas Tank, enforced by an on-chain guardrail that halts checkouts if reserves hit zero.
