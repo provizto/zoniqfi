@@ -1418,21 +1418,35 @@ setSettlementLogs(prev => [
           <div className="zoniq-terminal-left">
             
             {/* 1. Bar Metrik KPI Ringkas */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-              <div className="zoniq-stat-card">
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: '600' }}>PayFi & AMM Volume</span>
-                <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#ffffff' }}>${protocolTVL.toLocaleString('en-US')}</span>
-                <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: '700' }}>↑ 18.4% this epoch</span>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', 
+              gap: '6px',
+              width: '100%',
+              boxSizing: 'border-box'
+            }}>
+              <div className="zoniq-stat-card" style={{ minWidth: 0, padding: '10px 4px' }}>
+                <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600', whiteSpace: 'nowrap' }}>PayFi & AMM</span>
+                <span style={{ fontSize: '1.05rem', fontWeight: '800', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  ${protocolTVL.toLocaleString('en-US')}
+                </span>
+                <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: '700', whiteSpace: 'nowrap' }}>↑ 18.4% epoch</span>
               </div>
-              <div className="zoniq-stat-card">
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: '600' }}>Real Yield Dispatched</span>
-                <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#38bdf8' }}>42.80 SOL</span>
-                <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>30% to $ZQI Locker</span>
+
+              <div className="zoniq-stat-card" style={{ minWidth: 0, padding: '10px 4px' }}>
+                <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600', whiteSpace: 'nowrap' }}>Real Yield</span>
+                <span style={{ fontSize: '1.05rem', fontWeight: '800', color: '#38bdf8', whiteSpace: 'nowrap' }}>
+                  42.80 SOL
+                </span>
+                <span style={{ fontSize: '0.65rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>30% to Locker</span>
               </div>
-              <div className="zoniq-stat-card">
-                <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: '600' }}>Network & Gas Tank</span>
-                <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#10b981' }}>99.9%</span>
-                <span style={{ fontSize: '0.68rem', color: '#38bdf8' }}>Priority Fee Active</span>
+
+              <div className="zoniq-stat-card" style={{ minWidth: 0, padding: '10px 4px' }}>
+                <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600', whiteSpace: 'nowrap' }}>Network / Gas</span>
+                <span style={{ fontSize: '1.05rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
+                  99.9%
+                </span>
+                <span style={{ fontSize: '0.65rem', color: '#38bdf8', whiteSpace: 'nowrap' }}>Priority Fee</span>
               </div>
             </div>
 
