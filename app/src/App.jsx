@@ -74,6 +74,7 @@ function App() {
 
   const [showWalletMenu, setShowWalletMenu] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showMobileConnectMenu, setShowMobileConnectMenu] = useState(false);
 
   // LIVE TICKER STATE
   const [tickerPrices, setTickerPrices] = useState([
@@ -1111,6 +1112,7 @@ setSettlementLogs(prev => [
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
+          {/* Badge Devnet */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -1136,13 +1138,21 @@ setSettlementLogs(prev => [
             Devnet
           </div>
           
+          {/* Tombol Connect / Address */}
           <button 
             id="walletBtn" 
             onClick={() => {
-              if (!isConnected) {
-                openWalletModal();
-              } else {
+              if (isConnected) {
+                // Jika sudah connect, buka/tutup menu saldo profil
                 setShowWalletMenu((prev) => !prev);
+              } else {
+                // Jika dibuka di HP (lebar <= 768px), buka dropdown 4 wallet
+                if (window.innerWidth <= 768) {
+                  setShowMobileConnectMenu((prev) => !prev);
+                } else {
+                  // Jika di Laptop/Desktop, buka modal Solana bawaan
+                  openWalletModal();
+                }
               }
             }} 
             style={{ 
@@ -1164,6 +1174,7 @@ setSettlementLogs(prev => [
             {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
           </button> 
 
+          {/* A. DROPDOWN SAAT SUDAH CONNECT (Tampil normal seperti gambar Anda) */}
           {isConnected && showWalletMenu && (
             <div style={{
               position: 'absolute',
@@ -1271,72 +1282,147 @@ setSettlementLogs(prev => [
               </button>
             </div>
           )}
+
+          {/* B. DROPDOWN KHUSUS MOBILE SAAT BELUM CONNECT (Hanya muncul saat tombol Connect diklik di HP) */}
+          {!isConnected && showMobileConnectMenu && (
+            <div style={{
+              position: 'absolute',
+              top: '110%',
+              right: 0,
+              background: '#0d1322',
+              border: '1px solid #1e293b',
+              borderRadius: '10px',
+              padding: '10px',
+              minWidth: '200px',
+              boxShadow: '0 12px 25px -4px rgba(0, 0, 0, 0.7)',
+              zIndex: 100,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}>
+              <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600', textAlign: 'center' }}>
+                Open in Wallet App:
+              </span>
+
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                {/* Phantom */}
+                <a
+                  href="https://phantom.app/ul/browse/https%3A%2F%2Fzoniqfi.com"
+                  title="Phantom"
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                    <rect width="128" height="128" rx="28" fill="#AB9FF2"/>
+                    <path d="M107 62C107 85.196 88.196 104 65 104C44.78 104 28 89.284 28 70C28 49.013 46.013 31 68 31C89.987 31 107 45.32 107 62Z" fill="#534BA5"/>
+                    <circle cx="53" cy="58" r="7" fill="#FFFFFF"/>
+                    <circle cx="81" cy="58" r="7" fill="#FFFFFF"/>
+                  </svg>
+                </a>
+
+                {/* Solflare */}
+                <a
+                  href="https://solflare.com/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
+                  title="Solflare"
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                    <rect width="128" height="128" rx="28" fill="#1C1C1E"/>
+                    <path d="M36 64L64 36L92 64L64 92L36 64Z" fill="#F39422"/>
+                    <circle cx="64" cy="64" r="14" fill="#FC6A03"/>
+                  </svg>
+                </a>
+
+                {/* Backpack */}
+                <a
+                  href="https://backpack.app/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
+                  title="Backpack"
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                    <rect width="128" height="128" rx="28" fill="#E11D48"/>
+                    <rect x="36" y="44" width="56" height="52" rx="10" fill="#FFFFFF"/>
+                    <path d="M48 44V34C48 29.58 51.58 26 56 26H72C76.42 26 80 29.58 80 34V44" stroke="#FFFFFF" strokeWidth="8"/>
+                  </svg>
+                </a>
+
+                {/* MetaMask */}
+                <a
+                  href="https://metamask.app.link/dapp/zoniqfi.com"
+                  title="MetaMask"
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
+                    <rect width="128" height="128" rx="28" fill="#EA580C"/>
+                    <path d="M64 26L34 50L44 86L64 102L84 86L94 50L64 26Z" fill="#FFFFFF"/>
+                    <circle cx="50" cy="66" r="5" fill="#1F2937"/>
+                    <circle cx="78" cy="66" r="5" fill="#1F2937"/>
+                  </svg>
+                </a>
+              </div>
+
+              {/* Opsi fallback jika user tetap ingin membuka modal biasa di HP */}
+              <button
+                onClick={() => {
+                  setShowMobileConnectMenu(false);
+                  openWalletModal();
+                }}
+                style={{
+                  marginTop: '2px',
+                  padding: '5px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid #1f2937',
+                  borderRadius: '6px',
+                  color: '#94a3b8',
+                  fontSize: '0.66rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Other Wallets / Standard Modal
+              </button>
+            </div>
+          )}
         </div>
       </header>
-
-      {/* MOBILE WALLET MINI ICON STRIP (SVG Native - 100% Muncul) */}
-      {!isConnected && (
-        <div className="mobile-wallet-helper">
-          <span style={{ fontSize: '0.68rem', color: '#64748b', fontWeight: '500' }}>
-            Open in app:
-          </span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* Phantom */}
-            <a
-              href="https://phantom.app/ul/browse/https%3A%2F%2Fzoniqfi.com"
-              title="Phantom"
-              className="wallet-icon-btn"
-            >
-              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
-                <rect width="128" height="128" rx="28" fill="#AB9FF2"/>
-                <path d="M107 62C107 85.196 88.196 104 65 104C44.78 104 28 89.284 28 70C28 49.013 46.013 31 68 31C89.987 31 107 45.32 107 62Z" fill="#534BA5"/>
-                <circle cx="53" cy="58" r="7" fill="#FFFFFF"/>
-                <circle cx="81" cy="58" r="7" fill="#FFFFFF"/>
-              </svg>
-            </a>
-
-            {/* Solflare */}
-            <a
-              href="https://solflare.com/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
-              title="Solflare"
-              className="wallet-icon-btn"
-            >
-              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
-                <rect width="128" height="128" rx="28" fill="#1C1C1E"/>
-                <path d="M36 64L64 36L92 64L64 92L36 64Z" fill="#F39422"/>
-                <circle cx="64" cy="64" r="14" fill="#FC6A03"/>
-              </svg>
-            </a>
-
-            {/* Backpack */}
-            <a
-              href="https://backpack.app/ul/v1/browse/https%3A%2F%2Fzoniqfi.com"
-              title="Backpack"
-              className="wallet-icon-btn"
-            >
-              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
-                <rect width="128" height="128" rx="28" fill="#E11D48"/>
-                <rect x="36" y="44" width="56" height="52" rx="10" fill="#FFFFFF"/>
-                <path d="M48 44V34C48 29.58 51.58 26 56 26H72C76.42 26 80 29.58 80 34V44" stroke="#FFFFFF" strokeWidth="8"/>
-              </svg>
-            </a>
-
-            {/* MetaMask */}
-            <a
-              href="https://metamask.app.link/dapp/zoniqfi.com"
-              title="MetaMask"
-              className="wallet-icon-btn"
-            >
-              <svg width="18" height="18" viewBox="0 0 128 128" fill="none">
-                <rect width="128" height="128" rx="28" fill="#EA580C"/>
-                <path d="M64 26L34 50L44 86L64 102L84 86L94 50L64 26Z" fill="#FFFFFF"/>
-                <circle cx="50" cy="66" r="5" fill="#1F2937"/>
-                <circle cx="78" cy="66" r="5" fill="#1F2937"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      )}
 
       {/* TOP TOKENOMICS MARQUEE BANNER */}
       <div style={{
@@ -2281,7 +2367,7 @@ setSettlementLogs(prev => [
           className="mobile-dock-btn"
         >
           <i className="fas fa-chart-pie"></i>
-          <span>Pitch Deck</span>
+          <span>Pitch</span>
         </button>
       </div>
 
