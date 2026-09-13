@@ -618,24 +618,35 @@ function MainApp() {
     }
   };
 
-  // ================= TEMPEL DI SINI =================
-  const handleClearAdminLogs = async () => {
-    const confirmClear = window.confirm("⚠️ PERINGATAN: Yakin ingin menghapus semua riwayat transaksi & settlement log uji coba?");
+  // FUNGSI RESET LOG KHUSUS TOKO VENDOR AKTIF
+  const handleClearVendorLogs = async () => {
+    const confirmClear = window.confirm("⚠️ Yakin ingin menghapus seluruh riwayat pesanan toko Anda?");
     if (!confirmClear) return;
 
     try {
+      // Ambil wallet vendor aktif dari profile atau wallet adapter
+      const currentVendorWallet = 
+        vendorProfile?.wallet_address || 
+        (window as any).solana?.publicKey?.toString();
+
+      if (!currentVendorWallet) {
+        alert("Wallet vendor tidak terdeteksi!");
+        return;
+      }
+
+      // HANYA HAPUS DATA DENGAN IDENTITAS TOKO VENDOR INI
       const { error: errOrders } = await supabase
         .from('orders')
         .delete()
-        .neq('id', '00000000-0000-0000-0000-000000000000');
+        .eq('merchant_wallet', currentVendorWallet); // pastikan kolom ini cocok dengan schema Supabase
 
       if (errOrders) throw errOrders;
 
-      alert("✅ Seluruh log transaksi uji coba berhasil dibersihkan!");
+      alert("✅ Riwayat transaksi toko Anda berhasil dibersihkan!");
       window.location.reload();
     } catch (err: any) {
-      console.error("Gagal membersihkan log:", err);
-      alert("❌ Gagal membersihkan log: " + err.message);
+      console.error("Gagal membersihkan log toko:", err);
+      alert("❌ Gagal: " + err.message);
     }
   };
   // ==================================================
@@ -1778,22 +1789,25 @@ function MainApp() {
         </button>
       </form>
     </div>
-                    {/* ================= SISIPKAN TOMBOL INI DI SINI ================= */}
+                    {/* TOMBOL BERSIHKAN LOG TOKO SENDIRI */}
     <div style={{ margin: "10px 0", display: "flex", justifyContent: "flex-end" }}>
       <button
         type="button"
-        onClick={handleClearAdminLogs}
+        onClick={handleClearVendorLogs}
         style={{
-          background: "rgba(239, 68, 68, 0.1)",
+          background: "rgba(239, 68, 68, 0.08)",
           border: "1px dashed #ef4444",
           color: "#f87171",
           fontSize: "11px",
           padding: "6px 12px",
           borderRadius: "8px",
-          cursor: "pointer"
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: "6px"
         }}
       >
-        🗑️ Reset / Clear All Devnet Logs
+        🗑️ Clear Store History (Devnet)
       </button>
     </div>
     {/* ============================================================== */}
