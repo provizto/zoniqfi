@@ -618,6 +618,28 @@ function MainApp() {
     }
   };
 
+  // ================= TEMPEL DI SINI =================
+  const handleClearAdminLogs = async () => {
+    const confirmClear = window.confirm("⚠️ PERINGATAN: Yakin ingin menghapus semua riwayat transaksi & settlement log uji coba?");
+    if (!confirmClear) return;
+
+    try {
+      const { error: errOrders } = await supabase
+        .from('orders')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+
+      if (errOrders) throw errOrders;
+
+      alert("✅ Seluruh log transaksi uji coba berhasil dibersihkan!");
+      window.location.reload();
+    } catch (err: any) {
+      console.error("Gagal membersihkan log:", err);
+      alert("❌ Gagal membersihkan log: " + err.message);
+    }
+  };
+  // ==================================================
+
   const fetchAdminOrders = async () => {
     try {
       const { data, error } = await supabase
@@ -1756,6 +1778,26 @@ function MainApp() {
         </button>
       </form>
     </div>
+                    {/* ================= SISIPKAN TOMBOL INI DI SINI ================= */}
+    <div style={{ margin: "10px 0", display: "flex", justifyContent: "flex-end" }}>
+      <button
+        type="button"
+        onClick={handleClearAdminLogs}
+        style={{
+          background: "rgba(239, 68, 68, 0.1)",
+          border: "1px dashed #ef4444",
+          color: "#f87171",
+          fontSize: "11px",
+          padding: "6px 12px",
+          borderRadius: "8px",
+          cursor: "pointer"
+        }}
+      >
+        🗑️ Reset / Clear All Devnet Logs
+      </button>
+    </div>
+    {/* ============================================================== */}
+                    
                     <div style={{ background: "#0f172a", border: "1px solid #1e293b", padding: "14px", borderRadius: "10px", fontSize: "11px" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
                         <span style={{ fontWeight: 700, color: "#38bdf8", display: "flex", alignItems: "center", gap: "6px" }}>
