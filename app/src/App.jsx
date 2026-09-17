@@ -1748,7 +1748,7 @@ setSettlementLogs(prev => [
                     <h3>AMM DEX Swap</h3>
                     <span id="mevBadge" className="mev-secure-badge">🛡️ MEV SECURE</span>
                   </div>
-                  <p className="desc">Instant asset swapping with MEV protection and daily Anti-Wash Trading features.</p>
+                  <p className="desc">Non-custodial peer-to-peer asset swapping via immutable Solana smart contract routing.</p>
 
                   <div className="swap-input-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
@@ -1811,7 +1811,7 @@ setSettlementLogs(prev => [
                   
                   <div className="yield-calc-embed">
                     <h4>ZoniqFi Yield Calculator</h4>
-                    <label>Deposit Amount (USDC):</label>
+                    <label>Allocation Amount (USDC):</label>
                     <input type="number" id="calcAmount" placeholder="0.0" value={calcAmount === '0' ? '' : calcAmount} disabled={isVaultLoading} onChange={(e) => setCalcAmount(e.target.value)} onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }} />
                     <div className="projection-metrics-list">
                       <p>Daily Rate: <strong>0.11%</strong></p>
@@ -2198,7 +2198,7 @@ setSettlementLogs(prev => [
       <footer className="dapp-footer-clean">
         <div className="footer-content-left">
           <p style={{ margin: 0, lineHeight: '1.5' }}>
-            © 2026 ZoniqFi Protocol. All Rights Reserved. Modular Solana DeFi & Real Yield Infrastructure.
+            © 2026 ZoniqFi Protocol. All Rights Reserved. Non-Custodial Decentralized Software Suite (Singapore).
           </p>
 
           <div className="footer-links-row" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
@@ -2411,7 +2411,7 @@ setSettlementLogs(prev => [
               🛡️ Protocol Disclaimer
             </h3>
             <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.6', margin: '0 0 16px 0' }}>
-              ZoniqFi is an experimental, non-custodial decentralized software architecture deployed on the Solana Devnet Sandbox. The protocol does not take custody of user assets, and interactions are governed strictly by immutable smart contract logic. Nothing on this platform constitutes financial or investment advice.
+              ZoniqFi is an experimental, non-custodial decentralized software suite deployed on the Solana Network. The protocol does not intermediate, hold, or take custody of fiat or digital assets, and interactions are governed strictly by self-executing smart contract logic under the laws of the Republic of Singapore. Nothing on this platform constitutes financial or investment advice.
             </p>
             <button 
               onClick={() => setShowDisclaimer(false)}

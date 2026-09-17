@@ -137,7 +137,7 @@ const TRANSLATIONS = {
     method2Desc: "Bayar instan via BCA, Mandiri, GoPay, OVO, DANA. Lisensi NFT dicetak otomatis.",
     method2BtnPay: "📱 Buka Barcode QRIS",
     vendorBtn: "🚀 Portal Vendor",
-    vendorModalTitle: "🏪 Vendor & Merchant Portal",
+    vendorModalTitle: "🏪 Storefront & Settlement Terminal",
     adminBtn: "⚙️ Pengaturan Global (Admin)",
     adminPinTitle: "Akses Panel Pengaturan Toko",
     adminPinSub: "Masukkan 6-Digit PIN Keamanan Admin",
@@ -195,7 +195,7 @@ const TRANSLATIONS = {
     method2Desc: "Instant payment via BCA, Mandiri, GoPay, OVO, DANA. NFT minted via gasless relay.",
     method2BtnPay: "📱 Open QRIS Barcode",
     vendorBtn: "🚀 Vendor Portal",
-    vendorModalTitle: "🏪 Vendor & Merchant Portal",
+    vendorModalTitle: "🏪 Storefront & Settlement Terminal",
     adminBtn: "⚙️ Global Settings (Admin)",
     adminPinTitle: "Store Admin Panel Access",
     adminPinSub: "Enter 6-Digit Admin Security PIN",
@@ -1585,7 +1585,7 @@ function MainApp() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", borderBottom: "1px solid #1f2937", paddingBottom: "12px" }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: "17px", fontWeight: 800, color: "#fff" }}>{t.vendorModalTitle}</h3>
-                <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>Manage storefront, monitor revenue, and configure payout accounts</p>
+                <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>Manage storefront items, monitor settled revenue, and configure self-custody payout accounts.</p>
               </div>
               <button type="button" onClick={() => setShowVendorModal(false)} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "20px", cursor: "pointer" }}>✕</button>
             </div>
@@ -1687,7 +1687,7 @@ function MainApp() {
 
                 <div style={{ display: "flex", gap: "6px", marginBottom: "16px", background: "#0b0f19", padding: "4px", borderRadius: "8px", border: "1px solid #1e293b" }}>
                   <button type="button" onClick={() => setVendorActiveTab("STATS")} style={{ flex: 1, padding: "8px", borderRadius: "6px", border: "none", background: vendorActiveTab === "STATS" ? "#2563eb" : "transparent", color: vendorActiveTab === "STATS" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
-                    📊 Revenue & Payout
+                    📊 Proceeds & Payout
                   </button>
                   <button type="button" onClick={() => setVendorActiveTab("UPLOAD")} style={{ flex: 1, padding: "8px", borderRadius: "6px", border: "none", background: vendorActiveTab === "UPLOAD" ? "#2563eb" : "transparent", color: vendorActiveTab === "UPLOAD" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
                     ➕ Add Product
@@ -1705,9 +1705,9 @@ function MainApp() {
         <h4 style={{ margin: "6px 0 0 0", fontSize: "20px", fontWeight: 800, color: "#60a5fa" }}>{vendorStats.totalOrders} Orders</h4>
       </div>
       <div style={{ background: "#062319", border: "1px solid #065f46", padding: "14px", borderRadius: "10px" }}>
-        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Net Earnings (95%)</span>
+        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Merchant Proceeds (95%)</span>
         <h4 style={{ margin: "6px 0 0 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{vendorStats.netEth.toFixed(4)} SOL</h4>
-        <span style={{ fontSize: "10px", color: "#6ee7b7" }}>≈ Rp {Math.round(vendorStats.netEth * (storeConfig.rateIdr || 54000000)).toLocaleString("id-ID")}</span>
+        <span style={{ fontSize: "10px", color: "#6ee7b7" }}>≈ Rp {Math.round(vendorStats.netEth * (storeConfig.rateIdr || 3000000)).toLocaleString("id-ID")}</span>
       </div>
     </div>
 
@@ -1724,8 +1724,8 @@ function MainApp() {
           <span style={{ fontSize: "11px", color: "#c4b5fd", textTransform: "uppercase", fontWeight: 800, letterSpacing: "0.5px" }}>
             ⛽ Prepaid Gas Tank (Protocol Fee Reserve)
           </span>
-          <p style={{ margin: "2px 0 0 0", fontSize: "11px", color: "#94a3b8" }}>
-            Saldo ini otomatis dipotong 5% tiap ada pesanan QRIS untuk mendanai 4 pool on-chain Solana.
+          <p style={{ margin: "4px 0 0 0", fontSize: "11px", color: "#94a3b8", lineHeight: "1.4" }}>
+            Autonomous protocol reserve powering zero-friction buyer gas relay and route-based on-chain treasury distribution (5%).
           </p>
         </div>
         <span style={{
@@ -1852,8 +1852,8 @@ function MainApp() {
                               <strong style={{ color: "#38bdf8" }}>{vendorProfile?.contact_email || "-"}</strong>
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1" }}>
-                              <span>Fiat Payout:</span>
-                              <strong style={{ color: "#34d399" }}>Direct to Personal QRIS (100%)</strong>
+                              <span>Settlement Rails:</span>
+                              <strong style={{ color: "#34d399" }}>Direct Merchant QRIS (Non-Custodial)</strong>
                             </div>
                           </div>
                           <div style={{
@@ -2044,94 +2044,94 @@ function MainApp() {
 
             <div style={{ display: "flex", gap: "6px", marginBottom: "16px", background: "#0b0f19", padding: "4px", borderRadius: "8px", border: "1px solid #1e293b", flexWrap: "wrap" }}>
               <button type="button" onClick={() => setAdminActiveTab("SETTINGS")} style={{ flex: 1, minWidth: "120px", padding: "8px", borderRadius: "6px", border: "none", background: adminActiveTab === "SETTINGS" ? "#2563eb" : "transparent", color: adminActiveTab === "SETTINGS" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
-                ⚙️ Setelan Toko & FX
+                ⚙️ Store & FX Settings
               </button>
               <button type="button" onClick={() => { fetchAdminPayoutData(); setAdminActiveTab("PAYOUTS"); }} style={{ flex: 1, minWidth: "140px", padding: "8px", borderRadius: "6px", border: "none", background: adminActiveTab === "PAYOUTS" ? "#2563eb" : "transparent", color: adminActiveTab === "PAYOUTS" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
-                💸 Rekonsiliasi Vendor ({adminPayouts.length})
+                💸 Merchant Reconciliation ({adminPayouts.length})
               </button>
               <button type="button" onClick={() => { fetchAdminOrders(); setAdminActiveTab("ORDERS"); }} style={{ flex: 1, minWidth: "140px", padding: "8px", borderRadius: "6px", border: "none", background: adminActiveTab === "ORDERS" ? "#2563eb" : "transparent", color: adminActiveTab === "ORDERS" ? "#fff" : "#94a3b8", fontWeight: 700, fontSize: "11px", cursor: "pointer" }}>
-                📋 Riwayat Pesanan ({adminOrders.length})
+                📋 Order History ({adminOrders.length})
               </button>
             </div>
 
             {adminActiveTab === "SETTINGS" && (
-              <form onSubmit={handleSaveStoreConfig} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", marginBottom: "4px" }}>{t.storeNameLabel}</label>
-                    <input type="text" value={tempConfig.storeName} onChange={(e) => setTempConfig({ ...tempConfig, storeName: e.target.value })} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", marginBottom: "4px" }}>{t.storeSubtitleLabel}</label>
-                    <input type="text" value={tempConfig.storeSubtitle} onChange={(e) => setTempConfig({ ...tempConfig, storeSubtitle: e.target.value })} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
-                  </div>
-                </div>
+  <form onSubmit={handleSaveStoreConfig} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+      <div>
+        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", marginBottom: "4px" }}>Store Name</label>
+        <input type="text" value={tempConfig.storeName} onChange={(e) => setTempConfig({ ...tempConfig, storeName: e.target.value })} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
+      </div>
+      <div>
+        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, color: "#94a3b8", marginBottom: "4px" }}>Store Subtitle</label>
+        <input type="text" value={tempConfig.storeSubtitle} onChange={(e) => setTempConfig({ ...tempConfig, storeSubtitle: e.target.value })} style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "12px", boxSizing: "border-box" }} required />
+      </div>
+    </div>
 
-                <div style={{ background: "#0b1728", padding: "14px", borderRadius: "10px", border: "1px solid #1e3a8a" }}>
-  <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "6px" }}>
-    🛡️ Platform Protocol Treasury (SOL Revenue Wallet)
-  </span>
-  <div style={{ marginTop: "8px" }}>
-    <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>
-      Solana Treasury Address (Penerima Fee 5% Platform):
-    </label>
-    <input 
-      type="text" 
-      placeholder="Masukkan alamat wallet Solana (Base58)..." 
-      value={(tempConfig as any)?.adminWallet || ""} 
-      onChange={(e) => setTempConfig((prev: any) => ({ ...prev, adminWallet: e.target.value }))} 
-      style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #374151", background: "#111827", color: "#38bdf8", fontFamily: "monospace", fontSize: "11px", boxSizing: "border-box" }} 
-    />
-    <span style={{ fontSize: "10px", color: "#94a3b8", marginTop: "4px", display: "block" }}>
-      Alamat dompet penampung seluruh fee 5% platform dari pemotongan cadangan Prepaid Gas vendor.
-    </span>
+    <div style={{ background: "#0b1728", padding: "14px", borderRadius: "10px", border: "1px solid #1e3a8a" }}>
+      <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "6px" }}>
+        🛡️ Platform Protocol Treasury (SOL Revenue Vault)
+      </span>
+      <div style={{ marginTop: "8px" }}>
+        <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>
+          Solana Treasury Address (5% Protocol Fee Collector):
+        </label>
+        <input 
+          type="text" 
+          placeholder="Enter Solana wallet address (Base58)..." 
+          value={(tempConfig as any)?.adminWallet || ""} 
+          onChange={(e) => setTempConfig((prev: any) => ({ ...prev, adminWallet: e.target.value }))} 
+          style={{ width: "100%", padding: "8px 10px", borderRadius: "6px", border: "1px solid #374151", background: "#111827", color: "#38bdf8", fontFamily: "monospace", fontSize: "11px", boxSizing: "border-box" }} 
+        />
+        <span style={{ fontSize: "10px", color: "#94a3b8", marginTop: "4px", display: "block" }}>
+          The vault wallet receiving all 5% platform protocol fees deducted from vendor Prepaid Gas reserves.
+        </span>
+      </div>
+    </div>
+
+                <div style={{ background: "#0f172a", padding: "12px", borderRadius: "8px", border: "1px solid #1e293b" }}>
+  <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase" }}>Exchange Rate & Security</span>
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "8px" }}>
+    <div>
+      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#94a3b8", marginBottom: "3px" }}>Rate (SOL to IDR)</label>
+      <input type="number" value={tempConfig.rateIdr} onChange={(e) => setTempConfig({ ...tempConfig, rateIdr: Number(e.target.value) })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
+    </div>
+    <div>
+      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#94a3b8", marginBottom: "3px" }}>Rate (SOL to USD)</label>
+      <input type="number" value={tempConfig.rateUsd} onChange={(e) => setTempConfig({ ...tempConfig, rateUsd: Number(e.target.value) })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
+    </div>
+    <div>
+      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#94a3b8", marginBottom: "3px" }}>Admin Security PIN</label>
+      <input type="password" maxLength={6} value={tempConfig.adminPin} onChange={(e) => setTempConfig({ ...tempConfig, adminPin: e.target.value })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
+    </div>
   </div>
 </div>
 
-                <div style={{ background: "#0f172a", padding: "12px", borderRadius: "8px", border: "1px solid #1e293b" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 800, color: "#38bdf8", textTransform: "uppercase" }}>{t.fxRateHeading}</span>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "8px" }}>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#94a3b8", marginBottom: "3px" }}>{t.rateIdrLabel}</label>
-                      <input type="number" value={tempConfig.rateIdr} onChange={(e) => setTempConfig({ ...tempConfig, rateIdr: Number(e.target.value) })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#94a3b8", marginBottom: "3px" }}>{t.rateUsdLabel}</label>
-                      <input type="number" value={tempConfig.rateUsd} onChange={(e) => setTempConfig({ ...tempConfig, rateUsd: Number(e.target.value) })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#94a3b8", marginBottom: "3px" }}>{t.pinLabel}</label>
-                      <input type="password" maxLength={6} value={tempConfig.adminPin} onChange={(e) => setTempConfig({ ...tempConfig, adminPin: e.target.value })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#1f2937", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} required />
-                    </div>
-                  </div>
-                </div>
+<div style={{ background: "#1e1b4b", padding: "12px", borderRadius: "8px", border: "1px solid #312e81" }}>
+  <span style={{ fontSize: "11px", fontWeight: 800, color: "#a5b4fc", textTransform: "uppercase" }}>Merchant QRIS Configuration</span>
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "8px" }}>
+    <div>
+      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>Upload QRIS Image</label>
+      <input type="file" accept="image/*" onChange={handleQrisImageUpload} style={{ width: "100%", fontSize: "10px", padding: "4px", background: "#0f172a", border: "1px solid #374151", borderRadius: "4px", boxSizing: "border-box", color: "#cbd5e1" }} />
+    </div>
+    <div>
+      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>QRIS String Payload (EMVCo)</label>
+      <input type="text" placeholder="0002010102112667..." value={tempConfig.customQrisCode || ""} onChange={(e) => setTempConfig({ ...tempConfig, customQrisCode: e.target.value })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} />
+    </div>
+  </div>
+</div>
 
-                <div style={{ background: "#1e1b4b", padding: "12px", borderRadius: "8px", border: "1px solid #312e81" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 800, color: "#a5b4fc", textTransform: "uppercase" }}>{t.qrisSectionTitle}</span>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "8px" }}>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>{t.qrisUploadLabel}</label>
-                      <input type="file" accept="image/*" onChange={handleQrisImageUpload} style={{ width: "100%", fontSize: "10px", padding: "4px", background: "#0f172a", border: "1px solid #374151", borderRadius: "4px", boxSizing: "border-box", color: "#cbd5e1" }} />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "10px", fontWeight: 700, color: "#cbd5e1", marginBottom: "3px" }}>{t.qrisStringLabel}</label>
-                      <input type="text" placeholder="0002010102112667..." value={tempConfig.customQrisCode || ""} onChange={(e) => setTempConfig({ ...tempConfig, customQrisCode: e.target.value })} style={{ width: "100%", padding: "6px", borderRadius: "4px", border: "1px solid #374151", background: "#0f172a", color: "#fff", fontSize: "11px", boxSizing: "border-box" }} />
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
-                  <button type="button" onClick={() => setTempConfig(DEFAULT_CONFIG)} style={{ width: "30%", background: "#374151", color: "#cbd5e1", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "12px" }}>{t.resetDefault}</button>
-                  <button type="submit" style={{ width: "70%", background: "#10b981", color: "#ffffff", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 800, fontSize: "12px" }}>{t.saveStore}</button>
-                </div>
-              </form>
-            )}
+<div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+  <button type="button" onClick={() => setTempConfig(DEFAULT_CONFIG)} style={{ width: "30%", background: "#374151", color: "#cbd5e1", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 700, fontSize: "12px" }}>Reset Defaults</button>
+  <button type="submit" style={{ width: "70%", background: "#10b981", color: "#ffffff", border: "none", padding: "10px", borderRadius: "6px", cursor: "pointer", fontWeight: 800, fontSize: "12px" }}>💾 Save Configuration</button>
+</div>
+</form>
+)}
 
             {adminActiveTab === "PAYOUTS" && (
   <div>
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "16px" }}>
       <div style={{ background: "#062319", border: "1px solid #065f46", padding: "14px", borderRadius: "10px" }}>
-        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Total Laba Bersih Platform (5%)</span>
+        <span style={{ fontSize: "10px", color: "#94a3b8", textTransform: "uppercase", fontWeight: 700 }}>Total Platform Net Revenue (5%)</span>
         <h4 style={{ margin: "4px 0 0 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{adminTotalPlatformFee.toFixed(4)} SOL</h4>
         <span style={{ fontSize: "11px", color: "#6ee7b7", display: "block", marginTop: "2px" }}>
           ≈ Rp {Math.round(adminTotalPlatformFee * (storeConfig.rateIdr || 54000000)).toLocaleString("id-ID")}
@@ -2140,150 +2140,150 @@ function MainApp() {
 
       <div style={{ background: "#0b1728", border: "1px solid #1e3a8a", padding: "14px", borderRadius: "10px", fontSize: "11px" }}>
         <span style={{ fontSize: "10px", color: "#38bdf8", textTransform: "uppercase", fontWeight: 800, display: "block", marginBottom: "4px" }}>
-          ⛽ Model Settlement Platform:
+          ⛽ Settlement Architecture:
         </span>
         <div style={{ color: "#fff", fontWeight: 700 }}>
           Direct QRIS + Prepaid Gas Tank
         </div>
         <div style={{ color: "#94a3b8", fontSize: "10px", marginTop: "2px" }}>
-          Vendor menerima 100% rupiah via QRIS pribadi. Fee 5% platform otomatis ditarik dari deposit SOL vendor.
+          Merchants receive 100% fiat via personal QRIS. The 5% platform protocol fee is deducted autonomously from the merchant's SOL gas reserve.
         </div>
       </div>
     </div>
 
     <div style={{ display: "flex", flexDirection: "column", gap: "10px", maxHeight: "320px", overflowY: "auto" }}>
-      {adminPayouts.length === 0 ? (
-        <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>Belum ada vendor terdaftar.</p>
-      ) : (
-        adminPayouts.map((v, idx) => {
-          const gasBal = Number(v.gas_balance) || 0;
-          const isFuelReady = gasBal > 0.005;
+  {adminPayouts.length === 0 ? (
+    <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>No registered merchants found.</p>
+  ) : (
+    adminPayouts.map((v, idx) => {
+      const gasBal = Number(v.gas_balance) || 0;
+      const isFuelReady = gasBal > 0.005;
 
-          return (
-            <div key={idx} style={{ background: "#0b0f19", border: "1px solid #1e293b", padding: "12px 14px", borderRadius: "10px", fontSize: "11px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <strong style={{ fontSize: "13px", color: "#fff" }}>🏪 {v.store_name}</strong>
-                    <span style={{
-                      fontSize: "9px",
-                      fontWeight: 700,
-                      padding: "2px 6px",
-                      borderRadius: "4px",
-                      background: isFuelReady ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)",
-                      color: isFuelReady ? "#34d399" : "#f87171",
-                      border: `1px solid ${isFuelReady ? "#059669" : "#dc2626"}`
-                    }}>
-                      {isFuelReady ? "● Fuel Ready" : "▲ Fuel Depleted"}
-                    </span>
-                  </div>
-                  <span style={{ display: "block", fontSize: "10px", color: "#64748b" }}>{v.wallet_address}</span>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <span style={{ color: "#38bdf8", fontWeight: 800, fontSize: "12px" }}>{v.net_vendor_earnings_eth.toFixed(4)} SOL</span>
-                  <span style={{ display: "block", fontSize: "10px", color: "#94a3b8" }}>{v.total_orders} Pesanan Terjual</span>
-                </div>
+      return (
+        <div key={idx} style={{ background: "#0b0f19", border: "1px solid #1e293b", padding: "12px 14px", borderRadius: "10px", fontSize: "11px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <strong style={{ fontSize: "13px", color: "#fff" }}>🏪 {v.store_name}</strong>
+                <span style={{
+                  fontSize: "9px",
+                  fontWeight: 700,
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  background: isFuelReady ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)",
+                  color: isFuelReady ? "#34d399" : "#f87171",
+                  border: `1px solid ${isFuelReady ? "#059669" : "#dc2626"}`
+                }}>
+                  {isFuelReady ? "● Fuel Ready" : "▲ Fuel Depleted"}
+                </span>
               </div>
-
-              {/* Status QRIS & Gas Balance Vendor */}
-              <div style={{ background: "#0f172a", padding: "8px 10px", borderRadius: "6px", display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "8px", border: "1px solid #1e293b" }}>
-                <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
-                  <span style={{ color: "#cbd5e1" }}>
-                    Metode Payout: <strong style={{ color: "#34d399" }}>📲 Direct Personal QRIS (100%)</strong>
-                  </span>
-                  <span style={{ color: "#64748b" }}>|</span>
-                  <span style={{ color: "#cbd5e1" }}>
-                    Email: <strong style={{ color: "#38bdf8" }}>{v.contact_email || "-"}</strong>
-                  </span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <span style={{ color: "#94a3b8", fontSize: "10px" }}>Saldo Gas:</span>
-                  <strong style={{ color: isFuelReady ? "#a78bfa" : "#f87171", fontWeight: 800 }}>
-                    {gasBal.toFixed(4)} SOL
-                  </strong>
-                </div>
-              </div>
+              <span style={{ display: "block", fontSize: "10px", color: "#64748b" }}>{v.wallet_address}</span>
             </div>
-          );
-        })
+            <div style={{ textAlign: "right" }}>
+              <span style={{ color: "#38bdf8", fontWeight: 800, fontSize: "12px" }}>{v.net_vendor_earnings_eth.toFixed(4)} SOL</span>
+              <span style={{ display: "block", fontSize: "10px", color: "#94a3b8" }}>{v.total_orders} Orders Settled</span>
+            </div>
+          </div>
+
+          {/* Merchant QRIS Status & Gas Reserve */}
+          <div style={{ background: "#0f172a", padding: "8px 10px", borderRadius: "6px", display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "8px", border: "1px solid #1e293b" }}>
+            <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+              <span style={{ color: "#cbd5e1" }}>
+                Payout Route: <strong style={{ color: "#34d399" }}>📲 Direct Personal QRIS (100%)</strong>
+              </span>
+              <span style={{ color: "#64748b" }}>|</span>
+              <span style={{ color: "#cbd5e1" }}>
+                Email: <strong style={{ color: "#38bdf8" }}>{v.contact_email || "-"}</strong>
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ color: "#94a3b8", fontSize: "10px" }}>Gas Reserve:</span>
+              <strong style={{ color: isFuelReady ? "#a78bfa" : "#f87171", fontWeight: 800 }}>
+                {gasBal.toFixed(4)} SOL
+              </strong>
+            </div>
+          </div>
+        </div>
+      );
+    })
+  )}
+</div>
+</div>
+)}
+
+            {adminActiveTab === "ORDERS" && (
+  <div>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+      <span style={{ fontSize: "11px", color: "#94a3b8" }}>Showing latest 50 settled transactions:</span>
+      <button
+        type="button"
+        onClick={fetchAdminOrders}
+        style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "4px 10px", borderRadius: "6px", fontSize: "10px", cursor: "pointer", fontWeight: 600 }}
+      >
+        🔄 Refresh Data
+      </button>
+    </div>
+
+    <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "320px", overflowY: "auto" }}>
+      {adminOrders.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>No transaction records found.</p>
+      ) : (
+        adminOrders.map((ord: any, idx: number) => (
+          <div key={idx} style={{ background: "#0b0f19", border: "1px solid #1e293b", padding: "12px", borderRadius: "10px", fontSize: "11px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+              <div>
+                <span style={{ fontWeight: 800, color: "#60a5fa", background: "rgba(59, 130, 246, 0.15)", padding: "2px 6px", borderRadius: "4px", marginRight: "6px" }}>
+                  {ord.sku || "PROD"}
+                </span>
+                <strong style={{ color: "#fff" }}>{ord.customer_email || "Verified Holder"}</strong>
+              </div>
+              <span style={{ fontSize: "10px", color: "#94a3b8" }}>
+                {new Date(ord.created_at).toLocaleString("en-US")}
+              </span>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginTop: "4px" }}>
+              <span>Method: <strong style={{ color: "#38bdf8" }}>{ord.payment_method}</strong></span>
+              <span>Amount: <strong style={{ color: "#34d399" }}>{ord.amount_paid} {ord.currency || "SOL"}</strong></span>
+            </div>
+
+            <div style={{ borderTop: "1px solid #1e293b", paddingTop: "6px", marginTop: "6px", wordBreak: "break-all", fontSize: "10px", color: "#64748b" }}>
+              Tx Signature:
+              <code
+                style={{
+                  display: "block",
+                  background: "#090d16",
+                  color: "#94a3b8",
+                  border: "1px solid #1e293b",
+                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  marginTop: "6px",
+                  fontFamily: "monospace",
+                  fontSize: "12px",
+                  wordBreak: "break-all"
+                }}
+              >
+                {ord.tx_hash || "On-chain Verified"}
+              </code>
+            </div>
+          </div>
+        ))
       )}
     </div>
   </div>
 )}
 
-            {adminActiveTab === "ORDERS" && (
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                  <span style={{ fontSize: "11px", color: "#94a3b8" }}>Menampilkan 50 transaksi pembelian terakhir:</span>
-                  <button
-                    type="button"
-                    onClick={fetchAdminOrders}
-                    style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "4px 10px", borderRadius: "6px", fontSize: "10px", cursor: "pointer", fontWeight: 600 }}
-                  >
-                    🔄 Refresh Data
-                  </button>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px", maxHeight: "320px", overflowY: "auto" }}>
-                  {adminOrders.length === 0 ? (
-                    <p style={{ textAlign: "center", color: "#64748b", fontSize: "12px", padding: "20px" }}>Belum ada riwayat pesanan masuk.</p>
-                  ) : (
-                    adminOrders.map((ord: any, idx: number) => (
-                      <div key={idx} style={{ background: "#0b0f19", border: "1px solid #1e293b", padding: "12px", borderRadius: "10px", fontSize: "11px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                          <div>
-                            <span style={{ fontWeight: 800, color: "#60a5fa", background: "rgba(59, 130, 246, 0.15)", padding: "2px 6px", borderRadius: "4px", marginRight: "6px" }}>
-                              {ord.sku || "PROD"}
-                            </span>
-                            <strong style={{ color: "#fff" }}>{ord.customer_email || "Verified Holder"}</strong>
-                          </div>
-                          <span style={{ fontSize: "10px", color: "#94a3b8" }}>
-                            {new Date(ord.created_at).toLocaleString("id-ID")}
-                          </span>
-                        </div>
-
-                        <div style={{ display: "flex", justifyContent: "space-between", color: "#cbd5e1", marginTop: "4px" }}>
-                          <span>Metode: <strong style={{ color: "#38bdf8" }}>{ord.payment_method}</strong></span>
-                          <span>Nominal: <strong style={{ color: "#34d399" }}>{ord.amount_paid} {ord.currency || "SOL"}</strong></span>
-                        </div>
-
-                        <div style={{ borderTop: "1px solid #1e293b", paddingTop: "6px", marginTop: "6px", wordBreak: "break-all", fontSize: "10px", color: "#64748b" }}>
-                          Tx Signature:
-                          <code
-                            style={{
-                              display: "block",
-                              background: "#090d16",
-                              color: "#94a3b8",
-                              border: "1px solid #1e293b",
-                              borderRadius: "8px",
-                              padding: "8px 12px",
-                              marginTop: "6px",
-                              fontFamily: "monospace",
-                              fontSize: "12px",
-                              wordBreak: "break-all"
-                            }}
-                          >
-                            {ord.tx_hash || "On-chain Verified"}
-                          </code>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )}
-
-          </div>
-        </div>
-      )}
+</div>
+</div>
+)}
 
       {/* 🎉 MODAL SUKSES LISENSI */}
       {deliverySuccess && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999999, padding: "16px" }}>
           <div style={{ backgroundColor: "#111827", border: "2px solid #10b981", borderRadius: "20px", padding: "28px", width: "100%", maxWidth: "480px", textAlign: "center", boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4)" }}>
             <div style={{ fontSize: "36px", marginBottom: "8px" }}>🎉</div>
-            <h3 style={{ margin: "0 0 6px 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>{t.deliverySuccessTitle}</h3>
-            <p style={{ margin: "0 0 16px 0", fontSize: "12px", color: "#94a3b8" }}>{t.deliverySuccessSub}</p>
+            <h3 style={{ margin: "0 0 6px 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>License Issued Successfully</h3>
+            <p style={{ margin: "0 0 16px 0", fontSize: "12px", color: "#94a3b8" }}>Your digital license and cryptographic proof have been verified and delivered.</p>
 
             <div style={{ background: "#0f172a", border: "1px solid #1e293b", borderRadius: "12px", padding: "14px", textAlign: "left", fontSize: "11px", marginBottom: "16px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
@@ -2311,42 +2311,42 @@ function MainApp() {
     </span>
 
     {deliverySuccess?.txHash && !deliverySuccess.txHash.startsWith("QRIS-") ? (
-      /* JALUR SOLANA NATIVE: Tampilkan link explorer */
-      <a
-        href={`https://explorer.solana.com/tx/${deliverySuccess.txHash}?cluster=devnet`}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          color: "#38bdf8",
-          fontSize: "12px",
-          textDecoration: "none",
-          fontWeight: "bold",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "4px"
-        }}
-      >
-        <code>
-          {deliverySuccess.txHash
-            ? `${deliverySuccess.txHash.slice(0, 8)}...${deliverySuccess.txHash.slice(-8)}`
-            : ""}
-        </code>
-        <span>↗</span>
-      </a>
-    ) : (
-      /* JALUR QRIS FIAT: Tampilkan badge verifikasi bersih */
-      <span
-        style={{
-          color: "#34d399",
-          fontSize: "11px",
-          fontFamily: "monospace",
-          fontWeight: "bold"
-        }}
-      >
-        Direct QRIS (Verified Fiat)
-      </span>
-    )}
-  </div>
+  /* JALUR SOLANA NATIVE: Tampilkan link explorer */
+  <a
+    href={`https://explorer.solana.com/tx/${deliverySuccess.txHash}?cluster=devnet`}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      color: "#38bdf8",
+      fontSize: "12px",
+      textDecoration: "none",
+      fontWeight: "bold",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "4px"
+    }}
+  >
+    <code>
+      {deliverySuccess.txHash
+        ? `${deliverySuccess.txHash.slice(0, 8)}...${deliverySuccess.txHash.slice(-8)}`
+        : ""}
+    </code>
+    <span>↗</span>
+  </a>
+) : (
+  /* JALUR QRIS FIAT: Tampilkan badge verifikasi bersih */
+  <span
+    style={{
+      color: "#34d399",
+      fontSize: "11px",
+      fontFamily: "monospace",
+      fontWeight: "bold"
+    }}
+  >
+    Direct QRIS (Verified Fiat)
+  </span>
+)}
+</div>
 </div>
 
               {/* ON-CHAIN FEE DISTRIBUTION BREAKDOWN */}
@@ -2378,7 +2378,7 @@ function MainApp() {
     </div>
 
     <div style={{ display: "flex", justifyContent: "space-between", background: "#0b0f19", padding: "6px 8px", borderRadius: "6px" }}>
-      <span style={{ color: "#94a3b8" }}>💻 Project Treasury Operations (15%)</span>
+      <span style={{ color: "#94a3b8" }}>💻 Protocol Treasury Operations (15%)</span>
       <strong style={{ color: "#34d399" }}>
         {(Number(deliverySuccess.product.priceEth) * 0.05 * 0.15).toFixed(5)} SOL
       </strong>
@@ -2443,7 +2443,7 @@ function MainApp() {
             </div>
 
             {selectedProduct.deliverables && (
-              <div style={{ background: "#0b0f19", border: "1px solid #1e293b", borderRadius: "10px", padding: "10px 14px", marginBottom: "16px" }}>
+              <div style={{ background: "#0b0f19", border: "1px solid #1e293b", borderRadius: "10px", padding: "10px 14px", marginBottom: "14px" }}>
                 <span style={{ fontSize: "10px", color: "#38bdf8", fontWeight: 800, textTransform: "uppercase" }}>Included Deliverables:</span>
                 <ul style={{ margin: "6px 0 0 0", paddingLeft: "16px", fontSize: "11px", color: "#cbd5e1", lineHeight: "1.5" }}>
                   {selectedProduct.deliverables.map((item, idx) => {
@@ -2455,6 +2455,19 @@ function MainApp() {
               </div>
             )}
 
+            {/* 🛡️ ON-CHAIN AUTHENTICITY GUARANTEE */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(16, 185, 129, 0.08)", border: "1px solid rgba(16, 185, 129, 0.25)", borderRadius: "10px", padding: "10px 12px", marginBottom: "16px" }}>
+              <span style={{ fontSize: "18px" }}>🛡️</span>
+              <div>
+                <div style={{ fontSize: "11px", fontWeight: 800, color: "#34d399", letterSpacing: "0.2px" }}>
+                  100% Authentic & On-Chain Verified
+                </div>
+                <div style={{ fontSize: "10px", color: "#94a3b8", marginTop: "2px", lineHeight: "1.4" }}>
+                  Cryptographically issued on Solana. Direct vendor routing ensures genuine digital license ownership without intermediaries.
+                </div>
+              </div>
+            </div>
+
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <div style={{ border: "1px solid #1e3a8a", background: "#0b1329", borderRadius: "12px", padding: "14px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
@@ -2465,14 +2478,14 @@ function MainApp() {
                 <button
                   type="button"
                   onClick={() => {
-  if (!validateCustomerEmail()) return;
-  if (!isConnected) {
-    setShowCheckoutModal(false);
-    setWalletModalVisible(true);
-  } else {
-    handleDirectBuy(selectedProduct.id, activeEthPrice);
-  }
-}}
+                    if (!validateCustomerEmail()) return;
+                    if (!isConnected) {
+                      setShowCheckoutModal(false);
+                      setWalletModalVisible(true);
+                    } else {
+                      handleDirectBuy(selectedProduct.id, activeEthPrice);
+                    }
+                  }}
                   disabled={isTxPending || isConfirming}
                   style={{ width: "100%", background: (isTxPending || isConfirming) ? "#334155" : isConnected ? "linear-gradient(135deg, #2563eb, #3b82f6)" : "#1e293b", color: "white", border: "none", padding: "10px", borderRadius: "8px", cursor: (isTxPending || isConfirming) ? "not-allowed" : "pointer", fontWeight: 700, fontSize: "12px" }}
                 >
@@ -2509,7 +2522,7 @@ function MainApp() {
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(6px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999998, padding: "16px" }}>
           <div style={{ backgroundColor: "#111827", padding: "24px", borderRadius: "18px", width: "100%", maxWidth: "480px", maxHeight: "90vh", overflowY: "auto", textAlign: "center", border: "1px solid #065f46", color: "#fff" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#34d399" }}>📱 Scan QRIS Pembayaran</h3>
+              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#34d399" }}>📱 QRIS Payment Checkout</h3>
               <button type="button" onClick={() => setShowQrisModal(false)} style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "18px", cursor: "pointer" }}>✕</button>
             </div>
             
@@ -2521,13 +2534,18 @@ function MainApp() {
             <div style={{ background: "#ffffff", padding: "14px", borderRadius: "14px", display: "inline-flex", justifyContent: "center", alignItems: "center", width: "100%", maxWidth: "340px", boxSizing: "border-box", margin: "0 auto 14px auto" }}>
               <img
                 src={(selectedProduct as any)?.qris_url || storeConfig.customQrImage || fallbackQrisUrl}
-                alt="Barcode QRIS"
+                alt="QRIS Barcode"
                 style={{ width: "100%", height: "auto", maxHeight: "380px", display: "block", objectFit: "contain" }}
               />
             </div>
 
+            {/* ⛽ GAS-TANK RELAY NOTIFICATION */}
+            <div style={{ background: "rgba(56, 189, 248, 0.08)", border: "1px solid rgba(56, 189, 248, 0.2)", borderRadius: "8px", padding: "8px 10px", marginBottom: "14px", fontSize: "11px", color: "#94a3b8", textAlign: "left" }}>
+              <span style={{ color: "#38bdf8", fontWeight: 700 }}>⚡ PayFi Relayer Enabled:</span> Gas fees for minting your on-chain license are subsidized by the protocol gas tank.
+            </div>
+
             <p style={{ margin: "0 0 16px 0", fontSize: "11px", color: "#94a3b8", lineHeight: "1.4" }}>
-              Scan through BCA, Mandiri, GoPay, OVO, DANA, or ShopeePay to complete purchase.
+              Scan with BCA, Mandiri, GoPay, OVO, DANA, or ShopeePay to complete purchase.
             </p>
 
             <button
@@ -2639,6 +2657,7 @@ function MainApp() {
           {fiatPaymentStatus === "PROCESSING" && <p style={{ color: "#38bdf8", margin: 0, fontSize: "13px", fontWeight: 500 }}>{t.monitorProcessing}</p>}
           {isTxPending && <p style={{ color: "#fbbf24", margin: 0, fontSize: "13px", fontWeight: 500 }}>{t.monitorSigning}</p>}
           {isConfirming && <p style={{ color: "#60a5fa", margin: 0, fontSize: "13px", fontWeight: 500 }}>⏳ Transaction transmitted to Solana Devnet. Awaiting block confirmation...</p>}
+          {connectError && <p style={{ color: "#f87171", margin: 0, fontSize: "13px", fontWeight: 500 }}>❌ Wallet Connection Error: {(connectError as any)?.message || String(connectError)}</p>}
           {txError && <p style={{ color: "#f87171", margin: 0, fontSize: "13px", fontWeight: 500 }}>❌ Solana Transaction Error: {txError.message ? txError.message.split("\n")[0] : String(txError)}</p>}
         </div>
       )}
