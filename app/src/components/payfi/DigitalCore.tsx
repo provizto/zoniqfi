@@ -519,7 +519,7 @@ function MainApp() {
     const cleanAmount = String(topUpAmount).replace(",", ".");
     const amountNum = Number(cleanAmount);
     if (!amountNum || amountNum <= 0) {
-      alert("Please enter a valid SOL amount to deposit.");
+      alert("Please enter a valid SOL amount to top up gas fuel.");
       return;
     }
 
@@ -1750,24 +1750,28 @@ function MainApp() {
 
       <form onSubmit={handleTopUpGas} style={{ display: "flex", gap: "8px", alignItems: "center" }}>
         <input
-          type="number"
-          step="0.01"
-          min="0.01"
-          value={topUpAmount}
-          onChange={(e) => setTopUpAmount(e.target.value)}
-          placeholder="0.05"
-          disabled={isToppingUpGas}
-          style={{
-            flex: 1,
-            background: "#090617",
-            border: "1px solid #6d28d9",
-            color: "#fff",
-            padding: "8px 12px",
-            borderRadius: "8px",
-            fontSize: "13px",
-            outline: "none"
-          }}
-        />
+  type="text"
+  inputMode="decimal"
+  value={topUpAmount}
+  onChange={(e) => {
+    const val = e.target.value.replace(',', '.');
+    if (val === '' || /^\d*\.?\d*$/.test(val)) {
+      setTopUpAmount(val);
+    }
+  }}
+  placeholder="0.05"
+  disabled={isToppingUpGas}
+  style={{
+    flex: 1,
+    background: "#090617",
+    border: "1px solid #6d28d9",
+    color: "#fff",
+    padding: "8px 12px",
+    borderRadius: "8px",
+    fontSize: "13px",
+    outline: "none"
+  }}
+/>
         <button
           type="submit"
           disabled={isToppingUpGas}
