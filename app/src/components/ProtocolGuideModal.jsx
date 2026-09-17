@@ -20,7 +20,7 @@ const CONTENT = {
         desc: "High-throughput decentralized exchange architecture utilizing Solana Transaction v1 (4,096-byte atomic payload) integrated with Jito Block Engine private bundles.",
         highlights: [
           { label: "Anti-MEV Protection", val: "Private transaction routing completely eliminates front-running and sandwich attacks." },
-          { label: "0.3% Flat Protocol Fee", val: "Distributed systematically: 40% to Yield Vault, 30% to $ZQI Real Yield Pool, 15% to Affiliate Treasury, and 15% to Operations." },
+          { label: "0.3% Flat Protocol Fee", val: "Atomic 5-way split: 40% USDC Real-Yield Vault, 30% Dynamic LP Pool, 15% Affiliates, 10% Protocol Treasury ($ZQI Burn), and 5% PayFi Gas Reserve." },
           { label: "Vendor Refill Bridge", val: "Prepares 1-Click Swap routing inside vendor portals to convert stablecoins directly into SOL gas tank fuel." }
         ]
       },
@@ -67,7 +67,7 @@ const CONTENT = {
         box1Title: "1. Direct Fiat QRIS Settlement (Zero-Custody)",
         box1Desc: "100% of customer fiat (QRIS) settles directly to the merchant's personal account (BCA, Mandiri, GoPay, OVO, DANA, ShopeePay) without platform custody or clearance delays.",
         box2Title: "2. Solana Prepaid Gas Tank & Guardrail",
-        box2Desc: "Merchants pre-fund SOL to cover the 5% protocol fee. Built-in guardrails halt checkouts if reserves drop to zero, while valid orders trigger an atomic on-chain split across 4 vaults.",
+        box2Desc: "Merchants pre-fund SOL to cover the 5% protocol fee. Built-in guardrails halt checkouts if reserves drop to zero, while valid orders trigger an atomic on-chain split across protocol vaults.",
         categoriesTitle: "Supported Merchant Catalog Verticals (9 Sectors):",
         categories: [
           "💎 NFT & Web3 Collectibles",
@@ -82,9 +82,9 @@ const CONTENT = {
         ],
         highlights: [
           { label: "Zero-Custody Fiat Payouts", val: "100% fiat immediately received by the vendor without platform escrow risk." },
-          { label: "Automated Multi-Vault Split", val: "5% fee debited from merchant SOL gas reserve and split on-chain: 40% Vault, 30% Real Yield, 15% Affiliate, 15% Ops." },
+          { label: "Automated Multi-Vault Split", val: "5% protocol fee debited from merchant SOL gas reserve and split on-chain: 40% Vault, 30% Real Yield, 15% Affiliate, 10% Burn Treasury, 5% Relayer Pool." },
           { label: "Hard Gas Guardrail", val: "Execution circuit breaker halts checkout immediately if vendor gas reserve is insufficient." },
-          { label: "Instant Vault Delivery", val: "Digital product assets (.zip/.pdf) and NFT licenses are immediately unlocked upon confirmation." }
+          { label: "License Authenticity Guarantee", val: "Digital asset licenses are verifiably minted to Solana devnet upon confirmed settlement." }
         ]
       }
     },
@@ -109,7 +109,7 @@ const CONTENT = {
         desc: "Arsitektur pertukaran terdesentralisasi berkecepatan tinggi memanfaatkan Solana Transaction v1 (payload 4.096-byte) terintegrasi dengan bundel privat Jito Block Engine.",
         highlights: [
           { label: "Perlindungan Anti-MEV", val: "Perutean transaksi privat mengeliminasi serangan front-running dan sandwich secara total." },
-          { label: "Biaya Flat 0.3%", val: "Didistribusikan secara transparan: 40% ke Yield Vault, 30% ke Kolam Real Yield $ZQI, 15% ke Kas Afiliasi, dan 15% untuk Operasional." },
+          { label: "Biaya Flat 0.3%", val: "Split 5 arah otomatis: 40% Yield Vault USDC, 30% Dynamic LP Pool, 15% Afiliasi, 10% Treasury ($ZQI Burn), dan 5% Cadangan Gas PayFi." },
           { label: "Jembatan Pengisian Gas", val: "Mempersiapkan fitur 1-Click Swap di portal vendor untuk menukar stablecoin langsung ke SOL pengisi Gas Tank." }
         ]
       },
@@ -118,7 +118,7 @@ const CONTENT = {
         title: "02. $ZQI Lock & Real Yield",
         desc: "Mekanisme penguncian token asli yang membagikan dividen likuid USDC murni dari perputaran trading dan transaksi komersial PayFi tanpa emisi inflasi.",
         highlights: [
-          { label: "Durasi & Pengali Kunci", val: "Pilihan siklus berbasis epoch: 7 Hari (0.5x), 15 Hari (0.75x), dan 30 Hari (1.0x bobot) untuk alokasi dividen." },
+          { label: "Durasi & Pengali Kunci", val: "Pilihan siklus berbasis epoch: 7 Hari (0.5x), 15 Hari (0.75x), 30 Hari (1.0x), 90 Hari (1.25x), dan 180 Hari (2.5x bobot) untuk alokasi dividen." },
           { label: "Dividen USDC Riil", val: "Imbal hasil diakumulasikan per epoch dan diklaim dalam stablecoin USDC untuk menghindari dilusi token." },
           { label: "Pertahanan Deflasi", val: "Pembukaan kunci darurat sebelum jatuh tempo memicu penalti denda 10% yang dibakar (burned) permanen." }
         ]
@@ -156,7 +156,7 @@ const CONTENT = {
         box1Title: "1. Settlement QRIS Langsung (Zero-Custody)",
         box1Desc: "100% pembayaran rupiah pembeli masuk langsung ke rekening/e-wallet pribadi vendor (BCA, Mandiri, GoPay, OVO, DANA, ShopeePay) tanpa penahanan saldo atau escrow platform.",
         box2Title: "2. Prepaid Gas Tank SOL & Guardrail",
-        box2Desc: "Vendor menyetor cadangan SOL untuk mendanai fee protokol 5%. Sistem guardrail memblokir checkout jika saldo gas habis, dan mengeksekusi split fee on-chain ke 4 pool saat transaksi sukses.",
+        box2Desc: "Vendor menyetor cadangan SOL untuk mendanai fee protokol 5%. Sistem guardrail memblokir checkout jika saldo gas habis, dan mengeksekusi split fee on-chain saat transaksi terverifikasi.",
         categoriesTitle: "Dukungan 9 Kategori Merchant & Produk:",
         categories: [
           "💎 NFT & Web3 Collectibles",
@@ -171,9 +171,9 @@ const CONTENT = {
         ],
         highlights: [
           { label: "Settlement Fiat Non-Kustodial", val: "Uang rupiah langsung diterima vendor tanpa jeda kliring pihak ketiga." },
-          { label: "Split Fee On-Chain Otomatis", val: "Fee 5% dipotong dari saldo gas SOL vendor dan dibagi on-chain: 40% Vault, 30% Real Yield, 15% Kas Afiliasi, 15% Operasional." },
+          { label: "Split Fee On-Chain Otomatis", val: "Fee 5% dipotong dari saldo gas SOL vendor dan dibagi on-chain: 40% Vault, 30% Real Yield, 15% Kas Afiliasi, 10% Burn Treasury, 5% Relayer Pool." },
           { label: "Proteksi Gas Guardrail", val: "Memblokir transaksi seketika saat saldo gas vendor tidak mencukupi untuk mencegah kebocoran protokol." },
-          { label: "Pengiriman Digital Instan", val: "Tautan unduh file (.zip/.pdf) dan lisensi NFT otomatis terbuka begitu pembayaran dikonfirmasi." }
+          { label: "Garansi Keaslian On-Chain", val: "Tautan unduh dan lisensi NFT tervalidasi langsung di blockchain Solana devnet saat konfirmasi pembayaran." }
         ]
       }
     },
@@ -186,16 +186,19 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
   const [activeSection, setActiveSection] = useState('all');
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose?.();
     };
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = originalOverflow;
     };
   }, [isOpen, onClose]);
 
@@ -206,6 +209,8 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
   return (
     <div 
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
       style={{
         position: 'fixed',
         top: 0,
@@ -310,6 +315,7 @@ const ProtocolGuideModal = ({ isOpen, onClose }) => {
             <button 
               type="button"
               onClick={onClose}
+              aria-label="Close"
               style={{
                 background: 'rgba(255, 255, 255, 0.06)',
                 border: '1px solid #334155',

@@ -8,7 +8,8 @@ export function ProductCard({
 }) {
   if (!product) return null;
 
-  const finalPrice = product.priceEth || product.defaultPriceEth || "0.005";
+  // Mendukung properti harga PayFi Solana maupun format fallback
+  const finalPrice = product.priceSol || product.price || product.priceEth || product.defaultPriceEth || "0.005";
   const productSku = product.sku || `SKU-0${product.id}`;
 
   const handleClick = () => {
@@ -43,7 +44,7 @@ export function ProductCard({
         e.currentTarget.style.transform = "translateY(0)";
       }}
     >
-      {/* Top Header: SKU & Status */}
+      {/* Top Header: SKU & Live Status */}
       <div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
           <span
@@ -61,7 +62,10 @@ export function ProductCard({
           >
             {productSku}
           </span>
-          <span style={{ display: "inline-flex", width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }} />
+          <span 
+            title="Active Settlement Rail"
+            style={{ display: "inline-flex", width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }} 
+          />
         </div>
 
         {/* Product Title */}
@@ -95,17 +99,17 @@ export function ProductCard({
             minHeight: "30px"
           }}
         >
-          {product.desc || product.description || ""}
+          {product.desc || product.description || "Authentic verifiable digital asset delivered via Solana PayFi rails."}
         </p>
       </div>
 
       {/* Bottom Area: Pricing & Action Button */}
       <div style={{ marginTop: "14px", paddingTop: "12px", borderTop: "1px solid #1e293b" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "10px" }}>
-          <span style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, textTransform: "uppercase" }}>
-            Harga On-Chain
+          <span style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+            On-Chain Price
           </span>
-          <span style={{ fontSize: "16px", fontWeight: 800, color: "#38bdf8" }}>
+          <span style={{ fontSize: "16px", fontWeight: 800, color: "#38bdf8", fontFamily: "monospace" }}>
             {finalPrice} {currencySymbol}
           </span>
         </div>
@@ -133,10 +137,10 @@ export function ProductCard({
           }}
         >
           {isTxPending
-            ? "⏳ Memproses..."
+            ? "⏳ Processing..."
             : isConnected
-              ? "⚡ Checkout"
-              : "🔌 Hubungkan Wallet"}
+              ? "⚡ Instant Checkout"
+              : "🔌 Connect Wallet"}
         </button>
       </div>
     </div>

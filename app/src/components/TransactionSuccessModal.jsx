@@ -33,11 +33,11 @@ const TransactionSuccessModal = ({
   const data = isPayFi ? {
     title: "Order & License Confirmed!",
     badge: "PayFi Direct Settlement",
-    item: payfiDetails.productName || "Digital Asset License",
-    amountPaid: payfiDetails.amount || "Rp 50.000 (0.0025 SOL Fee)",
-    paymentMethod: payfiDetails.method || "IDR QRIS Instant (Direct)",
-    downloadUrl: payfiDetails.downloadUrl || null,
-    txSignature: payfiDetails.txSignature || null
+    item: payfiDetails?.productName || "Digital Asset License",
+    amountPaid: payfiDetails?.amount || "Rp 50.000 (0.0025 SOL Fee)",
+    paymentMethod: payfiDetails?.method || "IDR QRIS Instant (Direct)",
+    downloadUrl: payfiDetails?.downloadUrl || null,
+    txSignature: payfiDetails?.txSignature || null
   } : (swapDetails || {
     title: "Swap Successful!",
     badge: "Solana Devnet Sandbox",
@@ -57,13 +57,12 @@ const TransactionSuccessModal = ({
     ? `https://solscan.io/tx/${data.txSignature}?cluster=devnet`
     : `https://solscan.io/account/${programId}?cluster=devnet`;
 
-  const isReceivedZQI = !isPayFi && data.toAmount && data.toAmount.includes("ZQI");
-  const isReceivedUSDC = !isPayFi && data.toAmount && data.toAmount.includes("USDC");
+  const isReceivedZQI = !isPayFi && swapDetails?.toAmount?.includes("ZQI");
+  const isReceivedUSDC = !isPayFi && swapDetails?.toAmount?.includes("USDC");
 
   const handleActionClick = () => {
     if (isPayFi) {
       if (data.downloadUrl) {
-        // Aman dari reverse-tabnabbing
         window.open(data.downloadUrl, '_blank', 'noopener,noreferrer');
       }
       onClose?.();
@@ -127,7 +126,7 @@ const TransactionSuccessModal = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ fontSize: '1.25rem' }}>{isPayFi ? "🛍️" : "🎉"}</span>
             <span style={{ fontWeight: '800', color: isPayFi ? '#fbbf24' : '#10b981', fontSize: '1rem', letterSpacing: '0.5px' }}>
-              {isPayFi ? data.title : "Swap Successful!"}
+              {data.title}
             </span>
           </div>
           <button 
@@ -164,7 +163,7 @@ const TransactionSuccessModal = ({
           <div>
             {isPayFi 
               ? "100% fiat settled directly to vendor. 5% protocol fee debited from SOL Gas Tank & split on-chain."
-              : "Swap completed atomikally with private bundle routing. Fee routed to distribution pools."}
+              : "Swap completed atomically with private bundle routing. Fee routed to distribution pools."}
           </div>
         </div>
 
@@ -196,6 +195,12 @@ const TransactionSuccessModal = ({
                 <span>Method:</span>
                 <span style={{ color: '#fbbf24', fontWeight: '600' }}>{data.paymentMethod}</span>
               </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8', alignItems: 'center' }}>
+                <span>Verification:</span>
+                <span style={{ color: '#34d399', fontWeight: '700', fontSize: '0.78rem', background: 'rgba(52, 211, 153, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>
+                  🛡️ Genuine On-Chain License
+                </span>
+              </div>
             </>
           ) : (
             <>
@@ -221,8 +226,8 @@ const TransactionSuccessModal = ({
             justifyContent: 'space-between', 
             color: '#94a3b8', 
             borderTop: '1px solid #1e293b', 
-            paddingTop: '8px',
-            fontSize: '0.8rem'
+            paddingTop: '8px', 
+            fontSize: '0.8rem' 
           }}>
             <span>Relay Program:</span>
             <span style={{ fontFamily: 'monospace', color: '#cbd5e1' }}>

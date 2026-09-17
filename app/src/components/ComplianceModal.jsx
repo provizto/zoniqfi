@@ -19,13 +19,24 @@ const ComplianceModal = ({ isOpen = true, onClose, onAccept }) => {
   }, [isOpen, onClose]);
 
   const handleAccept = () => {
-    localStorage.setItem('zoniq_terms_accepted', 'true');
+    try {
+      localStorage.setItem('zoniq_terms_accepted', 'true');
+    } catch {
+      // Menangani mode incognito/private browser storage block
+    }
     if (onAccept) onAccept();
+    if (onClose) onClose();
   };
 
   const handleDecline = (e) => {
     e.preventDefault();
     if (onClose) onClose();
+    // Fallback: alihkan jika menolak akses prototype
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      window.history.back();
+    } else if (typeof window !== 'undefined') {
+      window.location.href = 'https://solana.com';
+    }
   };
 
   if (!isOpen) return null;

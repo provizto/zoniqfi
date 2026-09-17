@@ -1,17 +1,13 @@
 {
   "short_name": "ZoniqFi",
   "name": "ZoniqFi Protocol",
-  "description": "Next-Gen Solana AMM & Hybrid B2B Gateway",
+  "description": "Next-Gen Solana Transaction v1 AMM & PayFi Commerce Gateway",
   "icons": [
     {
       "src": "/favicon.png",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/favicon.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",

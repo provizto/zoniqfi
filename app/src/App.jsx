@@ -1,7 +1,7 @@
 import ProtocolGuideModal from './components/ProtocolGuideModal';
 import InvestorPitchModal from './components/InvestorPitchModal';
 import { useState, useEffect } from 'react';
-import Landing from './Landing';
+// import Landing from './Landing';
 import logoZoniq from './assets/image_436281.png'; 
 import ComplianceModal from './components/ComplianceModal'; 
 import ClientOnboardingForm from './components/ClientOnboardingForm';
@@ -977,6 +977,7 @@ setSettlementLogs(prev => [
   }
 
   if (view === 'landing') {
+    setView('dapp');
     return (
       <>
         {showCompliance && (

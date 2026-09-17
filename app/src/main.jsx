@@ -20,8 +20,7 @@ import {
 function Root() {
   const endpoint = useMemo(() => clusterApiUrl('devnet'), []);
 
-  // Cukup daftarkan MWA saja di array. 
-  // Phantom, Backpack, Solflare, & MetaMask otomatis terdeteksi via Wallet Standard di desktop & mobile wallet apps.
+  // Phantom, Backpack, Solflare otomatis terdeteksi via Wallet Standard.
   const wallets = useMemo(
     () => [
       new SolanaMobileWalletAdapter({
@@ -29,7 +28,7 @@ function Root() {
         appIdentity: {
           name: 'ZoniqFi Protocol',
           uri: 'https://zoniqfi.com',
-          icon: '/favicon.ico',
+          icon: 'https://zoniqfi.com/favicon.png', // Menggunakan absolute URL PNG agar kompatibel di Android MWA
         },
         authorizationResultCache: createDefaultAuthorizationResultCache(),
         cluster: 'devnet',

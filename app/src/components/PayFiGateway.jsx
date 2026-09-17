@@ -50,6 +50,25 @@ class PayFiErrorBoundary extends Component {
           }}>
             {this.state.error?.message || String(this.state.error)}
           </div>
+
+          {/* TOMBOL RETRY DI SINI */}
+          <button
+            type="button"
+            onClick={() => this.setState({ hasError: false, error: null })}
+            style={{
+              marginTop: '16px',
+              background: '#1e293b',
+              color: '#38bdf8',
+              border: '1px solid #334155',
+              padding: '8px 18px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '13px'
+            }}
+          >
+            ↻ Retry Component
+          </button>
         </div>
       );
     }

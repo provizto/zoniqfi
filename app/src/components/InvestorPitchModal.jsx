@@ -25,7 +25,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
     if (!isOpen) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') onClose?.();
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -92,7 +92,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 fontSize: '1.15rem', 
                 fontWeight: '800', 
                 letterSpacing: '0.3px', 
-                color: '#ffffff'
+                color: '#ffffff' 
               }}>
                 ZoniqFi Protocol Pitch & Institutional Brief
               </h2>
@@ -224,8 +224,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
 
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
                   <li><strong>Zero-Custody Direct Settlement:</strong> 100% of customer fiat (QRIS) settles directly to the merchant's bank/e-wallet without platform escrow delay.</li>
-                  <li><strong>Automated Solana Fee Split:</strong> 5% protocol fee is debited from merchant's SOL gas reserve and split on-chain: 40% Yield Vault, 30% Real Yield Pool, 15% Affiliate, 15% Ops.</li>
+                  <li><strong>Automated 4-Way Solana Fee Split:</strong> 5% protocol fee is debited from merchant's SOL gas reserve and split atomically: 40% Yield Vault, 30% $ZQI Real Yield Pool, 15% Affiliate Treasury, and 15% Protocol Operations & Relayer Reserve.</li>
                   <li><strong>Hard Gas Guardrail:</strong> Built-in execution circuit breaker rejects checkouts instantly if the vendor's SOL gas reserve drops below the required fee threshold.</li>
+                  <li><strong>License Authenticity Guarantee:</strong> Instant on-chain license verification ensuring genuine digital assets for buyers.</li>
                 </ul>
               </div>
 
@@ -241,8 +242,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   High-velocity decentralized exchange utilizing Solana Transaction v1 with sub-400ms finality. Features Jito Block Engine bundle integration for strict anti-front-running protection.
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
+                  <li><strong>0.30% Swap Fee Split:</strong> Atomically routed using identical 4-way proportions (40% Vault, 30% $ZQI Staking, 15% Affiliate, 15% Ops).</li>
                   <li><strong>MEV Mitigation:</strong> Eliminates sandwich attacks and front-running across all devnet/mainnet swaps.</li>
-                  <li><strong>Vendor Refill Bridge (Upcoming):</strong> 1-Click Swap embedded in vendor portals to let merchants convert stablecoins directly to SOL gas fuel.</li>
+                  <li><strong>Vendor Refill Bridge:</strong> Embedded swap routing enabling vendors to convert stablecoins directly into SOL gas fuel with 1 click.</li>
                 </ul>
               </div>
 
@@ -259,7 +261,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
                   <li><strong>Lock Multipliers:</strong> 7 Days (0.5x), 15 Days (0.75x), 30 Days (1.0x), 90 Days (1.25x), and 180 Days (2.5x share weight).</li>
-                  <li><strong>Deflationary Burn:</strong> Mandatory 10% penalty on emergency unlock designed for permanent on-chain token burn.</li>
+                  <li><strong>Deflationary Burn:</strong> Mandatory 10% penalty on emergency unlock permanently burned on-chain to defend token scarcity.</li>
                 </ul>
               </div>
 
@@ -285,7 +287,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.72rem', background: 'rgba(74, 222, 128, 0.15)', color: '#4ade80', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>ANTI-SYBIL</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  Decentralized growth infrastructure distributing tiered commission rebates (10% to 25%) backed by Solana Name Service (.sol) support and automated anti-sybil cooldowns.
+                  Decentralized growth infrastructure distributing tiered commission rebates (10% to 25%) backed by Solana Name Service (.sol) domain resolution and automated anti-sybil cooldowns.
                 </p>
               </div>
 
@@ -387,7 +389,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <strong>Step 2 (Automated Prepaid Gas Debit):</strong> The protocol debits a 5% fee from the merchant's SOL Gas Tank, enforced by an on-chain guardrail that halts checkouts if reserves hit zero.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #c084fc' }}>
-                  <strong>Step 3 (Multi-Vault Solana Relay):</strong> Every checkout atomically routes SOL across 4 protocol wallets: Yield Vault (40%), Staking Pool (30%), Affiliates (15%), and Protocol Ops (15%).
+                  <strong>Step 3 (4-Way Multi-Vault Solana Relay):</strong> Every checkout atomically routes the 5% fee across 4 protocol vaults: Yield Vault (40%), $ZQI Real Yield Staking Pool (30%), Affiliate Treasury (15%), and Protocol Ops & Relayer Reserve (15%).
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #60a5fa' }}>
                   <strong>Step 4 (Closed-Loop DEX Refill & Yield):</strong> Merchants replenish gas reserves via the integrated AMM Swap, generating organic DEX trading volume and funding $ZQI real yield lockers.

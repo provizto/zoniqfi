@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function CheckoutModal({
   product,
@@ -8,12 +8,25 @@ export function CheckoutModal({
   isTxPending,
   currencySymbol = "SOL"
 }) {
-  const [method, setMethod] = useState("fiat"); // Default ke Fiat untuk menonjolkan PayFi
+  const [method, setMethod] = useState("fiat"); // Default Fiat rails (PayFi)
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && !isTxPending) onClose?.();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [onClose, isTxPending]);
 
   if (!product) return null;
 
-  const badgeText = product.badge || `SKU-0${product.id}`;
-  // Bersih dari variabel Ethereum
+  const badgeText = product.badge || product.sku || `SKU-0${product.id}`;
   const displaySolPrice = product.priceSol || product.price || "0.05";
   const displayIdrPrice = product.priceIdr 
     ? `Rp ${Number(product.priceIdr).toLocaleString('id-ID')}` 
@@ -22,6 +35,8 @@ export function CheckoutModal({
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
       style={{
         position: "fixed",
         inset: 0,
@@ -30,8 +45,11 @@ export function CheckoutModal({
         alignItems: "center",
         justifyContent: "center",
         padding: "16px",
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        backgroundColor: "rgba(0, 0, 0, 0.82)",
         backdropFilter: "blur(8px)"
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !isTxPending) onClose?.();
       }}
     >
       <div
@@ -50,10 +68,11 @@ export function CheckoutModal({
           fontFamily: "'Inter', sans-serif"
         }}
       >
-        {/* Tombol Tutup */}
+        {/* Close Button */}
         <button
           onClick={onClose}
           type="button"
+          disabled={isTxPending}
           aria-label="Close modal"
           style={{
             position: "absolute",
@@ -63,14 +82,14 @@ export function CheckoutModal({
             border: "none",
             color: "#64748b",
             fontSize: "18px",
-            cursor: "pointer",
+            cursor: isTxPending ? "not-allowed" : "pointer",
             padding: "4px 8px"
           }}
         >
           ✕
         </button>
 
-        {/* Header Modal */}
+        {/* Modal Header */}
         <div style={{ marginBottom: "16px" }}>
           <span
             style={{
@@ -119,7 +138,7 @@ export function CheckoutModal({
           </div>
         )}
 
-        {/* Tab Jalur Bayar */}
+        {/* Settlement Method Tabs */}
         <div
           style={{
             display: "grid",
@@ -168,11 +187,11 @@ export function CheckoutModal({
           </button>
         </div>
 
-        {/* Jalur Fiat (PayFi Highlight) */}
+        {/* Fiat Track (PayFi Relayer Focus) */}
         {method === "fiat" && (
           <div>
             <div style={{ textAlign: "center", margin: "10px 0 16px 0" }}>
-              <div style={{ fontSize: "22px", fontWeight: 800, color: "#34d399" }}>
+              <div style={{ fontSize: "22px", fontWeight: 800, color: "#34d399", fontFamily: "monospace" }}>
                 {displayIdrPrice}
               </div>
               <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "3px" }}>
@@ -181,7 +200,8 @@ export function CheckoutModal({
             </div>
             <button
               type="button"
-              onClick={() => onFiatPay(product)}
+              onClick={() => onFiatPay?.(product)}
+              disabled={isTxPending}
               style={{
                 width: "100%",
                 padding: "12px",
@@ -191,7 +211,7 @@ export function CheckoutModal({
                 color: "#ffffff",
                 fontWeight: 800,
                 fontSize: "13px",
-                cursor: "pointer",
+                cursor: isTxPending ? "not-allowed" : "pointer",
                 boxShadow: "0 4px 14px rgba(16, 185, 129, 0.35)"
               }}
             >
@@ -200,11 +220,11 @@ export function CheckoutModal({
           </div>
         )}
 
-        {/* Jalur Web3 (Solana Devnet) */}
+        {/* Web3 Track (Solana Native) */}
         {method === "crypto" && (
           <div>
             <div style={{ textAlign: "center", margin: "10px 0 16px 0" }}>
-              <div style={{ fontSize: "22px", fontWeight: 800, color: "#38bdf8" }}>
+              <div style={{ fontSize: "22px", fontWeight: 800, color: "#38bdf8", fontFamily: "monospace" }}>
                 {displaySolPrice} {currencySymbol}
               </div>
               <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "3px" }}>
@@ -214,7 +234,7 @@ export function CheckoutModal({
             <button
               type="button"
               disabled={isTxPending}
-              onClick={() => onCryptoPay(product.id, displaySolPrice)}
+              onClick={() => onCryptoPay?.(product.id, displaySolPrice, product)}
               style={{
                 width: "100%",
                 padding: "12px",

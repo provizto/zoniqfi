@@ -1,6 +1,16 @@
 ﻿{
   "name": "ZoniqFi",
   "symbol": "ZQI",
-  "description": "ZoniqFi Protocol Utility & Governance Token",
-  "image": "https://zoniqfi.com/logo.png"
+  "description": "ZoniqFi Protocol Utility & Governance Token powering Solana v1 AMM and PayFi commerce settlement.",
+  "image": "https://zoniqfi.com/logo.png",
+  "external_url": "https://zoniqfi.com",
+  "properties": {
+    "files": [
+      {
+        "uri": "https://zoniqfi.com/logo.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image"
+  }
 }
