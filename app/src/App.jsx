@@ -6,7 +6,6 @@ import logoZoniq from './assets/image_436281.png';
 import ComplianceModal from './components/ComplianceModal'; 
 import ClientOnboardingForm from './components/ClientOnboardingForm';
 import './App.css';
-import DistributionLog from './components/DistributionLog';
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 import PayFiGateway from './components/PayFiGateway';
@@ -1921,13 +1920,6 @@ if (isMobile) {
                 </button>
               </div>
             </div>
-
-            {/* AREA INTEGRASI: Menampilkan Log Distribusi HANYA saat di Tab Swap */}
-            {distributionData && activeTab === 'swap' && (
-              <div style={{ width: '100%', marginBottom: '16px' }}>
-                <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
-              </div>
-            )}
 
             {/* CONTAINER KONTEN MODUL AKTIF */}
             <div className="dapp-single-frame-container">

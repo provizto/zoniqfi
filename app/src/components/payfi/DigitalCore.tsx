@@ -2309,7 +2309,7 @@ function MainApp() {
       {/* 🎉 MODAL SUKSES LISENSI */}
       {deliverySuccess && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 999999, padding: "16px" }}>
-          <div style={{ backgroundColor: "#111827", border: "2px solid #10b981", borderRadius: "20px", padding: "28px", width: "100%", maxWidth: "480px", textAlign: "center", boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4)" }}>
+          <div style={{ backgroundColor: "#111827", border: "2px solid #10b981", borderRadius: "20px", padding: "16px", maxHeight: "88vh", overflowY: "auto", scrollbarWidth: "none", msOverflowStyle: "none", width: "100%", maxWidth: "400px", textAlign: "center", boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4)" }}>
             <div style={{ fontSize: "36px", marginBottom: "8px" }}>🎉</div>
             <h3 style={{ margin: "0 0 6px 0", fontSize: "18px", fontWeight: 800, color: "#34d399" }}>License Issued Successfully</h3>
             <p style={{ margin: "0 0 16px 0", fontSize: "12px", color: "#94a3b8" }}>Your digital license and cryptographic proof have been verified and delivered.</p>

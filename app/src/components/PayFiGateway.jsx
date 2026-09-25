@@ -92,7 +92,7 @@ export default function PayFiGateway(props) {
               font-family: monospace;
             }
           `}</style>
-          <DigitalCore />
+          <DigitalCore {...props} />
         </div>
       </WalletModalProvider>
     </PayFiErrorBoundary>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import PayFiGateway from '../PayFiGateway';
-import DistributionLog from '../DistributionLog';
 
 // SVG Ikon Resmi & Asli
 const Icons = {
@@ -979,10 +978,6 @@ export default function MobileView({
         {/* Form Swap Asli (Presisi Sesuai Versi Laptop) */}
         {activeTab === 'Swap' ? (
   <div className="space-y-3">
-    {/* 1. KARTU ON-CHAIN DISTRIBUTION (MUNCUL OTOMATIS SETELAH SWAP) */}
-    {distributionData && (
-      <DistributionLog programId={PROGRAM_ID} swapData={distributionData} />
-    )}
 
     {/* 2. KARTU FORM SWAP ASLI ANDA */}
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-3 shadow-xl">
