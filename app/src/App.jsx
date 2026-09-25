@@ -10,6 +10,7 @@ import DistributionLog from './components/DistributionLog';
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 import PayFiGateway from './components/PayFiGateway';
+import MobileView from './components/mobile/MobileView';
 
 // Hook Resmi Solana Wallet Adapter
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
@@ -166,6 +167,16 @@ function App() {
 
   const [showWalletMenu, setShowWalletMenu] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // LIVE TICKER STATE
   const [tickerPrices, setTickerPrices] = useState([
@@ -728,8 +739,12 @@ setSettlementLogs(prev => [
     });
   }, [calcAmount]);
 
-  const handleDepositVault = async () => {
-    const amountValue = parseFloat(calcAmount) || 0;
+  // 1. Tambahkan (customAmount) di dalam kurung
+  const handleDepositVault = async (customAmount) => {
+    // 2. Cek apakah ada kiriman angka dari HP (customAmount), jika tidak ada baru pakai calcAmount dari laptop
+    const amountValue = typeof customAmount === 'number' 
+      ? customAmount 
+      : (parseFloat(calcAmount) || 0);
 
     if (amountValue <= 0) {
       triggerBanner("⚠️ [Validation Error]: Please enter a valid deposit amount greater than 0 USDC!", "warning");
@@ -996,6 +1011,181 @@ setSettlementLogs(prev => [
       </>
     );
   }
+
+  // =========================================================================
+// TARUH TEPAT DI ATAS RETURN DESKTOP (SETELAH SEMUA FUNGSI & HOOK SELESAI)
+// =========================================================================
+if (isMobile) {
+  return (
+    <>
+      {/* 1. Security Alert Banner */}
+      {securityBanner.show && (
+        <div id="securityBanner" style={{
+          position: 'fixed', top: '20px', left: '50%', transform: 'translateX(-50%)',
+          padding: '12px 20px', borderRadius: '8px', fontWeight: '600', fontSize: '0.85rem',
+          zIndex: 99999, boxShadow: '0 10px 25px rgba(0,0,0,0.5)', textAlign: 'center',
+          maxWidth: '90%', width: 'max-content',
+          background: securityBanner.type === "success" ? "#22c55e" : securityBanner.type === "error" ? "#ef4444" : "#eab308",
+          color: securityBanner.type === "warning" ? "#1e293b" : "#ffffff",
+          border: `1px solid ${securityBanner.type === "success" ? "#16a34a" : securityBanner.type === "error" ? "#dc2626" : "#ca8a04"}`
+        }}>
+          {securityBanner.message}
+        </div>
+      )}
+
+      <MobileView
+        wallet={{
+          isConnected,
+          address: myWalletAddress,
+          solBalance: solBalance !== null ? solBalance : '0.000',
+          usdcBalance,
+          zqiBalance
+        }}
+        onConnectWallet={openWalletModal}
+        onDisconnectWallet={disconnect}
+        onOpenGuide={() => setIsGuideOpen(true)}
+        onOpenPitch={() => setShowPitchModal(true)}
+
+        distributionData={distributionData}
+        PROGRAM_ID={PROGRAM_ID}
+
+        /* Direct values */
+        vaultTVL="$739,950"
+        activeDepositors="1,842"
+        onVaultDeposit={handleDepositVault}
+        payAmount={payAmount}
+        setPayAmount={setPayAmount}
+        receiveAmount={receiveAmount}
+        tokenPay={tokenPay}
+        handleTokenChange={handleTokenChange}
+        tokenReceive={tokenReceive}
+        tokens={tokens}
+        switchTokens={switchTokens}
+        swapFee={swapFee}
+        isSwapLoading={isSwapLoading}
+        onLaunchSwap={handleLaunchSwap}
+
+        protocolTVL={protocolTVL}
+        isTokenLocked={isTokenLocked}
+        stakedAmount={stakedAmount}
+        isLockLoading={isLockLoading}
+        lockCalculationMode={lockCalculationMode}
+        switchLockCalculationView={switchLockCalculationView}
+        lockAmount={lockAmount}
+        setLockAmount={setLockAmount}
+        instantDays={instantDays}
+        setInstantDays={setInstantDays}
+        chosenMultiplier={chosenMultiplier}
+        setChosenMultiplier={setChosenMultiplier}
+        liveScore={liveScore}
+        estimatedRewardText={estimatedRewardText}
+        showRewardRow={showRewardRow}
+        earnedUsdcDisplay={earnedUsdcDisplay}
+        rewardClaimable={rewardClaimable}
+        claimZqiReward={claimZqiReward}
+        lockCountdown={lockCountdown}
+        onLockToken={handleLockToken}
+        triggerEmergencyModal={triggerEmergencyModal}
+        onGoToSwap={() => setTokenReceive('ZQI')}
+        referrerInput={referrerInput}
+        setReferrerInput={setReferrerInput}
+        referralVolume={referralVolume}
+        referralEarned={referralEarned}
+        tierLabel={tierLabel}
+        tierColor={tierColor}
+        onCopyLink={copyLink}
+        onVerifyReferral={verifyReferralOnChain}
+        currentDomain={currentDomain}
+
+        /* PayFi Connection */
+        products={[]}
+        onBuyProduct={(prod) => {
+          if (typeof handleInitiateCheckout === 'function') {
+            handleInitiateCheckout(prod);
+          } else if (typeof setSelectedProduct === 'function') {
+            setSelectedProduct(prod);
+            if (typeof setIsCheckoutModalOpen === 'function') setIsCheckoutModalOpen(true);
+          }
+        }}
+        onVerifyLicense={() => {
+          if (typeof setIsLicenseModalOpen === 'function') {
+            setIsLicenseModalOpen(true);
+          }
+        }}
+      />
+      
+      {/* 2. Mobile Pop-up Modals */}
+      {isGuideOpen && (
+        <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+      )}
+      {showPitchModal && (
+        <InvestorPitchModal isOpen={showPitchModal} onClose={() => setShowPitchModal(false)} />
+      )}
+      {isSuccessModalOpen && (
+        <TransactionSuccessModal 
+          isOpen={isSuccessModalOpen} 
+          onClose={() => setIsSuccessModalOpen(false)} 
+          swapDetails={successModalData}
+          programId={PROGRAM_ID}
+          onNavigateTab={(tabName) => setActiveTab && setActiveTab(tabName)}
+        />
+      )}
+
+      {/* 3. Mobile Emergency Unlock Modal */}
+      {showEmergencyModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0, 0, 0, 0.85)', backdropFilter: 'blur(8px)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+          zIndex: 999999, padding: '16px'
+        }}>
+          <div style={{
+            background: '#0d1322', border: '1px solid #ef4444', borderRadius: '16px',
+            maxWidth: '400px', width: '100%', padding: '20px', color: '#e2e8f0',
+            textAlign: 'left'
+          }}>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '1.1rem', color: '#ef4444', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              ⚠️ Emergency Unlock Warning
+            </h3>
+            <p style={{ fontSize: '0.8rem', color: '#94a3b8', lineHeight: '1.4', margin: '0 0 14px 0' }}>
+              Early withdrawal before epoch completion incurs a <strong>10% penalty burn</strong>.
+            </p>
+            <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '8px', padding: '10px 12px', marginBottom: '16px', fontSize: '0.8rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{ color: '#94a3b8' }}>Total Locked:</span>
+                <strong style={{ color: '#ffffff' }}>{stakedAmount} $ZQI</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{ color: '#ef4444' }}>Burn Penalty (10%):</span>
+                <strong style={{ color: '#ef4444' }}>-{(stakedAmount * 0.10).toFixed(2)} $ZQI</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #1e293b', paddingTop: '6px' }}>
+                <span style={{ color: '#22c55e' }}>Refund to Wallet:</span>
+                <strong style={{ color: '#22c55e' }}>+{(stakedAmount * 0.90).toFixed(2)} $ZQI</strong>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button 
+                type="button"
+                onClick={() => setShowEmergencyModal(false)}
+                style={{ flex: 1, padding: '10px', background: '#1e293b', color: '#ffffff', border: '1px solid #334155', borderRadius: '8px', fontWeight: '600', fontSize: '0.8rem', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              <button 
+                type="button"
+                onClick={executeEmergencyUnlock}
+                style={{ flex: 1, padding: '10px', background: 'linear-gradient(135deg, #ef4444, #dc2626)', color: '#ffffff', border: 'none', borderRadius: '8px', fontWeight: '700', fontSize: '0.8rem', cursor: 'pointer' }}
+              >
+                Confirm & Burn
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 
   return (
     <>

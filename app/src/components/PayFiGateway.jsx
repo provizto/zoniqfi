@@ -77,11 +77,11 @@ class PayFiErrorBoundary extends Component {
   }
 }
 
-export default function PayFiGateway() {
+export default function PayFiGateway(props) {
   return (
     <PayFiErrorBoundary>
       <WalletModalProvider>
-        <div className="payfi-integrated-wrapper" style={{ width: '100%', minHeight: '80vh' }}>
+        <div className="payfi-integrated-wrapper" style={{ width: '100%', minHeight: 'auto' }}>
           <style>{`
             .payfi-integrated-wrapper code {
               background: #090d16 !important;

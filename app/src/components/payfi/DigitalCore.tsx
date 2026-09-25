@@ -470,6 +470,31 @@ function MainApp() {
     }
   };
 
+  useEffect(() => {
+    const handleOpenVendor = () => setShowVendorModal(true);
+    const handleOpenAdmin = () => setShowPinModal(true);
+
+    window.addEventListener("open-vendor-portal", handleOpenVendor);
+    window.addEventListener("open-admin-portal", handleOpenAdmin);
+
+    return () => {
+      window.removeEventListener("open-vendor-portal", handleOpenVendor);
+      window.removeEventListener("open-admin-portal", handleOpenAdmin);
+    };
+  }, []);
+
+  // Otomatis muat produk dan cek akun Vendor saat wallet terhubung
+  useEffect(() => {
+    fetchStoreConfigFromSupabase();
+    fetchProductsFromSupabase();
+  }, []);
+
+  useEffect(() => {
+    if (address) {
+      checkVendorProfile();
+    }
+  }, [address]);
+
   const fetchAdminPayoutData = async () => {
     try {
       const { data: vendorsList } = await supabase.from("vendors").select("*");
@@ -2624,34 +2649,68 @@ function MainApp() {
           {storeConfig.storeSubtitle}
         </p>
 
-        {/* Hanya tampil di layar Desktop / Tablet; disembunyikan otomatis di HP */}
-        {!isMobile && (
-          <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
-            <button
-              type="button"
-              onClick={() => setShowVerifyModal(true)}
-              style={{ background: "#1e293b", color: "#38bdf8", border: "1px solid #334155", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
-            >
-              {t.verifyBtn}
-            </button>
+        {/* NAVBAR BUTTONS: Verify tetap muncul di HP & Laptop, Vendor & Admin hanya di Laptop */}
+        <div style={{ display: "flex", gap: "8px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "4px" }}>
+          
+          {/* ✅ 1. Tombol Verify: Tampil di Laptop Maupun HP */}
+          <button
+            type="button"
+            onClick={() => setShowVerifyModal(true)}
+            style={{ 
+              background: "#1e293b", 
+              color: "#38bdf8", 
+              border: "1px solid #334155", 
+              padding: "5px 12px", 
+              borderRadius: "8px", 
+              cursor: "pointer", 
+              fontWeight: 700, 
+              fontSize: "11px" 
+            }}
+          >
+            {t?.verifyBtn || "🔍 Verify License"}
+          </button>
 
-            <button
-              type="button"
-              onClick={() => setShowVendorModal(true)}
-              style={{ background: "linear-gradient(135deg, #10b981, #059669)", color: "white", border: "none", padding: "5px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: 800, fontSize: "11px" }}
-            >
-              {vendorProfile ? `🏪 ${vendorProfile.store_name}` : t.vendorBtn}
-            </button>
+          {/* 💻 2. Tombol Vendor & Admin: HANYA TAMPIL DI LAPTOP (!isMobile) */}
+          {/* Di HP disembunyikan dari sini karena sudah dipindah ke menu garis 3 samping */}
+          {!isMobile && (
+            <>
+              <button
+                type="button"
+                onClick={() => setShowVendorModal(true)}
+                style={{ 
+                  background: "linear-gradient(135deg, #10b981, #059669)", 
+                  color: "white", 
+                  border: "none", 
+                  padding: "5px 12px", 
+                  borderRadius: "8px", 
+                  cursor: "pointer", 
+                  fontWeight: 800, 
+                  fontSize: "11px" 
+                }}
+              >
+                {vendorProfile ? `🏪 ${vendorProfile.store_name}` : (t?.vendorBtn || "🚀 Vendor Portal")}
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setShowPinModal(true)}
-              style={{ background: "#1e293b", color: "#94a3b8", border: "1px solid #374151", padding: "5px 10px", borderRadius: "8px", cursor: "pointer", fontWeight: 700, fontSize: "11px" }}
-            >
-              ⚙️ Admin
-            </button>
-          </div>
-        )}
+              <button
+                type="button"
+                onClick={() => setShowPinModal(true)}
+                style={{ 
+                  background: "#1e293b", 
+                  color: "#94a3b8", 
+                  border: "1px solid #374151", 
+                  padding: "5px 10px", 
+                  borderRadius: "8px", 
+                  cursor: "pointer", 
+                  fontWeight: 700, 
+              fontSize: "11px" 
+                }}
+              >
+                ⚙️ Admin
+              </button>
+            </>
+          )}
+
+        </div>
       </div>
 
       {/* MONITOR BROADCAST SISTEM */}
@@ -2671,8 +2730,8 @@ function MainApp() {
         backgroundColor: "#0b0f19", 
         border: "1px solid #1f2937", 
         borderRadius: "8px", 
-        padding: "16px", 
-        marginBottom: "25px", 
+        padding: isMobile ? "10px" : "16px", 
+        marginBottom: isMobile ? "12px" : "25px", 
         display: "flex", 
         flexDirection: "column", 
         gap: "12px", 
@@ -2716,20 +2775,20 @@ function MainApp() {
       </div>
 
       {/* 📦 GRID KATALOG PRODUK */}
-      <div style={{ marginBottom: "25px" }}>
-        <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <div>
-            <h2 style={{ margin: "0 0 4px 0", fontSize: "20px", fontWeight: 800, color: "#fff" }}>
-              🛍️ {t.catalogHeading}
-            </h2>
-            <p style={{ margin: 0, fontSize: "12px", color: "#94a3b8" }}>
-              {t.catalogSub}
-            </p>
-          </div>
-          <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700 }}>
-            {isLoadingProducts ? "Loading..." : `${filteredProducts.length} Active Items`}
-          </span>
-        </div>
+<div style={{ marginBottom: isMobile ? "10px" : "25px" }}>
+  <div style={{ marginBottom: isMobile ? "8px" : "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <span style={{ fontSize: isMobile ? "12px" : "20px", fontWeight: 800, color: "#fff" }}>
+      🛍️ {t.catalogHeading}
+    </span>
+    <span style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, fontFamily: "monospace" }}>
+      {isLoadingProducts ? "Loading..." : `${filteredProducts.length} Active Items`}
+    </span>
+  </div>
+  {!isMobile && (
+    <p style={{ margin: "0 0 12px 0", fontSize: "12px", color: "#94a3b8" }}>
+      {t.catalogSub}
+    </p>
+  )}
 
         {paginatedProducts.length === 0 ? (
           <div style={{ background: "#111827", border: "1px dashed #1f2937", borderRadius: "16px", padding: "40px 20px", textAlign: "center", color: "#64748b", fontSize: "13px" }}>
@@ -2753,6 +2812,114 @@ function MainApp() {
               const idrVal = Math.round(Number(prod.priceEth) * (storeConfig.rateIdr || 54000000));
               const usdVal = (Number(prod.priceEth) * (storeConfig.rateUsd || 3500)).toFixed(2);
 
+              /* ============================================================== */
+              /* 1. TAMPILAN KHUSUS HP (MUNGIL, HORIZONTAL, PERSIS GAMBAR 2)     */
+              /* ============================================================== */
+              if (isMobile) {
+                return (
+                  <div
+                    key={prod.id}
+                    onClick={() => handleOpenProduct(prod)}
+                    style={{
+                      background: "#0b1329",
+                      border: "1px solid #1e293b",
+                      borderRadius: "14px",
+                      padding: "10px 12px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "10px",
+                      cursor: "pointer",
+                      boxSizing: "border-box",
+                      width: "100%",
+                      transition: "border-color 0.2s ease"
+                    }}
+                  >
+                    {/* Sisi Kiri: Ikon 📦 + Nama Produk & Vendor */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0, flex: 1 }}>
+                      <div style={{
+                        width: "38px",
+                        height: "38px",
+                        borderRadius: "10px",
+                        background: "#121c38",
+                        border: "1px solid #1e293b",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "18px",
+                        flexShrink: 0
+                      }}>
+                        📦
+                      </div>
+                      <div style={{ minWidth: 0, flex: 1, paddingRight: "4px" }}>
+                        <div style={{
+                          fontSize: "12px",
+                          fontWeight: 700,
+                          color: "#ffffff",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          lineHeight: 1.3
+                        }}>
+                          {prod.name}
+                        </div>
+                        <div style={{
+                          fontSize: "10px",
+                          color: "#64748b",
+                          fontFamily: "monospace",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          marginTop: "2px"
+                        }}>
+                          Vendor: {prod.vendor_wallet ? `${prod.vendor_wallet.slice(0, 6)}...${prod.vendor_wallet.slice(-4)}` : (prod.sku || `SKU-0${prod.id}`)}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sisi Kanan: Harga SOL & IDR + Tombol Beli */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+                      <div style={{ textAlign: "right", fontFamily: "monospace" }}>
+                        <div style={{ fontSize: "12px", fontWeight: 800, color: "#38bdf8", lineHeight: 1.2 }}>
+                          {prod.priceEth} SOL
+                        </div>
+                        <div style={{ fontSize: "9px", color: "#34d399", fontWeight: 600 }}>
+                          Rp {idrVal.toLocaleString("id-ID")}
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenProduct(prod);
+                        }}
+                        style={{
+                          background: "#2563eb",
+                          color: "#ffffff",
+                          border: "none",
+                          padding: "7px 12px",
+                          borderRadius: "8px",
+                          cursor: "pointer",
+                          fontWeight: 800,
+                          fontSize: "11px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          boxShadow: "0 2px 8px rgba(37, 99, 235, 0.4)"
+                        }}
+                      >
+                        <span>🛒</span>
+                        <span>Buy</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+
+              /* ============================================================== */
+              /* 2. TAMPILAN LAPTOP / DESKTOP (100% KODE ASLI, TIDAK DIUBAH)    */
+              /* ============================================================== */
               return (
                 <div 
                   key={prod.id} 
@@ -2761,7 +2928,7 @@ function MainApp() {
                     background: "#070c18", 
                     border: "1px solid #1a263d", 
                     borderRadius: "12px", 
-                    padding: isMobile ? "12px 14px" : "14px 18px", 
+                    padding: "14px 18px", 
                     display: "flex", 
                     justifyContent: "space-between", 
                     alignItems: "center", 
@@ -2880,65 +3047,6 @@ function MainApp() {
           </div>
         )}
       </div>
-
-      {/* 📱 DOCK MOBILE */}
-      {isMobile && (
-        <div style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "64px",
-          backgroundColor: "rgba(11, 15, 25, 0.95)",
-          backdropFilter: "blur(12px)",
-          borderTop: "1px solid #1f2937",
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          zIndex: 99990,
-          padding: "0 10px",
-          boxSizing: "border-box"
-        }}>
-          <button
-            type="button"
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: "smooth" });
-              setSelectedBadge("ALL");
-            }}
-            style={{ background: "none", border: "none", color: "#cbd5e1", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", cursor: "pointer", fontSize: "10px", fontWeight: 600 }}
-          >
-            <span style={{ fontSize: "18px" }}>🛍️</span>
-            <span>Storefront</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setShowVerifyModal(true)}
-            style={{ background: "none", border: "none", color: "#cbd5e1", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", cursor: "pointer", fontSize: "10px", fontWeight: 600 }}
-          >
-            <span style={{ fontSize: "18px" }}>🔍</span>
-            <span>Verify</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setShowVendorModal(true)}
-            style={{ background: "none", border: "none", color: vendorProfile ? "#34d399" : "#60a5fa", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", cursor: "pointer", fontSize: "10px", fontWeight: 700 }}
-          >
-            <span style={{ fontSize: "18px" }}>🏪</span>
-            <span>{vendorProfile ? "My Store" : "Vendor"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setShowPinModal(true)}
-            style={{ background: "none", border: "none", color: "#94a3b8", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", cursor: "pointer", fontSize: "10px", fontWeight: 600 }}
-          >
-            <span style={{ fontSize: "18px" }}>⚙️</span>
-            <span>Admin</span>
-          </button>
-        </div>
-      )}
 
     </div>
   );
