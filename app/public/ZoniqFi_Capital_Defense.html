@@ -293,7 +293,7 @@
       <div class="exec-card">
         <div class="exec-label">Phase 2 (Q4 2026)</div>
         <div class="exec-val">$40,000 – $60,000</div>
-        <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Anchor Routing, Audits & Squads Multisig</div>
+        <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Pyth Oracles, Anchor Fee Routing & Audits</div>
       </div>
       <div class="exec-card">
         <div class="exec-label">Phase 3 (Q1 2027)</div>
@@ -311,7 +311,7 @@
   <!-- PHASE 2 TABLE -->
   <div class="avoid-break">
     <h2>
-      <span>Phase 2 • Q4 2026: Anchor Fee Routing, Security Audits & Multisig</span>
+      <span>Phase 2 • Q4 2026: Pyth Oracles, Anchor Fee Routing, Audits & Multisig</span>
       <span class="target-tag">Target: $40,000 – $60,000</span>
     </h2>
     <table>
@@ -326,22 +326,22 @@
         <tr>
           <td><strong>Full-Suite Security Audit</strong></td>
           <td class="cost">$28,000 – $38,000</td>
-          <td>Engaging Solana security auditors (<strong>OtterSec</strong> or <strong>Sec3</strong>). Auditing all 5 modules (Swap, Lock, Vault, Affiliate, and PayFi Gas Relayer) with focus on PDA seed safety, gas tank balance math, and early-unlock burn integrity.</td>
+          <td>Engaging top-tier Solana security auditors (<strong>OtterSec</strong> or <strong>Sec3</strong>). Auditing all core modules (Swap, Lock, Vault, Affiliate, and PayFi Gas Relayer) with focus on PDA seed validation, gas tank debit math, and early-unlock burn integrity.</td>
         </tr>
         <tr>
-          <td><strong>Anchor Fee Routing & 1-Click Refill</strong></td>
+          <td><strong>Pyth Oracles & Anchor Fee Routing</strong></td>
           <td class="cost">$6,000 – $9,000</td>
-          <td>Writing and deploying Anchor smart contracts to programmatically route the 30% PayFi fee split into the dApp Staking pool, alongside an embedded 1-Click AMM Swap widget inside merchant portals for automated SOL gas tank refills.</td>
+          <td>Integrating <strong>Pyth Network Oracles</strong> for real-time sub-second SOL/USD/IDR price feeds. Writing Anchor programs to atomically split the 5% PayFi fee across the 4-pool architecture (40% Vault, 30% $ZQI Staking, 15% Affiliate, 15% Ops) and deploying the embedded 1-Click AMM Gas Refill widget.</td>
         </tr>
         <tr>
           <td><strong>Enterprise RPC Infrastructure</strong></td>
           <td class="cost">$3,000 – $5,000</td>
-          <td>6-month prepaid commitment for dedicated enterprise RPC clusters (<strong>Helius Enterprise</strong> or <strong>Triton One</strong>) to guarantee high-throughput transaction broadcast reliability for both DEX trades and merchant checkout events.</td>
+          <td>6-month prepaid commitment for dedicated enterprise RPC clusters (<strong>Helius Enterprise</strong> or <strong>Triton One</strong>) to guarantee high-throughput transaction broadcast reliability for DEX trades, Pyth price feeds, and checkout events.</td>
         </tr>
         <tr>
           <td><strong>Squads Multisig Governance</strong></td>
           <td class="cost">$3,000 – $8,000</td>
-          <td>Deployment of Squads v4 multisig vault (3-of-5 threshold) for Program Upgrade Authority and treasury key management, combined with an initial bug bounty reserve.</td>
+          <td>Deployment of Squads v4 multisig vault (3-of-5 threshold) for Program Upgrade Authority and treasury key management, combined with an initial community bug bounty reserve.</td>
         </tr>
       </tbody>
     </table>
@@ -380,7 +380,7 @@
         <tr>
           <td><strong>Merchant Acquisition & Launch Grants</strong></td>
           <td class="cost">$12,000 – $20,000</td>
-          <td>Targeted digital asset creator onboarding grants, promotional fee rebates for pilot merchants, and community growth campaigns.</td>
+          <td>Targeted digital asset creator onboarding grants, promotional fee rebates for pilot merchants, and community growth campaigns across Southeast Asia.</td>
         </tr>
       </tbody>
     </table>
@@ -440,7 +440,7 @@
     <div class="qa-box">
       <div class="qa-question">Q2: What strategic moat does the PayFi Gateway add compared to pure DEX competitors?</div>
       <div class="qa-answer">
-        <strong>Defense:</strong> Standalone AMMs depend entirely on volatile, speculative trading volume. ZoniqFi's PayFi engine connects Solana on-chain liquidity directly to real-world consumer commerce. Customers pay via Direct QRIS (100% fiat received instantly by merchants), while the 5% protocol fee is debited from the merchant's on-chain SOL Gas Tank. This captures sustainable, non-speculative on-chain fee cashflow regardless of macro market conditions.
+        <strong>Defense:</strong> Standalone AMMs depend entirely on volatile, speculative trading volume. ZoniqFi's PayFi engine connects Solana on-chain liquidity directly to real-world consumer commerce. Customers pay via Direct QRIS (100% fiat received instantly by merchants), while the 5% protocol fee is settled autonomously via the merchant's on-chain SOL Gas Tank and atomically split across 4 protocol vaults (40% Vault, 30% $ZQI Real Yield, 15% Affiliate, 15% Operations). This captures sustainable, non-speculative on-chain fee cashflow regardless of macro market conditions.
       </div>
     </div>
 
@@ -461,7 +461,7 @@
     <div class="qa-box">
       <div class="qa-question">Q5: How does the protocol sustain runway after Phase 4 without continuous fundraising?</div>
       <div class="qa-answer">
-        <strong>Defense:</strong> ZoniqFi operates a self-sustaining dual cashflow engine. In addition to the 0.3% flat DEX swap fee (with 15% routed to treasury), the PayFi engine captures continuous 5% protocol fees in SOL debited from active merchant gas reserves. This provides organic, ongoing cash flow to cover RPC costs, smart contract maintenance, and team growth.
+        <strong>Defense:</strong> ZoniqFi operates a self-sustaining dual cashflow engine. In addition to the 0.3% flat DEX swap fee (where 15% is routed to operations & treasury), the PayFi engine captures continuous 5% protocol fees in SOL debited from active merchant gas reserves (with an identical 15% dedicated to operations & relayer treasury, representing 0.75% of total gross merchandise volume). This provides recurring, organic cash flow to permanently cover RPC nodes, contract upgrades, and core development without secondary token dilution.
       </div>
     </div>
   </div>

@@ -261,7 +261,7 @@
 
       <h2>1. Executive Summary</h2>
       <p>
-        <strong>ZONIQFI</strong> is a modular DeFi & PayFi infrastructure protocol on Solana. It bridges real-world retail commerce with high-velocity on-chain settlement. Utilizing <strong>Solana Transaction v1 architecture (4,096-byte atomic payload)</strong>, the protocol combines MEV-protected liquidity swaps via Jito Block Engine, automated yield vaults, and a non-custodial <strong>PayFi Gateway</strong>. Merchants receive 100% fiat payouts directly via personal QRIS, while an automated on-chain <strong>Prepaid SOL Gas Tank</strong> debits and splits protocol fees across four on-chain vaults with hard guardrail protections.
+        <strong>ZONIQFI</strong> is a modular DeFi & PayFi infrastructure protocol on Solana bridging retail commerce with high-velocity on-chain settlement. Utilizing <strong>Solana Transaction v1 architecture (4,096-byte atomic payload)</strong> and <strong>Pyth Network Oracles</strong> for real-time valuation, the protocol combines MEV-protected liquidity swaps via Jito Block Engine, automated yield vaults, and a non-custodial <strong>PayFi Gateway</strong>. Merchants receive 100% fiat payouts directly via personal QRIS, while an automated on-chain <strong>Prepaid SOL Gas Tank</strong> debits and splits protocol fees across four on-chain vaults with hard guardrail protections.
       </p>
 
       <h2>2. Problem Statement & Market Inefficiencies</h2>
@@ -275,19 +275,20 @@
       <h2>3. Core Technical Architecture (Atomic Transaction Pipeline)</h2>
       <div class="ascii-box">[ Solana Transaction v1 & PayFi Pipeline (4,096-Byte Engine) ]
 │
-├── 1. Security & Pre-Execution Validation
+├── 1. Security, Oracle & Pre-Execution Validation
+│   ├── Pyth Network High-Fidelity Price Oracles (Real-Time SOL/USD/IDR Feeds)
 │   ├── Jito Engine Private Bundle Routing (Sandwich Attack Prevention)
 │   ├── Anti-Wash Trading Cooldown Enforcement (Max 1 tx / 10s per wallet PDA)
 │   └── SNS Identity Resolver & Anti Self-Referral Validation (.sns & .sol)
 │
-├── 2. PayFi Commerce & Hybrid Settlement Engine
+├── 2. PayFi Commerce & AMM DEX Execution
 │   ├── Direct QRIS Checkout (100% Instant Fiat Settlement to Merchant Account)
 │   ├── Merchant Prepaid Gas Tank Check & Execution Guardrail (Halt on 0 SOL)
 │   └── Multi-Vault Atomic Fee Relayer (sendRelayTransaction on Solana Devnet)
 │
-└── 3. Protocol Fee Distribution Route (5% Platform Cut)
+└── 3. Dual-Engine 4-Pool Fee Distribution Route (0.3% Swap & 5% PayFi Cut)
     ├── 40% ➔ Yield Optimizer Vault (Auto-compounding APY)
-    ├── 30% ➔ ZQI Real Yield Pool (USDC Staking Dividends)
+    ├── 30% ➔ $ZQI Real Yield Pool (USDC Staking Dividends)
     ├── 15% ➔ Anti-Sybil Affiliate Treasury (Tiered Community Rewards)
     └── 15% ➔ Protocol Operations & Relayer Treasury</div>
 
@@ -303,7 +304,7 @@
         <tbody>
           <tr>
             <td><strong>Transaction Standard</strong></td>
-            <td>Solana Transaction v1 (4,096-byte Atomic Payload)</td>
+            <td>Solana Transaction v1 (4,096-byte Atomic Payload) with Jito Bundles</td>
             <td>Verified on Devnet</td>
           </tr>
           <tr>
@@ -316,23 +317,28 @@
             <td>Executable (BPF Upgradeable)</td>
           </tr>
           <tr>
+            <td><strong>Price Oracle Feeds</strong></td>
+            <td>Pyth Network pull-based real-time market data (SOL/USD/IDR conversion)</td>
+            <td>Operational Feed Pipeline</td>
+          </tr>
+          <tr>
             <td><strong>PayFi Settlement Rails</strong></td>
-            <td>Direct QRIS 100% fiat payout + Prepaid SOL Gas Tank debit (5%) with guardrail</td>
+            <td>Direct QRIS 100% fiat payout + Prepaid SOL Gas Tank debit (5%) with circuit breaker</td>
             <td>Live Devnet Tested</td>
           </tr>
           <tr>
-            <td><strong>On-Chain Fee Relayer</strong></td>
-            <td>Atomic 4-way split to dedicated protocol vault addresses via Solana transactions</td>
+            <td><strong>Atomic 4-Pool Relayer</strong></td>
+            <td>Deterministic fee split (40:30:15:15) across Yield Vault, Staking, Affiliates, & Ops</td>
             <td>Operational & Verified</td>
           </tr>
           <tr>
             <td><strong>DEX Swap Engine</strong></td>
-            <td>Anti-MEV private bundle execution with 0.3% protocol fee route</td>
+            <td>Anti-MEV private bundle execution with 0.30% fee route to identical 4-pool split</td>
             <td>Functional Devnet Core</td>
           </tr>
           <tr>
             <td><strong>Yield & Staking Engine</strong></td>
-            <td>Epoch-based Real Yield distribution funded by PayFi & DEX volume</td>
+            <td>Epoch-based Real Yield distribution funded by PayFi & DEX volume in pure USDC</td>
             <td>Interactive Sandbox Demo</td>
           </tr>
           <tr>
@@ -345,9 +351,9 @@
 
       <h2>5. Milestone Roadmap & Grant Utilization</h2>
       <ul>
-        <li><strong>Milestone 1 — PayFi Engine Validation (Current):</strong> Successfully tested Direct QRIS checkout, merchant Prepaid Gas Tank debit, hard guardrail execution circuit-breakers, and 4-way Solana fee relayers on Devnet.</li>
-        <li><strong>Milestone 2 — Anchor Programmatic Routing & 1-Click Gas Refill:</strong> Develop custom Anchor programs to route incoming PayFi fee splits directly into the dApp staking vault contracts, and embed a 1-Click Swap module into the merchant dashboard for automated gas replenishment.</li>
-        <li><strong>Milestone 3 — Security Audits & Mainnet Deployment:</strong> Complete formal smart contract audits (OtterSec/Sec3), integrate Squads v4 multisig protocol control, seed protocol-owned liquidity (POL), and launch production PayFi rails for Southeast Asian merchants.</li>
+        <li><strong>Milestone 1 — PayFi Engine & 4-Pool Relayer (Current):</strong> Successfully tested Direct QRIS checkout, merchant Prepaid Gas Tank debit, hard guardrail execution circuit-breakers, and atomic 4-pool fee relayers on Devnet.</li>
+        <li><strong>Milestone 2 — Pyth Oracles, Anchor Routing & 1-Click Gas Refill:</strong> Integrate Pyth Network real-time price feeds for automated multi-currency conversions, deploy Anchor smart contracts to programmatically route fee splits directly into staking pools, and embed a 1-Click Swap widget inside merchant dashboards.</li>
+        <li><strong>Milestone 3 — Security Audits & Mainnet Deployment:</strong> Complete formal smart contract audits (OtterSec/Sec3), integrate Squads v4 multisig governance, seed protocol-owned liquidity (POL), and launch production PayFi rails for Southeast Asian merchants.</li>
       </ul>
 
       <div class="footer">

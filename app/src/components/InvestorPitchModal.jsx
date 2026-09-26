@@ -193,7 +193,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   </span>
                 </div>
                 <p style={{ margin: '0 0 12px 0', color: '#cbd5e1', fontSize: '0.85rem' }}>
-                  Non-custodial PayFi rails bridging fiat retail with Solana. Merchants receive 100% fiat payouts directly via personal QRIS, while a Solana-native Prepaid Gas Tank debits protocol fees automatically.
+                  Non-custodial PayFi rails bridging fiat retail with Solana. Merchants receive 100% fiat payouts directly via personal QRIS, while an automated on-chain Prepaid Gas Tank debits protocol fees.
                 </p>
 
                 {/* 9 Category Scaffolding */}
@@ -201,8 +201,8 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   background: 'rgba(0, 0, 0, 0.3)', 
                   border: '1px solid #1e293b', 
                   borderRadius: '8px', 
-                  padding: '10px 12px',
-                  marginBottom: '12px'
+                  padding: '10px 12px', 
+                  marginBottom: '12px' 
                 }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Supported Merchant Categories:
@@ -224,7 +224,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
 
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
                   <li><strong>Zero-Custody Direct Settlement:</strong> 100% of customer fiat (QRIS) settles directly to the merchant's bank/e-wallet without platform escrow delay.</li>
-                  <li><strong>Automated 4-Way Solana Fee Split:</strong> 5% protocol fee is debited from merchant's SOL gas reserve and split atomically: 40% Yield Vault, 30% $ZQI Real Yield Pool, 15% Affiliate Treasury, and 15% Protocol Operations & Relayer Reserve.</li>
+                  <li><strong>Automated 4-Pool Solana Fee Split:</strong> 5% protocol fee is debited from merchant SOL gas reserve and split atomically: 40% Yield Vault, 30% $ZQI Real Yield Staking Pool, 15% Affiliate Treasury, and 15% Protocol Operations & Relayer Reserve.</li>
                   <li><strong>Hard Gas Guardrail:</strong> Built-in execution circuit breaker rejects checkouts instantly if the vendor's SOL gas reserve drops below the required fee threshold.</li>
                   <li><strong>License Authenticity Guarantee:</strong> Instant on-chain license verification ensuring genuine digital assets for buyers.</li>
                 </ul>
@@ -234,16 +234,16 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               <div style={{ background: '#111827', border: '1px solid #1f2937', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
                   <h4 style={{ margin: 0, color: '#38bdf8', fontSize: '1rem', fontWeight: '700' }}>
-                    02. AMM DEX Swap Engine (Anti-MEV Atomic Swaps)
+                    02. AMM DEX Swap Engine (Anti-MEV Atomic Swaps & Pyth Oracles)
                   </h4>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(56, 189, 248, 0.15)', color: '#38bdf8', padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>TX V1 ATOMIC</span>
                 </div>
                 <p style={{ margin: '0 0 10px 0', color: '#94a3b8', fontSize: '0.85rem' }}>
-                  High-velocity decentralized exchange utilizing Solana Transaction v1 with sub-400ms finality. Features Jito Block Engine bundle integration for strict anti-front-running protection.
+                  High-velocity decentralized exchange utilizing Solana Transaction v1 with sub-400ms finality, Pyth Network institutional price feeds, and Jito Block Engine bundles for strict anti-front-running protection.
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
-                  <li><strong>0.30% Swap Fee Split:</strong> Atomically routed using identical 4-way proportions (40% Vault, 30% $ZQI Staking, 15% Affiliate, 15% Ops).</li>
-                  <li><strong>MEV Mitigation:</strong> Eliminates sandwich attacks and front-running across all devnet/mainnet swaps.</li>
+                  <li><strong>0.30% Flat Swap Fee Split:</strong> Atomically routed using identical 4-pool proportions (40% Vault, 30% $ZQI Staking, 15% Affiliate, 15% Protocol Treasury & Ops).</li>
+                  <li><strong>MEV Mitigation:</strong> Private bundle routing eliminates sandwich attacks and front-running across all devnet/mainnet swaps.</li>
                   <li><strong>Vendor Refill Bridge:</strong> Embedded swap routing enabling vendors to convert stablecoins directly into SOL gas fuel with 1 click.</li>
                 </ul>
               </div>
@@ -304,9 +304,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                     Tested on Devnet
                   </span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>PayFi Engine & Multi-Module Core Deployment</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>PayFi Engine & Dual-Engine 4-Pool Deployment</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Validation of Direct QRIS payouts, Solana Prepaid Gas Tank, automated 4-way protocol fee relayer, and guardrails. AMM Swap, Vault, and Staking interfaces fully operational in devnet sandbox.
+                  Validation of Direct QRIS payouts, Solana Prepaid Gas Tank, automated 4-pool fee relayer (40:30:15:15), and gas circuit breakers. AMM Swap, Vault, and Staking interfaces fully operational in devnet sandbox.
                 </p>
               </div>
 
@@ -315,9 +315,9 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <span style={{ fontSize: '0.75rem', color: '#3b82f6', fontWeight: '700' }}>PHASE 2 • Q4 2026</span>
                   <span style={{ fontSize: '0.72rem', background: '#1e293b', color: '#f59e0b', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Target: $40,000 - $60,000</span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Anchor Smart Contract Routing & 1-Click Refill</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Pyth Price Oracles, Anchor Smart Contracts & 1-Click Refill</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Deploying Solana Anchor contracts to programmatically route PayFi treasury splits directly into dApp Staking pools. Integrating 1-Click AMM Swap inside merchant portals for automated gas refills and Squads v4 multisig governance.
+                  Integrating Pyth Network Oracles for real-time SOL/USD/IDR price feeds. Deploying Solana Anchor contracts to programmatically route PayFi treasury splits directly into dApp Staking pools. Integrating 1-Click AMM Swap inside merchant portals for automated gas refills and Squads v4 multisig governance.
                 </p>
               </div>
 
@@ -389,7 +389,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   <strong>Step 2 (Automated Prepaid Gas Debit):</strong> The protocol debits a 5% fee from the merchant's SOL Gas Tank, enforced by an on-chain guardrail that halts checkouts if reserves hit zero.
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #c084fc' }}>
-                  <strong>Step 3 (4-Way Multi-Vault Solana Relay):</strong> Every checkout atomically routes the 5% fee across 4 protocol vaults: Yield Vault (40%), $ZQI Real Yield Staking Pool (30%), Affiliate Treasury (15%), and Protocol Ops & Relayer Reserve (15%).
+                  <strong>Step 3 (4-Pool Multi-Vault Solana Relay):</strong> Every checkout atomically routes the 5% fee across 4 protocol vaults: Yield Vault (40%), $ZQI Real Yield Staking Pool (30%), Affiliate Treasury (15%), and Protocol Ops & Relayer Reserve (15%).
                 </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #60a5fa' }}>
                   <strong>Step 4 (Closed-Loop DEX Refill & Yield):</strong> Merchants replenish gas reserves via the integrated AMM Swap, generating organic DEX trading volume and funding $ZQI real yield lockers.

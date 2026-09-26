@@ -20,7 +20,7 @@ const CONTENT = {
         desc: "High-throughput decentralized exchange architecture utilizing Solana Transaction v1 (4,096-byte atomic payload) integrated with Jito Block Engine private bundles.",
         highlights: [
           { label: "Anti-MEV Protection", val: "Private transaction routing completely eliminates front-running and sandwich attacks." },
-          { label: "0.3% Flat Protocol Fee", val: "Atomic 5-way split: 40% USDC Real-Yield Vault, 30% Dynamic LP Pool, 15% Affiliates, 10% Protocol Treasury ($ZQI Burn), and 5% PayFi Gas Reserve." },
+          { label: "0.3% Flat Protocol Fee", val: "Atomic 4-pool split: 40% USDC Real-Yield Vault, 30% $ZQI Real Yield Staking Pool, 15% On-Chain Affiliates, and 15% Operations & Protocol Treasury." },
           { label: "Vendor Refill Bridge", val: "Prepares 1-Click Swap routing inside vendor portals to convert stablecoins directly into SOL gas tank fuel." }
         ]
       },
@@ -67,7 +67,7 @@ const CONTENT = {
         box1Title: "1. Direct Fiat QRIS Settlement (Zero-Custody)",
         box1Desc: "100% of customer fiat (QRIS) settles directly to the merchant's personal account (BCA, Mandiri, GoPay, OVO, DANA, ShopeePay) without platform custody or clearance delays.",
         box2Title: "2. Solana Prepaid Gas Tank & Guardrail",
-        box2Desc: "Merchants pre-fund SOL to cover the 5% protocol fee. Built-in guardrails halt checkouts if reserves drop to zero, while valid orders trigger an atomic on-chain split across protocol vaults.",
+        box2Desc: "Merchants pre-fund SOL to cover the 5% protocol fee. Built-in guardrails halt checkouts if reserves drop to zero, while valid orders trigger an atomic on-chain split across 4 protocol vaults.",
         categoriesTitle: "Supported Merchant Catalog Verticals (9 Sectors):",
         categories: [
           "💎 NFT & Web3 Collectibles",
@@ -82,7 +82,7 @@ const CONTENT = {
         ],
         highlights: [
           { label: "Zero-Custody Fiat Payouts", val: "100% fiat immediately received by the vendor without platform escrow risk." },
-          { label: "Automated Multi-Vault Split", val: "5% protocol fee debited from merchant SOL gas reserve and split on-chain: 40% Vault, 30% Real Yield, 15% Affiliate, 10% Burn Treasury, 5% Relayer Pool." },
+          { label: "Automated 4-Pool Split", val: "5% protocol fee debited from merchant SOL gas reserve and split atomically: 40% Vault, 30% Real Yield ($ZQI), 15% Affiliate Treasury, and 15% Operations & Relayer Treasury." },
           { label: "Hard Gas Guardrail", val: "Execution circuit breaker halts checkout immediately if vendor gas reserve is insufficient." },
           { label: "License Authenticity Guarantee", val: "Digital asset licenses are verifiably minted to Solana devnet upon confirmed settlement." }
         ]
@@ -109,7 +109,7 @@ const CONTENT = {
         desc: "Arsitektur pertukaran terdesentralisasi berkecepatan tinggi memanfaatkan Solana Transaction v1 (payload 4.096-byte) terintegrasi dengan bundel privat Jito Block Engine.",
         highlights: [
           { label: "Perlindungan Anti-MEV", val: "Perutean transaksi privat mengeliminasi serangan front-running dan sandwich secara total." },
-          { label: "Biaya Flat 0.3%", val: "Split 5 arah otomatis: 40% Yield Vault USDC, 30% Dynamic LP Pool, 15% Afiliasi, 10% Treasury ($ZQI Burn), dan 5% Cadangan Gas PayFi." },
+          { label: "Biaya Flat 0.3%", val: "Split 4 arah otomatis: 40% Yield Vault USDC, 30% Pool Staking Real Yield $ZQI, 15% Kas Afiliasi On-Chain, dan 15% Operasional & Treasury Protokol." },
           { label: "Jembatan Pengisian Gas", val: "Mempersiapkan fitur 1-Click Swap di portal vendor untuk menukar stablecoin langsung ke SOL pengisi Gas Tank." }
         ]
       },
@@ -156,7 +156,7 @@ const CONTENT = {
         box1Title: "1. Settlement QRIS Langsung (Zero-Custody)",
         box1Desc: "100% pembayaran rupiah pembeli masuk langsung ke rekening/e-wallet pribadi vendor (BCA, Mandiri, GoPay, OVO, DANA, ShopeePay) tanpa penahanan saldo atau escrow platform.",
         box2Title: "2. Prepaid Gas Tank SOL & Guardrail",
-        box2Desc: "Vendor menyetor cadangan SOL untuk mendanai fee protokol 5%. Sistem guardrail memblokir checkout jika saldo gas habis, dan mengeksekusi split fee on-chain saat transaksi terverifikasi.",
+        box2Desc: "Vendor menyetor cadangan SOL untuk mendanai fee protokol 5%. Sistem guardrail memblokir checkout jika saldo gas habis, dan mengeksekusi split fee on-chain ke 4 pool saat transaksi terverifikasi.",
         categoriesTitle: "Dukungan 9 Kategori Merchant & Produk:",
         categories: [
           "💎 NFT & Web3 Collectibles",
@@ -171,7 +171,7 @@ const CONTENT = {
         ],
         highlights: [
           { label: "Settlement Fiat Non-Kustodial", val: "Uang rupiah langsung diterima vendor tanpa jeda kliring pihak ketiga." },
-          { label: "Split Fee On-Chain Otomatis", val: "Fee 5% dipotong dari saldo gas SOL vendor dan dibagi on-chain: 40% Vault, 30% Real Yield, 15% Kas Afiliasi, 10% Burn Treasury, 5% Relayer Pool." },
+          { label: "Split Fee On-Chain Otomatis", val: "Fee 5% dipotong dari saldo gas SOL vendor dan dibagi on-chain ke 4 pool: 40% Vault, 30% Real Yield ($ZQI), 15% Kas Afiliasi, dan 15% Treasury Operasional & Relayer." },
           { label: "Proteksi Gas Guardrail", val: "Memblokir transaksi seketika saat saldo gas vendor tidak mencukupi untuk mencegah kebocoran protokol." },
           { label: "Garansi Keaslian On-Chain", val: "Tautan unduh dan lisensi NFT tervalidasi langsung di blockchain Solana devnet saat konfirmasi pembayaran." }
         ]
