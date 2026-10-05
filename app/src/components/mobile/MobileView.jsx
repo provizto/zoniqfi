@@ -648,6 +648,16 @@ export default function MobileView({
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
             Devnet
           </div>
+        
+        {/* --- TAMBAHKAN: BADGE LINK GUARD DI HEADER --- */}
+          <a
+            href="https://guard.zoniqfi.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-950/60 border border-emerald-700/60 px-2 py-1 rounded-lg font-mono hover:bg-emerald-900/60 transition"
+          >
+            🛡️ Guard
+          </a>
 
           <button
             onClick={() => {
@@ -727,6 +737,25 @@ export default function MobileView({
 
               {/* 5 Item Navigasi Utama */}
               <div className="space-y-1.5 mb-6 text-sm text-slate-200">
+                {/* --- TAMBAHKAN: LINK KE ZONIQ GUARD SCANNER --- */}
+                <a
+                  href="https://guard.zoniqfi.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex justify-between items-center p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 text-left transition"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="w-6 text-center text-base">🛡️</span>
+                    <div>
+                      <div className="text-sm font-bold text-emerald-400">Zoniq Guard</div>
+                      <div className="text-[10px] text-slate-400">Security & AST Audit Scanner</div>
+                    </div>
+                  </span>
+                  <span className="text-xs text-emerald-400 font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30">
+                    Live ↗
+                  </span>
+                </a>
+
                 <button 
                   type="button"
                   onClick={() => { 
