@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const TABS = [
-  { id: 'modules', label: 'Core Modules (DeFi + PayFi)' },
+  { id: 'modules', label: 'Core Modules (DeFi + PayFi + Guard)' },
   { id: 'roadmap', label: 'Roadmap & Milestones' },
   { id: 'flywheel', label: 'Economic Flywheel' }
 ];
@@ -98,7 +98,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
               </h2>
             </div>
             <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>
-              Hybrid Web3 DeFi + Real-World PayFi Commerce Engine (Solana Architecture)
+              Hybrid Web3 DeFi + Real-World PayFi Commerce + Zoniq Guard AST Security Suite
             </p>
           </div>
           <button 
@@ -173,7 +173,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
         {/* MODAL SCROLLABLE BODY */}
         <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1, fontSize: '0.9rem', lineHeight: '1.6' }}>
           
-          {/* TAB 1: CORE DEFI & PAYFI MODULES */}
+          {/* TAB 1: CORE DEFI, PAYFI & SECURITY MODULES */}
           {activeTab === 'modules' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               
@@ -243,7 +243,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
                 <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
                   <li><strong>0.30% Flat Swap Fee Split:</strong> Atomically routed using identical 4-pool proportions (40% Vault, 30% $ZQI Staking, 15% Affiliate, 15% Protocol Treasury & Ops).</li>
-                  <li><strong>MEV Mitigation:</strong> Private bundle routing eliminates sandwich attacks and front-running across all devnet/mainnet swaps.</li>
+                  <li><strong>MEV Mitigation:</strong> Private bundle routing eliminates sandwich attacks and front-running across all swaps.</li>
                   <li><strong>Vendor Refill Bridge:</strong> Embedded swap routing enabling vendors to convert stablecoins directly into SOL gas fuel with 1 click.</li>
                 </ul>
               </div>
@@ -291,6 +291,31 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </p>
               </div>
 
+              {/* MODUL BARU: ZONIQ GUARD */}
+              <div style={{ 
+                background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(17, 24, 39, 1) 100%)', 
+                border: '1px solid rgba(16, 185, 129, 0.35)', 
+                borderRadius: '12px', 
+                padding: '16px' 
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
+                  <h4 style={{ margin: 0, color: '#34d399', fontSize: '1.02rem', fontWeight: '800' }}>
+                    06. Zoniq Guard (AST Security Scanner & Proof of Audit Engine)
+                  </h4>
+                  <span style={{ fontSize: '0.72rem', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', padding: '2px 8px', borderRadius: '4px', fontWeight: '800' }}>
+                    LIVE AT GUARD.ZONIQFI.COM
+                  </span>
+                </div>
+                <p style={{ margin: '0 0 10px 0', color: '#cbd5e1', fontSize: '0.85rem' }}>
+                  Comprehensive institutional security suite validating smart contract integrity and bytecode safety across Solana (Anchor v0.30.1) and EVM (Solc 0.8.26).
+                </p>
+                <ul style={{ margin: 0, paddingLeft: '18px', color: '#cbd5e1', fontSize: '0.82rem' }}>
+                  <li><strong>AST Invariant Validation:</strong> Automated Abstract Syntax Tree analysis detecting reentrancy, signer missing validation, and arithmetic overflows before deployment.</li>
+                  <li><strong>On-Chain Proof of Audit:</strong> Immutable cryptographic attestation issued directly to verifiable on-chain registries for public trust.</li>
+                  <li><strong>Continuous CI/CD Guard:</strong> GitHub action hooks and real-time node telemetry for automated smart contract regression audits.</li>
+                </ul>
+              </div>
+
             </div>
           )}
 
@@ -301,12 +326,12 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
                   <span style={{ fontSize: '0.75rem', color: '#14b8a6', fontWeight: '700' }}>PHASE 1 • Q3 2026 (CURRENT STAGE)</span>
                   <span style={{ fontSize: '0.72rem', background: 'rgba(20, 184, 166, 0.15)', color: '#14b8a6', padding: '2px 8px', borderRadius: '4px', fontWeight: '700', border: '1px solid rgba(20, 184, 166, 0.3)' }}>
-                    Tested on Devnet
+                    Tested on Devnet & Live Guard
                   </span>
                 </div>
-                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>PayFi Engine & Dual-Engine 4-Pool Deployment</h4>
+                <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>PayFi Engine, Dual-Engine 4-Pool & Zoniq Guard Suite</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Validation of Direct QRIS payouts, Solana Prepaid Gas Tank, automated 4-pool fee relayer (40:30:15:15), and gas circuit breakers. AMM Swap, Vault, and Staking interfaces fully operational in devnet sandbox.
+                  Validation of Direct QRIS payouts, Solana Prepaid Gas Tank, automated 4-pool fee relayer (40:30:15:15), and gas circuit breakers. Full deployment of Zoniq Guard AST Scanner (guard.zoniqfi.com) for real-time security attestation.
                 </p>
               </div>
 
@@ -328,7 +353,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 </div>
                 <h4 style={{ margin: '4px 0 6px 0', color: '#fff', fontSize: '0.95rem' }}>Mainnet Deployment & Protocol-Owned Liquidity (POL)</h4>
                 <p style={{ margin: 0, color: '#94a3b8', fontSize: '0.82rem' }}>
-                  Formal smart contract audit completion (OtterSec/Sec3), full Solana Mainnet release, initial POL seeding for $ZQI pairs, and activation of on-chain real yield distribution.
+                  Dual-tier audit completion (internal Zoniq Guard + external Sec3/OtterSec audit), full Solana Mainnet release, initial POL seeding for $ZQI pairs, and activation of on-chain real yield distribution.
                 </p>
               </div>
 
@@ -355,7 +380,7 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                   fontSize: '0.82rem' 
                 }}>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
-                    <strong style={{ color: '#38bdf8' }}>35% Security & Smart Audits:</strong> Anchor program verification & multi-vault stress testing.
+                    <strong style={{ color: '#38bdf8' }}>35% Security, Audits & Guard Node Scaling:</strong> Multi-vault stress testing, external review & Zoniq Guard node infrastructure.
                   </div>
                   <div style={{ background: '#111827', padding: '10px', borderRadius: '6px', border: '1px solid #1f2937' }}>
                     <strong style={{ color: '#38bdf8' }}>30% Protocol Liquidity (POL):</strong> Primary DEX pool seeding ($ZQI/USDC & SOL) for low slippage.
@@ -375,10 +400,10 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
           {activeTab === 'flywheel' && (
             <div style={{ background: '#070c18', border: '1px solid #1e293b', borderRadius: '12px', padding: '18px' }}>
               <h4 style={{ margin: '0 0 10px 0', color: '#10b981', fontSize: '1.05rem' }}>
-                The Sustainable PayFi + DeFi Ecosystem Flywheel
+                The Sustainable PayFi + DeFi + Security Flywheel
               </h4>
               <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: '0 0 14px 0' }}>
-                How real-world retail commerce fuels organic on-chain liquidity and yield without token inflation:
+                How real-world retail commerce fuels organic on-chain liquidity and yield backed by provable security:
               </p>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.83rem' }}>
@@ -394,8 +419,11 @@ const InvestorPitchModal = ({ isOpen, onClose }) => {
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #60a5fa' }}>
                   <strong>Step 4 (Closed-Loop DEX Refill & Yield):</strong> Merchants replenish gas reserves via the integrated AMM Swap, generating organic DEX trading volume and funding $ZQI real yield lockers.
                 </div>
+                <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #34d399' }}>
+                  <strong>Step 5 (Zoniq Guard Integrity Protection):</strong> Continuous on-chain AST invariant checks monitor relayer smart contracts and vault balances, preventing flash loan vulnerabilities and invariant breaches.
+                </div>
                 <div style={{ padding: '12px 14px', background: '#111827', borderRadius: '8px', borderLeft: '3px solid #4ade80' }}>
-                  <strong>Step 5 (Self-Sustaining Expansion):</strong> Real protocol cashflow continually rewards token lockers and affiliate partners, scaling merchant adoption without inflationary emissions.
+                  <strong>Step 6 (Self-Sustaining Expansion):</strong> Real protocol cashflow continually rewards token lockers and affiliate partners, scaling merchant adoption securely without inflationary emissions.
                 </div>
               </div>
             </div>
