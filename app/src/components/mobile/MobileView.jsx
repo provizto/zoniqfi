@@ -644,10 +644,10 @@ export default function MobileView({
         </div>
 
         <div className="flex items-center gap-2 relative">
-          <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2.5 py-1 rounded-lg font-mono">
-            <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            Devnet
-          </div>
+          <div className="hidden sm:flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2.5 py-1 rounded-lg font-mono">
+  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+  Devnet
+</div>
         
         {/* --- TAMBAHKAN: BADGE LINK GUARD DI HEADER --- */}
           <a
