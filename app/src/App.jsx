@@ -10,6 +10,7 @@ import TransactionSuccessModal from './components/TransactionSuccessModal';
 import { isSNSDomain, resolveSNSInput } from './utils/snsResolver';
 import PayFiGateway from './components/PayFiGateway';
 import MobileView from './components/mobile/MobileView';
+import ZoniqTerminalWrapper from './components/ZoniqTerminalWrapper';
 
 // Hook Resmi Solana Wallet Adapter
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
@@ -268,13 +269,7 @@ function App() {
     return () => { isMounted = false; };
   }, [publicKey, connection]);
   
-  const [activeTab, setActiveTab] = useState(() => {
-    if (SHOW_SWAP) return 'swap';
-    if (SHOW_OPTIMIZER) return 'vault';
-    if (SHOW_LOCKER) return 'staking';
-    if (SHOW_AFFILIATE) return 'affiliate';
-    return 'swap';
-  });
+  const [activeTab, setActiveTab] = useState('home');
 
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [showCompliance, setShowCompliance] = useState(false);
@@ -1372,54 +1367,29 @@ if (isMobile) {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '12px 16px',
-        background: '#060911',
-        borderBottom: '1px solid #1f2937',
+        padding: '10px 20px',
+        background: '#070b15',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
         width: '100%',
         boxSizing: 'border-box'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* LOGO & BRAND */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }} onClick={() => setActiveTab('home')}>
           <img 
             src={logoZoniq} 
             alt="ZoniqFi" 
             style={{ width: '26px', height: '26px', objectFit: 'contain' }} 
           />
-          <span style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#ffffff' }}>
+          <span style={{ fontSize: '1rem', fontWeight: 'bold', color: '#ffffff', letterSpacing: '0.03em' }}>
             ZONIQFI
           </span>
-          <span style={{ fontSize: '0.65rem', padding: '2px 5px', backgroundColor: '#1e293b', borderRadius: '4px', color: '#14F195', fontWeight: 'bold' }}>
+          <span style={{ fontSize: '0.65rem', padding: '2px 5px', backgroundColor: '#131b2e', borderRadius: '4px', color: '#38bdf8', fontWeight: 'bold' }}>
             $ZQI
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
-          {/* Badge Devnet */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '5px',
-            background: 'rgba(16, 185, 129, 0.1)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
-            padding: '0 12px',
-            height: '36px',
-            borderRadius: '6px',
-            fontSize: '0.72rem',
-            fontWeight: '600',
-            color: '#34d399',
-            boxSizing: 'border-box'
-          }}>
-            <span style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: '#10b981',
-              boxShadow: '0 0 6px #10b981'
-            }}></span>
-            Devnet
-          </div>
-          
-          {/* Tombol Connect / Address (Kembali ke fungsi murni) */}
+        {/* SISI KANAN: TOMBOL WALLET ALA GUARD */}
+        <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
           <button 
             id="walletBtn" 
             onClick={() => {
@@ -1430,36 +1400,48 @@ if (isMobile) {
               }
             }} 
             style={{ 
-              padding: '0 14px', 
-              height: '36px', 
+              padding: '0 16px', 
+              height: '34px', 
               borderRadius: '6px', 
-              fontWeight: 'bold', 
+              fontWeight: '600', 
               border: 'none', 
-              color: '#fff', 
+              color: '#ffffff', 
               cursor: 'pointer', 
-              fontSize: '0.75rem', 
-              background: isConnected ? "#10b981" : "linear-gradient(135deg, #8b5cf6, #3b82f6)", 
+              fontSize: '0.78rem', 
+              background: isConnected ? '#1e293b' : '#4f46e5', 
               whiteSpace: 'nowrap', 
               boxSizing: 'border-box', 
               display: 'inline-flex', 
               alignItems: 'center', 
-              justifyContent: 'center' 
+              justifyContent: 'center',
+              gap: '6px',
+              transition: 'background 0.15s ease'
             }}>
-            {isConnected ? `🟢 ${myWalletAddress.slice(0, 4)}...${myWalletAddress.slice(-4)}` : "Connect"}
+            {isConnected ? (
+              <>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span>
+                <span>{myWalletAddress.slice(0, 4)}...{myWalletAddress.slice(-4)}</span>
+              </>
+            ) : (
+              <>
+                <span style={{ fontSize: '0.85rem', lineHeight: 1 }}>→]</span>
+                <span>Connect / Sign In</span>
+              </>
+            )}
           </button> 
 
-          {/* DROPDOWN SALDO (Hanya saat connect) */}
+          {/* DROPDOWN SALDO (Fungsi asli tetap utuh) */}
           {isConnected && showWalletMenu && (
             <div style={{
               position: 'absolute',
-              top: '110%',
+              top: '115%',
               right: 0,
-              background: '#111827',
-              border: '1px solid #374151',
+              background: '#090e1a',
+              border: '1px solid #1e293b',
               borderRadius: '8px',
               padding: '6px',
-              minWidth: '160px',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
+              minWidth: '170px',
+              boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.7)',
               zIndex: 100,
               display: 'flex',
               flexDirection: 'column',
@@ -1467,22 +1449,22 @@ if (isMobile) {
             }}>
               <div style={{
                 padding: '8px 10px',
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'rgba(255, 255, 255, 0.02)',
                 borderRadius: '6px',
-                border: '1px solid #1f2937',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
                 marginBottom: '4px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '6px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>SOL Balance</span>
+                  <span style={{ fontSize: '0.68rem', color: '#64748b' }}>SOL Balance</span>
                   <span style={{ fontSize: '0.82rem', fontWeight: 'bold', color: '#10b981' }}>
                     {solBalance !== null ? `${solBalance} SOL` : 'Loading...'}
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>USDC Balance</span>
+                  <span style={{ fontSize: '0.68rem', color: '#64748b' }}>USDC Balance</span>
                   <span style={{ fontSize: '0.82rem', fontWeight: 'bold', color: '#38bdf8' }}>
                     {usdcBalance.toFixed(2)} USDC
                   </span>
@@ -1498,12 +1480,12 @@ if (isMobile) {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#e5e7eb',
-                  padding: '8px 10px',
-                  borderRadius: '6px',
+                  color: '#94a3b8',
+                  padding: '7px 10px',
+                  borderRadius: '5px',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  fontSize: '0.75rem',
+                  fontSize: '0.74rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px'
@@ -1517,11 +1499,11 @@ if (isMobile) {
                 target="_blank"
                 rel="noreferrer"
                 style={{
-                  color: '#e5e7eb',
-                  padding: '8px 10px',
-                  borderRadius: '6px',
+                  color: '#94a3b8',
+                  padding: '7px 10px',
+                  borderRadius: '5px',
                   textDecoration: 'none',
-                  fontSize: '0.75rem',
+                  fontSize: '0.74rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px'
@@ -1530,7 +1512,7 @@ if (isMobile) {
                 🔍 Solscan
               </a>
 
-              <hr style={{ border: 'none', borderTop: '1px solid #1f2937', margin: '2px 0' }} />
+              <hr style={{ border: 'none', borderTop: '1px solid rgba(255, 255, 255, 0.05)', margin: '2px 0' }} />
 
               <button
                 onClick={() => {
@@ -1541,11 +1523,11 @@ if (isMobile) {
                   background: 'transparent',
                   border: 'none',
                   color: '#ef4444',
-                  padding: '8px 10px',
-                  borderRadius: '6px',
+                  padding: '7px 10px',
+                  borderRadius: '5px',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  fontSize: '0.75rem',
+                  fontSize: '0.74rem',
                   fontWeight: '600',
                   display: 'flex',
                   alignItems: 'center',
@@ -1557,20 +1539,6 @@ if (isMobile) {
             </div>
           )}
         </div>
-
-        {/* --- TOMBOL GUARD DESKTOP (Sembunyi di Mobile) --- */}
-        <a
-          href="https://guard.zoniqfi.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all shadow-sm"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          Zoniq Guard
-        </a>
       </header>
 
       {/* MOBILE WALLET HELPER (Horizontal Strip - Otomatis hilang saat sudah Connect) */}
@@ -1643,691 +1611,371 @@ if (isMobile) {
         </div>
       )}
 
-      {/* TOP TOKENOMICS MARQUEE BANNER */}
-      <div style={{
-        background: 'linear-gradient(90deg, #070e17 0%, #0c2135 50%, #070e17 100%)',
-        borderBottom: '1px solid rgba(56, 189, 248, 0.25)',
-        padding: '7px 0',
-        color: '#e2e8f0',
-        fontSize: '0.78rem',
-        fontWeight: '600',
-        letterSpacing: '0.04em',
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        userSelect: 'none'
-      }}>
-        <div className="ticker-track" style={{ animationDuration: '32s' }}>
-          {[1, 2, 3, 4].map((num) => (
-            <div key={num} style={{ display: 'inline-flex', alignItems: 'center', gap: '16px' }}>
-              <span>🔥 <span style={{ color: '#38bdf8' }}>PRESALE ROUND 1 ACTIVE</span></span>
-              <span style={{ color: '#475569' }}>•</span>
-              <span>1 $ZQI = <span style={{ color: '#34d399', fontWeight: '700' }}>$0.0500 USDC</span></span>
-              <span style={{ color: '#475569' }}>•</span>
-              <span>TOTAL SUPPLY: <span style={{ color: '#f8fafc', fontWeight: '700' }}>100,000,000 $ZQI</span></span>
-              <span style={{ color: '#475569' }}>•</span>
-              <span style={{ color: '#a78bfa' }}>REAL YIELD STAKING LIVE</span>
-              <span style={{ color: '#475569' }}>•</span>
-              <span style={{ color: '#38bdf8' }}>DEVNET VERIFIED</span>
-              <span style={{ margin: '0 16px', color: '#334155' }}>✦</span>
+      {/* ========================================================================= */}
+      {/* MAIN CONTAINER: 3-ZONE FULL SCREEN LAYOUT                                 */}
+      {/* ========================================================================= */}
+      <ZoniqTerminalWrapper
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        showSwap={SHOW_SWAP}
+        showLocker={SHOW_LOCKER}
+        showOptimizer={SHOW_OPTIMIZER}
+        showAffiliate={SHOW_AFFILIATE}
+        protocolTVL={protocolTVL}
+      >
+        {/* MODUL 1: SWAP */}
+        {SHOW_SWAP && activeTab === 'swap' && (
+          <div className="product-card">
+            <div className="card-title-row">
+              <h3>AMM DEX Swap</h3>
+              <span id="mevBadge" className="mev-secure-badge">🛡️ MEV SECURE</span>
             </div>
-          ))}
-        </div>
-      </div>
+            <p className="desc">Non-custodial peer-to-peer asset swapping via immutable Solana smart contract routing.</p>
 
-      {/* LIVE MARKET TICKER STRIP */}
-      <div className="ticker-container">
-        <div className="ticker-track">
-          {[...tickerPrices, ...tickerPrices].map((item, idx) => (
-            <div 
-              key={idx} 
-              className={`ticker-item ${item.isZqi ? 'zqi-ticker-highlight' : ''}`}
-              onClick={() => {
-                if (item.isZqi) {
-                  setActiveTab('swap');
-                  const dapp = document.querySelector('.dapp-container');
-                  if (dapp) dapp.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-              style={item.isZqi ? { cursor: 'pointer' } : {}}
-              title={item.isZqi ? 'Klik untuk Swap $ZQI' : ''}
-            >
-              <span className="ticker-sym">{item.symbol}</span>
-              <span className="ticker-price">{item.price}</span>
-              <span className={`ticker-change ${item.isZqi ? 'zqi-tag pulse-active' : (item.change.startsWith('+') ? 'up' : 'down')}`}>
-                {item.isZqi && <span className="ticker-pulse-dot"></span>}
-                {item.change}
+            <div className="swap-input-container">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: '600', margin: 0 }}>You Pay</label>
+                {isConnected && (
+                  <div style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span>Balance: <strong style={{ color: '#ffffff' }}>{tokenPay === 'ZQI' ? zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) : (tokenPay === 'USDC' ? '5,000.00' : '10.50')} {tokenPay}</strong></span>
+                    <button 
+                      type="button" 
+                      onClick={() => setPayAmount(tokenPay === 'ZQI' ? zqiBalance.toString() : (tokenPay === 'USDC' ? '5000' : '10.5'))}
+                      style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                    >
+                      MAX
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
+                <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0b0f19', color: '#fff', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', outline: 'none', cursor: 'pointer' }}>
+                  {tokens.map(t => (
+                    <option key={t.symbol} value={t.symbol}>{t.symbol}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="swap-switch-row"><button className="btn-switch-tokens" onClick={switchTokens}>⇅</button></div>
+            
+            <div className="swap-input-container">
+              <label>You Receive (Estimated)</label>
+              <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
+                <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '800', color: '#38bdf8', paddingRight: '6px', fontSize: '1rem' }}>{tokenReceive}</span>
+              </div>
+            </div>
+
+            <div className="swap-fee-details">
+              <div className="detail-line"><span>Trading Fee (0.3%):</span><span id="swapFeeLabel" className="fee-bold-value">{swapFee} {tokenPay}</span></div>
+              <div className="detail-line total-divider"><span>Anti-Wash Trading Check:</span><span className="status-active-text">Active (Daily)</span></div>
+            </div>
+
+            <button className="btn-action" id="swapBtn" onClick={isConnected ? handleLaunchSwap : openWalletModal} disabled={isConnected && (!payAmount || parseFloat(payAmount) <= 0 || isSwapLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (payAmount && parseFloat(payAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!payAmount || parseFloat(payAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
+              {isSwapLoading ? 'Processing Secure Swap...' : !isConnected ? 'Connect Wallet' : (!payAmount || parseFloat(payAmount) <= 0) ? 'Enter an Amount' : 'Launch Swap'}
+            </button>
+          </div>
+        )}
+
+        {/* MODUL 2: OPTIMIZER */}
+        {SHOW_OPTIMIZER && activeTab === 'vault' && (
+          <div className="product-card">
+            <h3>Yield Optimizer</h3>
+            <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
+            <div className="stat-box">Boosted APY: Up to 49.1%</div>
+            
+            <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', background: '#070a13', border: '1px solid #1e293b', padding: '12px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
+              <span style={{ color: '#94a3b8' }}>Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong></span>
+              <span style={{ color: '#94a3b8' }}>Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong></span>
+            </div>
+            
+            <div className="yield-calc-embed">
+              <h4>ZoniqFi Yield Calculator</h4>
+              <label>Allocation Amount (USDC):</label>
+              <input type="number" id="calcAmount" placeholder="0.0" value={calcAmount === '0' ? '' : calcAmount} disabled={isVaultLoading} onChange={(e) => setCalcAmount(e.target.value)} onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }} />
+              <div className="projection-metrics-list">
+                <p>Daily Rate: <strong>0.11%</strong></p>
+                <p>Est. Profit / Day: <strong id="profitDay" className="profit-green-value">{parseFloat(projection.daily).toLocaleString('en-US')} USDC</strong></p>
+                <p>Est. Profit / Month: <strong id="profitMonth" className="profit-green-value">{parseFloat(projection.monthly).toLocaleString('en-US')} USDC</strong></p>
+                <p>Est. Profit / Year: <strong id="profitYear" className="profit-green-value">{parseFloat(projection.annual).toLocaleString('en-US')} USDC</strong></p>
+              </div>
+            </div>
+
+            <button className="btn-action" id="yieldBtn" onClick={isConnected ? handleDepositVault : openWalletModal} disabled={isConnected && (!calcAmount || parseFloat(calcAmount) <= 0 || isVaultLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (calcAmount && parseFloat(calcAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!calcAmount || parseFloat(calcAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
+              {isVaultLoading ? "Processing Deposit..." : !isConnected ? "Connect Wallet" : (!calcAmount || parseFloat(calcAmount) <= 0) ? "Enter an Amount" : "Open Vaults"}
+            </button>
+          </div>
+        )}
+
+        {/* MODUL 3: LOCKER */}
+        {SHOW_LOCKER && activeTab === 'staking' && (
+          <div className="product-card">
+            <h3>ZQI Lock & Yield</h3>
+            <p className="desc">Lock your $ZQI tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
+
+            <div className="calc-tabs">
+              <button className={`tab-btn ${lockCalculationMode === 'manual' ? 'active' : ''}`} id="tabManual" onClick={() => switchLockCalculationView('manual')}>Instant Lock</button>
+              <button className={`tab-btn ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="tabWizard" onClick={() => switchLockCalculationView('wizard')}>Boosted Lock</button>
+            </div>
+
+            <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                Your Balance: <strong id="zqiBalance">{zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} ZQI</strong>
+                {isConnected && zqiBalance > 0 && !isTokenLocked && (
+                  <button 
+                    type="button" 
+                    onClick={() => setLockAmount(zqiBalance.toString())}
+                    style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
+                  >
+                    MAX
+                  </button>
+                )}
               </span>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* ========================================================================= */}
-      {/* MAIN CONTAINER: TWO-COLUMN DASHBOARD (TERMINAL PRO)                       */}
-      {/* ========================================================================= */}
-      <main className="dapp-container">
-        
-        {/* RPC Status Indicator */}
-        <div className="rpc-status-container" style={{ marginBottom: '16px', fontSize: '0.82rem', color: '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-          <span className="rpc-status-indicator"></span>
-          <span>RPC Node: Operational ({SOLANA_NETWORK})</span>
-        </div>
-
-        {/* 2-COLUMN GRID WRAPPER */}
-        <div className="zoniq-terminal-grid">
-          
-          {/* ===================================================================== */}
-          {/* SISI KIRI: ANALYTICS, CHARTS & LIVE PAYFI SETTLEMENT FEED             */}
-          {/* ===================================================================== */}
-          <div className="zoniq-terminal-left">
-            
-            {/* 1. Bar Metrik KPI Ringkas */}
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', 
-              gap: '6px',
-              width: '100%',
-              boxSizing: 'border-box'
-            }}>
-              <div className="zoniq-stat-card" style={{ minWidth: 0, padding: '10px 4px' }}>
-                <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600', whiteSpace: 'nowrap' }}>PayFi & AMM</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: '800', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  ${protocolTVL.toLocaleString('en-US')}
-                </span>
-                <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: '700', whiteSpace: 'nowrap' }}>↑ 18.4% epoch</span>
-              </div>
-
-              <div className="zoniq-stat-card" style={{ minWidth: 0, padding: '10px 4px' }}>
-                <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600', whiteSpace: 'nowrap' }}>Real Yield</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: '800', color: '#38bdf8', whiteSpace: 'nowrap' }}>
-                  42.80 SOL
-                </span>
-                <span style={{ fontSize: '0.65rem', color: '#94a3b8', whiteSpace: 'nowrap' }}>30% to Locker</span>
-              </div>
-
-              <div className="zoniq-stat-card" style={{ minWidth: 0, padding: '10px 4px' }}>
-                <span style={{ fontSize: '0.68rem', color: '#94a3b8', fontWeight: '600', whiteSpace: 'nowrap' }}>Network / Gas</span>
-                <span style={{ fontSize: '1.05rem', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap' }}>
-                  99.9%
-                </span>
-                <span style={{ fontSize: '0.65rem', color: '#38bdf8', whiteSpace: 'nowrap' }}>Priority Fee</span>
-              </div>
+            <div className="lock-input-group">
+              <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $ZQI to Lock:" : "Enter Capital For Prediction:"}</label>
+              <input type="number" id="lockAmount" placeholder="0.0" value={lockAmount === '0' ? '' : lockAmount} disabled={isTokenLocked || isLockLoading} onChange={(e) => setLockAmount(e.target.value)} onBlur={() => { if (lockAmount === '') setLockAmount('0'); }} />
             </div>
 
-            {/* 2. Visual Chart Area: Pro Telemetry Grid */}
-            {activeTab === 'swap' ? (
-              <ZqiCandleChart />
-            ) : (
-            <div className="zoniq-chart-box" style={{ background: '#0b121f', border: '1px solid #1e293b', borderRadius: '14px', padding: '18px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              
-              {/* Header Chart dengan Filter Periode */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                <div>
-                  <h4 style={{ margin: 0, fontSize: '0.92rem', color: '#ffffff', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    PayFi Settlement & Yield Velocity
-                    <span style={{ fontSize: '0.65rem', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>Live</span>
-                  </h4>
-                  <p style={{ margin: '3px 0 0 0', fontSize: '0.72rem', color: '#64748b' }}>
-                    Atomic 5% fee routing across Protocol Pools
-                  </p>
-                </div>
-
-                {/* Filter Pills */}
-                <div style={{ display: 'flex', background: '#070a13', padding: '3px', borderRadius: '6px', border: '1px solid #1e293b', gap: '2px' }}>
-                  <span style={{ padding: '2px 8px', borderRadius: '4px', background: '#1e293b', color: '#38bdf8', fontSize: '0.68rem', fontWeight: '700', cursor: 'pointer' }}>7D</span>
-                  <span style={{ padding: '2px 8px', borderRadius: '4px', color: '#64748b', fontSize: '0.68rem', fontWeight: '600', cursor: 'pointer' }}>30D</span>
-                  <span style={{ padding: '2px 8px', borderRadius: '4px', color: '#64748b', fontSize: '0.68rem', fontWeight: '600', cursor: 'pointer' }}>Epoch</span>
-                </div>
-              </div>
-
-              {/* Area Grafik Berisi Skala Y-Axis & Garis Grid */}
-              <div style={{ position: 'relative', width: '100%', height: '180px', background: '#070a13', border: '1px solid #1e293b', borderRadius: '10px', padding: '16px 12px 8px 45px', boxSizing: 'border-box' }}>
-                
-                {/* Skala Y-Axis di Sisi Kiri */}
-                <div style={{ position: 'absolute', left: '10px', top: '14px', bottom: '26px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', fontSize: '0.65rem', color: '#475569', fontFamily: 'monospace', textAlign: 'right', width: '28px' }}>
-                  <span>0.60</span>
-                  <span>0.40</span>
-                  <span>0.20</span>
-                  <span>0.00</span>
-                </div>
-
-                {/* Garis Grid Horizontal */}
-                <div style={{ position: 'absolute', left: '44px', right: '12px', top: '18px', borderTop: '1px dashed rgba(51, 65, 85, 0.4)' }}></div>
-                <div style={{ position: 'absolute', left: '44px', right: '12px', top: '68px', borderTop: '1px dashed rgba(51, 65, 85, 0.4)' }}></div>
-                <div style={{ position: 'absolute', left: '44px', right: '12px', top: '118px', borderTop: '1px dashed rgba(51, 65, 85, 0.4)' }}></div>
-                <div style={{ position: 'absolute', left: '44px', right: '12px', bottom: '28px', borderTop: '1px solid #1e293b' }}></div>
-
-                {/* Balok Grafik */}
-                <div style={{ position: 'relative', zIndex: 2, display: 'flex', height: '100%', alignItems: 'flex-end', gap: '8px' }}>
+            {lockCalculationMode === 'manual' && (
+              <div style={{ marginBottom: '14px', marginTop: '10px' }}>
+                <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: '6px' }}>
+                  Select Lock Duration:
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
                   {[
-                    { day: 'Mon', height: '35%', val: '0.14 SOL' },
-                    { day: 'Tue', height: '55%', val: '0.28 SOL' },
-                    { day: 'Wed', height: '40%', val: '0.18 SOL' },
-                    { day: 'Thu', height: '75%', val: '0.42 SOL' },
-                    { day: 'Fri', height: '50%', val: '0.24 SOL' },
-                    { day: 'Sat', height: '82%', val: '0.48 SOL' },
-                    { day: 'Sun', height: '94%', val: '0.56 SOL', highlight: true }
-                  ].map((bar, index) => (
-                    <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end', gap: '6px' }}>
-                      <div 
-                        title={`${bar.day}: ${bar.val}`}
-                        style={{ 
-                          width: '80%', 
-                          height: bar.height, 
-                          background: bar.highlight 
-                            ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)' 
-                            : 'linear-gradient(180deg, #38bdf8 0%, #1d4ed8 100%)', 
-                          borderRadius: '3px 3px 0 0',
-                          boxShadow: bar.highlight ? '0 0 10px rgba(16, 185, 129, 0.4)' : 'none',
-                          cursor: 'pointer',
-                          transition: 'transform 0.2s ease, filter 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.filter = 'brightness(1.25)'; e.currentTarget.style.transform = 'scaleY(1.03)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.filter = 'none'; e.currentTarget.style.transform = 'none'; }}
-                      />
-                      <span style={{ fontSize: '0.64rem', color: bar.highlight ? '#34d399' : '#64748b', fontWeight: bar.highlight ? '700' : '500' }}>
-                        {bar.day}
-                      </span>
-                    </div>
+                    { days: 7, label: "7 Days (0.5x)" },
+                    { days: 15, label: "15 Days (0.75x)" },
+                    { days: 30, label: "30 Days (1.0x)" }
+                  ].map((item) => (
+                    <button
+                      key={item.days}
+                      type="button"
+                      disabled={isTokenLocked}
+                      onClick={() => setInstantDays(item.days)}
+                      style={{
+                        padding: '7px 0',
+                        borderRadius: '6px',
+                        fontSize: '0.82rem',
+                        fontWeight: '600',
+                        cursor: isTokenLocked ? 'not-allowed' : 'pointer',
+                        border: instantDays === item.days ? '1px solid #38bdf8' : '1px solid #1e293b',
+                        background: instantDays === item.days ? 'rgba(56, 189, 248, 0.15)' : '#0b0f19',
+                        color: instantDays === item.days ? '#38bdf8' : '#64748b',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      {item.label}
+                    </button>
                   ))}
                 </div>
               </div>
-
-              {/* Sub-keterangan Bawah */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.73rem', color: '#94a3b8', borderTop: '1px solid #1e293b', paddingTop: '10px' }}>
-                <span>Protocol Yield Velocity: <strong style={{ color: '#38bdf8' }}>+18.4% APY</strong></span>
-                <span style={{ color: '#10b981', fontWeight: '600' }}>Atomic Multi-Pool Routing ⚡</span>
-              </div>
-
-            </div>
             )}
 
-            {/* 3. Live On-Chain Settlement Activity Feed */}
-            <div className="zoniq-feed-box">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h5 style={{ margin: 0, fontSize: '0.85rem', color: '#e2e8f0', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
-                  Recent Atomic Settlement Routing
-                </h5>
-                <span style={{ fontSize: '0.7rem', color: '#64748b' }}>Solana Devnet</span>
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem' }}>
-                {settlementLogs && settlementLogs.map((item, index) => (
-                  <div 
-                    key={index} 
-                    style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'center', 
-                      background: '#070a13', 
-                      border: '1px solid #1e293b', 
-                      padding: '9px 12px', 
-                      borderRadius: '8px' 
-                    }}
-                  >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                      <span style={{ color: '#ffffff', fontWeight: '600' }}>{item.title}</span>
-                      <span style={{ fontSize: '0.68rem', color: '#64748b' }}>{item.desc}</span>
-                    </div>
-                    <span style={{ color: item.color, fontWeight: '700', fontFamily: 'monospace' }}>
-                      {item.val}
-                    </span>
-                  </div>
-                ))}
+            <div className={`wizard-section ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="wizardOptions">
+              <label className="wizard-select-label">Select Lock Duration:</label>
+              <div className="duration-btn-group">
+                <button type="button" className={`btn-duration ${chosenMultiplier === 1 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1)}>30 Days (1x)</button>
+                <button type="button" className={`btn-duration ${chosenMultiplier === 1.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1.5)}>90 Days (1.5x)</button>
+                <button type="button" className={`btn-duration ${chosenMultiplier === 2.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(2.5)}>180 Days (2.5x)</button>
               </div>
             </div>
 
-          </div>
+            <div className="score-preview">
+              <span>{lockCalculationMode === 'manual' ? "Base Processing Share:" : "Boosted Yield Score:"}</span>
+              <span className="score-value" id="liveScore">{liveScore}</span>
+            </div>
 
-          {/* ===================================================================== */}
-          {/* SISI KANAN: 5 NAVIGATION TABS & MODUL AKTIF                            */}
-          {/* ===================================================================== */}
-          <div className="zoniq-terminal-right">
-            
-            {/* TAB NAVIGATION BAR (Swap | Lock | Vault | Affiliate | PayFi) */}
-            <div className="dapp-nav-tabs-wrapper">
-              <div className="dapp-nav-tabs">
-                {SHOW_SWAP && (
-                  <button 
-                    type="button"
-                    className={`dapp-tab-btn ${activeTab === 'swap' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('swap')}
-                  >
-                    🔄 <span className="tab-text">Swap</span>
-                  </button>
-                )}
-                {SHOW_LOCKER && (
-                  <button 
-                    type="button"
-                    className={`dapp-tab-btn ${activeTab === 'staking' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('staking')}
-                  >
-                    🔒 <span className="tab-text">Lock</span>
-                  </button>
-                )}
-                {SHOW_OPTIMIZER && (
-                  <button 
-                    type="button"
-                    className={`dapp-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('vault')}
-                  >
-                    📈 <span className="tab-text">Vault</span>
-                  </button>
-                )}
-                {SHOW_AFFILIATE && (
-                  <button 
-                    type="button" 
-                    className={`dapp-tab-btn ${activeTab === 'affiliate' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('affiliate')}
-                  >
-                    👥 <span className="tab-text">Affiliate</span>
-                  </button>
-                )}
+            <div className="reward-info-badge">
+              <span className="badge-accent-line">Reward: Real USDC (Demo Sandbox Epoch)</span>
+              {estimatedRewardText && <span id="accumulationLabel" className="badge-sub-info" style={{ display: 'block' }}>{estimatedRewardText}</span>}
+            </div>
+
+            {isTokenLocked && !isLockLoading && showRewardRow && (
+              <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-10px', marginBottom: '15px', background: 'rgba(15, 23, 42, 0.6)', padding: '10px 14px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
+                  Yield Earned: <strong id="earnedUsdc" style={{ color: rewardClaimable ? '#22c55e' : '#ffffff', fontSize: '1rem', marginLeft: '4px' }}>{earnedUsdcDisplay}</strong>
+                </span>
                 <button 
-                  type="button" 
-                  className={`dapp-tab-btn ${activeTab === 'payfi' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('payfi')}
+                  className="btn-claim-reward" 
+                  onClick={claimZqiReward} 
+                  disabled={!rewardClaimable}
+                  style={{ 
+                    opacity: 1, 
+                    background: rewardClaimable ? "#22c55e" : "rgba(234, 179, 8, 0.15)", 
+                    cursor: rewardClaimable ? "pointer" : "not-allowed", 
+                    border: rewardClaimable ? "none" : "1px solid rgba(234, 179, 8, 0.4)", 
+                    padding: "8px 14px", 
+                    borderRadius: "6px", 
+                    color: rewardClaimable ? "#ffffff" : "#facc15", 
+                    fontWeight: "600",
+                    fontSize: "0.85rem",
+                    transition: "all 0.3s ease"
+                  }}
                 >
-                  💳 <span className="tab-text">PayFi</span>
+                  {rewardClaimable 
+                    ? "Claim Reward" 
+                    : (lockCountdown > 0 
+                        ? `🔒 Epoch Accumulating (${lockCountdown}s)` 
+                        : "🔒 Epoch Accumulating...")}
+                </button>
+              </div>
+            )}
+
+            {isConnected && zqiBalance <= 0 && !isTokenLocked ? (
+              <button 
+                type="button"
+                className="btn-action" 
+                onClick={() => { 
+                  setTokenReceive('ZQI'); 
+                  setActiveTab('swap'); 
+                }} 
+                style={{ 
+                  background: 'linear-gradient(135deg, #f59e0b, #d97706)', 
+                  color: '#ffffff', 
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 15px rgba(245, 158, 11, 0.35)',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '14px',
+                  width: '100%'
+                }}
+              >
+                ⚡ Insufficient $ZQI — Swap Now →
+              </button>
+            ) : (
+              <button className="btn-action" id="lockBtn" onClick={isConnected ? handleLockToken : openWalletModal} disabled={isTokenLocked || (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0 || isLockLoading))} style={{ background: isTokenLocked ? "#22c55e" : !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (lockAmount && parseFloat(lockAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: isTokenLocked ? "#ffffff" : (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: isTokenLocked ? "not-allowed" : "pointer", pointerEvents: isTokenLocked ? "none" : "auto" }}>
+                {isLockLoading ? 'Processing Lock...' : isTokenLocked ? '✓ Token Locked' : !isConnected ? 'Connect Wallet' : (!lockAmount || parseFloat(lockAmount) <= 0) ? 'Enter an Amount' : 'Lock Token'}
+              </button>
+            )}
+
+            <button 
+              type="button"
+              id="emergencyUnlockBtn" 
+              onClick={triggerEmergencyModal} 
+              disabled={!isTokenLocked || isLockLoading} 
+              style={{ 
+                marginTop: "12px", 
+                width: "100%", 
+                padding: "12px", 
+                borderRadius: "8px", 
+                fontWeight: "700", 
+                fontSize: "0.88rem",
+                background: (isTokenLocked && !isLockLoading) ? "linear-gradient(135deg, #dc2626, #b91c1c)" : "#1e1b2e", 
+                border: "1px solid rgba(239, 68, 68, 0.5)", 
+                color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#f87171", 
+                cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                gap: "6px", 
+                boxShadow: (isTokenLocked && !isLockLoading) ? "0 4px 15px rgba(220, 38, 38, 0.35)" : "none"
+              }}
+            >
+              ⚠️ Emergency Early Unlock (10% Penalty)
+            </button>
+          </div>
+        )}
+
+        {/* MODUL 4: AFFILIATE */}
+        {SHOW_AFFILIATE && activeTab === 'affiliate' && (
+          <section className="affiliate-section" style={{ width: '100%', boxSizing: 'border-box', background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '20px', margin: '0 auto', color: '#94a3b8' }}>
+            <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.3rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
+              </h3>
+              <span className="shield-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
+                Anti-Sybil Active
+              </span>
+            </div>
+
+            <p style={{ fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '20px', color: '#94a3b8' }}>
+              Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>).
+            </p>
+                  
+            <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
+              <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                <input 
+                  type="text" 
+                  id="refLink" 
+                  value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
+                  readOnly 
+                  style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.85rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                />
+                <button 
+                  className="btn-copy" 
+                  id="copyBtn" 
+                  onClick={copyLink} 
+                  style={{ 
+                    background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#1e293b', 
+                    color: '#ffffff', cursor: 'pointer', height: '45px', padding: '0 16px', borderRadius: '8px', fontWeight: '700', border: isConnected ? 'none' : '1px solid #334155', fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '85px', boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', transition: 'all 0.3s ease'
+                  }}
+                >
+                  {isConnected ? "Copy Link" : "Connect"}
                 </button>
               </div>
             </div>
 
-            {/* CONTAINER KONTEN MODUL AKTIF */}
-            <div className="dapp-single-frame-container">
-              
-              {/* MODUL 1: SWAP */}
-              {SHOW_SWAP && activeTab === 'swap' && (
-                <div className="product-card swap-card">
-                  <div className="card-title-row">
-                    <h3>AMM DEX Swap</h3>
-                    <span id="mevBadge" className="mev-secure-badge">🛡️ MEV SECURE</span>
-                  </div>
-                  <p className="desc">Non-custodial peer-to-peer asset swapping via immutable Solana smart contract routing.</p>
-
-                  <div className="swap-input-container">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                      <label style={{ fontSize: '0.85rem', color: '#94a3b8', fontWeight: '600', margin: 0 }}>You Pay</label>
-                      {isConnected && (
-                        <div style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <span>Balance: <strong style={{ color: '#ffffff' }}>{tokenPay === 'ZQI' ? zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) : (tokenPay === 'USDC' ? '5,000.00' : '10.50')} {tokenPay}</strong></span>
-                          <button 
-                            type="button" 
-                            onClick={() => setPayAmount(tokenPay === 'ZQI' ? zqiBalance.toString() : (tokenPay === 'USDC' ? '5000' : '10.5'))}
-                            style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
-                          >
-                            MAX
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                      <input type="number" id="payAmount" placeholder="0.0" value={payAmount === '0' ? '' : payAmount} disabled={isSwapLoading} onChange={(e) => setPayAmount(e.target.value)} onBlur={() => { if (payAmount === '') setPayAmount('0'); }} style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
-                      <select id="tokenPay" value={tokenPay} onChange={(e) => handleTokenChange(e.target.value)} style={{ background: '#0b0f19', color: '#fff', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', fontWeight: '700', outline: 'none', cursor: 'pointer' }}>
-                        {tokens.map(t => (
-                          <option key={t.symbol} value={t.symbol}>{t.symbol}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="swap-switch-row"><button className="btn-switch-tokens" onClick={switchTokens}>⇅</button></div>
-                  
-                  <div className="swap-input-container">
-                    <label>You Receive (Estimated)</label>
-                    <div className="field-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#090d16', padding: '4px 12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                      <input type="text" id="receiveAmount" value={receiveAmount} readOnly style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', outline: 'none', fontSize: '1.1rem', padding: '8px 0' }} />
-                      <span id="tokenReceiveLabel" className="static-token-label" style={{ fontWeight: '800', color: '#38bdf8', paddingRight: '6px', fontSize: '1rem' }}>{tokenReceive}</span>
-                    </div>
-                  </div>
-
-                  <div className="swap-fee-details">
-                    <div className="detail-line"><span>Trading Fee (0.3%):</span><span id="swapFeeLabel" className="fee-bold-value">{swapFee} {tokenPay}</span></div>
-                    <div className="detail-line total-divider"><span>Anti-Wash Trading Check:</span><span className="status-active-text">Active (Daily)</span></div>
-                  </div>
-
-                  <button className="btn-action" id="swapBtn" onClick={isConnected ? handleLaunchSwap : openWalletModal} disabled={isConnected && (!payAmount || parseFloat(payAmount) <= 0 || isSwapLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (payAmount && parseFloat(payAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!payAmount || parseFloat(payAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
-                    {isSwapLoading ? 'Processing Secure Swap...' : !isConnected ? 'Connect Wallet' : (!payAmount || parseFloat(payAmount) <= 0) ? 'Enter an Amount' : 'Launch Swap'}
-                  </button>
-                </div>
-              )}
-
-              {/* MODUL 2: OPTIMIZER */}
-              {SHOW_OPTIMIZER && activeTab === 'vault' && (
-                <div className="product-card">
-                  <h3>Yield Optimizer</h3>
-                  <p className="desc">Deposit once, the system automatically executes periodic auto-compounding optimization.</p>
-                  <div className="stat-box">Boosted APY: Up to 49.1%</div>
-                  
-                  <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', background: '#070a13', border: '1px solid #1e293b', padding: '12px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
-                    <span style={{ color: '#94a3b8' }}>Global Vault TVL: <strong style={{ color: '#14b8a6' }}>${(protocolTVL * 0.58).toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong></span>
-                    <span style={{ color: '#94a3b8' }}>Active Depositors: <strong style={{ color: '#ffffff' }}>1,842 Users</strong></span>
-                  </div>
-                  
-                  <div className="yield-calc-embed">
-                    <h4>ZoniqFi Yield Calculator</h4>
-                    <label>Allocation Amount (USDC):</label>
-                    <input type="number" id="calcAmount" placeholder="0.0" value={calcAmount === '0' ? '' : calcAmount} disabled={isVaultLoading} onChange={(e) => setCalcAmount(e.target.value)} onBlur={() => { if (calcAmount === '') setCalcAmount('0'); }} />
-                    <div className="projection-metrics-list">
-                      <p>Daily Rate: <strong>0.11%</strong></p>
-                      <p>Est. Profit / Day: <strong id="profitDay" className="profit-green-value">{parseFloat(projection.daily).toLocaleString('en-US')} USDC</strong></p>
-                      <p>Est. Profit / Month: <strong id="profitMonth" className="profit-green-value">{parseFloat(projection.monthly).toLocaleString('en-US')} USDC</strong></p>
-                      <p>Est. Profit / Year: <strong id="profitYear" className="profit-green-value">{parseFloat(projection.annual).toLocaleString('en-US')} USDC</strong></p>
-                    </div>
-                  </div>
-
-                  <button className="btn-action" id="yieldBtn" onClick={isConnected ? handleDepositVault : openWalletModal} disabled={isConnected && (!calcAmount || parseFloat(calcAmount) <= 0 || isVaultLoading)} style={{ background: !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (calcAmount && parseFloat(calcAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: (isConnected && (!calcAmount || parseFloat(calcAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: "pointer", pointerEvents: "auto" }}>
-                    {isVaultLoading ? "Processing Deposit..." : !isConnected ? "Connect Wallet" : (!calcAmount || parseFloat(calcAmount) <= 0) ? "Enter an Amount" : "Open Vaults"}
-                  </button>
-                </div>
-              )}
-
-              {/* MODUL 3: LOCKER */}
-              {SHOW_LOCKER && activeTab === 'staking' && (
-                <div className="product-card">
-                  <h3>ZQI Lock & Yield</h3>
-                  <p className="desc">Lock your $ZQI tokens to claim Real Yield paid out in stable USDC. Early unlock incurs a 10% penalty.</p>
-
-                  <div className="calc-tabs">
-                    <button className={`tab-btn ${lockCalculationMode === 'manual' ? 'active' : ''}`} id="tabManual" onClick={() => switchLockCalculationView('manual')}>Instant Lock</button>
-                    <button className={`tab-btn ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="tabWizard" onClick={() => switchLockCalculationView('wizard')}>Boosted Lock</button>
-                  </div>
-
-                  <div className="pool-meta-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>Protocol TVL: <strong id="poolTvl">${protocolTVL.toLocaleString('en-US')}</strong></span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      Your Balance: <strong id="zqiBalance">{zqiBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })} ZQI</strong>
-                      {isConnected && zqiBalance > 0 && !isTokenLocked && (
-                        <button 
-                          type="button" 
-                          onClick={() => setLockAmount(zqiBalance.toString())}
-                          style={{ background: 'rgba(59, 130, 246, 0.2)', border: '1px solid rgba(59, 130, 246, 0.4)', color: '#60a5fa', fontSize: '0.7rem', padding: '1px 6px', borderRadius: '4px', cursor: 'pointer', fontWeight: '700' }}
-                        >
-                          MAX
-                        </button>
-                      )}
-                    </span>
-                  </div>
-
-                  <div className="lock-input-group">
-                    <label id="inputLabel">{lockCalculationMode === 'manual' ? "Amount of $ZQI to Lock:" : "Enter Capital For Prediction:"}</label>
-                    <input type="number" id="lockAmount" placeholder="0.0" value={lockAmount === '0' ? '' : lockAmount} disabled={isTokenLocked || isLockLoading} onChange={(e) => setLockAmount(e.target.value)} onBlur={() => { if (lockAmount === '') setLockAmount('0'); }} />
-                  </div>
-
-                  {lockCalculationMode === 'manual' && (
-                    <div style={{ marginBottom: '14px', marginTop: '10px' }}>
-                      <label style={{ fontSize: '0.8rem', color: '#94a3b8', display: 'block', marginBottom: '6px' }}>
-                        Select Lock Duration:
-                      </label>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                        {[
-                          { days: 7, label: "7 Days (0.5x)" },
-                          { days: 15, label: "15 Days (0.75x)" },
-                          { days: 30, label: "30 Days (1.0x)" }
-                        ].map((item) => (
-                          <button
-                            key={item.days}
-                            type="button"
-                            disabled={isTokenLocked}
-                            onClick={() => setInstantDays(item.days)}
-                            style={{
-                              padding: '7px 0',
-                              borderRadius: '6px',
-                              fontSize: '0.82rem',
-                              fontWeight: '600',
-                              cursor: isTokenLocked ? 'not-allowed' : 'pointer',
-                              border: instantDays === item.days ? '1px solid #38bdf8' : '1px solid #1e293b',
-                              background: instantDays === item.days ? 'rgba(56, 189, 248, 0.15)' : '#0b0f19',
-                              color: instantDays === item.days ? '#38bdf8' : '#64748b',
-                              transition: 'all 0.2s ease'
-                            }}
-                          >
-                            {item.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className={`wizard-section ${lockCalculationMode === 'wizard' ? 'active' : ''}`} id="wizardOptions">
-                    <label className="wizard-select-label">Select Lock Duration:</label>
-                    <div className="duration-btn-group">
-                      <button type="button" className={`btn-duration ${chosenMultiplier === 1 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1)}>30 Days (1x)</button>
-                      <button type="button" className={`btn-duration ${chosenMultiplier === 1.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(1.5)}>90 Days (1.5x)</button>
-                      <button type="button" className={`btn-duration ${chosenMultiplier === 2.5 ? 'active' : ''}`} onClick={() => setChosenMultiplier(2.5)}>180 Days (2.5x)</button>
-                    </div>
-                  </div>
-
-                  <div className="score-preview">
-                    <span>{lockCalculationMode === 'manual' ? "Base Processing Share:" : "Boosted Yield Score:"}</span>
-                    <span className="score-value" id="liveScore">{liveScore}</span>
-                  </div>
-
-                  <div className="reward-info-badge">
-                    <span className="badge-accent-line">Reward: Real USDC (Demo Sandbox Epoch)</span>
-                    {estimatedRewardText && <span id="accumulationLabel" className="badge-sub-info" style={{ display: 'block' }}>{estimatedRewardText}</span>}
-                  </div>
-
-                  {isTokenLocked && !isLockLoading && showRewardRow && (
-                    <div className="claim-management-row" id="rewardClaimRow" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-10px', marginBottom: '15px', background: 'rgba(15, 23, 42, 0.6)', padding: '10px 14px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                      <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-                        Yield Earned: <strong id="earnedUsdc" style={{ color: rewardClaimable ? '#22c55e' : '#ffffff', fontSize: '1rem', marginLeft: '4px' }}>{earnedUsdcDisplay}</strong>
-                      </span>
-                      <button 
-                        className="btn-claim-reward" 
-                        onClick={claimZqiReward} 
-                        disabled={!rewardClaimable}
-                        style={{ 
-                          opacity: 1, 
-                          background: rewardClaimable ? "#22c55e" : "rgba(234, 179, 8, 0.15)", 
-                          cursor: rewardClaimable ? "pointer" : "not-allowed", 
-                          border: rewardClaimable ? "none" : "1px solid rgba(234, 179, 8, 0.4)", 
-                          padding: "8px 14px", 
-                          borderRadius: "6px", 
-                          color: rewardClaimable ? "#ffffff" : "#facc15", 
-                          fontWeight: "600",
-                          fontSize: "0.85rem",
-                          transition: "all 0.3s ease"
-                        }}
-                      >
-                        {rewardClaimable 
-                          ? "Claim Reward" 
-                          : (lockCountdown > 0 
-                              ? `🔒 Epoch Accumulating (${lockCountdown}s)` 
-                              : "🔒 Epoch Accumulating...")}
-                      </button>
-                    </div>
-                  )}
-
-                  {isConnected && zqiBalance <= 0 && !isTokenLocked ? (
-                    <button 
-                      type="button"
-                      className="btn-action" 
-                      onClick={() => { 
-                        setTokenReceive('ZQI'); 
-                        setActiveTab('swap'); 
-                      }} 
-                      style={{ 
-                        background: 'linear-gradient(135deg, #f59e0b, #d97706)', 
-                        color: '#ffffff', 
-                        fontWeight: '700',
-                        cursor: 'pointer',
-                        boxShadow: '0 4px 15px rgba(245, 158, 11, 0.35)',
-                        border: 'none',
-                        borderRadius: '8px',
-                        padding: '14px',
-                        width: '100%'
-                      }}
-                    >
-                      ⚡ Insufficient $ZQI — Swap Now →
-                    </button>
-                  ) : (
-                    <button className="btn-action" id="lockBtn" onClick={isConnected ? handleLockToken : openWalletModal} disabled={isTokenLocked || (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0 || isLockLoading))} style={{ background: isTokenLocked ? "#22c55e" : !isConnected ? "linear-gradient(135deg, #8b5cf6, #3b82f6)" : (lockAmount && parseFloat(lockAmount) > 0) ? "linear-gradient(90deg, #1f6feb 0%, #238636 100%)" : "#1f2937", color: isTokenLocked ? "#ffffff" : (isConnected && (!lockAmount || parseFloat(lockAmount) <= 0)) ? "#64748b" : "#ffffff", cursor: isTokenLocked ? "not-allowed" : "pointer", pointerEvents: isTokenLocked ? "none" : "auto" }}>
-                      {isLockLoading ? 'Processing Lock...' : isTokenLocked ? '✓ Token Locked' : !isConnected ? 'Connect Wallet' : (!lockAmount || parseFloat(lockAmount) <= 0) ? 'Enter an Amount' : 'Lock Token'}
-                    </button>
-                  )}
-
-                  <button 
-                    type="button"
-                    id="emergencyUnlockBtn" 
-                    onClick={triggerEmergencyModal} 
-                    disabled={!isTokenLocked || isLockLoading} 
-                    style={{ 
-                      marginTop: "12px", 
-                      width: "100%", 
-                      padding: "12px", 
-                      borderRadius: "8px", 
-                      fontWeight: "700", 
-                      fontSize: "0.88rem",
-                      background: (isTokenLocked && !isLockLoading) ? "linear-gradient(135deg, #dc2626, #b91c1c)" : "#1e1b2e", 
-                      border: "1px solid rgba(239, 68, 68, 0.5)", 
-                      color: (isTokenLocked && !isLockLoading) ? "#ffffff" : "#f87171", 
-                      cursor: (isTokenLocked && !isLockLoading) ? "pointer" : "not-allowed", 
-                      display: "flex", 
-                      alignItems: "center", 
-                      justifyContent: "center", 
-                      gap: "6px", 
-                      boxShadow: (isTokenLocked && !isLockLoading) ? "0 4px 15px rgba(220, 38, 38, 0.35)" : "none"
-                    }}
-                  >
-                    ⚠️ Emergency Early Unlock (10% Penalty)
-                  </button>
-                </div>
-              )}
-
-              {/* MODUL 4: AFFILIATE / REFERRAL */}
-              {SHOW_AFFILIATE && activeTab === 'affiliate' && (
-                <section className="affiliate-section" style={{ width: '100%', boxSizing: 'border-box', background: '#0b121f', border: '1px solid #1e293b', borderRadius: '12px', padding: '20px', margin: '0 auto', color: '#94a3b8' }}>
-                  <div className="section-title-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <h3 style={{ color: '#ffffff', margin: 0, fontSize: '1.3rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ color: '#f97316' }}>⚡</span> Secure On-Chain Affiliate
-                    </h3>
-                    <span className="shield-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
-                      Anti-Sybil Active
-                    </span>
-                  </div>
-
-                  <p style={{ fontSize: '0.9rem', lineHeight: '1.5', marginBottom: '20px', color: '#94a3b8' }}>
-                    Share your unique referral link. The system strictly restricts repetitive transactional manipulation (<strong style={{ color: '#f59e0b' }}>max 1 tx / 10s</strong>).
-                  </p>
-                        
-                  <div className="affiliate-input-group" style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', letterSpacing: '0.05em', marginBottom: '8px' }}>YOUR REFERRAL LINK</label>
-                    <div className="affiliate-box" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-                      <input 
-                        type="text" 
-                        id="refLink" 
-                        value={isConnected ? `https://${currentDomain}?ref=${myWalletAddress}` : "Please connect your wallet..."} 
-                        readOnly 
-                        style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '8px', padding: '12px 16px', color: isConnected ? '#ffffff' : '#64748b', fontSize: '0.85rem', outline: 'none', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                      />
-                      <button 
-                        className="btn-copy" 
-                        id="copyBtn" 
-                        onClick={copyLink} 
-                        style={{ 
-                          background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#1e293b', 
-                          color: '#ffffff', cursor: 'pointer', height: '45px', padding: '0 16px', borderRadius: '8px', fontWeight: '700', border: isConnected ? 'none' : '1px solid #334155', fontSize: '0.85rem', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '85px', boxShadow: isConnected ? '0 4px 14px rgba(139, 92, 246, 0.4)' : 'none', transition: 'all 0.3s ease'
-                        }}
-                      >
-                        {isConnected ? "Copy Link" : "Connect"}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="test-panel" style={{ background: 'rgba(30, 41, 59, 0.3)', border: '1px solid #1e293b', borderRadius: '8px', padding: '16px', marginBottom: '20px' }}>
-                    <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '10px' }}>
-                      • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
-                    </label>
-                    <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-                      <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', padding: '10px 14px', color: '#ffffff', fontSize: '0.85rem', outline: 'none' }} />
-                      <button 
-                        className="btn-test" 
-                        id="testBtn" 
-                        onClick={verifyReferralOnChain} 
-                        disabled={!isConnected} 
-                        style={{ 
-                          background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#111827', color: isConnected ? '#ffffff' : '#475569', border: isConnected ? 'none' : '1px solid #1e293b', height: '42px', padding: '0 12px', borderRadius: '6px', fontWeight: '700', cursor: isConnected ? 'pointer' : 'not-allowed', fontSize: '0.78rem', lineHeight: '1.2', textAlign: 'center', flexShrink: 0, minWidth: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', transition: 'all 0.3s ease'
-                        }}
-                      >
-                        Verify<br/>Link
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="tier-table-wrapper" style={{ marginBottom: '20px' }}>
-                    <p className="tier-headline" style={{ color: '#ffffff', fontSize: '0.9rem', fontWeight: '600', marginBottom: '12px' }}>Ecosystem Tier Structures:</p>
-                    <div className="responsive-table-overflow" style={{ overflowX: 'auto', width: '100%' }}>
-                      <table className="tier-data-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
-                        <thead>
-                          <tr style={{ background: '#111827', color: '#64748b', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>
-                            <th style={{ padding: '10px 14px', borderBottom: '1px solid #1e293b' }}>Tier Level</th>
-                            <th style={{ padding: '10px 14px', borderBottom: '1px solid #1e293b' }}>Volume Target</th>
-                            <th style={{ padding: '10px 14px', borderBottom: '1px solid #1e293b' }}>USDC Reward</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr style={{ borderBottom: '1px solid #1e293b' }}>
-                            <td className="tier-bronze" style={{ padding: '12px 14px', color: '#10b981', fontWeight: '600' }}>Bronze Tier</td>
-                            <td style={{ padding: '12px 14px', color: '#64748b' }}>$0 - $10,000</td>
-                            <td style={{ padding: '12px 14px', color: '#ffffff', fontWeight: '700' }}>10%</td>
-                          </tr>
-                          <tr style={{ borderBottom: '1px solid #1e293b' }}>
-                            <td className="tier-silver" style={{ padding: '12px 14px', color: '#3b82f6', fontWeight: '600' }}>Silver Tier</td>
-                            <td style={{ padding: '12px 14px', color: '#64748b' }}>$10,001 - $100,000</td>
-                            <td style={{ padding: '12px 14px', color: '#ffffff', fontWeight: '700' }}>18%</td>
-                          </tr>
-                          <tr>
-                            <td className="tier-gold" style={{ padding: '12px 14px', color: '#a855f7', fontWeight: '600' }}>Gold Tier</td>
-                            <td style={{ padding: '12px 14px', color: '#64748b' }}>&gt; $100,000</td>
-                            <td style={{ padding: '12px 14px', color: '#ffffff', fontWeight: '700' }}>25%</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div className="tier-stats" style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#070a13', border: '1px solid #1e293b', padding: '14px 16px', borderRadius: '8px', fontSize: '0.85rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#94a3b8' }}>Current Tier:</span>
-                      <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#94a3b8' }}>Total Referral Volume:</span>
-                      <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #1e293b', paddingTop: '8px' }}>
-                      <span style={{ color: '#94a3b8' }}>Your Earned Commissions:</span>
-                      <span style={{ color: '#22c55e', fontWeight: '800' }}>
-                        {(() => {
-                          if (!isConnected && (referralEarned === '$0.00' || !referralEarned)) return '$0.00 USDC';
-                          const num = parseFloat(String(referralEarned).replace(/[^0-9.-]+/g, ''));
-                          return isNaN(num) 
-                            ? referralEarned 
-                            : `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`;
-                        })()}
-                      </span>
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              {/* MODUL 5: PAYFI */}
-              {activeTab === 'payfi' && (
-                <div className="payfi-wrapper">
-                  <PayFiGateway />
-                </div>
-              )}
-
+            <div className="test-panel" style={{ background: 'rgba(30, 41, 59, 0.3)', border: '1px solid #1e293b', borderRadius: '8px', padding: '16px', marginBottom: '20px' }}>
+              <label htmlFor="testReferrer" style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.05em', marginBottom: '10px' }}>
+                • REFERRER ADDRESS (ON-CHAIN VERIFICATION)
+              </label>
+              <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+                <input type="text" id="testReferrer" placeholder="Enter referrer wallet address..." value={referrerInput} onChange={(e) => setReferrerInput(e.target.value)} style={{ flex: 1, minWidth: '0', background: '#070a13', border: '1px solid #1e293b', borderRadius: '6px', padding: '10px 14px', color: '#ffffff', fontSize: '0.85rem', outline: 'none' }} />
+                <button 
+                  className="btn-test" 
+                  id="testBtn" 
+                  onClick={verifyReferralOnChain} 
+                  disabled={!isConnected} 
+                  style={{ 
+                    background: isConnected ? 'linear-gradient(135deg, #8b5cf6, #3b82f6)' : '#111827', color: isConnected ? '#ffffff' : '#475569', border: isConnected ? 'none' : '1px solid #1e293b', height: '42px', padding: '0 12px', borderRadius: '6px', fontWeight: '700', cursor: isConnected ? 'pointer' : 'not-allowed', fontSize: '0.78rem', lineHeight: '1.2', textAlign: 'center', flexShrink: 0, minWidth: '85px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isConnected ? '0 4px 14px rgba(59, 130, 246, 0.3)' : 'none', transition: 'all 0.3s ease'
+                  }}
+                >
+                  Verify<br/>Link
+                </button>
+              </div>
             </div>
+
+            <div className="tier-stats" style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: '#070a13', border: '1px solid #1e293b', padding: '14px 16px', borderRadius: '8px', fontSize: '0.85rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#94a3b8' }}>Current Tier:</span>
+                <span id="tierLabel" style={{ color: tierColor, fontWeight: '700' }}>{tierLabel}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#94a3b8' }}>Total Referral Volume:</span>
+                <span id="volLabel" style={{ color: '#ffffff', fontWeight: '700' }}>{referralVolume === '$0.00' && !isConnected ? '$0.00' : referralVolume}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #1e293b', paddingTop: '8px' }}>
+                <span style={{ color: '#94a3b8' }}>Your Earned Commissions:</span>
+                <span style={{ color: '#22c55e', fontWeight: '800' }}>
+                  {(() => {
+                    if (!isConnected && (referralEarned === '$0.00' || !referralEarned)) return '$0.00 USDC';
+                    const num = parseFloat(String(referralEarned).replace(/[^0-9.-]+/g, ''));
+                    return isNaN(num) 
+                      ? referralEarned 
+                      : `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`;
+                  })()}
+                </span>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* MODUL 5: PAYFI */}
+        {activeTab === 'payfi' && (
+          <div className="payfi-wrapper">
+            <PayFiGateway />
           </div>
+        )}
+      </ZoniqTerminalWrapper>
 
-        </div>
-
-        <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
-      </main>
+      <ProtocolGuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
 
       {/* STYLE FOOTER */}
       <style>{`
@@ -2391,160 +2039,88 @@ if (isMobile) {
         }
       `}</style>
 
-      {/* FOOTER RESMI DAPP */}
-      <footer className="dapp-footer-clean">
-        <div className="footer-content-left">
-          <p style={{ margin: 0, lineHeight: '1.5' }}>
-            © 2026 ZoniqFi Protocol. All Rights Reserved. Non-Custodial Decentralized Software Suite (Singapore).
-          </p>
-
-          <div className="footer-links-row" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
-            <button
-              type="button"
-              onClick={() => setIsGuideOpen(true)}
-              style={{
-                background: 'rgba(56, 189, 248, 0.1)',
-                border: '1px solid rgba(56, 189, 248, 0.3)',
-                color: '#38bdf8',
-                borderRadius: '6px',
-                padding: '4px 10px',
-                fontSize: '0.78rem',
-                fontWeight: '700',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px'
-              }}
-            >
-              📖 Protocol Guide [EN/ID]
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setShowPitchModal(true)}
-              className="footer-pitch-desktop"
-              style={{
-                background: 'rgba(59, 130, 246, 0.15)',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
-                color: '#60a5fa',
-                borderRadius: '6px',
-                padding: '4px 10px',
-                fontSize: '0.78rem',
-                fontWeight: '700',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px'
-              }}
-            >
-              📊 Pitch Deck
-            </button>
-
-            {/* TOMBOL TRANSPARANSI SQUADS MULTI-SIG TREASURY */}
-            <a
-              href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Public Multi-Sig Treasury Vault via Squads / Solscan"
-              style={{
-                background: 'rgba(16, 185, 129, 0.15)',
-                border: '1px solid rgba(16, 185, 129, 0.4)',
-                color: '#34d399',
-                borderRadius: '6px',
-                padding: '4px 10px',
-                fontSize: '0.78rem',
-                fontWeight: '700',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px'
-              }}
-            >
-              🛡️ Treasury Explorer (Squads)
-            </a>
-
-            <span style={{ color: '#334155' }}>•</span>
-
-            <a 
-              href="https://github.com/provizto/zoniqfi" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ color: '#64748b', textDecoration: 'none', fontSize: '0.8rem' }}
-            >
-              GitHub
-            </a>
-
-            <span style={{ color: '#334155' }}>•</span>
-
-            <a 
-              href="https://github.com/provizto/zoniqfi-docs" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ color: '#64748b', textDecoration: 'none', fontSize: '0.8rem' }}
-            >
-              Docs
-            </a>
-
-            <span style={{ color: '#334155' }}>•</span>
-
-            <a 
-              href="https://solscan.io/token/6tbj9HTPYXZia8daATKXMQy15PBavSEnAnfnRk76SMKz?cluster=devnet" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
-            >
-              $ZQI Explorer 🔍
-            </a>
-
-            <span style={{ color: '#334155' }}>•</span>
-
-            <a 
-              href="https://solscan.io/account/HVHRr2JbMAT1zQ8N2vuWKctfV3ycvQYdDDzob1nqd6jD?cluster=devnet" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
-            >
-              Smart Contract ⚙️
-            </a>
-
-            <span style={{ color: '#334155' }}>•</span>
-
-            <a 
-              href="https://t.me/zoniqfi_community" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '0.8rem' }}
-            >
-              Community 💬
-            </a>
-            
-            <span style={{ color: '#334155' }}>•</span>
-
-            <button 
-              onClick={() => setShowDisclaimer(true)}
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                padding: 0, 
-                color: '#64748b', 
-                fontSize: '0.8rem', 
-                cursor: 'pointer' 
-              }}
-            >
-              Legal Disclaimer
-            </button>
-          </div>
+      {/* FOOTER RESMI DAPP (ULTRA-CLEAN) */}
+      <footer style={{
+        height: '36px',
+        background: '#070b15',
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 20px',
+        fontSize: '0.72rem',
+        color: '#64748b',
+        boxSizing: 'border-box',
+        flexShrink: 0
+      }}>
+        {/* KIRI: COPYRIGHT */}
+        <div>
+          <span>© 2026 ZoniqFi Protocol. Non-Custodial Decentralized Software Suite.</span>
         </div>
 
-        <div className="footer-social-clean">
-          <a href="https://t.me/zoniqfi" target="_blank" rel="noopener noreferrer" title="Telegram">
-            <i className="fab fa-telegram"></i>
+        {/* KANAN: 3 IKON MEDSOS (X, TELEGRAM, DISCORD) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* X (Twitter) */}
+          <a 
+            href="https://x.com/zoniqfi" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            title="X (Twitter)"
+            style={{ 
+              color: '#64748b', 
+              display: 'flex', 
+              alignItems: 'center', 
+              textDecoration: 'none',
+              transition: 'color 0.15s ease'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = '#38bdf8'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
           </a>
-          <a href="https://x.com/zoniqfi" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-            <i className="fab fa-x-twitter"></i>
+
+          {/* Telegram */}
+          <a 
+            href="https://t.me/zoniqfi" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            title="Telegram"
+            style={{ 
+              color: '#64748b', 
+              display: 'flex', 
+              alignItems: 'center', 
+              textDecoration: 'none',
+              transition: 'color 0.15s ease'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = '#38bdf8'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
           </a>
-          <a href="https://discord.gg/zoniqfi" target="_blank" rel="noopener noreferrer" title="Discord">
-            <i className="fab fa-discord"></i>
+
+          {/* Discord */}
+          <a 
+            href="https://discord.gg/zoniqfi" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            title="Discord"
+            style={{ 
+              color: '#64748b', 
+              display: 'flex', 
+              alignItems: 'center', 
+              textDecoration: 'none',
+              transition: 'color 0.15s ease'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = '#5865F2'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = '#64748b'; }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
           </a>
         </div>
       </footer>
